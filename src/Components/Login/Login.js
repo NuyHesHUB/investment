@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../Header';
 import axios from 'axios';
 import { StyledFrame, StyledLoginFrame } from './StyledLoginFrame';
@@ -7,18 +7,18 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../store/actions/actions';
 
 const Login = () => {
+    const navigate = useNavigate();
     const [loginId, setLoginId] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // 컴포넌트가 마운트될 때 세션 스토리지에서 로그인 상태를 체크하고 업데이트합니다.
         const accessToken = sessionStorage.getItem('accessToken');
         if (accessToken) {
             dispatch(login());
         }
+        
     }, [dispatch]);
-
     const handleLogin = async (e) => {
         e.preventDefault();
 
@@ -27,19 +27,21 @@ const Login = () => {
         const response = await axios.post('http://211.198.44.123:3385/v1/authorize/sign_in', {
             loginId,/* otz4193 */
             loginPassword/* 동탄test1234! */
-            
         });
+        
         dispatch(login());
         console.log("로그인 성공");
-
         /* const userData = response.data.userData; */
         const accessToken = response.data.accessToken;
         const refreshToken = response.data.refreshToken;
+        const userUid = response.data;
 
         sessionStorage.setItem('accessToken', accessToken);
         sessionStorage.setItem('refreshToken', refreshToken);
+        
+        console.log(userUid);
+        navigate("/");
 
-        window.location.href = '/';
         /* if (userData.group === '관리자' && userData.isAdmin === 'Y') {
             window.location.href = '/admin'; 
         } else {
@@ -50,7 +52,7 @@ const Login = () => {
         console.error('로그인 실패', error);
         }
     };
-
+    
     return (
         <StyledFrame>
             <Header/>

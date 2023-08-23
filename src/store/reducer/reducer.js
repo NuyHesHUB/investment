@@ -1,9 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    authenticated: Boolean,
-    /* user: undefined,
-    loading: false, */
+    authenticated: false,
+    user: null,
 }
 
 const reducer = (state = initialState, action) => {
@@ -11,13 +10,13 @@ const reducer = (state = initialState, action) => {
         case actionTypes.LOG_IN:
             return {
                 ...state,
-                authenticated: true
+                authenticated: true,
             }
             
         case actionTypes.LOG_OUT:
             return {
                 ...state,
-                authenticated: false
+                authenticated: false,
             }
         default: return state;
     }

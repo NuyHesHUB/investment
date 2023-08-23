@@ -1,9 +1,10 @@
 import * as actionTypes from './actionTypes';
 
 /* Login */
-export function login(){
+export function login(user){
     return {
-        type: actionTypes.LOG_IN
+        type: actionTypes.LOG_IN,
+        payload: user
     }
 };
 

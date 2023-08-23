@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/actions/actions';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const StyledHeaderFrame=styled.div`
+    position: relative;
     width: 100vw;
     height: 70px;
     display: flex;
@@ -14,12 +16,6 @@ const StyledHeaderFrame=styled.div`
     ul{
         list-style:none;
         display: flex;
-    }
-    li{
-        margin-right: 20px;
-    }
-    li:last-child{
-        margin-right: 0;
     }
     a{text-decoration: none; color: #000;}
 `
@@ -32,9 +28,34 @@ const HeaderContainer=styled.div`
     align-items: center;
 `
 
+const MenuFrame=styled.ul`
+    >li{
+        margin-right: 20px;
+    }
+`
+
 const Header = () => {
-    const authenticated = useSelector(state => state.authenticated); // 리덕스 상태에서 authenticated 가져오기
+    /* const authenticated = useSelector(state => state.authenticated); */ 
+    const accessToken = sessionStorage.getItem('accessToken');
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    /* const [boardData, setBoardData] = useState([]); */
+
+    /* useEffect(() => {
+        axios.get('http://211.198.44.123:3385/v1/board/')
+            .then(response => {
+                const test = response.data.query
+                const titles = response.data.query.map(item => item.key);
+                setBoardData(titles);
+                console.log(response.data);
+                console.log('test', test);
+            })
+            .catch(error => {
+                console.error('게시판 데이터를 가져올 수 없습니다.', error);
+            });
+    }, []);
+
+    console.log('boardData',boardData); */
 
     useEffect(() => {
         const accessToken = sessionStorage.getItem('accessToken');
@@ -48,8 +69,10 @@ const Header = () => {
         sessionStorage.removeItem('accessToken');
         sessionStorage.removeItem('refreshToken');
         dispatch(logout()); // 로그아웃 시 logOutAction을 디스패치하여 상태 업데이트
+        navigate("/login");
+
     };
-    console.log('authenticated',authenticated);
+    /* console.log('authenticated',authenticated); */
     
     return (
         <StyledHeaderFrame>
@@ -60,15 +83,16 @@ const Header = () => {
                     </Link>
                 </div>
                 <div style={{display:'flex'}}>
-                    <ul>
-                        <li>투자받기</li>
-                        <li>투자하기</li>
-                        <li>파트너쉽</li>
-                        <li>정보마당</li>
-                    </ul>
+                    <MenuFrame>
+                        {/* {boardData.map((title, index) => (
+                            <li className='category-submenu' key={index}>
+                                <Link to={`${title}`}>{title}</Link>
+                            </li>
+                        ))} */}
+                    </MenuFrame>
                     <div style={{display:'flex', marginLeft:'50px'}}>
                         <ul>
-                            {authenticated ? 
+                            {accessToken ? 
                                 (<li><button onClick={handleLogout}>로그아웃</button></li>) : 
                                 (
                                     <>

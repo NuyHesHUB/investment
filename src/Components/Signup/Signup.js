@@ -6,17 +6,12 @@ import Header from '../Header';
 import { StyledFrame, StyledSigninFrame } from './StyledSignupFrame';
 
 const Signup = () => {
-    /* const { register, watch, formState: { errors }, handleSubmit } = useForm(); */
     const [errorFromSubmit, setErrorFromSubmit] = useState("");
 
     const [loginIdError, setLoginIdError] = useState('');
     const [nicknameError, setNicknameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [loginPasswordError, setLoginPasswordError] = useState('');
-    const [confirmPasswordError, setConfirmPasswordError] = useState('');
-
-    /* const password = useRef();
-    password.current = watch("password"); */
 
     const validateLoginId = (loginId) => {
         const regExp = /^[A-Za-z0-9_]{3,}$/;
@@ -51,14 +46,6 @@ const Signup = () => {
             setLoginPasswordError('');
         }
     };
-
-    /* const validateConfirmPassword = (confirmPassword) => {
-        if (confirmPassword !== formData.loginPassword) {
-            setConfirmPasswordError('비밀번호가 일치하지 않습니다.');
-        } else {
-            setConfirmPasswordError('');
-        }
-    }; */
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -103,16 +90,17 @@ const Signup = () => {
         img: '',
         receiveSms: 'Y',
         receiveEmail: 'Y',
-        note: '테스트아이디'
+        note: '테스트'
     });
-    const [isIdAvailable, setIsIdAvailable] = useState(null);
 
     const handleCheckId = async () => {
         try {
             const response = await axios.get(`http://211.198.44.123:3385/v1/users/check_id/${formData.loginId}`);
             console.log("아이디 중복 검사 응답:", response);
+            alert('사용가능한 아이디입니다.')
         } catch (error) {
             console.error('아이디 중복 검사 실패', error);
+            alert('중복된 아이디입니다.')
         }
     };
 
@@ -131,16 +119,15 @@ const Signup = () => {
         <StyledFrame>
             <Header/>
             <StyledSigninFrame>
-                <div>
                     <h1>회원가입</h1>
                     <div style={{marginTop:'20px', marginBottom:'20px', textAlign:'center'}}>
-                        <span style={{marginBottom:'20px'}}>이미 계정이 있으신가요?</span>
+                        <span style={{marginBottom:'20px'}}>이미 계정이 있으신가요? </span>
                         <Link to="/login">
-                            <button>로그인 하기</button>
+                            로그인 하기
                         </Link>
                     </div>
                     <form onSubmit={onSubmit}>
-                        <div>
+                        <div className='form-container'>
                             <label>
                                 <input
                                     type="radio"
@@ -162,70 +149,99 @@ const Signup = () => {
                                 기업
                             </label>
                         </div>
-                        <div>
-                            <label>아이디</label>
-                            <input
-                                name='loginId'
-                                type='text'
-                                placeholder="아이디를 입력해주세요."
-                                value={formData.loginId}
-                                onChange={handleInputChange}
-                            />
-                            {loginIdError && <span>{loginIdError}</span>}
-                            <Link onClick={handleCheckId}>
-                                <button>중복검사</button>
-                            </Link>
+                        <div className='form-input-wrap'>
+                            <div style={{width:'140px', textAlign:'left'}}>
+                                <label>아이디</label>
+                                <span>*</span>
+                            </div>
+                            <div className='form-input-box'>
+                                <input
+                                    name='loginId'
+                                    type='text'
+                                    placeholder="아이디를 입력해주세요."
+                                    value={formData.loginId}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <div className='id-check-btn' style={{width:'120px', marginLeft:'8px'}}>
+                                <Link style={{display:'flex',alignItems:'center',justifyContent:'center', textDecoration:'none'}} onClick={handleCheckId}>
+                                    <span style={{color:'rgb(95, 0, 128)'}}>중복검사</span>
+                                </Link>
+                            </div>
                         </div>
-                        <div>
-                            <label>이메일</label>
-                            <input
-                                name="email"
-                                type="email"
-                                placeholder="이메일을 입력해주세요."
-                                value={formData.email}
-                                onChange={handleInputChange}
-                            />
-                            {emailError && <span>{emailError}</span>}
+                        {loginIdError && <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{loginIdError}</div>}
+                        <div className='form-input-wrap'>
+                            <div style={{width:'140px', textAlign:'left'}}>
+                                <label>이메일</label>
+                                <span>*</span>
+                            </div>
+                            <div className='form-input-box'>
+                                <input
+                                    name="email"
+                                    type="email"
+                                    placeholder="이메일을 입력해주세요."
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                />
+                                {emailError && <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{emailError}</div>}
+                            </div>
+                            <div style={{width:'120px', marginLeft:'8px'}}></div>
                         </div>
-                        <div>
-                            <label>이름</label>
-                            <input
-                                name="nickname"
-                                type='text'
-                                placeholder='이름을 입력해주세요.'
-                                value={formData.nickname}
-                                onChange={handleInputChange}
-                            />
-                             {nicknameError && <span>{nicknameError}</span>}
+                        <div className='form-input-wrap'>
+                            <div style={{width:'140px', textAlign:'left'}}>
+                                <label>이름</label>
+                                <span>*</span>
+                            </div>
+                            <div className='form-input-box'>
+                                <input
+                                    name="nickname"
+                                    type='text'
+                                    placeholder='이름을 입력해주세요.'
+                                    value={formData.nickname}
+                                    onChange={handleInputChange}
+                                />
+                                {nicknameError && <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{nicknameError}</div>}
+                             </div>
+                             <div style={{width:'120px', marginLeft:'8px'}}></div>
                         </div>
-                        <div>
-                            <label>비밀번호</label>
-                            <input
-                                name="loginPassword"
-                                type="password"
-                                placeholder='비밀번호를 입력해주세요. (8자 이상)'
-                                value={formData.loginPassword}
-                                onChange={handleInputChange}
-                            />
-                            {loginPasswordError && <span>{loginPasswordError}</span>}
+                        <div className='form-input-wrap'>
+                            <div style={{width:'140px', textAlign:'left'}}>
+                                <label>비밀번호</label>
+                                <span>*</span>
+                            </div>
+                            <div className='form-input-box'>
+                                <input
+                                    name="loginPassword"
+                                    type="password"
+                                    placeholder='비밀번호를 입력해주세요. (8자 이상)'
+                                    value={formData.loginPassword}
+                                    onChange={handleInputChange}
+                                />
+                                {loginPasswordError && <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{loginPasswordError}</div>}
+                            </div>
+                            <div style={{width:'120px', marginLeft:'8px'}}></div>
                         </div>
-                        <div>
-                            <label>비밀번호 확인</label>
-                            <input
-                                name="confirmPassword"
-                                type="password"
-                                placeholder='비밀번호를 다시 입력해주세요.'
-                                /* value={formData.confirmPassword} */
-                                onChange={handleInputChange}
-                            />
-                            {formData.loginPassword !== formData.confirmPassword && (
-                                <span>비밀번호가 일치하지 않습니다.</span>
-                            )}
+                        <div className='form-input-wrap'>
+                            <div style={{width:'140px', textAlign:'left'}}>
+                                <label>비밀번호 확인</label>
+                                <span>*</span>
+                            </div>
+                            <div className='form-input-box'>
+                                <input
+                                    name="confirmPassword"
+                                    type="password"
+                                    placeholder='비밀번호를 다시 입력해주세요.'
+                                    /* value={formData.confirmPassword} */
+                                    onChange={handleInputChange}
+                                />
+                                {formData.loginPassword !== formData.confirmPassword && (
+                                    <div>비밀번호가 일치하지 않습니다.</div>
+                                )}
+                            </div>
+                            <div style={{width:'120px', marginLeft:'8px'}}></div>
                         </div>
-                        <button type='submit'>제출</button>
+                        <button className='submit-btn' type='submit'>제출</button>
                     </form>
-                    
-                </div>
             </StyledSigninFrame>
         </StyledFrame>
     );
