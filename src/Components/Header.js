@@ -21,7 +21,7 @@ const StyledHeaderFrame=styled.div`
 `
 const HeaderContainer=styled.div`
     width: 100%;
-    max-width: 1280px;
+    max-width: 1920px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
