@@ -36,10 +36,51 @@ const MenuFrame=styled.ul`
 
 const Header = () => {
     /* const authenticated = useSelector(state => state.authenticated); */ 
-    const accessToken = sessionStorage.getItem('accessToken');
+    /* const accessToken = sessionStorage.getItem('accessToken'); */
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    /* 유저 정보 가져오기 */
+    
+    const accessToken = sessionStorage.getItem('accessToken');
+    
+    const [userData, setUserData] = useState(null); 
+    const userUid = sessionStorage.getItem('userUid');
+    const key = 'Authorization'
+    const headers = {
+            Authorization: `${accessToken}`
+        }
+    
+    /* useEffect(() => {
+        const url = `http://211.198.44.123:3385/v1/users/${userUid}?${key}=${accessToken}`;
+        axios.get(url, { headers })
+        .then(response => {
+          setUserData(response.data);
+        })
+        .catch(error => {
+          console.error('회원 정보 가져오기 실패', error);
+        });
+        
+      }, []); */
+      /* console.log(userData.query[0].nickname); */
+      /* console.log(userData); */
+
+
+      
+      /* if (userUid) {
+          axios.get(url, { headers })
+            .then(response => {
+              setUserData(response.data);
+              console.log('userData',userData);
+            })
+            .catch(error => {
+              console.error('회원 정보 가져오기 실패', error);
+            });
+        } */
+
+
     /* const [boardData, setBoardData] = useState([]); */
+
 
     /* useEffect(() => {
         axios.get('http://211.198.44.123:3385/v1/board/')
@@ -57,13 +98,35 @@ const Header = () => {
 
     console.log('boardData',boardData); */
 
+
     useEffect(() => {
+        if (accessToken) {
+            const url = `http://211.198.44.123:3385/v1/users/${userUid}?${key}=${accessToken}`;
+            axios.get(url, { headers })
+            .then(response => {
+            setUserData(response.data);
+            })
+            .catch(error => {
+            console.error('회원 정보 가져오기 실패', error);
+            });
+        } else{
+            dispatch(logout());
+        }
+    },[dispatch])
+
+    console.log(userData);
+
+
+    
+    /* accessToken 이 없다면 로그아웃 */
+    /* useEffect(() => {
         const accessToken = sessionStorage.getItem('accessToken');
         if (!accessToken) {
             dispatch(logout());
         }
-    }, [dispatch]);
+    }, [dispatch]); */
 
+    /* 로그아웃 하면 상태관리 로그아웃 & 토큰 삭제 */
     const handleLogout = (e) => {
         e.preventDefault();
         sessionStorage.removeItem('accessToken');
@@ -74,6 +137,8 @@ const Header = () => {
     };
     /* console.log('authenticated',authenticated); */
     
+
+
     return (
         <StyledHeaderFrame>
             <HeaderContainer>
@@ -83,17 +148,28 @@ const Header = () => {
                     </Link>
                 </div>
                 <div style={{display:'flex'}}>
-                    <MenuFrame>
-                        {/* {boardData.map((title, index) => (
+                    {/* <MenuFrame>
+                        {boardData.map((title, index) => (
                             <li className='category-submenu' key={index}>
                                 <Link to={`${title}`}>{title}</Link>
                             </li>
-                        ))} */}
-                    </MenuFrame>
+                        ))}
+                    </MenuFrame> */}
                     <div style={{display:'flex', marginLeft:'50px'}}>
                         <ul>
+                        {userData && userData.query && userData.query.length > 0 ? (
+                                <><pre style={{fontWeight:'bold'}}>{userData.query[0].nickname} </pre>  <span>님 반갑습니다.</span></>
+                            ) : (
+                                <p>Loading...</p>
+                            )}
+                            {/* <li>{userData.query[0].nickname} 님 반갑습니다.</li> */}
                             {accessToken ? 
-                                (<li><button onClick={handleLogout}>로그아웃</button></li>) : 
+                                (
+                                <>  
+                                    <li><Link to="/myinfo"><button>회원정보수정</button></Link></li>
+                                    <li><button onClick={handleLogout}>로그아웃</button></li>
+                                </>
+                                ) : 
                                 (
                                     <>
                                         <li><Link to="/login">로그인</Link></li>

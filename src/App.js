@@ -10,6 +10,7 @@ import Signup from './Components/Signup/Signup';
 
 import Apage from './Components/CategoryPage/Apage';
 import Bpage from './Components/CategoryPage/Bpage';
+import MemberEditPage from './Components/MemberEdit/MemberEditPage';
 
 const store = createStore(reducer); // 리듀서로 스토어 생성
 
@@ -23,6 +24,7 @@ const App = () => {
                     <Route exact path="/login" element={<Login />}></Route>
                     <Route exact path="/sign_up" element={<Signup/>}></Route>
                     <Route exact path="/admin" element={<Admin />}></Route>
+                    <Route exact path="/myinfo" element={<MemberEditPage />}></Route>
                     <Route exact path="/:title" element={<Apage />}></Route>
                     <Route exact path="/borad/:title" element={<Bpage />}></Route>
                 </Routes>

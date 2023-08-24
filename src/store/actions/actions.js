@@ -1,11 +1,11 @@
 import * as actionTypes from './actionTypes';
 
 /* Login */
-export function login(user){
+export function login(userUid){
     return {
         type: actionTypes.LOG_IN,
-        payload: user
-    }
+        userUid: userUid
+    }   
 };
 
 /* Logout */  
@@ -14,3 +14,10 @@ export function logout(){
         type: actionTypes.LOG_OUT
     }
 };
+
+export const setUserUid = (userUid) => {
+    return {
+      type: actionTypes.SET_USER_UID,
+      userUid: userUid,
+    };
+  };
