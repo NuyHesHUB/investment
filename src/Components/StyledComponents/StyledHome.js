@@ -11,15 +11,34 @@ export const SlideWrap=styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
+    /* &:hover {
+        img {
+        transform: translateY(-10px); 
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); 
+        }
+    } */
     span{
         display: block;
         text-align: center;
         font-size: 16px;
         font-weight: bold;
     }
+`
+export const CategoryWrap=styled.div`
+    width: 110px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     img{
-        width: 100%;
+        width: 96px;
     }
+    /* span{
+        display: block;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+    } */
 `
 
 export const SildeBg1=styled.div`

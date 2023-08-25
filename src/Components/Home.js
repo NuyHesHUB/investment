@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Header from './Header';
 import axios from 'axios';
 import Footer from './Footer';
-import { StyledFrame, SlideWrap, SildeBg1, SildeBg2, SlideContentsWrap, SwiperCustomWrap } from './StyledComponents/StyledHome';
+import { StyledFrame, SlideWrap, SildeBg1, SildeBg2, SlideContentsWrap, SwiperCustomWrap, CategoryWrap } from './StyledComponents/StyledHome';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 /* import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules'; */
@@ -110,7 +110,7 @@ const Home = () => {
                                 speed={500}
                                 loop={false}
                                 /* navigation={true} */
-                                spaceBetween={200}
+                                spaceBetween={180}
                                 slidesPerView={5}
                                 modules={[Navigation, /* Pagination *//* , Autoplay */]}
                                 /* breakpoints={{
@@ -134,84 +134,103 @@ const Home = () => {
                             >
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <img src={AllIcon} alt="전체보기"/>
+                                        <CategoryWrap>
+                                            <img src={AllIcon} alt="전체보기"/>
+                                        </CategoryWrap>
                                         {boardData ? (<span>{boardData[0]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <img src={FoodIcon} alt="외식업종"/>
+                                        <CategoryWrap>
+                                            <img src={FoodIcon} alt="외식업종"/>
+                                        </CategoryWrap>
                                         {boardData ? (<span>{boardData[1]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <img src={ManuFacturingIcon} alt="제조업종"/>
+                                        <CategoryWrap>
+                                            <img src={ManuFacturingIcon} alt="제조업종"/>
+                                        </CategoryWrap>
                                         {boardData ? (<span>{boardData[2]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <img src={OtherIcon} alt="기타업종"/>
+                                        <CategoryWrap>
+                                            <img src={OtherIcon} alt="기타업종"/>
+                                        </CategoryWrap>
                                         {boardData ? (<span>{boardData[3]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <img src={RentalIcon} alt="시설대여업종"/>
+                                        <CategoryWrap>
+                                            <img src={RentalIcon} alt="시설대여업종"/>
+                                        </CategoryWrap>
                                         {boardData ? (<span>{boardData[4]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
+                                        <CategoryWrap></CategoryWrap>
                                         <img src={RetailIcon} alt="판매업종"/>
                                         {boardData ? (<span>{boardData[5]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
+                                    <CategoryWrap></CategoryWrap>
                                         <img src={ServicesIcon} alt="서비스업종"/>
                                         {boardData ? (<span>{boardData[6]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
+                                    <CategoryWrap></CategoryWrap>
                                         <img src={AllIcon} alt="전체보기"/>
                                         {boardData ? (<span>{boardData[0]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
+                                    <CategoryWrap></CategoryWrap>
                                         <img src={FoodIcon} alt="외식업종"/>
                                         {boardData ? (<span>{boardData[1]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
+                                        <CategoryWrap></CategoryWrap>
                                         <img src={ManuFacturingIcon} alt="제조업종"/>
                                         {boardData ? (<span>{boardData[2]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
+                                    <CategoryWrap></CategoryWrap>
                                         <img src={OtherIcon} alt="기타업종"/>
                                         {boardData ? (<span>{boardData[3]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
+                                    <CategoryWrap></CategoryWrap>
                                         <img src={RentalIcon} alt="시설대여업종"/>
                                         {boardData ? (<span>{boardData[4]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
+                                    <CategoryWrap></CategoryWrap>
                                         <img src={RetailIcon} alt="판매업종"/>
                                         {boardData ? (<span>{boardData[5]}</span>) : (null)}
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
+                                    <CategoryWrap></CategoryWrap>
                                         <img src={ServicesIcon} alt="서비스업종"/>
                                         {boardData ? (<span>{boardData[6]}</span>) : (null)}
                                     </SlideWrap>
