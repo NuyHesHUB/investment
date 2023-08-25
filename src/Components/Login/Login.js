@@ -5,6 +5,7 @@ import axios from 'axios';
 import { StyledFrame, StyledLoginFrame } from './StyledLoginFrame';
 import { useDispatch } from 'react-redux';
 import { login, logout, setUserUid } from '../../store/actions/actions';
+import Footer from '../Footer';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -156,7 +157,9 @@ const Login = () => {
                     </Link>
                 </div>
             </StyledLoginFrame>
+            <Footer/>
         </StyledFrame>
+        
     );
 };
 

@@ -4,7 +4,9 @@ import styled from 'styled-components';
 const StyledFrame=styled.div`
     width: 100%;
     height: 250px;
-    background: #8e45fc;
+    /* background: #8e45fc; */
+    background: rgba(69,74,252,1);
+    /* background: #0D1282; */
 `
 const StyledFooterWrap=styled.div`
     width: 100%;
@@ -38,6 +40,10 @@ const TextFlexBox=styled.div`
         margin: 5px 0;
     }
 `
+const FooterLogo=styled.h1`
+    font-family: 'Paytone One', sans-serif;
+    font-size: 38px;
+`
 
 const Footer = () => {
     return (
@@ -45,7 +51,7 @@ const Footer = () => {
             <StyledFooterWrap className='footer-wrap'>
                 <StyledFooterContainer className='footer-container'>
                     <FooterLogoBox className='footer-logo-box'>
-                        <h1>Hwajin</h1>
+                        <FooterLogo>Hwajin</FooterLogo>
                     </FooterLogoBox>
                     <FooterTextBox className='footer-text-box'>
                         <TextFlexBox className='top-text-box text-flex'>

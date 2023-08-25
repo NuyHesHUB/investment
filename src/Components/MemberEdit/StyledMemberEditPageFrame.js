@@ -6,9 +6,9 @@ export const StyledFrame=styled.div`
 `
 
 export const StyledMemberFrame=styled.div`
-    width: 600px;
+    width: 730px;
     /* max-width: 384px; */
-    height: 400px;
+    height: 800px;
     margin: 0 auto;
     margin-top: 50px;
     display: flex;
@@ -46,7 +46,8 @@ export const MemberTextBox=styled.div`
 export const MemberBtn=styled.button`
     min-width: 100px;
     border: none;
-    background: #3fa9f5;
+    /* background: #3fa9f5; */
+    background: rgba(69,74,252,1);
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
@@ -61,7 +62,7 @@ export const EditInputFrame=styled.div`
     height: 50px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 `
 
 export const EditInput=styled.input`

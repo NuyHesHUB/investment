@@ -24,7 +24,7 @@ export const StyledFrame=styled.div`
 export const StyledLoginFrame=styled.div`
     width: 384px;
     max-width: 384px;
-    height: 400px;
+    height: 100%;
     margin: 0 auto;
     margin-top: 50px;
     display: flex;

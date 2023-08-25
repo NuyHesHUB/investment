@@ -11,13 +11,14 @@ const StyledHeaderFrame=styled.div`
     height: 70px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #000;
+    /* border-bottom: 1px solid #000; */
     background: #fff;
     ul{
         list-style:none;
         display: flex;
     }
     a{text-decoration: none; color: #000;}
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3));
 `
 const HeaderContainer=styled.div`
     width: 100%;
@@ -27,13 +28,31 @@ const HeaderContainer=styled.div`
     justify-content: space-between;
     align-items: center;
 `
-
+const HeaderLogo=styled.h1`
+    font-family: 'Paytone One', sans-serif;
+    color: rgba(69,74,252,1);
+    /* color: #0D1282; */
+    font-size: 38px;
+`
 const MenuFrame=styled.ul`
     >li{
         margin-right: 20px;
     }
 `
-
+const HeaderBtn=styled.button`
+    border: none;
+    outline: none;
+    padding: 10px 10px;
+    background: rgba(69,74,252,1);
+    /* background: #0D1282; */
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: .3s;
+    &:hover{
+        background: #000;
+    }
+`
 const Header = () => {
     /* const authenticated = useSelector(state => state.authenticated); */ 
     /* const accessToken = sessionStorage.getItem('accessToken'); */
@@ -114,7 +133,7 @@ const Header = () => {
         }
     },[dispatch])
 
-    console.log(userData);
+    /* console.log(userData); */
 
 
     
@@ -144,7 +163,7 @@ const Header = () => {
             <HeaderContainer>
                 <div>
                     <Link to="/">
-                        <h1>Hwajin</h1>
+                        <HeaderLogo>Hwajin</HeaderLogo>
                     </Link>
                 </div>
                 <div style={{display:'flex'}}>
@@ -156,18 +175,23 @@ const Header = () => {
                         ))}
                     </MenuFrame> */}
                     <div style={{display:'flex', marginLeft:'50px'}}>
-                        <ul>
-                        {userData && userData.query && userData.query.length > 0 ? (
-                                <><pre style={{fontWeight:'bold'}}>{userData.query[0].nickname} </pre>  <span>님 반갑습니다.</span></>
-                            ) : (
-                                <p>Loading...</p>
-                            )}
-                            {/* <li>{userData.query[0].nickname} 님 반갑습니다.</li> */}
+                        <ul style={{display:'flex', alignItems:'center'}}>
+                            {userData && userData.query && userData.query.length > 0 ? (
+                                    <><div style={{fontWeight:'bold',fontSize:'16px'}}>{userData.query[0].nickname}</div><span>님 반갑습니다 😊</span></>
+                                ) : (
+                                    <p>X</p>
+                                )}
                             {accessToken ? 
                                 (
                                 <>  
-                                    <li><Link to="/myinfo"><button>회원정보수정</button></Link></li>
-                                    <li><button onClick={handleLogout}>로그아웃</button></li>
+                                    <li style={{margin:'0 10px'}}>
+                                        <Link to="/myinfo">
+                                            <HeaderBtn>회원정보수정</HeaderBtn>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
+                                    </li>
                                 </>
                                 ) : 
                                 (

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../store/actions/actions';
 import Header from '../Header';
+import Footer from '../Footer';
 
 const MemberEditPage = () => {
     const dispatch = useDispatch();
@@ -79,7 +80,7 @@ const MemberEditPage = () => {
                         회원정보 불러오기
     \*------------------------------------------------------*/
     const accessToken = sessionStorage.getItem('accessToken');
-    const [userData, setUserData] = useState(null); 
+    const [userData, setUserData] = useState(''); 
     const userUid = sessionStorage.getItem('userUid');
     const key = 'Authorization'
     const headers = { Authorization: `${accessToken}` }
@@ -89,7 +90,8 @@ const MemberEditPage = () => {
             const url = `http://211.198.44.123:3385/v1/users/${userUid}?${key}=${accessToken}`;
             axios.get(url, { headers })
             .then(response => {
-            setUserData(response.data);
+            setUserData(response.data.query[0]);
+            setFormData(response.data.query[0]);
             })
             .catch(error => {
             console.error('회원 정보 가져오기 실패', error);
@@ -98,23 +100,78 @@ const MemberEditPage = () => {
             dispatch(logout());
         }
     },[dispatch])
-    /* 회원정보 console.log */
-
-    console.log('userData',userData);
-    console.log('테스트', userData);
-
-   /*  let NickName = userData.query[0].loginId */
 
     const [formData, setFormData] = useState({
-        /* nickname: userData, */
+        nickname: '',
         email: '',
         phone: '',
         img: '',
         receiveSms: 'Y',
         receiveEmail: 'Y',
     });
+    
+    console.log('formData',formData);
 
-    console.log(formData);
+    const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false);
+    const [remainingTime, setRemainingTime] = useState(0);
+
+    const handleSendVerificationEmail = (e) => {
+        e.preventDefault();
+        if(formData.email === userData.email){
+            alert('기존의 이메일과 같습니다. 변경할 이메일을 입력해 주세요.')
+        }else{
+            const url = 'http://211.198.44.123:3385/v1/users/email_send';
+            // 이메일 전송 요청 보내기
+            axios.post(url, { email: formData.email })
+                .then(response => {
+                    console.log('이메일 전송 성공:', response.data);
+                    setIsVerificationEmailSent(true); 
+                    setRemainingTime(5 * 60); 
+        
+                    const timerInterval = setInterval(() => {
+                        setRemainingTime(prevTime => prevTime - 1);
+        
+                        if (remainingTime <= 0) {
+                            clearInterval(timerInterval); // 0초에 도달하면 타이머 중지
+                            setIsVerificationEmailSent(false); // 버튼 활성화
+                        }
+                    }, 1000);
+                })
+                .catch(error => {
+                    console.error('이메일 전송 실패:', error);
+                });
+        }
+        
+    };
+
+
+    const [emailToken, setEmailToken] = useState({
+        token:''
+    });
+    const handleTokenInputChange = (e) => {
+        const { value } = e.target;
+        setEmailToken((prevEmailToken) => ({
+            ...prevEmailToken,
+            token: value
+        }));
+    };
+    /* console.log('emailToken.token', emailToken); */
+
+    const handleCheckVerificationCode = (e) => {
+            e.preventDefault();
+            const url = 'http://211.198.44.123:3385/v1/users/email_check';
+            // 인증 번호 체크 요청 보내기
+            axios.post(url, { email: formData.email, token: emailToken.token})
+                .then(response => {
+                    console.log('인증 번호 확인 성공:', response.data);
+                    alert('인증이 완료되었습니다.')
+                    setShowEmailChange(!showEmailChange);
+                })
+                .catch(error => {
+                    console.error('인증 번호 확인 실패:', error);
+                });
+    };
+    
     return (
         <StyledFrame>
             <Header/>
@@ -122,13 +179,14 @@ const MemberEditPage = () => {
                 <header style={{textAlign:'center'}}>
                     <h1>기본 회원정보</h1>
                 </header>
-                    {userData && userData.query && userData.query.length > 0 ? 
-                    (
+                    {/* {userData && userData.query && userData.query.length > 0 ?  */}
+                    {/* {userData ? 
+                    ( */}
                     <MemberForm>
                         <MemberBody>
                             <MemberInfoBox>
                                 <MemberInfoTitle>아이디</MemberInfoTitle>
-                                <MemberTextBox>{userData.query[0].loginId}</MemberTextBox>
+                                <MemberTextBox>{userData? (userData.loginId):(null)}</MemberTextBox>
                                 <MemberTextBox></MemberTextBox>
                             </MemberInfoBox>
                             <MemberInfoBox>
@@ -141,7 +199,8 @@ const MemberEditPage = () => {
                             {showPasswordChange? (<>dd</>) : (null)}
                             <MemberInfoBox>
                                 <MemberInfoTitle>이름 (닉네임)</MemberInfoTitle>
-                                <MemberTextBox>{userData.query[0].nickname}</MemberTextBox>
+                                {/* <MemberTextBox>{userData.nickname}</MemberTextBox> */}
+                                <MemberTextBox>{userData? (userData.nickname):(null)}</MemberTextBox>
                                 <MemberTextBox style={{textAlign:'right'}}>
                                     <MemberBtn onClick={handleNicknameBtnClick}>이름 변경</MemberBtn>
                                 </MemberTextBox>
@@ -155,7 +214,8 @@ const MemberEditPage = () => {
                             : (null)}
                             <MemberInfoBox>
                                 <MemberInfoTitle>이메일</MemberInfoTitle>
-                                <MemberTextBox>{userData.query[0].email}</MemberTextBox>
+                                {/* <MemberTextBox>{userData.email}</MemberTextBox> */}
+                                <MemberTextBox>{userData? (userData.email):(null)}</MemberTextBox>
                                 <MemberTextBox style={{textAlign:'right'}}>
                                     <MemberBtn onClick={handleEmailBtnClick}>이메일 변경</MemberBtn>
                                 </MemberTextBox>
@@ -164,35 +224,72 @@ const MemberEditPage = () => {
                                 (
                                     <EditWrapFrame>
                                         <EditInputFrame>
-                                            <EditInput
-                                                name="email"
-                                                type="email"
-                                                placeholder="이메일을 입력해주세요."
-                                                value={formData.email}
-                                                onChange={handleInputChange}
-                                            />
-                                            <MemberBtn>수정</MemberBtn>
+                                            <div style={{width:'140px',textAlign:'left'}}>
+                                                <span>변경할 이메일</span>
+                                            </div>
+                                            <div style={{width:'200px'}}>
+                                                <EditInput
+                                                    name="email"
+                                                    type="email"
+                                                    placeholder="변경할 이메일을 입력해 주세요"
+                                                    value={formData.email}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </div>
+                                            <div style={{width:'140px',textAlign:'right'}}>
+                                                <MemberBtn onClick=     {handleSendVerificationEmail}>인증 메일 전송</MemberBtn>
+                                            </div>
                                         </EditInputFrame>
-                                        {emailError && <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{emailError}</div>}
+                                        <div>
+                                                {emailError && 
+                                                    <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{emailError}</div>}
+                                                {formData.email === userData.email ? (
+                                                    <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>기존의 이메일과 같습니다.</div>
+                                                ) : (null)}
+                                        </div>
+                                        <EditInputFrame>
+                                            <div style={{width:'140px',textAlign:'left'}}>
+                                                <span>인증 메일 코드</span>
+                                            </div>
+                                            <div style={{width:'200px'}}>
+                                                <EditInput
+                                                    /* name="email" */
+                                                    type="text"
+                                                    placeholder="인증번호를 입력해 주세요."
+                                                    value={emailToken.token}
+                                                    onChange={handleTokenInputChange}
+                                                />
+                                            </div>
+                                            <div style={{width:'140px',textAlign:'right'}}>
+                                                <MemberBtn onClick={handleCheckVerificationCode}>확 인</MemberBtn>
+                                            </div>
+                                        </EditInputFrame>
+                                        {isVerificationEmailSent
+                                            ? remainingTime > 0
+                                                ? `인증 메일 전송 (${Math.floor(remainingTime / 60)}:${remainingTime % 60})`
+                                                : '인증 메일 전송 완료'
+                                            : '인증 메일 전송'}
                                     </EditWrapFrame>
                                 ) 
                             : (null)}
                             <MemberInfoBox>
                                 <MemberInfoTitle>연락처</MemberInfoTitle>
-                                <MemberTextBox>{userData.query[0].phone}</MemberTextBox>
+                                {/* <MemberTextBox>{userData.phone}</MemberTextBox> */}
+                                <MemberTextBox>{userData? (userData.phone):(null)}</MemberTextBox>
                                 <MemberTextBox style={{textAlign:'right'}}>
                                     <MemberBtn onClick={handlePhoneBtnClick}>연락처 변경</MemberBtn>
                                 </MemberTextBox>
                             </MemberInfoBox>
                             {showPhoneChange? (<>dd</>) : (null)}
                         </MemberBody>
-                        
+                        <div style={{marginTop:'50px', textAlign:'center'}}>
+                            <MemberBtn>제출</MemberBtn>
+                        </div>
                     </MemberForm>
-                    ) : ( <p>로딩</p>) }
+                    {/* ) : ( <p>로딩</p>) } */}
             </StyledMemberFrame>
-            <div style={{marginTop:'50px', textAlign:'center'}}>
-                <MemberBtn>제출</MemberBtn>
-            </div>
+            
+            <Footer/>
         </StyledFrame>
     );
 };
