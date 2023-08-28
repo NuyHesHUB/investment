@@ -11,7 +11,7 @@ import Signup from './Components/Signup/Signup';
 import Apage from './Components/CategoryPage/Apage';
 import Bpage from './Components/CategoryPage/Bpage';
 import MemberEditPage from './Components/MemberEdit/MemberEditPage';
-
+import MemberList from './Components/Admin/MemberList';
 const rootReducer = combineReducers({
     reducer: reducer, // 리듀서 추가
   });
@@ -28,6 +28,7 @@ const App = () => {
                     <Route exact path="/login" element={<Login />}></Route>
                     <Route exact path="/sign_up" element={<Signup/>}></Route>
                     <Route exact path="/admin" element={<Admin />}></Route>
+                    <Route exact path="/admin/member_list" element={<MemberList/>}></Route>
                     <Route exact path="/myinfo" element={<MemberEditPage />}></Route>
                     <Route exact path="/:title" element={<Apage />}></Route>
                     <Route exact path="/borad/:title" element={<Bpage />}></Route>

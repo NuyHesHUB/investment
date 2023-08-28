@@ -24,6 +24,7 @@ const Header = () => {
             Authorization: `${accessToken}`
         }
     
+
     /* useEffect(() => {
         const url = `http://211.198.44.123:3385/v1/users/${userUid}?${key}=${accessToken}`;
         axios.get(url, { headers })
@@ -123,7 +124,7 @@ const Header = () => {
                 <div>
                     <ul style={{display:'flex',alignItems:'center',justifyContent:'end',textAlign:'center'}}>
                         <li style={{width:'100px'}}>
-                            <Link style={{color:'#000',fontWeight:'bold'}}>카테고리</Link>
+                            <span style={{color:'#000',fontWeight:'bold'}}>카테고리</span>
                         </li>
                         <li style={{width:'100px'}}>
                             <Link style={{color:'#000',fontWeight:'bold'}}>투자받기</Link>

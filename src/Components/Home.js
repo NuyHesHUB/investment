@@ -33,7 +33,8 @@ import { setBoardData} from '../store/actions/actions';
 const Home = () => {
     /* const [boardData, setBoardData] = useState([]); */
     const dispatch = useDispatch();
-    const boardData = useSelector((state) => state.boardData);
+    const boardData = useSelector((state) => state.reducer.boardData);
+    /* const TestData = useSelector((state) => state.reducer.boardData); */
 
     useEffect(() => {
         axios.get('http://211.198.44.123:3385/v1/board/')
