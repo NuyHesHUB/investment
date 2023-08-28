@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../Header';
 import { StyledFrame, StyledSigninFrame } from './StyledSignupFrame';
+import Footer from '../Footer';
 
 const Signup = () => {
     const [errorFromSubmit, setErrorFromSubmit] = useState("");
@@ -243,6 +244,7 @@ const Signup = () => {
                         <button className='submit-btn' type='submit'>제출</button>
                     </form>
             </StyledSigninFrame>
+            <Footer/>
         </StyledFrame>
     );
 };

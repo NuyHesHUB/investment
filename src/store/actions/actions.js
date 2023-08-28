@@ -20,4 +20,11 @@ export const setUserUid = (userUid) => {
       type: actionTypes.SET_USER_UID,
       userUid: userUid,
     };
-  };
+};
+
+export const setBoardData = (boardData) => {
+    return {
+        type: actionTypes.SET_BOARD_DATA,
+        boardData: boardData,
+    };
+};

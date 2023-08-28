@@ -3,6 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     authenticated: false,
     userUid: '',
+    boardData: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -26,7 +27,12 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 userUid: action.userUid, // userUid 상태 업데이트
             };
-
+        
+        case actionTypes.SET_BOARD_DATA: // 새로운 액션 추가
+            return {
+                ...state,
+                boardData: action.boardData, // boardData 상태 업데이트
+            };
         default: return state;
     }
     

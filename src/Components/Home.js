@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
 import axios from 'axios';
 import Footer from './Footer';
@@ -16,9 +16,9 @@ import 'swiper/css/pagination';
 import Illust from '../assets/image/robotos-illust-left.png';
 
 /* demoIMG */
-/* import Demo1 from '../assets/demo/1.png';
+import Demo1 from '../assets/demo/1.png';
 import Demo2 from '../assets/demo/2.png';
-import Demo3 from '../assets/demo/3.png'; */
+import Demo3 from '../assets/demo/3.png';
 
 import AllIcon from '../assets/category-image/all.png';
 import FoodIcon from '../assets/category-image/food.png';
@@ -27,15 +27,21 @@ import OtherIcon from '../assets/category-image/other.png';
 import RentalIcon from '../assets/category-image/rentals.png';
 import RetailIcon from '../assets/category-image/retail.png';
 import ServicesIcon from '../assets/category-image/services.png';
+import { Link } from 'react-router-dom';
+import { setBoardData} from '../store/actions/actions';
+
 const Home = () => {
-    const [boardData, setBoardData] = useState([]);
+    /* const [boardData, setBoardData] = useState([]); */
+    const dispatch = useDispatch();
+    const boardData = useSelector((state) => state.boardData);
 
     useEffect(() => {
         axios.get('http://211.198.44.123:3385/v1/board/')
             .then(response => {
                 const test = response.data.query
                 const titles = response.data.query.map(item => item.title);
-                setBoardData(titles);
+                /* setBoardData(titles); */
+                dispatch(setBoardData(titles));
                 console.log(response.data);
                 console.log('test', test);
             })
@@ -134,111 +140,148 @@ const Home = () => {
                             >
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <CategoryWrap>
-                                            <img src={AllIcon} alt="전체보기"/>
-                                        </CategoryWrap>
-                                        {boardData ? (<span>{boardData[0]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={AllIcon} alt="전체보기"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[0]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <CategoryWrap>
-                                            <img src={FoodIcon} alt="외식업종"/>
-                                        </CategoryWrap>
-                                        {boardData ? (<span>{boardData[1]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={FoodIcon} alt="외식업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[1]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <CategoryWrap>
-                                            <img src={ManuFacturingIcon} alt="제조업종"/>
-                                        </CategoryWrap>
-                                        {boardData ? (<span>{boardData[2]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={ManuFacturingIcon} alt="제조업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[2]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <CategoryWrap>
-                                            <img src={OtherIcon} alt="기타업종"/>
-                                        </CategoryWrap>
-                                        {boardData ? (<span>{boardData[3]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={OtherIcon} alt="기타업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[3]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <CategoryWrap>
-                                            <img src={RentalIcon} alt="시설대여업종"/>
-                                        </CategoryWrap>
-                                        {boardData ? (<span>{boardData[4]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={RentalIcon} alt="시설대여업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[4]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <CategoryWrap></CategoryWrap>
-                                        <img src={RetailIcon} alt="판매업종"/>
-                                        {boardData ? (<span>{boardData[5]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={RetailIcon} alt="판매업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[5]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                    <CategoryWrap></CategoryWrap>
-                                        <img src={ServicesIcon} alt="서비스업종"/>
-                                        {boardData ? (<span>{boardData[6]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={ServicesIcon} alt="서비스업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[6]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                    <CategoryWrap></CategoryWrap>
-                                        <img src={AllIcon} alt="전체보기"/>
-                                        {boardData ? (<span>{boardData[0]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={AllIcon} alt="전체보기"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[0]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                    <CategoryWrap></CategoryWrap>
-                                        <img src={FoodIcon} alt="외식업종"/>
-                                        {boardData ? (<span>{boardData[1]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={FoodIcon} alt="외식업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[1]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                        <CategoryWrap></CategoryWrap>
-                                        <img src={ManuFacturingIcon} alt="제조업종"/>
-                                        {boardData ? (<span>{boardData[2]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={ManuFacturingIcon} alt="제조업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[2]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                    <CategoryWrap></CategoryWrap>
-                                        <img src={OtherIcon} alt="기타업종"/>
-                                        {boardData ? (<span>{boardData[3]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={OtherIcon} alt="기타업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[3]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                    <CategoryWrap></CategoryWrap>
-                                        <img src={RentalIcon} alt="시설대여업종"/>
-                                        {boardData ? (<span>{boardData[4]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={RentalIcon} alt="시설대여업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[4]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                    <CategoryWrap></CategoryWrap>
-                                        <img src={RetailIcon} alt="판매업종"/>
-                                        {boardData ? (<span>{boardData[5]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={RetailIcon} alt="판매업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[5]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SlideWrap>
-                                    <CategoryWrap></CategoryWrap>
-                                        <img src={ServicesIcon} alt="서비스업종"/>
-                                        {boardData ? (<span>{boardData[6]}</span>) : (null)}
+                                        <Link to='/'>
+                                            <CategoryWrap className='hover-effect-img'>
+                                                <img src={ServicesIcon} alt="서비스업종"/>
+                                            </CategoryWrap>
+                                            {boardData && boardData.length > 0 ? (<span>{boardData[6]}</span>) : (<span>Loading</span>)}
+                                        </Link>
                                     </SlideWrap>
                                 </SwiperSlide>
                             </Swiper>
                             <div className='swiper-button-next'></div>
                     </SwiperCustomWrap>
-                {/* <div style={{textAlign:'center', marginTop:'100px'}}>
+                <div style={{textAlign:'center', marginTop:'100px'}}>
                     <img style={{width:'70%'}} src={Demo1} alt="demo"/>
                 </div>
                 <div style={{textAlign:'center', marginTop:'100px'}}>
@@ -246,7 +289,7 @@ const Home = () => {
                 </div>
                 <div style={{textAlign:'center', marginTop:'100px'}}>
                     <img style={{width:'70%'}} src={Demo3} alt="demo"/>
-                </div> */}
+                </div>
             <Footer/>
             </StyledFrame>
             

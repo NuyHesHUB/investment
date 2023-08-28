@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux'; // createStore 추가
+import { createStore, combineReducers } from 'redux'; // createStore 추가
 import reducer from './store/reducer/reducer'; // reducer 추가
 import Login from './Components/Login/Login';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -12,7 +12,11 @@ import Apage from './Components/CategoryPage/Apage';
 import Bpage from './Components/CategoryPage/Bpage';
 import MemberEditPage from './Components/MemberEdit/MemberEditPage';
 
-const store = createStore(reducer); // 리듀서로 스토어 생성
+const rootReducer = combineReducers({
+    reducer: reducer, // 리듀서 추가
+  });
+
+const store = createStore(rootReducer); // 리듀서로 스토어 생성
 
 const App = () => {
 

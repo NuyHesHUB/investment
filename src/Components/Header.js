@@ -2,62 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/actions/actions';
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import axios from 'axios';
+import { StyledHeaderFrame, HeaderContainer, HeaderLogo, MenuFrame, HeaderBtn } from './StyledComponents/StyledHeader';
 
-const StyledHeaderFrame=styled.div`
-    position: relative;
-    width: 100vw;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    /* border-bottom: 1px solid #000; */
-    background: #fff;
-    ul{
-        list-style:none;
-        display: flex;
-    }
-    a{text-decoration: none; color: #000;}
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3));
-`
-const HeaderContainer=styled.div`
-    width: 100%;
-    max-width: 1920px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`
-const HeaderLogo=styled.h1`
-    font-family: 'Paytone One', sans-serif;
-    color: rgba(69,74,252,1);
-    /* color: #0D1282; */
-    font-size: 38px;
-`
-const MenuFrame=styled.ul`
-    >li{
-        margin-right: 20px;
-    }
-`
-const HeaderBtn=styled.button`
-    border: none;
-    outline: none;
-    padding: 10px 10px;
-    background: rgba(69,74,252,1);
-    /* background: #0D1282; */
-    color: #fff;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: .3s;
-    &:hover{
-        background: #000;
-    }
-`
 const Header = () => {
     /* const authenticated = useSelector(state => state.authenticated); */ 
     /* const accessToken = sessionStorage.getItem('accessToken'); */
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    /* const boardData = useSelector(state => state.board); */
 
     /* 유저 정보 가져오기 */
     
@@ -161,25 +115,31 @@ const Header = () => {
     return (
         <StyledHeaderFrame>
             <HeaderContainer>
-                <div>
+                <div style={{display:'flex'/* , width:'70%' */, justifyContent:'space-between',alignItems:'center'}}>
                     <Link to="/">
                         <HeaderLogo>Hwajin</HeaderLogo>
                     </Link>
                 </div>
+                <div>
+                    <ul style={{display:'flex',alignItems:'center',justifyContent:'end',textAlign:'center'}}>
+                        <li style={{width:'100px'}}>
+                            <Link style={{color:'#000',fontWeight:'bold'}}>카테고리</Link>
+                        </li>
+                        <li style={{width:'100px'}}>
+                            <Link style={{color:'#000',fontWeight:'bold'}}>투자받기</Link>
+                        </li>
+                        <li style={{width:'100px'}}>
+                            <Link style={{color:'#000',fontWeight:'bold'}}>투자하기</Link>
+                        </li>
+                    </ul>
+                </div>
                 <div style={{display:'flex'}}>
-                    {/* <MenuFrame>
-                        {boardData.map((title, index) => (
-                            <li className='category-submenu' key={index}>
-                                <Link to={`${title}`}>{title}</Link>
-                            </li>
-                        ))}
-                    </MenuFrame> */}
                     <div style={{display:'flex', marginLeft:'50px'}}>
                         <ul style={{display:'flex', alignItems:'center'}}>
                             {userData && userData.query && userData.query.length > 0 ? (
                                     <><div style={{fontWeight:'bold',fontSize:'16px'}}>{userData.query[0].nickname}</div><span>님 반갑습니다 😊</span></>
                                 ) : (
-                                    <p>X</p>
+                                    <><div style={{fontWeight:'bold',fontSize:'16px'}}>Loading...</div></>
                                 )}
                             {accessToken ? 
                                 (
@@ -195,10 +155,11 @@ const Header = () => {
                                 </>
                                 ) : 
                                 (
-                                    <>
+                                    <ul style={{display:'flex',alignItems:'center'}}>
                                         <li><Link to="/login">로그인</Link></li>
-                                        <li><Link to="/sign_up">회원가입</Link></li>
-                                    </>
+                                        <li style={{margin:'0 5px'}}>|</li>
+                                        <li><Link to="/sign_up" style={{color:'#454afc',fontWeight:'bold'}}>회원가입</Link></li>
+                                    </ul>
                                 ) }
                             
                         </ul>

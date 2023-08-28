@@ -11,6 +11,8 @@ export const SlideWrap=styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     /* &:hover {
         img {
         transform: translateY(-10px); 
@@ -23,6 +25,10 @@ export const SlideWrap=styled.div`
         font-size: 16px;
         font-weight: bold;
     }
+    a{
+        text-decoration: none;
+        color: #000;
+    }
 `
 export const CategoryWrap=styled.div`
     width: 110px;
@@ -30,9 +36,15 @@ export const CategoryWrap=styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: ease-in-out .3s;
     img{
         width: 96px;
     }
+    border-radius: 20px;
+    /* box-shadow: 4px 4px 16px 0px #888; */
+    /* &:hover{
+        transform: translateY(-10px);
+    } */
     /* span{
         display: block;
         text-align: center;
@@ -93,7 +105,33 @@ export const SwiperCustomWrap=styled.div`
     display: block;
     } */
     /* margin: 0 auto; */
-    .swiper{max-width: 1280px !important}
+    .swiper{max-width: 1280px !important; height: 100% !important;}
+    .swiper-slide{
+        cursor: pointer;
+        span{
+            position: relative;
+            &::after{
+                content: "";
+                position: absolute;
+                width: 0;
+                height: 5px;
+                bottom: -5px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #07E3F1;
+                transition: ease-in-out .3s;
+            }
+        }
+        &:hover{
+            .hover-effect-img{
+                transform: translateY(-10px);
+                /* box-shadow: 4px 4px 16px 0px #999; */
+            }
+            span::after{
+                width: 80%;
+            }
+        }
+    }
     /* .swiper-wrapper{}
     .swiper-slide{width: 100px !important; margin: 0 120px !important; } */
 `
