@@ -7,10 +7,9 @@ import axios from 'axios';
 
 
 const MemberList = () => {
+    const [selectAll, setSelectAll] = useState(false);
     const accessToken = sessionStorage.getItem('accessToken');
-
     const [userData, setUserData] = useState([]); 
-
     const headers = {
             Authorization: `${accessToken}`
         }
@@ -18,14 +17,13 @@ const MemberList = () => {
     const query = "";       // 원하는 쿼리 문자열을 입력하세요
     const pageRows = "";    // 원하는 페이지 당 행 수를 입력하세요
     const page = "";        // 원하는 페이지 번호를 입력하세요
-
     const params = {
         query: query,
         pageRows: pageRows,
         page: page
     };
 
-    useEffect(() => {
+    /* useEffect(() => {
         axios.get(url, { params, headers })
         .then(response => {
             setUserData(response.data.query);
@@ -34,9 +32,41 @@ const MemberList = () => {
         .catch(error => {
             console.error('catch : Admin 회원 목록 가져오기 실패', error);
         })
-    },[])
+    },[]) */
+    useEffect(() => {
+        axios.get(url, { params, headers })
+        .then(response => {
+            const modifiedUserData = response.data.query.map(user => ({
+                ...user,
+                selected: false // 초기값으로 모두 선택되지 않은 상태로 설정
+            }));
+            setUserData(modifiedUserData);
+            console.log(modifiedUserData);
+        })
+        .catch(error => {
+            console.error('catch : Admin 회원 목록 가져오기 실패', error);
+        });
+    }, []);
+    
     console.log(userData);
-    /* console.log('유저목록보기',userData.query[0].loginId); */
+    
+    const handleSelectAll = () => {
+        const updatedUserData = userData.map(user => ({
+            ...user,
+            selected: !selectAll
+        }));
+        setUserData(updatedUserData);
+        setSelectAll(!selectAll);
+    };
+
+    const handleSelectOne = (index) => {
+        const newData = [...userData];
+        newData[index].selected = !newData[index].selected;
+        setUserData(newData);
+        console.log(`User at index ${index} selected: ${newData[index].selected}`);
+        console.log('User data:', newData[index]);
+    };
+    
     return (
         <div>
             <Admin/>
@@ -81,7 +111,11 @@ const MemberList = () => {
                                     <tr>
                                         <th scope='col' rowSpan={2}>
                                             <label className='none-label'>회원전체</label>
-                                            <input type="checkbox"/>
+                                            <input
+                                                type="checkbox"
+                                                checked={userData.length > 0 && userData.every(user => user.selected)}
+                                                onChange={handleSelectAll}
+                                            />
                                         </th>
                                         <th scope='col' colSpan={2}>
                                             <Link>아이디</Link>
@@ -150,7 +184,7 @@ const MemberList = () => {
                                             {/* 1번째 행 */}
                                             <tr>
                                                 <td rowSpan={2}>
-                                                    <input type='checkbox'/>
+                                                    <input type='checkbox' checked={item.selected} onChange={() => handleSelectOne(index)} />
                                                 </td>
                                                 <td colSpan={2} >
                                                     {item.loginId}
@@ -158,6 +192,11 @@ const MemberList = () => {
                                                 <td rowSpan={2}>'null'</td>
                                                 <td>{item.receiveEmail}</td>
                                                 <td>{item.phone}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td rowSpan={2}>
+
+                                                </td>
                                             </tr>
                                             {/* 2번째 행 */}
                                             <tr>
@@ -165,6 +204,8 @@ const MemberList = () => {
                                                 <td>{item.nickname}</td>
                                                 <td>{item.receiveSms}</td>
                                                 <td>'null'</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                         </React.Fragment>
                                         ))}

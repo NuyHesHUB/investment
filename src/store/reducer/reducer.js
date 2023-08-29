@@ -4,6 +4,7 @@ const initialState = {
     authenticated: false,
     userUid: '',
     boardData: [],
+    postData: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -32,6 +33,12 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 boardData: action.boardData, // boardData 상태 업데이트
+            };
+        
+        case actionTypes.SET_POST_DATA:
+            return {
+                ...state,
+                postData: action.postData
             };
         default: return state;
     }

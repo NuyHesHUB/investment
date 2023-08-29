@@ -8,6 +8,7 @@ export const StyledHeaderFrame=styled.div`
     align-items: center;
     /* border-bottom: 1px solid #000; */
     background: #fff;
+    z-index: 999;
     ul{
         list-style:none;
         display: flex;
@@ -17,6 +18,7 @@ export const StyledHeaderFrame=styled.div`
 `
 export const HeaderContainer=styled.div`
     width: 100%;
+    height: 100%;
     max-width: 1920px;
     margin: 0 auto;
     display: flex;
@@ -29,9 +31,45 @@ export const HeaderLogo=styled.h1`
     /* color: #0D1282; */
     font-size: 38px;
 `
-export const MenuFrame=styled.ul`
+export const MenuFrame=styled.div`
+    height: 100%;
+    display: flex;
+    align-items: center;
     >li{
-        margin-right: 20px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .sub-menu{
+        position: absolute;
+        top: 101%;
+        max-height: 0;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0; /* 추가 */
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+    .sub-menu.on{
+        max-height: 500px; /* 적절한 높이로 변경 */
+        opacity: 1; /* 추가 */
+        transform: scaleY(1); /* 추가 */
+    }
+`
+export const MenuList=styled.ul`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    >li{
+        width: 100px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 `
 export const HeaderBtn=styled.button`

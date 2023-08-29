@@ -28,3 +28,8 @@ export const setBoardData = (boardData) => {
         boardData: boardData,
     };
 };
+
+export const setPostData = (postData) => ({
+    type: actionTypes.SET_POST_DATA,
+    postData: postData,
+  });

@@ -3,9 +3,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/actions/actions';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { StyledHeaderFrame, HeaderContainer, HeaderLogo, MenuFrame, HeaderBtn } from './StyledComponents/StyledHeader';
-
+import { StyledHeaderFrame, HeaderContainer, HeaderLogo, MenuFrame, HeaderBtn, MenuList } from './StyledComponents/StyledHeader';
 const Header = () => {
+    /* 메뉴 카테고리에 뿌려보기 home.js 전역관리 */
+    const boardData = useSelector((state) => state.reducer.boardData);
+
+
+    const [isSubMenuOpen, setSubMenuOpen] = useState(false);
+    
+    const handleMouseEnter = () => {
+        setSubMenuOpen(true);
+    };
+
+    const handleMouseLeave = () => {
+        setSubMenuOpen(false);
+    };
+    /* console.log('header',boardData); */
     /* const authenticated = useSelector(state => state.authenticated); */ 
     /* const accessToken = sessionStorage.getItem('accessToken'); */
     const dispatch = useDispatch();
@@ -116,15 +129,23 @@ const Header = () => {
     return (
         <StyledHeaderFrame>
             <HeaderContainer>
-                <div style={{display:'flex'/* , width:'70%' */, justifyContent:'space-between',alignItems:'center'}}>
+                <div style={{display:'flex'/* , width:'70%' */, justifyContent:'space-between',alignItems:'center',height:'100%'}}>
                     <Link to="/">
                         <HeaderLogo>Hwajin</HeaderLogo>
                     </Link>
                 </div>
-                <div>
-                    <ul style={{display:'flex',alignItems:'center',justifyContent:'end',textAlign:'center'}}>
-                        <li style={{width:'100px'}}>
+                <MenuFrame>
+                    <MenuList>
+                        <li 
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
                             <span style={{color:'#000',fontWeight:'bold'}}>카테고리</span>
+                            <ul className={isSubMenuOpen ? 'sub-menu on' : 'sub-menu'}>
+                                {boardData.map((item, index) => (
+                                    <li key={index}><Link to={`/${item.key}`}>{item.title}</Link></li>
+                                ))}
+                            </ul>
                         </li>
                         <li style={{width:'100px'}}>
                             <Link style={{color:'#000',fontWeight:'bold'}}>투자받기</Link>
@@ -132,8 +153,8 @@ const Header = () => {
                         <li style={{width:'100px'}}>
                             <Link style={{color:'#000',fontWeight:'bold'}}>투자하기</Link>
                         </li>
-                    </ul>
-                </div>
+                    </MenuList>
+                </MenuFrame>
                 <div style={{display:'flex'}}>
                     <div style={{display:'flex', marginLeft:'50px'}}>
                         <ul style={{display:'flex', alignItems:'center'}}>
