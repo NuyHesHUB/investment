@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import { StyledFrame } from './StyledBoardTable';
 
 const Gallery01 = ({postData}) => {
 
@@ -27,7 +27,7 @@ const Gallery01 = ({postData}) => {
 
       console.log('gallery01',postData);
     return (
-        <div>
+        <StyledFrame>
             <h1>게시판</h1>
             <table>
                 <thead>
@@ -66,7 +66,7 @@ const Gallery01 = ({postData}) => {
                 </span>
                 ))}
             </div>
-        </div>
+        </StyledFrame>
     );
 };
 

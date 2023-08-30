@@ -78,7 +78,7 @@ const CategoryPage = ({ categoryKey }) => {
     return (
         <div>
             <Header/>
-            <h2>{categoryKey}</h2>
+            <h2 style={{textAlign:'center'}}>{categoryKey}</h2>
             {content}
             <Footer/>
         </div>
