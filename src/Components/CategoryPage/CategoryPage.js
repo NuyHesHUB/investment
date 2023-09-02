@@ -81,6 +81,7 @@ const CategoryPage = ({ categoryKey }) => {
         <div>
             <Header/>
             <h2>{categoryKey}</h2>
+            <Link to="/post_regist">게시글작성</Link>
             {content}
             
             <Footer/>
