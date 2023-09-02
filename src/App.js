@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import axiosInstance from './axiosInstance';
 import Login from './Components/Login/Login';
 import Home from './Components/Home';
 import Admin from './Components/Admin/Admin';
@@ -12,14 +13,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setBoardData } from './store/actions/actions';
 import PostDetail from './Components/PostDetail/PostDetail';
+import PostRegist from './Components/PostRegist/PostRegist';
 
 const App = () => {
     const dispatch = useDispatch();
     const boardData = useSelector((state) => state.reducer.boardData);
     console.log('app.js',boardData);
-
     useEffect(() => {
-        axios.get('http://211.198.44.123:3385/v1/board/')
+        axiosInstance.get('/board/')
             .then(response => {
                 const titles = response.data.query;
                 dispatch(setBoardData(titles));
@@ -49,6 +50,7 @@ const App = () => {
                 <Route exact path='/gallery4' element={<CategoryPage categoryKey="gallery4"/>}></Route>
                 <Route exact path='/gallery5' element={<CategoryPage categoryKey="gallery5"/>}></Route>
                 <Route exact path="/:categoryKey/:num" element={<PostDetail/>} />
+                <Route exact path="/post_regist" element={<PostRegist/>} />
                 <Route exact path="/admin" element={<Admin />}></Route>
                 <Route exact path="/admin/member_list" element={<MemberList/>}></Route>
                 <Route exact path="/myinfo" element={<MemberEditPage />}></Route>

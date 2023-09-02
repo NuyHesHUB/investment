@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 /* import { useForm } from 'react-hook-form'; */
 import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 import Header from '../Header';
 import { StyledFrame, StyledSigninFrame } from './StyledSignupFrame';
 import Footer from '../Footer';
@@ -70,7 +71,7 @@ const Signup = () => {
         e.preventDefault(); // 기본 동작인 새로고침 막기
         // 회원가입 로직 구현
         try {
-            const response = await axios.post('http://211.198.44.123:3385/v1/users/sign_up', formData);
+            const response = await axiosInstance.post('/users/sign_up', formData);
             console.log('회원가입 성공:', response);
             // 성공 처리 로직 추가
         } catch (error) {
@@ -96,7 +97,7 @@ const Signup = () => {
 
     const handleCheckId = async () => {
         try {
-            const response = await axios.get(`http://211.198.44.123:3385/v1/users/check_id/${formData.loginId}`);
+            const response = await axiosInstance.get(`/users/check_id/${formData.loginId}`);
             console.log("아이디 중복 검사 응답:", response);
             alert('사용가능한 아이디입니다.')
         } catch (error) {

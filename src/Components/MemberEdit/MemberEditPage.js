@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 import React, { useEffect, useState } from 'react';
 import { StyledFrame, StyledMemberFrame, MemberForm, MemberBody, MemberInfoBox, MemberInfoTitle, MemberTextBox, MemberBtn, EditWrapFrame, EditInputFrame, EditInput } from './StyledMemberEditPageFrame';
 import { useDispatch } from 'react-redux';
@@ -87,8 +88,8 @@ const MemberEditPage = () => {
 
     useEffect(() => {
         if (accessToken) {
-            const url = `http://211.198.44.123:3385/v1/users/${userUid}?${key}=${accessToken}`;
-            axios.get(url, { headers })
+            const url = `/users/${userUid}?${key}=${accessToken}`;
+            axiosInstance.get(url, { headers })
             .then(response => {
             setUserData(response.data.query[0]);
             setFormData(response.data.query[0]);
@@ -120,9 +121,9 @@ const MemberEditPage = () => {
         if(formData.email === userData.email){
             alert('기존의 이메일과 같습니다. 변경할 이메일을 입력해 주세요.')
         }else{
-            const url = 'http://211.198.44.123:3385/v1/users/email_send';
+            const url = '/users/email_send';
             // 이메일 전송 요청 보내기
-            axios.post(url, { email: formData.email })
+            axiosInstance.post(url, { email: formData.email })
                 .then(response => {
                     console.log('이메일 전송 성공:', response.data);
                     setIsVerificationEmailSent(true); 
@@ -159,9 +160,9 @@ const MemberEditPage = () => {
 
     const handleCheckVerificationCode = (e) => {
             e.preventDefault();
-            const url = 'http://211.198.44.123:3385/v1/users/email_check';
+            const url = '/users/email_check';
             // 인증 번호 체크 요청 보내기
-            axios.post(url, { email: formData.email, token: emailToken.token})
+            axiosInstance.post(url, { email: formData.email, token: emailToken.token})
                 .then(response => {
                     console.log('인증 번호 확인 성공:', response.data);
                     alert('인증이 완료되었습니다.')

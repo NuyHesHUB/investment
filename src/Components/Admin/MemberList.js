@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Admin from './Admin';
 import { StyledMemberListFrame, StyledMemberListWrap, StyledMemberInfo, StyledMemberSearch, StyledMemberListForm, StyledMemberListNav } from './StyledMemberList';
 import { Link } from 'react-router-dom';
+import axiosInstance from '../../axiosInstance';
 import axios from 'axios';
 
 
@@ -13,7 +14,7 @@ const MemberList = () => {
     const headers = {
             Authorization: `${accessToken}`
         }
-    const url = "http://211.198.44.123:3385/v1/users/";
+    /* const url = "http://211.198.44.123:3385/v1/users/"; */
     const query = "";       // 원하는 쿼리 문자열을 입력하세요
     const pageRows = "";    // 원하는 페이지 당 행 수를 입력하세요
     const page = "";        // 원하는 페이지 번호를 입력하세요
@@ -34,7 +35,7 @@ const MemberList = () => {
         })
     },[]) */
     useEffect(() => {
-        axios.get(url, { params, headers })
+        axiosInstance.get('/users/', { params, headers })
         .then(response => {
             const modifiedUserData = response.data.query.map(user => ({
                 ...user,

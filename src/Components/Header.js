@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/actions/actions';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 import { StyledHeaderFrame, HeaderContainer, HeaderLogo, MenuFrame, HeaderBtn, MenuList } from './StyledComponents/StyledHeader';
 const Header = () => {
     /* 메뉴 카테고리에 뿌려보기 home.js 전역관리 */
@@ -88,8 +89,8 @@ const Header = () => {
 
     useEffect(() => {
         if (accessToken) {
-            const url = `http://211.198.44.123:3385/v1/users/${userUid}?${key}=${accessToken}`;
-            axios.get(url, { headers })
+            const url = `/users/${userUid}?${key}=${accessToken}`;
+            axiosInstance.get(url, { headers })
             .then(response => {
             setUserData(response.data);
             })

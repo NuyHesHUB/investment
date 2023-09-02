@@ -4,15 +4,17 @@ import Footer from '../Footer';
 import Gallery01 from './Gallery01';
 import Gallery02 from './Gallery02';
 import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 import { setPostData } from '../../store/actions/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const CategoryPage = ({ categoryKey }) => {
     const dispatch = useDispatch();
     const boardData = useSelector((state) => state.reducer);
     console.log(boardData);
     const [postData, setPostData] = useState([]);
-    const url = `http://211.198.44.123:3385/v1/board/${categoryKey}/post/`;
+    const url = `/board/${categoryKey}/post/`;
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {
         Authorization: `${accessToken}`
@@ -29,7 +31,7 @@ const CategoryPage = ({ categoryKey }) => {
     };
 
     useEffect(() => {
-        axios.get(url, { params, headers })
+        axiosInstance.get(url, { params, headers })
         .then(response => {
             const posttest = response.data.query;
             /* setPostData(posttest); */
@@ -78,8 +80,9 @@ const CategoryPage = ({ categoryKey }) => {
     return (
         <div>
             <Header/>
-            <h2 style={{textAlign:'center'}}>{categoryKey}</h2>
+            <h2>{categoryKey}</h2>
             {content}
+            
             <Footer/>
         </div>
     );
