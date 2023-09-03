@@ -49,7 +49,7 @@ const App = () => {
                 <Route exact path='/gallery2' element={<CategoryPage categoryKey="gallery2"/>}></Route>
                 <Route exact path='/gallery4' element={<CategoryPage categoryKey="gallery4"/>}></Route>
                 <Route exact path='/gallery5' element={<CategoryPage categoryKey="gallery5"/>}></Route>
-                <Route exact path="/:categoryKey/:num" element={<PostDetail/>} />
+                <Route exact path="/:categoryKey/:id" element={<PostDetail/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
                 <Route exact path="/admin" element={<Admin />}></Route>
                 <Route exact path="/admin/member_list" element={<MemberList/>}></Route>

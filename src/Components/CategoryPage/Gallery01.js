@@ -47,7 +47,7 @@ const Gallery01 = ({postData}) => {
                         <td>{item.num}</td>
                         <td>{item.isSecret}</td>
                         <td>{item.nickname}</td>
-                        <td><Link to={`${item.num}`}>{item.title}</Link></td>
+                        <td><Link to={`${item.id}`}>{item.title}</Link></td>
                         <td>{item.like}</td>
                         <td>{item.brdKey}</td>
                         <td>{item.post_view_count}</td>
