@@ -12,12 +12,13 @@ const CommentInput = ({ onPostComment }) => {
       alert('댓글을 입력하세요.');
       return;
     }
-
-    // 댓글 게시 함수 호출
     onPostComment(comment);
-
-    // 댓글 입력 필드 초기화
     setComment('');
+
+    /* onPostComment(comment, () => {
+      setComment('');
+  }); */
+    
   };
 
   return (

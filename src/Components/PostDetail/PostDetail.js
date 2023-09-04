@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axiosInstance from 'axios';
+/* import axiosInstance from 'axios'; */
 import Header from '../Header';
 import Footer from '../Footer';
 import { useSelector } from 'react-redux';
@@ -42,6 +42,9 @@ const PostDetail = () => {
         })
         .then(response => {
             console.log('댓글 게시 성공:', response.data);
+            /* setComments([...comments, response.data]); */
+            const newComment = response.data;
+            setComments(prevComments => [...prevComments, newComment]);
         })
         .catch(error => {
             console.error('댓글 게시 실패', error);
@@ -50,7 +53,7 @@ const PostDetail = () => {
     };
     
     useEffect(() => {
-        axios.get(url, {headers} )
+        axios.get(url, { headers })
             .then(response => {
                 const test = response.data.query;
                 setTestData(test);
@@ -71,7 +74,7 @@ const PostDetail = () => {
             console.error('댓글 목록 가져오기 실패', error);
         });
 
-    }, [url]);
+    }, [url, categoryKey, id]);
 
     const handleLike = () => {
             axios.post(`http://39.117.244.34:3385/v1/board/like`, {
@@ -160,7 +163,7 @@ const PostDetail = () => {
                         ))
                     }
                 </div>
-            <Footer/>
+            {/* <Footer/> */}
         </div>
     );
 };
