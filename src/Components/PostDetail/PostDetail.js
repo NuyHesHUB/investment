@@ -22,7 +22,7 @@ const PostDetail = () => {
     /* console.log('postdetail',boardData); */
     const url = `http://39.117.244.34:3385/v1/board/${categoryKey}/post/${id}`
     const accessToken = sessionStorage.getItem('accessToken');
-    const userUid = sessionStorage.getItem('userUid')
+    const userUid = sessionStorage.getItem('userUid');
     const headers = {
         Authorization: `${accessToken}`
     }
