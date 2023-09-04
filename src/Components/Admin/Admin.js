@@ -79,7 +79,7 @@ const Admin = () => {
                                 <StyledNavGnb className={`div ${visibleDiv === 3 ? 'visible' : ''}`}>
                                     <h3>게시판관리</h3>
                                     <ul>
-                                        <li>게시판관리</li>
+                                        <li><Link to="/admin/post_list">게시판관리</Link></li>
                                         <li>게시판그룹관리</li>
                                         <li>내용관리</li>
                                     </ul>

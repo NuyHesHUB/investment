@@ -14,11 +14,14 @@ import axios from 'axios';
 import { setBoardData } from './store/actions/actions';
 import PostDetail from './Components/PostDetail/PostDetail';
 import PostRegist from './Components/PostRegist/PostRegist';
+import PostList from './Components/Admin/PostList';
+import EditPost from './Components/Admin/EditPost';
 
 const App = () => {
     const dispatch = useDispatch();
     const boardData = useSelector((state) => state.reducer.boardData);
     console.log('app.js',boardData);
+
     useEffect(() => {
         axiosInstance.get('/board/')
             .then(response => {
@@ -53,6 +56,9 @@ const App = () => {
                 <Route exact path="/post_regist" element={<PostRegist/>} />
                 <Route exact path="/admin" element={<Admin />}></Route>
                 <Route exact path="/admin/member_list" element={<MemberList/>}></Route>
+                <Route exact path="/admin/post_list" element={<PostList/>}
+                ></Route>
+                <Route exact path="/edit/:key" element={<EditPost/>}></Route>
                 <Route exact path="/myinfo" element={<MemberEditPage />}></Route>
             </Routes>
         </Router>

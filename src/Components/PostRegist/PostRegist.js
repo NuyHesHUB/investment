@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const PostRegist = () => {
     const boardData = useSelector((state) => state.reducer.boardData);
-
+    const userUid = sessionStorage.getItem('userUid');
     /* const KeyData = useSelector((state) => state.reducer.boardData[0].key); */
 
     /* console.log('KeyData',KeyData); */
@@ -26,6 +26,7 @@ const PostRegist = () => {
         content: '',
         isSecret: '',
         extraField: '',
+        userUid: userUid
       });
     
     const [keyData, setKeyData] = useState({
@@ -75,11 +76,9 @@ const PostRegist = () => {
         
         try{
             /* axiosInstance.post(`/board/${keyData.key}/post`,{headers}, postData) */
-            
             const response = await axiosInstance.post(`/board/${keyData.key}/post`, postData, {
                 headers: headers
             });
-            
             console.log('게시물 작성 성공',response);
         } catch(error) {
             console.error('게시물 작성 실패:', error);

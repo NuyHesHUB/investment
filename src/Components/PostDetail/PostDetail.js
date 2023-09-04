@@ -11,6 +11,7 @@ const PostDetail = () => {
     const { categoryKey, id } = useParams();
 
     const boardData = useSelector((state) => state.reducer);
+    console.log('boardData',boardData);
     const [ testData, setTestData ] = useState([]);
     const [comments, setComments] = useState([]);
 
@@ -44,6 +45,7 @@ const PostDetail = () => {
         })
         .catch(error => {
             console.error('댓글 게시 실패', error);
+            alert('로그인해주세요')
         })
     };
     
