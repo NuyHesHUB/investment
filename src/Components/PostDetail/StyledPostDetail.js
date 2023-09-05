@@ -15,3 +15,16 @@ export const PostMain=styled.div`
         width: 100%;
     }
 `
+
+/* 
+{
+    "status": "Y",
+    "key": "gallery2",
+    "title": "자유 갤러리2",
+    "authorize" : {},
+    "options": {},
+    "extraFields": {},
+    "categoryList": {},
+    "skins": {},
+    "userUid": "81421870…”
+} */
