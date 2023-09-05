@@ -1,38 +1,26 @@
 import styled from 'styled-components';
 
-export const StyledMemberListFrame=styled.div`
+export const StyledFrame=styled.div`
     padding: 0 0 0 270px;
-    margin-top: 100px;
+    margin-top: 50px;
     height: 100%;
-    background: #fff;
     min-width: 1200px;
+    a{
+        color: #fff;
+    }
 `
-export const StyledMemberListWrap=styled.div`
+export const StyledTableWrap=styled.div`
     padding: 20px;
 `
-export const StyledMemberInfo=styled.div`
+export const StyledInfoBox=styled.div`
     min-width: 960px;
     margin: 10px 0;
     display: flex;
 `
-export const StyledMemberSearch=styled.form`
+export const StyledSearchBox=styled.form`
     margin: 10px 0;
 `
-export const StyledMemberListForm=styled.form`
-    .none-label{
-        display: inline-block !important;
-        position: absolute;
-        top: 0;
-        left: 0;
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 1px !important;
-        height: 1px !important;
-        font-size: 0;
-        line-height: 0;
-        border: 0 !important;
-        overflow: hidden !important;
-    }
+export const StyledAdminBoard=styled.div`
     table{
         clear: both;
         width: 100%;

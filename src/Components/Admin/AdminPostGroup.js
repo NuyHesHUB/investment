@@ -1,39 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Admin from './Admin';
-import { StyledMemberListFrame, StyledMemberListWrap, StyledMemberInfo, StyledMemberSearch, StyledMemberListForm, StyledMemberListNav } from './StyledMemberList';
+import { StyledFrame, StyledTableWrap, StyledInfoBox, StyledSearchBox, StyledAdminBoard } from './StyledAdminTable';
 import { Link } from 'react-router-dom';
-/* import axiosInstance from '../../axiosInstance'; */
 import axios from 'axios';
 
 
 
-const PostList = () => {
+const AdminPostGroup = () => {
     const [selectAll, setSelectAll] = useState(false);
     const accessToken = sessionStorage.getItem('accessToken');
     const [postData, setPostData] = useState([]); 
     const headers = {
             Authorization: `${accessToken}`
         }
-    /* const url = "http://211.198.44.123:3385/v1/users/"; */
-    const query = "";       // 원하는 쿼리 문자열을 입력하세요
-    const pageRows = "";    // 원하는 페이지 당 행 수를 입력하세요
-    const page = "";        // 원하는 페이지 번호를 입력하세요
-    /* const params = {
-        query: query,
-        pageRows: pageRows,
-        page: page
-    }; */
-
-    /* useEffect(() => {
-        axios.get(url, { params, headers })
-        .then(response => {
-            setUserData(response.data.query);
-            console.log(response.data.query);
-        })
-        .catch(error => {
-            console.error('catch : Admin 회원 목록 가져오기 실패', error);
-        })
-    },[]) */
 
     useEffect(() => {
         axios.get('http://39.117.244.34:3385/v1/board?query=&pageRows=&page=', { headers })
@@ -72,10 +51,10 @@ const PostList = () => {
     return (
         <div>
             <Admin/>
-            <StyledMemberListFrame>
+            <StyledFrame>
+                <StyledTableWrap>
                 <h1>게시판관리</h1>
-                <StyledMemberListWrap>
-                    <StyledMemberInfo>
+                    <StyledInfoBox>
                         <Link>전체목록</Link>
                         <div>
                             <span>총회원수</span>
@@ -89,8 +68,8 @@ const PostList = () => {
                             <span>탈퇴</span>
                             <span>*명</span>
                         </Link>
-                    </StyledMemberInfo>
-                    <StyledMemberSearch>
+                    </StyledInfoBox>
+                    <StyledSearchBox>
                         <label style={{fontSize:'0'}}>검색대상</label>
                         <select>
                             <option>회원아이디</option>
@@ -104,8 +83,8 @@ const PostList = () => {
                         </select>
                         <input type='text'/>
                         <input type='submit'/>
-                    </StyledMemberSearch>
-                    <StyledMemberListForm>
+                    </StyledSearchBox>
+                    <StyledAdminBoard>
                         <div>
                             <table>
                                 <caption style={{height:'0',fontSize:'0',overflow:'hidden'}}>회원관리 목록</caption>
@@ -190,13 +169,11 @@ const PostList = () => {
                                 </tbody>
                             </table>
                         </div>
-                    </StyledMemberListForm>
-                    <StyledMemberListNav>
-                    </StyledMemberListNav>
-                </StyledMemberListWrap>
-            </StyledMemberListFrame>
+                    </StyledAdminBoard>
+                </StyledTableWrap>
+            </StyledFrame>
         </div>
     );
 };
 
-export default PostList;
+export default AdminPostGroup;

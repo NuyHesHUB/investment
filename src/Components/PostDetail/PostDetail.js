@@ -5,7 +5,13 @@ import Header from '../Header';
 import Footer from '../Footer';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { HiUser } from 'react-icons/hi';
+import { MdOutlineComment } from 'react-icons/md';
+import { BsList } from 'react-icons/bs';
+import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
+import { FiEye } from 'react-icons/fi';
 import CommentInput from '../InputGroup/CommentInput';
+import { PostDetailFrame, PostMain } from './StyledPostDetail';
 
 const PostDetail = () => {
     const { categoryKey, id } = useParams();
@@ -41,9 +47,9 @@ const PostDetail = () => {
             headers
         })
         .then(response => {
-            console.log('댓글 게시 성공:', response.data);
             /* setComments([...comments, response.data]); */
             const newComment = response.data;
+            console.log('댓글 게시 성공:', response.data);
             setComments(prevComments => [...prevComments, newComment]);
         })
         .catch(error => {
@@ -123,47 +129,106 @@ const PostDetail = () => {
     return (
         <div>
             <Header/>
-                <h2>{categoryKey} 카테고리의 게시물 num: {id}의 상세 페이지</h2>
-                <div>
-                    <button onClick={handleLike} disabled={isLiked || isDisliked}>좋아요</button>
-                    <button onClick={handleDislike} disabled={isLiked || isDisliked}>싫어요</button>
-                </div>
-                {testData.map((item, index) => (
-                    <div key={index}>
-                        <p>id : {item.id}</p>
-                        <p>num : {item.num}</p>
-                        <p>status : {item.status}</p>
-                        <p>type : {item.type}</p>
-                        <p>brdKey : {item.brdKey}</p>
-                        <p>category : {item.category}</p>
-                        <p>title : {item.title}</p>
-                        <p>content : {item.content}</p>
-                        <p>post_view_count : {item.post_view_count}</p>
-                        <p>comment_count : {item.comment_count}</p>
-                        <p>like : {item.like}</p>
-                        <p>dislike : {item.dislike}</p>
-                        <p>isSecret : {item.isSecret}</p>
-                        <p>thumbnail : {item.thumbnail}</p>
-                        <p>nickname : {item.nickname}</p>
+                <PostDetailFrame>
+                    <h4 style={{fontWeight:'normal', textAlign:'center'}}><span style={{fontWeight:'bold'}}>{categoryKey}</span> 카테고리의 게시물 ID <span style={{fontWeight:'bold'}}>{id}</span> 의 상세 페이지</h4>
+                    {/* <div>
+                        <button onClick={handleLike} disabled={isLiked || isDisliked}>좋아요</button>
+                        <button onClick={handleDislike} disabled={isLiked || isDisliked}>싫어요</button>
+                    </div> */}
+                    {/* {testData.map((item, index) => (
+                        <div key={index}>
+                            <p>id : {item.id}</p>
+                            <p>num : {item.num}</p>
+                            <p>status : {item.status}</p>
+                            <p>type : {item.type}</p>
+                            <p>brdKey : {item.brdKey}</p>
+                            <p>category : {item.category}</p>
+                            <p>title : {item.title}</p>
+                            <p>content : {item.content}</p>
+                            <p>post_view_count : {item.post_view_count}</p>
+                            <p>comment_count : {item.comment_count}</p>
+                            <p>like : {item.like}</p>
+                            <p>dislike : {item.dislike}</p>
+                            <p>isSecret : {item.isSecret}</p>
+                            <p>thumbnail : {item.thumbnail}</p>
+                            <p>nickname : {item.nickname}</p>
+                        </div>
+                    ))} */}
+                    {testData.map((item, index) => (
+                        <PostMain key={index}>
+                            <table>
+                                {/* <thead>
+                                    <th>
+                                        <td>1</td>
+                                    </th>
+                                    <th>
+                                        <td>2</td>
+                                    </th>
+                                    <th>
+                                        <td>3</td>
+                                    </th>
+                                </thead> */}
+                                <tbody>
+                                    <tr style={{display:'flex',alignItems:'center'}}>
+                                        <td>{item.title}</td>
+                                        <td>
+                                            <MdOutlineComment style={{marginLeft:'5px'}}/>{item.comment_count}
+                                        </td>
+                                        <td>
+                                            <AiOutlineLike style={{marginLeft:'5px'}}/>
+                                        </td>
+                                        <td>{item.like}</td>
+                                        <td>
+                                            <FiEye style={{marginLeft:'5px'}}/>
+                                        </td>
+                                        <td>{item.post_view_count}</td>
+                                    </tr>
+                                    <tr style={{display:'flex',alignItems:'center',marginTop:'20px'}}>
+                                        <td style={{color:'rgba(69,74,252,1)',fontSize:'20px'}}><HiUser/></td>
+                                        <td style={{fontSize:'14px'}}>{item.nickname}</td>
+                                    </tr>
+                                    <tr style={{display:'flex',marginTop:'20px', height:'200px',border:'1px solid #999',padding:'20px'}}>
+                                        <td>
+                                            {item.content}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{display:'flex',alignItems:'center'}}>
+                                            <AiOutlineLike style={{margin:'0 5px'}}/> {item.like}
+                                            <AiOutlineDislike style={{margin:'0 5px'}}/> {item.dislike}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </PostMain>
+                        ))}
+                    <br/>
+                    <div style={{display:'flex',alignItems:'center'}}>
+                        <div style={{display:'flex',alignItems:'center'}}>
+                            <MdOutlineComment style={{marginLeft:'5px'}}/>
+                            <span>댓글 작성</span>
+                        </div>
+                        <CommentInput onPostComment={handlePostComment} />
                     </div>
-                ))}
-                <br/>
-                <div>
-                    <span>댓글 작성 : </span>
-                    <CommentInput onPostComment={handlePostComment} />
-                </div>
-                <br/>
-                <div>
-                    <span>댓글 목록</span>
-                    {
-                        comments.map((item, index) => (
-                            <div key={index}>
-                                <p>{item.content}</p>
-                            </div>
-                        ))
-                    }
-                </div>
-            {/* <Footer/> */}
+                    <br/>
+                    <div style={{borderTop:'1px solid #000'}}></div>
+                    <br/>
+                    <div style={{marginBottom:'20px',display:'flex',alignItems:'center'}}>
+                        <BsList/>
+                        <span>댓글 목록</span>
+                    </div>
+                    <div>
+                        {
+                            comments.map((item, index) => (
+                                <div key={index} style={{border:'1px solid #000',marginTop:'15px',padding:'5px'}}>
+                                    <p>{item.nickname}</p>
+                                    <p>{item.content}</p>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </PostDetailFrame>
+            <Footer/>
         </div>
     );
 };

@@ -22,13 +22,14 @@ const CommentInput = ({ onPostComment }) => {
   };
 
   return (
-    <div>
+    <div style={{height:'40px',display:'flex',marginLeft:'20px'}}>
       <textarea
         placeholder="댓글을 입력하세요..."
         value={comment}
         onChange={handleCommentChange}
+        style={{width:'700px',height:'100%',padding:'5px',boxSizing:'border-box'}}
       />
-      <button onClick={handlePostComment}>게시</button>
+      <button style={{width:'100px',height:'100%',marginLeft:'20px'}} onClick={handlePostComment}>게시</button>
     </div>
   );
 };

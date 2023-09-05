@@ -5,6 +5,8 @@ const initialState = {
     userUid: '',
     boardData: [],
     postData: [],
+    adminUserData: [],
+    adminPostData: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -26,7 +28,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SET_USER_UID:
             return {
                 ...state,
-                userUid: action.userUid, // userUid 상태 업데이트
+                userUid: action.userUid, 
             };
         
         case actionTypes.SET_BOARD_DATA: // 새로운 액션 추가
@@ -40,6 +42,19 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 postData: action.postData
             };
+
+        case actionTypes.ADMIN_USER_DATA:
+            return {
+                ...state,
+                adminUserData: action.adminUserData
+            };
+        
+        case actionTypes.ADMIN_POST_DATA:
+            return {
+                ...state,
+                adminPostData: action.adminPostData
+            }
+
         default: return state;
     }
     

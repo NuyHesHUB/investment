@@ -1,10 +1,20 @@
+import React, { useEffect, useState } from 'react';
+
+/* Redux */
+import { useDispatch } from 'react-redux';
+import { logout } from '../../store/actions/actions';
+
+/* React-Router-Dom */
+import { useNavigate } from 'react-router-dom';
+
+/* Axios */
 import axios from 'axios';
 import axiosInstance from '../../axiosInstance';
-import React, { useEffect, useState } from 'react';
+
+/* Styled Components */
 import { StyledFrame, StyledMemberFrame, MemberForm, MemberBody, MemberInfoBox, MemberInfoTitle, MemberTextBox, MemberBtn, EditWrapFrame, EditInputFrame, EditInput } from './StyledMemberEditPageFrame';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { logout } from '../../store/actions/actions';
+
+/* Components */
 import Header from '../Header';
 import Footer from '../Footer';
 

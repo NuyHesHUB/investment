@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { StyledFrame } from './StyledBoardTable';
+import { StyledFrame, GalleryWrap, LeftFrame, LeftTable, TablePagination, RightFrame } from './StyledBoardTable';
 
 const Gallery01 = ({postData}) => {
 
@@ -29,43 +29,50 @@ const Gallery01 = ({postData}) => {
     return (
         <StyledFrame>
             <h1>게시판</h1>
-            <table>
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>공개</th>
-                    <th>작성자</th>
-                    <th>제목</th>
-                    <th>좋아요</th>
-                    <th>카테고리</th>
-                    <th>조회수</th>
-                </tr>
-                </thead>
-                <tbody>
-                {visibleBoardData.map((item, index) => (
-                    <tr key={index}>
-                        <td>{item.num}</td>
-                        <td>{item.isSecret}</td>
-                        <td>{item.nickname}</td>
-                        <td><Link to={`${item.id}`}>{item.title}</Link></td>
-                        <td>{item.like}</td>
-                        <td>{item.brdKey}</td>
-                        <td>{item.post_view_count}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-            <div className="pagination">
-                {Array.from({ length: totalPages }, (_, index) => (
-                <span
-                    key={index}
-                    className={currentPage === index + 1 ? 'active' : ''}
-                    onClick={() => handlePageChange(index + 1)}
-                >
-                    {index + 1}
-                </span>
-                ))}
-            </div>
+            <GalleryWrap>
+                <LeftFrame>
+                    <LeftTable>
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>공개</th>
+                                <th>작성자</th>
+                                <th>제목</th>
+                                <th>좋아요</th>
+                                <th>카테고리</th>
+                                <th>조회수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {visibleBoardData.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.num}</td>
+                                    <td>{item.isSecret}</td>
+                                    <td>{item.nickname}</td>
+                                    <td><Link to={`${item.id}`}>{item.title}</Link></td>
+                                    <td>{item.like}</td>
+                                    <td>{item.brdKey}</td>
+                                    <td>{item.post_view_count}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </LeftTable>
+                    <TablePagination className="pagination">
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <span
+                                key={index}
+                                className={currentPage === index + 1 ? 'active' : ''}
+                                onClick={() => handlePageChange(index + 1)}
+                            >
+                                {index + 1}
+                            </span>
+                        ))}
+                    </TablePagination>
+                </LeftFrame>
+                <RightFrame>
+
+                </RightFrame>
+            </GalleryWrap>
         </StyledFrame>
     );
 };

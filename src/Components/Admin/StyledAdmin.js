@@ -14,12 +14,12 @@ export const StyledAdminFrame=styled.div`
     }
 `
 export const StyledAdminHeader=styled.header`
-    h1{
+    /* h1{
         position: absolute;
         font-size: 0;
         line-height: 0;
         overflow: hidden;
-    }
+    } */
 `
 export const StyledAdminTop=styled.div`
     position: fixed;
@@ -67,6 +67,13 @@ export const StyledAdminNav=styled.nav`
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
+        transition: ease-in-out .2s;
+        &:hover{
+            /* color: rgb(63, 81, 181); */
+            color: #fff;
+            background: rgb(63, 81, 181);
+        }
     }
 `
 export const AdminNavUl=styled.ul`

@@ -5,10 +5,17 @@ import Gallery01 from './Gallery01';
 import Gallery02 from './Gallery02';
 import axios from 'axios';
 import axiosInstance from '../../axiosInstance';
+import styled from 'styled-components';
 import { setPostData } from '../../store/actions/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+const CategoryPageFrame = styled.div`
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    text-align: center;
+`
 const CategoryPage = ({ categoryKey }) => {
     const dispatch = useDispatch();
     const boardData = useSelector((state) => state.reducer);
@@ -80,10 +87,13 @@ const CategoryPage = ({ categoryKey }) => {
     return (
         <div>
             <Header/>
-            <h2>{categoryKey}</h2>
-            <Link to="/post_regist">게시글작성</Link>
-            {content}
-            
+                <CategoryPageFrame>
+                    <h2>{categoryKey}</h2>
+                    <Link to="/post_regist">
+                        게시글작성
+                    </Link>
+                    {content}
+                </CategoryPageFrame>
             <Footer/>
         </div>
     );

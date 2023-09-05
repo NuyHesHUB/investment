@@ -119,9 +119,9 @@ const Header = () => {
         e.preventDefault();
         sessionStorage.removeItem('accessToken');
         sessionStorage.removeItem('refreshToken');
-        dispatch(logout()); // 로그아웃 시 logOutAction을 디스패치하여 상태 업데이트
+        sessionStorage.removeItem('userUid');
+        dispatch(logout());
         navigate("/login");
-
     };
     /* console.log('authenticated',authenticated); */
     
