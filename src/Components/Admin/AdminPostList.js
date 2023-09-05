@@ -58,22 +58,22 @@ const AdminPostList = () => {
     
     console.log(postData);
     
-    const handleSelectAll = () => {
+    /* const handleSelectAll = () => {
         const updatedUserData = postData.map(post => ({
             ...post,
             selected: !selectAll
         }));
         setPostData(updatedUserData);
         setSelectAll(!selectAll);
-    };
+    }; */
 
-    const handleSelectOne = (index) => {
+    /* const handleSelectOne = (index) => {
         const newData = [...postData];
         newData[index].selected = !newData[index].selected;
         setPostData(newData);
         console.log(`Post at index ${index} selected: ${newData[index].selected}`);
         console.log('Post data:', newData[index]);
-    };
+    }; */
     
     return (
         <div>
@@ -117,14 +117,14 @@ const AdminPostList = () => {
                                 <caption style={{height:'0',fontSize:'0',overflow:'hidden'}}>회원관리 목록</caption>
                                 <thead>
                                     <tr>
-                                        <th scope='col' rowSpan={2}>
+                                        {/* <th scope='col' rowSpan={2}>
                                             <label className='none-label'>회원전체</label>
                                             <input
                                                 type="checkbox"
                                                 checked={postData.length > 0 && postData.every(user => user.selected)}
                                                 onChange={handleSelectAll}
                                             />
-                                        </th>
+                                        </th> */}
                                         <th scope='col'>
                                             <Link>Authorize</Link>
                                         </th>
@@ -173,9 +173,9 @@ const AdminPostList = () => {
                                     {postData.map((item, index) => (
                                         <React.Fragment key={index}>
                                             <tr>
-                                                <td rowSpan={1}>
+                                                {/* <td rowSpan={1}>
                                                     <input type='checkbox' checked={item.selected} onChange={() => handleSelectOne(index)} />
-                                                </td>
+                                                </td> */}
                                                 <td rowSpan={1}>{item.authorize}</td>
                                                 <td rowSpan={1}>{item.categoryList}</td>
                                                 <td rowSpan={1}>{item.extraFields}</td>

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+/* Redux */
+import { setAdminPostData } from '../../store/actions/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 /* Styled Components */
 import { StyledFrame, StyledTableWrap, StyledInfoBox, StyledSearchBox, StyledAdminBoard, StyledMemberListNav } from './StyledAdminTable';
@@ -7,6 +10,8 @@ import Admin from './Admin';
 
 const AdminEditPost = () => {
     const { key } = useParams();
+    const adminPostData = useSelector((state) => state.reducer.adminPostData);
+    
     const [post, setPost] = useState({});
 
     console.log('EditPost', post);
