@@ -57,8 +57,8 @@ const Admin = () => {
     /*------------------------------------------------*\
                         console 테스트 
     \*------------------------------------------------*/
-    console.log('admin log 테스트');
-    console.log('adminUserData',adminUserData);
+    /* console.log('admin log 테스트'); */
+    /* console.log('adminUserData',adminUserData); */
     console.log('adminPostData',adminPostData);
 
     /*------------------------------------------------*\
