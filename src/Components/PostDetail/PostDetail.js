@@ -11,7 +11,9 @@ import { BsList } from 'react-icons/bs';
 import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
 import { FiEye } from 'react-icons/fi';
 import CommentInput from '../InputGroup/CommentInput';
+
 import { PostDetailFrame, PostMain } from './StyledPostDetail';
+
 
 const PostDetail = () => {
     const { categoryKey, id } = useParams();

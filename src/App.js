@@ -98,8 +98,8 @@ const App = () => {
                 <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route>
                 <Route exact path="/admin/post_list" element={<AdminPostList/>}></Route>
                 <Route exact path="/admin/member_edit/:index" element={<AdminEditUser/>}></Route>
-                {/* <Route exact path="/admin/post_edit/:key/:index" element={<AdminEditPost/>}></Route> */}
                 <Route exact path="/admin/post_edit/:index" element={<AdminEditPost/>}></Route>
+                {/* <Route exact path="/admin/post_edit/:key/:index" element={<AdminEditPost/>}></Route> */}
                 <Route exact path='/admin/post_group' element={<AdminPostGroup/>}></Route>
                 
 
