@@ -13,7 +13,7 @@ import Admin from './Admin';
 import { useSelector } from 'react-redux';
 
 /* Styled Components */
-import { StyledFrame, EditTableWrap} from './StyledAdminTable';
+import { StyledFrame, EditTableWrap, EditSaveBtn} from './StyledAdminTable';
 
 const AdminEditPost = () => {
     const { index } = useParams();
