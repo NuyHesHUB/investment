@@ -13,7 +13,7 @@ import Admin from './Admin';
 import { useSelector } from 'react-redux';
 
 /* Styled Components */
-import { StyledFrame, EditTableWrap} from './StyledAdminTable';
+import { StyledFrame, EditTableWrap, EditSaveBtn} from './StyledAdminTable';
 
 const AdminEditUser = () => {
     const { index } = useParams();
@@ -338,7 +338,7 @@ const AdminEditUser = () => {
                                 </tbody>
                             </table>
                             <div style={{textAlign:'center', marginTop:'50px'}}>
-                                <button className='edit_save_btn' onClick={submitUpdatedData}>저 장</button>
+                                <EditSaveBtn onClick={submitUpdatedData}>저 장</EditSaveBtn>
                             </div>
                         </section>
                     </EditTableWrap>

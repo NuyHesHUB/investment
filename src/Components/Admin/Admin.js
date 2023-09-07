@@ -59,7 +59,7 @@ const Admin = () => {
     \*------------------------------------------------*/
     /* console.log('admin log 테스트'); */
     /* console.log('adminUserData',adminUserData); */
-    console.log('adminPostData',adminPostData);
+    /* console.log('adminPostData',adminPostData); */
 
     /*------------------------------------------------*\
                         Admin Layout 

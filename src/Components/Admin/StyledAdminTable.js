@@ -100,14 +100,17 @@ export const EditTableWrap=styled.div`
             }
         }
         .edit_save_btn{
-            outline: none;
-            border: none;
-            background: rgb(63, 81, 181);
-            color: rgb(255, 255, 255);
-            padding: 10px 15px;
-            font-size: 12px;
-            border-radius: 10px;
-            cursor: pointer;
+            
         }
     }
+`
+export const EditSaveBtn=styled.button`
+    outline: none;
+    border: none;
+    background: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    padding: 10px 15px;
+    font-size: 12px;
+    border-radius: 10px;
+    cursor: pointer;
 `

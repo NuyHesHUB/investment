@@ -23,7 +23,7 @@ const AdminEditPost = () => {
     const headers = {
         Authorization: `${accessToken}`
     }
-    console.log('test',editPostData);
+    /* console.log('test',editPostData); */
     /*------------------------------------------------*\
                 editUserData[index] 에러방지 조건문
     \*------------------------------------------------*/
@@ -36,9 +36,9 @@ const AdminEditPost = () => {
     }, [editPostData, index]);
     
     const [editformData, setEditFormData] = useState({
-        authorize: '1',
-        categoryList: '1',
-        extraFields: '1',
+        authorize: '',
+        categoryList: '',
+        extraFields: '',
         key: '',
         options: '',
         regDt: '',
@@ -55,7 +55,18 @@ const AdminEditPost = () => {
     \*------------------------------------------------*/
     useEffect(() => {
         setEditFormData({
-            
+            authorize: editedData.authorize,
+            categoryList: editedData.categoryList,
+            extraFields: editedData.extraFields,
+            key: editedData.key,
+            options: editedData.options,
+            regDt: editedData.regDt,
+            regUser: editedData.regUser,
+            skins: editedData.skins,
+            status: editedData.status,
+            title: editedData.title,
+            updDt: editedData.updDt,
+            updUser: editedData.updUser,
         });
     }, [editedData]);
 
@@ -87,8 +98,8 @@ const AdminEditPost = () => {
     /*------------------------------------------------*\
                     console.log 테스트
     \*------------------------------------------------*/
-    /* console.log('editedData',editedData);
-    console.log('editformData',editformData); */
+    console.log('editedData',editedData);
+    console.log('editformData',editformData);
 
     return (
         <div>
@@ -108,13 +119,32 @@ const AdminEditPost = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope='row'>Status</th>
-                                        <td>
-                                            {editPostData[index].status === 'Y'? 'YES' : 'NO'}
-                                        </td>
-                                        <td>
-                                            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                                <tr>
+                                    <th scope='row'>그룹(key)</th>
+                                    <td>
+                                        {editPostData[index].key}
+                                    </td>
+                                    <td>
+                                        <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                                            <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
+                                                <input
+                                                    type='text'
+                                                    name='nickname'
+                                                    value={editPostData.key}
+                                                    placeholder=''
+                                                    onChange={handleGroupChange}
+                                                />
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>   
+                                {/* <tr>
+                                    <th scope='row'>Status</th>
+                                    <td>
+                                        {editPostData[index].status === 'Y'? 'YES' : 'NO'}
+                                    </td>
+                                    <td>
+                                        <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                                                 <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
                                                     <span style={{marginRight:'5px'}}>
                                                         YES
@@ -141,11 +171,49 @@ const AdminEditPost = () => {
                                                 </label>
                                             </div>
                                         </td>
+                                    </tr> */}
+                                    <tr>
+                                        <th scope='row'>skins</th>
+                                        <td>
+                                            {editPostData[index].skins}
+                                        </td>
+                                        <td>
+                                            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                                                <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
+                                                    <input
+                                                        type='text'
+                                                        name='skins'
+                                                        value={editPostData.skins}
+                                                        placeholder=''
+                                                        onChange={handleGroupChange}
+                                                    />
+                                                </label>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <th scope='row'>Group</th>
+                                        <th scope='row'>authorize</th>
                                         <td>
-                                            {editPostData[index].group}
+                                            {editPostData[index].authorize}
+                                        </td>
+                                        <td>
+                                            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                                                <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
+                                                    <input
+                                                        type='text'
+                                                        name='authorize'
+                                                        value={editPostData.authorize}
+                                                        placeholder=''
+                                                        onChange={handleGroupChange}
+                                                    />
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope='row'>categoryList</th>
+                                        <td>
+                                            {editPostData[index].categoryList}
                                         </td>
                                         <td>
                                             <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
@@ -176,51 +244,18 @@ const AdminEditPost = () => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope='row'>관리자 권한(isAdmin)</th>
+                                        <th scope='row'>title</th>
                                         <td>
-                                            {editPostData[index].isAdmin}
-                                        </td>
-                                        <td>
-                                            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                                                <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
-                                                    <span style={{marginRight:'5px'}}>
-                                                        부여
-                                                    </span>
-                                                    <input
-                                                        type='radio'
-                                                        name='isAdmin'
-                                                        value="Y"
-                                                        onChange={handleGroupChange}
-                                                    />
-                                                </label>
-                                                <label style={{display:'flex',alignItems:'center'}}>
-                                                    <span style={{marginRight:'5px'}}>
-                                                        미부여
-                                                    </span>
-                                                    <input
-                                                        type='radio'
-                                                        name='isAdmin'
-                                                        value="N"
-                                                        onChange={handleGroupChange}
-                                                        defaultChecked 
-                                                    />
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope='row'>닉네임</th>
-                                        <td>
-                                            {editPostData[index].nickname}
+                                            {editPostData[index].title}
                                         </td>
                                         <td>
                                             <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                                                 <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
                                                     <input
                                                         type='text'
-                                                        name='nickname'
-                                                        value={editPostData.nickname}
-                                                        placeholder='닉네임을 입력해 주세요.'
+                                                        name='title'
+                                                        value={editPostData.title}
+                                                        placeholder=''
                                                         onChange={handleGroupChange}
                                                     />
                                                 </label>
@@ -228,18 +263,18 @@ const AdminEditPost = () => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope='row'>연락처</th>
+                                        <th scope='row'>extraFields</th>
                                         <td>
-                                            {editPostData[index].phone}
+                                            {editPostData[index].extraFields}
                                         </td>
                                         <td>
                                             <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                                                 <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
                                                     <input
                                                         type='text'
-                                                        name='phone'
-                                                        value={editPostData.phone}
-                                                        placeholder='번호만 입력해 주세요.'
+                                                        name='extraFields'
+                                                        value={editPostData.extraFields}
+                                                        placeholder=''
                                                         onChange={handleGroupChange}
                                                     />
                                                 </label>
@@ -247,17 +282,18 @@ const AdminEditPost = () => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope='row'>이미지</th>
+                                        <th scope='row'>options</th>
                                         <td>
-                                            {editPostData[index].img === "이미지 없음" || editPostData[index].img === "" ? (<span style={{color:'red'}}>이미지 없음</span>):(null)}
+                                            {editPostData[index].options}
                                         </td>
                                         <td>
                                             <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                                                 <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
                                                     <input
-                                                        type='file'
-                                                        name='img'
-                                                        value={editPostData.img}
+                                                        type='text'
+                                                        name='options'
+                                                        value={editPostData.options}
+                                                        placeholder=''
                                                         onChange={handleGroupChange}
                                                     />
                                                 </label>
@@ -265,31 +301,18 @@ const AdminEditPost = () => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope='row'>이메일 수신</th>
+                                        <th scope='row'>regUser</th>
                                         <td>
-                                            {editPostData[index].receiveEmail === 'Y'? '수신' : '미수신'}
+                                            {editPostData[index].regUser}
                                         </td>
                                         <td>
                                             <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                                                 <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
-                                                    <span style={{marginRight:'5px'}}>
-                                                        수신
-                                                    </span>
                                                     <input
-                                                        type='radio'
-                                                        name='receiveEmail'
-                                                        value="Y"
-                                                        onChange={handleGroupChange}
-                                                    />
-                                                </label>
-                                                <label style={{display:'flex',alignItems:'center'}}>
-                                                    <span style={{marginRight:'5px'}}>
-                                                        미수신
-                                                    </span>
-                                                    <input
-                                                        type='radio'
-                                                        name='receiveEmail'
-                                                        value="N"
+                                                        type='text'
+                                                        name='regUser'
+                                                        value={editPostData.regUser}
+                                                        placeholder=''
                                                         onChange={handleGroupChange}
                                                     />
                                                 </label>
@@ -297,37 +320,62 @@ const AdminEditPost = () => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope='row'>문자 수신</th>
+                                        <th scope='row'>regDt</th>
                                         <td>
-                                            {editPostData[index].receiveSms === 'Y'? '수신' : '미수신'}
+                                            {editPostData[index].regDt}
                                         </td>
                                         <td>
                                             <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                                                 <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
-                                                    <span style={{marginRight:'5px'}}>
-                                                        수신
-                                                    </span>
                                                     <input
-                                                        type='radio'
-                                                        name='receiveSms'
-                                                        value="Y"
-                                                        onChange={handleGroupChange}
-                                                    />
-                                                </label>
-                                                <label style={{display:'flex',alignItems:'center'}}>
-                                                    <span style={{marginRight:'5px'}}>
-                                                        미수신
-                                                    </span>
-                                                    <input
-                                                        type='radio'
-                                                        name='receiveSms'
-                                                        value="N"
+                                                        type='text'
+                                                        name='regDt'
+                                                        value={editPostData.regDt}
+                                                        placeholder=''
                                                         onChange={handleGroupChange}
                                                     />
                                                 </label>
                                             </div>
                                         </td>
                                     </tr>
+                                    {/* <tr>
+                                        <th scope='row'>updUser</th>
+                                        <td>
+                                            {editPostData[index].updUser}
+                                        </td>
+                                        <td>
+                                            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                                                <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
+                                                    <input
+                                                        type='text'
+                                                        name='updUser'
+                                                        value={editPostData.updUser}
+                                                        placeholder=''
+                                                        onChange={handleGroupChange}
+                                                    />
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr> */}
+                                    {/* <tr>
+                                        <th scope='row'>updDt</th>
+                                        <td>
+                                            {editPostData[index].updDt}
+                                        </td>
+                                        <td>
+                                            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                                                <label style={{display:'flex',alignItems:'center', marginRight:'5px'}}>
+                                                    <input
+                                                        type='text'
+                                                        name='updDt'
+                                                        value={editPostData.updDt}
+                                                        placeholder=''
+                                                        onChange={handleGroupChange}
+                                                    />
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr> */}
                                 </tbody>
                             </table>
                             <div style={{textAlign:'center', marginTop:'50px'}}>
