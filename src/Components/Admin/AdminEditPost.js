@@ -24,6 +24,7 @@ const AdminEditPost = () => {
         Authorization: `${accessToken}`
     }
     /* console.log('test',editPostData); */
+    
     /*------------------------------------------------*\
                 editUserData[index] 에러방지 조건문
     \*------------------------------------------------*/

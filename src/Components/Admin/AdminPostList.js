@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 /* Redux */
 import { useSelector } from 'react-redux';
 
@@ -17,9 +18,7 @@ import { StyledFrame, StyledTableWrap, EditSaveBtn, StyledInfoBox, StyledSearchB
 
 const AdminPostList = () => {
     const editPostData = useSelector((state) => state.reducer.adminPostData);
-
     const [AdminPostListData, setAdminPostListData] = useState({}); 
-
     const [selectedRows, setSelectedRows] = useState([]);
     const [editedValues, setEditedValues] = useState({});
 
@@ -34,7 +33,8 @@ const AdminPostList = () => {
             ...prevValues,
             [index]: value
         }));
-        updateAuthorize(index, 'authorize', value, writeValue[index]);
+        /* updateAuthorize(index, 'authorize', value, writeValue[index]); */
+        updateAuthorize(index, 'authorize', value, writeValue[index] || 0);
     };
     const handleWriteChange = (e, index) => {
         const value = e.target.value;
@@ -42,7 +42,8 @@ const AdminPostList = () => {
             ...prevValues,
             [index]: value
         }));
-        updateAuthorize(index, 'authorize', readValue[index], value);
+        /* updateAuthorize(index, 'authorize', readValue[index], value); */
+        updateAuthorize(index, 'authorize', readValue[index] || 0, value);
     };
     const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
         setAdminPostListData(prevData => {
@@ -52,6 +53,28 @@ const AdminPostList = () => {
             return newData;
         });
     };
+    /* useEffect(() => {
+        if (editPostData.length > 0) {
+            const initialReadValues = {};
+            const initialWriteValues = {};
+    
+            editPostData.forEach((item, index) => {
+                if (item.authorize) {
+                    const authorizeObj = JSON.parse(item.authorize);
+                    initialReadValues[index] = authorizeObj.읽기;
+                    initialWriteValues[index] = authorizeObj.쓰기;
+                } else {
+                    initialReadValues[index] = '';
+                    initialWriteValues[index] = '';
+                }
+            });
+    
+            setReadValue(initialReadValues);
+            setWriteValue(initialWriteValues);
+        } else {
+            console.log('editPostData', '해당 인덱스에 데이터가 없습니다.');
+        }
+    }, [editPostData]); */
 
     /*------------------------------------------------*\
                   skins 데스크탑 / 모바일 수정
@@ -64,7 +87,7 @@ const AdminPostList = () => {
             ...prevValues,
             [index]: value
         }));
-        updateSkins(index, 'skins', value, mobileSkins[index]);
+        updateSkins(index, 'skins', mobileSkins[index] || '', value);
     };
     const handleMobileSkinsChange = (e, index) => {
         const value = e.target.value;
@@ -72,7 +95,7 @@ const AdminPostList = () => {
             ...prevValues,
             [index]: value
         }));
-        updateSkins(index, 'skins', deskTopSkins[index], value);
+        updateSkins(index, 'skins', value, deskTopSkins[index] || '');
     };
     const updateSkins = (index, key, newReadValue, newWriteValue) => {
         setAdminPostListData(prevData => {
@@ -82,7 +105,7 @@ const AdminPostList = () => {
             return newData;
         });
     };
-/* skins: "{\"모바일\":\"basic\",\"웹\":\"basic\"}" */
+
 
 
 
@@ -193,7 +216,10 @@ const AdminPostList = () => {
                                                 <Link>regUser</Link>
                                             </th>
                                             <th scope='col'>
-                                                <Link>Skins</Link>
+                                                <Link>웹(Skins)</Link>
+                                            </th>
+                                            <th scope='col'>
+                                                <Link>모바일(Skins)</Link>
                                             </th>
                                             <th scope='col'>
                                                 관리
@@ -215,6 +241,7 @@ const AdminPostList = () => {
                                                             placeholder={item.key} 
                                                             value={item.key}
                                                             onChange={(e) => handleInputChange(e, index, 'key')}
+                                                            disabled={!selectedRows.includes(item)}
                                                         />
                                                     </td>
                                                     <td rowSpan={1}>
@@ -222,19 +249,20 @@ const AdminPostList = () => {
                                                             placeholder={item.title} 
                                                             value={item.title}
                                                             onChange={(e) => handleInputChange(e, index, 'title')}
+                                                            disabled={!selectedRows.includes(item)}
                                                         />
                                                     </td>
                                                     <td>
-                                                        <select value={readValue[index]} onChange={(e) => handleReadChange(e, index)}>
-                                                            {['선택', 0, 1, 2, 3, 4, 5].map(num => (
-                                                                <option key={num} value={num}>{num}</option>
+                                                        <select value={readValue[index]} onChange={(e) => handleReadChange(e, index)} disabled={!selectedRows.includes(item)}>
+                                                            {['', 0, 1, 2, 3, 4, 5].map(num => (
+                                                                <option key={num} value={num}>{num}{num === '' ? '선택' : ''}</option>
                                                             ))}
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select value={writeValue[index]} onChange={(e) => handleWriteChange(e, index)}>
-                                                            {['선택', 0, 1, 2, 3, 4, 5].map(num => (
-                                                                <option key={num} value={num}>{num}</option>
+                                                        <select value={writeValue[index]} onChange={(e) => handleWriteChange(e, index)} disabled={!selectedRows.includes(item)}>
+                                                            {['', 0, 1, 2, 3, 4, 5].map(num => (
+                                                                <option key={num} value={num}>{num}{num === '' ? '선택' : ''}</option>
                                                             ))}
                                                         </select>
                                                     </td>
@@ -246,16 +274,16 @@ const AdminPostList = () => {
                                                     <td rowSpan={1}>{item.regUser}</td>
                                                     {/* <td rowSpan={1}>{item.skins}</td> */}
                                                     <td>
-                                                        <select value={deskTopSkins[index]} onChange={(e) => handleDeskTopSkinsChange(e, index)}>
-                                                            {['선택', 0, 1, 2, 3, 4, 5].map(num => (
-                                                                <option key={num} value={num}>{num}</option>
+                                                        <select value={deskTopSkins[index]} onChange={(e) => handleDeskTopSkinsChange(e, index)} disabled={!selectedRows.includes(item)}>
+                                                            {['선택', 'deskTop-basic', 'red', 'orange', 'yellow', 'green', 'blue'].map(num => (
+                                                                <option key={num} value={num}>{num}{num === '' ? '선택' : ''}</option>
                                                             ))}
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select value={mobileSkins[index]} onChange={(e) => handleMobileSkinsChange(e, index)}>
-                                                            {['선택', 0, 1, 2, 3, 4, 5].map(num => (
-                                                                <option key={num} value={num}>{num}</option>
+                                                        <select value={mobileSkins[index]} onChange={(e) => handleMobileSkinsChange(e, index)} disabled={!selectedRows.includes(item)}>
+                                                            {['선택', 'mobil-basic', 'red', 'orange', 'yellow', 'green', 'blue'].map(num => (
+                                                                <option key={num} value={num}>{num}{num === '' ? '선택' : ''}</option>
                                                             ))}
                                                         </select>
                                                     </td>
