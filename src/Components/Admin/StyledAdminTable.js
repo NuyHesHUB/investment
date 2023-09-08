@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 export const StyledFrame=styled.div`
-    padding: 0 0 0 270px;
-    /* margin-top: 50px; */
-    margin-top: 28px;
-    height: 100%;
+    /* padding: 0 0 0 270px; */
+    padding: 0 0 0 260px;
+    margin-top: 70px;
+    /* height: 100%; */
+    height: 100vh;
     min-width: 1200px;
     a{
         color: #fff;
@@ -113,4 +114,51 @@ export const EditSaveBtn=styled.button`
     font-size: 12px;
     border-radius: 10px;
     cursor: pointer;
+    background-color: ${props => props.disabled ? '#ccc' : '#3f51b5'};
+    color: ${props => props.disabled ? '#999' : '#fff'};
+
+`
+
+export const AdminListFrame=styled.div`
+    width: 100%;
+    height: 100%;
+    position: relative;
+    ${props => props.$isModalOpen && `
+        &::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            background: rgba(0, 0, 0, .4);
+        }
+    `}
+    
+`
+
+export const AdminModalFrame=styled.div`
+    width: 450px;
+    height: 250px;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 99999;
+    background: #fff;
+    box-shadow: 2px 2px 10px 1px #333;
+    .modal-header{
+        width: 100%;
+        height: 13%;
+        background: #6f809a;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+    }
+    .modal-contents{
+        width: 100%;
+        height: 70%;
+        background: rgba(0,0,0,.5);
+    }
 `

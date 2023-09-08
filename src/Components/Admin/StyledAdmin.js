@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledAdminFrame=styled.div`
+    position: absolute;
     a{
         text-decoration: none;
         color: #fff;

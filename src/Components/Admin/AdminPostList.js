@@ -14,7 +14,7 @@ import axios from 'axios';
 import Admin from './Admin';
 
 /* StyledComponents */
-import { StyledFrame, StyledTableWrap, EditSaveBtn, StyledInfoBox, StyledSearchBox, StyledAdminBoard, StyledMemberListNav } from './StyledAdminTable';
+import { StyledFrame, StyledTableWrap, EditSaveBtn, AdminListFrame, AdminModalFrame, StyledInfoBox, StyledSearchBox, StyledAdminBoard, StyledMemberListNav } from './StyledAdminTable';
 
 const AdminPostList = () => {
     const editPostData = useSelector((state) => state.reducer.adminPostData);
@@ -53,28 +53,6 @@ const AdminPostList = () => {
             return newData;
         });
     };
-    /* useEffect(() => {
-        if (editPostData.length > 0) {
-            const initialReadValues = {};
-            const initialWriteValues = {};
-    
-            editPostData.forEach((item, index) => {
-                if (item.authorize) {
-                    const authorizeObj = JSON.parse(item.authorize);
-                    initialReadValues[index] = authorizeObj.읽기;
-                    initialWriteValues[index] = authorizeObj.쓰기;
-                } else {
-                    initialReadValues[index] = '';
-                    initialWriteValues[index] = '';
-                }
-            });
-    
-            setReadValue(initialReadValues);
-            setWriteValue(initialWriteValues);
-        } else {
-            console.log('editPostData', '해당 인덱스에 데이터가 없습니다.');
-        }
-    }, [editPostData]); */
 
     /*------------------------------------------------*\
                   skins 데스크탑 / 모바일 수정
@@ -106,13 +84,77 @@ const AdminPostList = () => {
         });
     };
 
+    /* 나중에 값이 다 생성되고나면 그 값이 input에 값이 남겨지도록 하는 기능인데 값을 다 전송하는 기능을 구현한 뒤에 구현 */
+    /* useEffect(() => {
+        if (editPostData.length > 0) {
+            const initialReadValues = {};
+            const initialWriteValues = {};
+    
+            editPostData.forEach((item, index) => {
+                if (item.authorize) {
+                    const authorizeObj = JSON.parse(item.authorize);
+                    initialReadValues[index] = authorizeObj.읽기;
+                    initialWriteValues[index] = authorizeObj.쓰기;
+                } else {
+                    initialReadValues[index] = '';
+                    initialWriteValues[index] = '';
+                }
+            });
+    
+            setReadValue(initialReadValues);
+            setWriteValue(initialWriteValues);
+        } else {
+            console.log('editPostData', '해당 인덱스에 데이터가 없습니다.');
+        }
+    }, [editPostData]); */
 
+    /*------------------------------------------------*\
+                  categoryList MODAL 구현
+    \*------------------------------------------------*/
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedCategoryList, setSelectedCategoryList] = useState(null);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
+    const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+    const [prevSelectedCategoryList, setPrevSelectedCategoryList] = useState(null);
+    // 모달을 열고 닫는 함수
+    const openModal = (index, categoryList) => {
+        setIsModalOpen(true);
+        setSelectedCategoryList(categoryList);
+        /* 추가 */
+        setPrevSelectedCategoryList(categoryList)
+        setSelectedRowIndex(index);
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
+    const handleCategoryInputChange = (index, e) => {
+        const value = e.target.value;
+        setSelectedCategoryList(value);
+        setIsSaveButtonDisabled(false);
 
+        /* setAdminPostListData(prevData => {
+            const newData = [...prevData];
+            newData[index]['categoryList'] = value; 
+            return newData;
+        }); */
+    };
 
+    const handleSaveClick = () => {
+        setIsSaveButtonDisabled(true);
+        setAdminPostListData(prevData => {
+            const newData = [...prevData];
+            newData[selectedRowIndex]['categoryList'] = selectedCategoryList;
+            return newData;
+        });
+    }
 
-
-
+    /* const handleCancelClick = (index) => {
+        setSelectedCategoryList(prevSelectedCategoryList);
+        setIsSaveButtonDisabled(true);
+    }; */
+    console.log('selectedCategoryList',selectedCategoryList);
+    
 
     /*------------------------------------------------*\
                       CheckBox onChange
@@ -158,11 +200,11 @@ const AdminPostList = () => {
     console.log('selectedRows:', selectedRows);
     console.log('AdminPostListData',AdminPostListData);
     return (
-        <div>
+        <AdminListFrame $isModalOpen={isModalOpen}>
             <Admin/>
             <StyledFrame>
                 {editPostData.length > 0 ? 
-                <div>
+                <AdminListFrame>
                     <StyledTableWrap>
                     <div style={{display:'flex', width:'100%', justifyContent:'space-between', marginBottom:'50px'}}>
                         <h1>게시판관리</h1>
@@ -203,12 +245,12 @@ const AdminPostList = () => {
                                             <th scope='col'>
                                                 <Link>카테고리(Category)</Link>
                                             </th>
-                                            <th scope='col'>
+                                            {/* <th scope='col'>
                                                 <Link>extraFields</Link>
-                                            </th>
-                                            <th scope='col'>
+                                            </th> */}
+                                            {/* <th scope='col'>
                                                 <Link>Options</Link>
-                                            </th>
+                                            </th> */}
                                             <th scope='col'>
                                                 <Link>regDt</Link>
                                             </th>
@@ -267,9 +309,10 @@ const AdminPostList = () => {
                                                         </select>
                                                     </td>
                                                     {/* <td rowSpan={1}>{item.authorize}</td> */}
-                                                    <td rowSpan={1}>{item.categoryList}</td>
-                                                    <td rowSpan={1}>{item.extraFields}</td>
-                                                    <td rowSpan={1}>{item.options}</td>
+                                                    {/* <td rowSpan={1}>{item.categoryList}</td> */}
+                                                    <td rowSpan={1}><button onClick={() => openModal(index, item.categoryList)} disabled={!selectedRows.includes(item)}>카테고리 추가/수정</button></td>
+                                                    {/* <td rowSpan={1}>{item.extraFields}</td> */}
+                                                    {/* <td rowSpan={1}>{item.options}</td> */}
                                                     <td rowSpan={1}>{item.regDt}</td>
                                                     <td rowSpan={1}>{item.regUser}</td>
                                                     {/* <td rowSpan={1}>{item.skins}</td> */}
@@ -292,18 +335,43 @@ const AdminPostList = () => {
                                                                 <span style={{background:'#3f51b5',color:'#fff',padding:'5px',fontSize:'12px',borderRadius:'10px'}}>수정</span>
                                                         </Link>
                                                     </td>
-                                                    
                                                 </tr>
                                             ))}
                                     </tbody>
                                 </table>
+                                {isModalOpen && (
+                                    <AdminModalFrame >
+                                        <div className='modal-header'>카테고리 추가/수정</div>
+                                        <div className='modal-contents'>
+                                            <div>변경전 : {prevSelectedCategoryList} </div>
+                                            <div>변경후 : {isSaveButtonDisabled && <>{selectedCategoryList}</> }</div>
+                                            {/* {isSaveButtonDisabled && <div>{selectedCategoryList}</div>} */}
+                                            <input 
+                                                placeholder={selectedCategoryList} 
+                                                value={selectedCategoryList}
+                                                onChange={(e) => handleCategoryInputChange(selectedRowIndex, e)}
+                                            />
+                                        </div>
+                                        <div className='modal-btn' style={{textAlign:'center'}}>
+                                            <EditSaveBtn 
+                                                style={{margin:'0 5px'}}
+                                                onClick={handleSaveClick}
+                                                disabled={isSaveButtonDisabled}
+                                            >저장</EditSaveBtn>
+                                            <EditSaveBtn onClick={() => { 
+                                                
+                                                closeModal();
+                                            }} style={{margin:'0 5px'}}>닫기</EditSaveBtn>
+                                        </div>
+                                    </AdminModalFrame>
+                                )}
                             </div>
                         </StyledAdminBoard>
                     </StyledTableWrap>
-                </div> : <div>Loading...</div>}
+                </AdminListFrame> : <div>Loading...</div>}
                 
             </StyledFrame>
-        </div>
+        </AdminListFrame>
     );
 };
 
