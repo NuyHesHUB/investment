@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5e4ec66e.css",
+    "main.js": "/static/js/main.43917fc1.js",
+    "static/js/787.9352f8e4.chunk.js": "/static/js/787.9352f8e4.chunk.js",
+    "static/media/2.png": "/static/media/2.758e8b15eb0eb99df131.png",
+    "static/media/robotos-illust-left.png": "/static/media/robotos-illust-left.78cff2433aace40ea040.png",
+    "static/media/1.png": "/static/media/1.5579f93df15b09ff4282.png",
+    "static/media/3.png": "/static/media/3.3cad2dbfd84ad4c80188.png",
+    "static/media/food.png": "/static/media/food.a47201ca19a541152cbb.png",
+    "static/media/manufacturing.png": "/static/media/manufacturing.3d1fb7f48b7f2af17a8e.png",
+    "static/media/services.png": "/static/media/services.f14268146c94f2edcbb2.png",
+    "static/media/retail.png": "/static/media/retail.5833707a812139c52cea.png",
+    "static/media/rentals.png": "/static/media/rentals.108a5ffaf9af40e61494.png",
+    "index.html": "/index.html",
+    "main.5e4ec66e.css.map": "/static/css/main.5e4ec66e.css.map",
+    "main.43917fc1.js.map": "/static/js/main.43917fc1.js.map",
+    "787.9352f8e4.chunk.js.map": "/static/js/787.9352f8e4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5e4ec66e.css",
+    "static/js/main.43917fc1.js"
+  ]
+}
