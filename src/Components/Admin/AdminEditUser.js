@@ -95,7 +95,7 @@ const AdminEditUser = () => {
                     console.log 테스트
     \*------------------------------------------------*/
     /* console.log('editedData',editedData); */
-    /* console.log('editformData',editformData); */
+    console.log('editformData',editformData);
 
     return (
         <div>

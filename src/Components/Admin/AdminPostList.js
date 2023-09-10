@@ -20,8 +20,69 @@ const AdminPostList = () => {
     const editPostData = useSelector((state) => state.reducer.adminPostData);
     const [AdminPostListData, setAdminPostListData] = useState({}); 
     const [selectedRows, setSelectedRows] = useState([]);
+    const accessToken = sessionStorage.getItem('accessToken');
+    const userUid = sessionStorage.getItem('userUid');
+    const headers = {
+        Authorization: `${accessToken}`
+    }
     const [editedValues, setEditedValues] = useState({});
 
+    /* const dataToSave = selectedRows.map(item => ({
+        key: item.key,
+        title: item.title,
+        authorize: item.authorize,
+        options: item.options,
+        extraFields: item.extraFields,
+        categoryList: item.categoryList,
+        skins: item.skins,
+        status: item.status,
+        userUid: item.userUid
+    }));
+    
+    const joinedData = `[${dataToSave.map(obj => JSON.stringify(obj)).join(',')}]`; */
+    /* const dataToSave = selectedRows.map(item => ({
+        key: item.key,
+        title: item.title,
+        authorize: JSON.parse(item.authorize),
+        options: JSON.parse(item.options),
+        extraFields: JSON.parse(item.extraFields),
+        categoryList: JSON.parse(item.categoryList),
+        skins: JSON.parse(item.skins),
+        status: item.status,
+        userUid: userUid
+    }));
+    
+    const joinedData = dataToSave.map(obj => JSON.stringify(obj)); */
+
+    const dataToSave = selectedRows.map(item => (
+        {
+            key: item.key,
+            title: item.title,
+            authorize: JSON.parse(item.authorize),
+            options: JSON.parse(item.options),
+            extraFields: JSON.parse(item.extraFields),
+            categoryList: JSON.parse(item.categoryList),
+            skins: JSON.parse(item.skins),
+            status: item.status,
+            userUid: userUid
+        }
+    ));
+    
+    const joinedData = dataToSave.map(obj => ({
+        key: obj.key,
+        title: obj.title,
+        authorize: obj.authorize,
+        options: obj.options,
+        extraFields: obj.extraFields,
+        categoryList: obj.categoryList,
+        skins: obj.skins,
+        status: obj.status,
+        userUid: obj.userUid
+    }));
+
+    
+    
+    
     /*------------------------------------------------*\
                   Authorize 읽기 / 쓰기 수정
     \*------------------------------------------------*/
@@ -193,6 +254,33 @@ const AdminPostList = () => {
         }
     },[editPostData])
 
+    /* const handlePostEditSaveClick = async(e) => {
+        e.preventDefault();
+        console.log(joinedData);
+
+        try{
+            const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', joinedData, { headers });
+            console.log('관리자 게시판관리 수정 성공', response);
+        } catch(error) {
+            console.error('관리자 게시판관리 수정 실패', error);
+        }
+    } */
+    const handlePostEditSaveClick = async(e) => {
+        e.preventDefault();
+        console.log(joinedData);
+    
+        // joinedData를 JSON 문자열로 변환
+        const jsonData = joinedData.map(obj => JSON.stringify(obj)).join(',');
+    
+        // JSON 파일 생성
+        const blob = new Blob([`{${jsonData}}`], { type: 'application/json' });
+    
+        // Blob으로부터 데이터 URL을 생성하여 링크 생성
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = 'joinedData.json';
+        downloadLink.click();
+    }
     /*------------------------------------------------*\
                     console.log 테스트
     \*------------------------------------------------*/
@@ -208,7 +296,7 @@ const AdminPostList = () => {
                     <StyledTableWrap>
                     <div style={{display:'flex', width:'100%', justifyContent:'space-between', marginBottom:'50px'}}>
                         <h1>게시판관리</h1>
-                        <EditSaveBtn className='edit_save_btn'>저 장</EditSaveBtn>
+                        <EditSaveBtn onClick={handlePostEditSaveClick} className='edit_save_btn'>저 장</EditSaveBtn>
                     </div>
                         <StyledAdminBoard>
                             <div>
