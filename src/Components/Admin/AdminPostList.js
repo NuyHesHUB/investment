@@ -25,7 +25,6 @@ const AdminPostList = () => {
     const headers = {
         Authorization: `${accessToken}`
     }
-    const [editedValues, setEditedValues] = useState({});
 
     /* const dataToSave = selectedRows.map(item => ({
         key: item.key,
@@ -54,7 +53,7 @@ const AdminPostList = () => {
     
     const joinedData = dataToSave.map(obj => JSON.stringify(obj)); */
 
-    const dataToSave = selectedRows.map(item => (
+    /* const dataToSave = selectedRows.map(item => (
         {
             key: item.key,
             title: item.title,
@@ -78,7 +77,7 @@ const AdminPostList = () => {
         skins: obj.skins,
         status: obj.status,
         userUid: obj.userUid
-    }));
+    })); */
 
     
     
@@ -94,26 +93,36 @@ const AdminPostList = () => {
             ...prevValues,
             [index]: value
         }));
-        /* updateAuthorize(index, 'authorize', value, writeValue[index]); */
         updateAuthorize(index, 'authorize', value, writeValue[index] || 0);
     };
+    
     const handleWriteChange = (e, index) => {
         const value = e.target.value;
         setWriteValue(prevValues => ({
             ...prevValues,
             [index]: value
         }));
-        /* updateAuthorize(index, 'authorize', readValue[index], value); */
         updateAuthorize(index, 'authorize', readValue[index] || 0, value);
     };
     const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
         setAdminPostListData(prevData => {
             const newData = [...prevData];
-            const newAuthorize = `{"읽기":${newReadValue},"쓰기":${newWriteValue}}`; // 새로운 authorize 문자열 생성
-            newData[index][key] = newAuthorize; // 업데이트된 값 설정
+            const newAuthorize = `{"읽기":${newReadValue},"쓰기":${newWriteValue}}`; 
+            newData[index][key] = newAuthorize;
             return newData;
         });
     };
+    /* const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
+        setAdminPostListData(prevData => {
+            const newData = [...prevData];
+            newData[index][key] = {
+                읽기: newReadValue,
+                쓰기: newWriteValue
+            };
+            return newData;
+        });
+    };   */
+    
 
     /*------------------------------------------------*\
                   skins 데스크탑 / 모바일 수정
@@ -139,8 +148,9 @@ const AdminPostList = () => {
     const updateSkins = (index, key, newReadValue, newWriteValue) => {
         setAdminPostListData(prevData => {
             const newData = [...prevData];
-            const newSkins = `{"모바일":${newReadValue},"웹":${newWriteValue}}`;
-            newData[index][key] = newSkins; // 업데이트된 값 설정
+            /* const newSkins = `{"모바일":${newReadValue},"웹":${newWriteValue}}`; */
+            const newSkins = `{"모바일":"${newReadValue}","웹":"${newWriteValue}"}`;
+            newData[index][key] = newSkins; 
             return newData;
         });
     };
@@ -265,22 +275,118 @@ const AdminPostList = () => {
             console.error('관리자 게시판관리 수정 실패', error);
         }
     } */
-    const handlePostEditSaveClick = async(e) => {
+
+    /* const handlePostEditSaveClick = async(e) => {
         e.preventDefault();
-        console.log(joinedData);
+        try{
+            const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', selectedRows, { headers });
+            console.log('관리자 게시판관리 수정 성공', response);
+        } catch(error) {
+            console.error('관리자 게시판관리 수정 실패', error);
+        }
+    } */
+
+    /* const handlePostEditSaveClick = async (e) => {
+        e.preventDefault();
     
-        // joinedData를 JSON 문자열로 변환
-        const jsonData = joinedData.map(obj => JSON.stringify(obj)).join(',');
+        const jsonData = JSON.stringify(dataToSave, null, 2);
     
-        // JSON 파일 생성
-        const blob = new Blob([`{${jsonData}}`], { type: 'application/json' });
+        const blob = new Blob([jsonData], { type: 'application/json' });
     
-        // Blob으로부터 데이터 URL을 생성하여 링크 생성
         const downloadLink = document.createElement('a');
         downloadLink.href = URL.createObjectURL(blob);
         downloadLink.download = 'joinedData.json';
         downloadLink.click();
-    }
+    } */
+    
+    
+    /* const handlePostEditSaveClick = async (e) => {
+        e.preventDefault();
+    
+        const updatedData = selectedRows.map(item => ({
+            key: item.key,
+            title: item.title,
+            authorize: item.authorize,
+            options: item.options,
+            extraFields: item.extraFields,
+            categoryList: item.categoryList,
+            skins: item.skins,
+            status: item.status,
+            userUid: userUid
+        }));
+
+        console.log('updatedData',jsonData);
+
+        try{
+            const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', selectedRows, { headers });
+            console.log('관리자 게시판관리 수정 성공', response);
+        } catch(error) {
+            console.error('관리자 게시판관리 수정 실패', error);
+        }
+
+        const jsonData = JSON.stringify(updatedData[0], null, 2);
+        console.log('jsonData',jsonData);
+        const blob = new Blob([jsonData], { type: 'application/json' });
+    
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = 'updatedData.json';
+        downloadLink.click();
+
+    } */
+    const handlePostEditSaveClick = async (e) => {
+        e.preventDefault();
+        /* const jsonData = JSON.stringify({ 
+            ...selectedRows[0],
+            userUid: userUid 
+          }, null, 2); */
+          const transformedData = {
+            key: selectedRows[0].key,
+            status: selectedRows[0].status,
+            title: selectedRows[0].title,
+            /* skins: JSON.parse(selectedRows[0].skins), */
+            skins: selectedRows[0].skins,
+            authorize: selectedRows[0].authorize,
+            options: selectedRows[0].options,
+            extraFields: selectedRows[0].extraFields,
+            categoryList: selectedRows[0].categoryList,
+            regUser: selectedRows[0].regUser,
+            regDt: selectedRows[0].regDt,
+            updUser: selectedRows[0].updUser,
+            updDt: selectedRows[0].updDt,
+            userUid: userUid
+          };
+          /* console.log(transformedData); */
+        /* console.log('jsonData',jsonData); */
+        try{
+            /* const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', {
+                
+                    "key": "gallery",
+                    "status": "Y",
+                    "title": "자유 갤러리22",
+                    "skins": "{\"모바일\":\"basic\",\"웹\":\"basic\"}",
+                    "authorize": "{\"읽기\":0,\"쓰기\":0}",
+                    "options": "{\"옵션1\":1}",
+                    "extraFields": "{}",
+                    "categoryList": "[\"오토바이\",\"자동차\"]",
+                    "regUser": "관리자1",
+                    "regDt": "2023-08-09T03:04:36.000Z",
+                    "updUser": "주세현2",
+                    "updDt": "2023-09-10T14:50:43.000Z",
+                    "userUid": "96443601080ba5209f4a858c3ae33e91ac66d5849a0e502c0c495311b10ba99a"
+                
+            }, { headers }); */
+            
+            const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', transformedData, { headers });
+            console.log('관리자 게시판관리 수정 성공', response);
+        } catch(error) {
+            console.error('관리자 게시판관리 수정 실패', error);
+        }
+        /* console.log('jsonData',jsonData); */
+        // 요청 보내기
+        
+      };
+    
     /*------------------------------------------------*\
                     console.log 테스트
     \*------------------------------------------------*/

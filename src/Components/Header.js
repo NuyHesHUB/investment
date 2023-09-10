@@ -19,6 +19,26 @@ const Header = () => {
     const handleMouseLeave = () => {
         setSubMenuOpen(false);
     };
+    const [categoryList, setCategoryList] = useState([]);
+    /* useEffect(() => {
+    if (boardData && boardData[0] && boardData[0].categoryList) {
+    console.log('boardData', boardData[0].categoryList);
+    }
+}, [boardData]); */
+    /* useEffect(() => {
+        
+        try {
+            const parsedCategoryList = JSON.parse(boardData[0].categoryList);
+            setCategoryList(parsedCategoryList);
+            
+        } catch (error) {
+            console.error('Error parsing category list:', error);
+        }
+    }, []); */
+
+    
+      
+    
     /* console.log('header',boardData); */
     /* const authenticated = useSelector(state => state.authenticated); */ 
     /* const accessToken = sessionStorage.getItem('accessToken'); */
@@ -143,8 +163,14 @@ const Header = () => {
                         >
                             <span style={{color:'#000',fontWeight:'bold'}}>카테고리</span>
                             <ul className={isSubMenuOpen ? 'sub-menu on' : 'sub-menu'}>
-                                {boardData.map((item, index) => (
+                                {/* {boardData[0].map((item, index) => (
                                     <li key={index}><Link to={`/${item.key}`}>{item.title}</Link></li>
+                                ))} */}
+                                {/* {JSON.parse(boardData[0].categoryList).map((category, index) => (
+                                    <li key={index}><Link to={`/${category}`}>{category}</Link></li>
+                                ))} */}
+                                {categoryList.map((category, index) => (
+                                    <li key={index}><Link to={`/${category}`}>{category}</Link></li>
                                 ))}
                             </ul>
                         </li>
