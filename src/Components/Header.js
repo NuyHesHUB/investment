@@ -19,33 +19,9 @@ const Header = () => {
     const handleMouseLeave = () => {
         setSubMenuOpen(false);
     };
-    const [categoryList, setCategoryList] = useState([]);
-    /* useEffect(() => {
-    if (boardData && boardData[0] && boardData[0].categoryList) {
-    console.log('boardData', boardData[0].categoryList);
-    }
-}, [boardData]); */
-    /* useEffect(() => {
-        
-        try {
-            const parsedCategoryList = JSON.parse(boardData[0].categoryList);
-            setCategoryList(parsedCategoryList);
-            
-        } catch (error) {
-            console.error('Error parsing category list:', error);
-        }
-    }, []); */
 
-    
-      
-    
-    /* console.log('header',boardData); */
-    /* const authenticated = useSelector(state => state.authenticated); */ 
-    /* const accessToken = sessionStorage.getItem('accessToken'); */
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    /* const boardData = useSelector(state => state.board); */
 
     /* 유저 정보 가져오기 */
     
@@ -56,56 +32,8 @@ const Header = () => {
     const key = 'Authorization'
     const headers = {
             Authorization: `${accessToken}`
-        }
-    
-
-    /* useEffect(() => {
-        const url = `http://211.198.44.123:3385/v1/users/${userUid}?${key}=${accessToken}`;
-        axios.get(url, { headers })
-        .then(response => {
-          setUserData(response.data);
-        })
-        .catch(error => {
-          console.error('회원 정보 가져오기 실패', error);
-        });
-        
-      }, []); */
-      /* console.log(userData.query[0].nickname); */
-      /* console.log(userData); */
-
-
-      
-      /* if (userUid) {
-          axios.get(url, { headers })
-            .then(response => {
-              setUserData(response.data);
-              console.log('userData',userData);
-            })
-            .catch(error => {
-              console.error('회원 정보 가져오기 실패', error);
-            });
-        } */
-
-
-    /* const [boardData, setBoardData] = useState([]); */
-
-
-    /* useEffect(() => {
-        axios.get('http://211.198.44.123:3385/v1/board/')
-            .then(response => {
-                const test = response.data.query
-                const titles = response.data.query.map(item => item.key);
-                setBoardData(titles);
-                console.log(response.data);
-                console.log('test', test);
-            })
-            .catch(error => {
-                console.error('게시판 데이터를 가져올 수 없습니다.', error);
-            });
-    }, []);
-
-    console.log('boardData',boardData); */
-
+        };
+    const [menuItems, setMenuItems] = useState([]);
 
     useEffect(() => {
         if (accessToken) {
@@ -122,18 +50,6 @@ const Header = () => {
         }
     },[dispatch])
 
-    /* console.log(userData); */
-
-
-    
-    /* accessToken 이 없다면 로그아웃 */
-    /* useEffect(() => {
-        const accessToken = sessionStorage.getItem('accessToken');
-        if (!accessToken) {
-            dispatch(logout());
-        }
-    }, [dispatch]); */
-
     /* 로그아웃 하면 상태관리 로그아웃 & 토큰 삭제 */
     const handleLogout = (e) => {
         e.preventDefault();
@@ -144,8 +60,36 @@ const Header = () => {
         navigate("/login");
     };
     /* console.log('authenticated',authenticated); */
+    /* console.log('boardData',boardData); */
+    useEffect(() => {
+        if (boardData.length > 0) {
+            const categoryMapping = {
+                dining: "외식",
+                manufacturing: "제조",
+                sales: "판매",
+                service: "서비스",
+                rental: "렌탈",
+                car: "자동차",
+                other: "기타",
+                // 다른 영어 단어들에 대한 매핑 추가
+            };
+            const cleanString = boardData[0].categoryList.replace(/\[|\]|"|/g, "");
+            const categoryArray = cleanString.split(",");
+            const translatedCategories = categoryArray.map(category => categoryMapping[category] || category);
+            
+            const items = translatedCategories.map((item,index) => (
+                <li key={index}>
+                  <Link to={`/${categoryArray[index]}`}>{translatedCategories[index]}</Link>
+                </li>
+              ));
+            /* console.log('categoryArray',categoryArray); */
+            /* console.log('translatedCategories', translatedCategories); */
+            /* console.log('categoryMapping', categoryMapping[0]); */
+            setMenuItems(items);
+        }
+    }, [boardData]);
     
-
+    /* console.log('menuItems',menuItems); */
 
     return (
         <StyledHeaderFrame>
@@ -162,16 +106,10 @@ const Header = () => {
                             onMouseLeave={handleMouseLeave}
                         >
                             <span style={{color:'#000',fontWeight:'bold'}}>카테고리</span>
-                            <ul className={isSubMenuOpen ? 'sub-menu on' : 'sub-menu'}>
-                                {/* {boardData[0].map((item, index) => (
-                                    <li key={index}><Link to={`/${item.key}`}>{item.title}</Link></li>
-                                ))} */}
-                                {/* {JSON.parse(boardData[0].categoryList).map((category, index) => (
-                                    <li key={index}><Link to={`/${category}`}>{category}</Link></li>
-                                ))} */}
-                                {categoryList.map((category, index) => (
-                                    <li key={index}><Link to={`/${category}`}>{category}</Link></li>
-                                ))}
+                            <ul id='SubMenu' className={isSubMenuOpen ? 'sub-menu on' : 'sub-menu'}>
+                                {/* {categoryArray.length > 0 ? (<li>{categoryArray}</li>) : (null)} */}
+                                {/* {menuItems} */}
+                                {menuItems}
                             </ul>
                         </li>
                         <li style={{width:'100px'}}>
@@ -180,6 +118,8 @@ const Header = () => {
                         <li style={{width:'100px'}}>
                             <Link style={{color:'#000',fontWeight:'bold'}}>투자하기</Link>
                         </li>
+                        {/* {boardData.length > 0 && boardData[0].categoryList} */}
+                        {/* {menuItems.length > 0 ? <>{menuItems}</> : 'null'} */}
                     </MenuList>
                 </MenuFrame>
                 <div style={{display:'flex'}}>

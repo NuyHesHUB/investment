@@ -83,11 +83,12 @@ const App = () => {
                 ))} */}
 
                 {/* Gallery */}
-                <Route exact path='/gallery' element={<CategoryPage categoryKey="gallery"/>}></Route>
-                <Route exact path='/gallery1' element={<CategoryPage categoryKey="gallery1"/>}></Route>
-                <Route exact path='/gallery2' element={<CategoryPage categoryKey="gallery2"/>}></Route>
-                <Route exact path='/gallery4' element={<CategoryPage categoryKey="gallery4"/>}></Route>
-                <Route exact path='/gallery5' element={<CategoryPage categoryKey="gallery5"/>}></Route>
+                <Route exact path='/dining' element={<CategoryPage categoryList="dining"/>}></Route>
+                <Route exact path='/manufacturing' element={<CategoryPage categoryList="manufacturing"/>}></Route>
+                <Route exact path='/sales' element={<CategoryPage categoryList="sales"/>}></Route>
+                <Route exact path='/rental' element={<CategoryPage categoryList="rental"/>}></Route>
+                <Route exact path='/car' element={<CategoryPage categoryList="car"/>}></Route>
+                <Route exact path='/other' element={<CategoryPage categoryList="other"/>}></Route>
 
                 {/* Post */}
                 <Route exact path="/:categoryKey/:id" element={<PostDetail/>} />

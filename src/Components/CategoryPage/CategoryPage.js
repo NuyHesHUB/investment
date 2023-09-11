@@ -16,12 +16,13 @@ const CategoryPageFrame = styled.div`
     margin: 0 auto;
     text-align: center;
 `
-const CategoryPage = ({ categoryKey }) => {
+const CategoryPage = ({ categoryList }) => {
     const dispatch = useDispatch();
-    const boardData = useSelector((state) => state.reducer);
-    console.log(boardData);
+    const boardData = useSelector((state) => state.reducer.boardData);
+    console.log(boardData[0]);
     const [postData, setPostData] = useState([]);
-    const url = `/board/${categoryKey}/post/`;
+    /* const url = `/board/${categoryKey}/post/`; */
+    const url = `/board/gallery/post/`;
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {
         Authorization: `${accessToken}`
@@ -49,7 +50,7 @@ const CategoryPage = ({ categoryKey }) => {
         .catch(error => {
             console.error('게시글 목록을 가져올 수 없습니다.', error)
         })
-    },[categoryKey])
+    },[categoryList])
 
     /* const postData = useSelector((state) => state.reducer.postData); 
 
@@ -63,21 +64,21 @@ const CategoryPage = ({ categoryKey }) => {
 
     let content = null;
     
-    if (categoryKey === 'gallery') {
+    if (categoryList === 'dining') {
         content = <Gallery01 postData={postData}></Gallery01>;
-    } else if (categoryKey === 'gallery1') {
+    } else if (categoryList === 'manufacturing') {
         content = <Gallery02 postData={postData}></Gallery02>;
-    } else if (categoryKey === 'gallery2') {
-        content = <div>gallery2 내용을 보여줍니다.</div>;
-    } else if (categoryKey === 'gallery4') {
-        content = <div>gallery4 내용을 보여줍니다.</div>;
-    } else if (categoryKey === 'gallery5') {
-        content = <div>gallery5 내용을 보여줍니다.</div>;
-    } else if (categoryKey === 'notice') {
-        content = <div>notice 내용을 보여줍니다.</div>;
-    } else if (categoryKey === 'notice1') {
+    } else if (categoryList === 'sales') {
+        content = <div>sales 내용을 보여줍니다.</div>;
+    } else if (categoryList === 'rental') {
+        content = <div>rental 내용을 보여줍니다.</div>;
+    } else if (categoryList === 'car') {
+        content = <div>car 내용을 보여줍니다.</div>;
+    } else if (categoryList === 'other') {
+        content = <div>other 내용을 보여줍니다.</div>;
+    } else if (categoryList === 'notice1') {
         content = <div>notice1 내용을 보여줍니다.</div>;
-    } else if (categoryKey === 'notice2') {
+    } else if (categoryList === 'notice2') {
         content = <div>notice2 내용을 보여줍니다.</div>;
     } else {
         content = <div>기본 내용을 보여줍니다.</div>;
@@ -88,7 +89,7 @@ const CategoryPage = ({ categoryKey }) => {
         <div>
             <Header/>
                 <CategoryPageFrame>
-                    <h2>{categoryKey}</h2>
+                    <h2>{categoryList}</h2>
                     <Link to="/post_regist">
                         게시글작성
                     </Link>

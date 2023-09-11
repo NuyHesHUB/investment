@@ -107,7 +107,8 @@ const AdminPostList = () => {
     const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
         setAdminPostListData(prevData => {
             const newData = [...prevData];
-            const newAuthorize = `{"읽기":${newReadValue},"쓰기":${newWriteValue}}`; 
+            /* const newAuthorize = `{"읽기":${newReadValue},"쓰기":${newWriteValue}}`;  */
+            const newAuthorize = JSON.stringify({ "읽기": newReadValue, "쓰기": newWriteValue });
             newData[index][key] = newAuthorize;
             return newData;
         });
@@ -149,7 +150,8 @@ const AdminPostList = () => {
         setAdminPostListData(prevData => {
             const newData = [...prevData];
             /* const newSkins = `{"모바일":${newReadValue},"웹":${newWriteValue}}`; */
-            const newSkins = `{"모바일":"${newReadValue}","웹":"${newWriteValue}"}`;
+            /* const newSkins = `{"모바일":${newReadValue},"웹":${newWriteValue}}`; */
+            const newSkins = JSON.stringify({ "모바일": newReadValue, "웹": newWriteValue });
             newData[index][key] = newSkins; 
             return newData;
         });
@@ -202,6 +204,7 @@ const AdminPostList = () => {
     const handleCategoryInputChange = (index, e) => {
         const value = e.target.value;
         setSelectedCategoryList(value);
+        /* setSelectedCategoryList(JSON.parse(value)); */
         setIsSaveButtonDisabled(false);
 
         /* setAdminPostListData(prevData => {
@@ -340,15 +343,25 @@ const AdminPostList = () => {
             ...selectedRows[0],
             userUid: userUid 
           }, null, 2); */
+          /* const transformedData = {
+            key: selectedRows[0].key,
+            status: selectedRows[0].status,
+            title: selectedRows[0].title,
+            skins: JSON.parse(selectedRows[0].skins),
+            authorize: selectedRows[0].authorize,
+            categoryList: selectedRows[0].categoryList,
+            regUser: selectedRows[0].regUser,
+            regDt: selectedRows[0].regDt,
+            updUser: selectedRows[0].updUser,
+            updDt: selectedRows[0].updDt,
+            userUid: userUid
+          }; */
           const transformedData = {
             key: selectedRows[0].key,
             status: selectedRows[0].status,
             title: selectedRows[0].title,
-            /* skins: JSON.parse(selectedRows[0].skins), */
-            skins: selectedRows[0].skins,
-            authorize: selectedRows[0].authorize,
-            options: selectedRows[0].options,
-            extraFields: selectedRows[0].extraFields,
+            skins: JSON.parse(selectedRows[0].skins),
+            authorize: JSON.parse(selectedRows[0].authorize),
             categoryList: selectedRows[0].categoryList,
             regUser: selectedRows[0].regUser,
             regDt: selectedRows[0].regDt,
