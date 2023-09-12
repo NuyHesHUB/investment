@@ -44,7 +44,7 @@ export const setAdminUserData = (adminUserData) => ({
     adminUserData: adminUserData
 })
 
-export const setAdminPostData = (adminPostData) => ({
-    type: actionTypes.ADMIN_POST_DATA,
-    adminPostData: adminPostData
+export const setAdminBoardData = (adminBoardData) => ({
+    type: actionTypes.ADMIN_BOARD_DATA,
+    adminBoardData: adminBoardData
 })

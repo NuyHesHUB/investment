@@ -31,7 +31,7 @@ import Gallery01 from './Components/CategoryPage/Gallery01';
 /* Admin Components */
 import Admin from './Components/Admin/Admin';
 import AdminMemberList from './Components/Admin/AdminMemberList';
-import AdminPostList from './Components/Admin/AdminPostList';
+import AdminBoardList from './Components/Admin/AdminBoardList';
 import AdminEditUser from './Components/Admin/AdminEditUser';
 import AdminEditPost from './Components/Admin/AdminEditPost';
 import AdminPostGroup from './Components/Admin/AdminPostGroup';
@@ -39,10 +39,12 @@ import AdminPostGroup from './Components/Admin/AdminPostGroup';
 
 const App = () => {
     const dispatch = useDispatch();
+    const rdxTest = useSelector((state) => state.reducer)
     const boardData = useSelector((state) => state.reducer.boardData || []);
     const categoryData = useSelector((state) => state.reducer.galleryListData || []);
     const keyData = boardData?.[0]?.key;
     /* const storeData = useSelector((state) => state.reducer); */
+    console.log('rdxTest',rdxTest);
     console.log('app.js', categoryData);
 
     console.log('app.js', keyData);
@@ -112,7 +114,8 @@ const App = () => {
                 {/* Admin */}
                 <Route exact path="/admin" element={<Admin />}></Route>
                 <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route>
-                <Route exact path="/admin/post_list" element={<AdminPostList/>}></Route>
+                <Route exact path="/admin/board_list" element={<AdminBoardList/>}></Route>
+
                 <Route exact path="/admin/member_edit/:index" element={<AdminEditUser/>}></Route>
                 <Route exact path="/admin/post_edit/:index" element={<AdminEditPost/>}></Route>
                 {/* <Route exact path="/admin/post_edit/:key/:index" element={<AdminEditPost/>}></Route> */}

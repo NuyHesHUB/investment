@@ -5,7 +5,7 @@ import axios from 'axios';
 
 /* Redux */
 import { useDispatch, useSelector } from 'react-redux';
-import { setAdminUserData, setAdminPostData, logout } from '../../store/actions/actions';
+import { setAdminUserData, setAdminBoardData, logout } from '../../store/actions/actions';
 
 /* StyledComponents */
 import { StyledAdminFrame, StyledAdminHeader, StyledAdminTop, StyledAdminNav, AdminNavUl, StyledNavGnb } from './StyledAdmin';
@@ -46,7 +46,7 @@ const Admin = () => {
                 dispatch(setAdminUserData(modifiedUserData)); */
 
                 const adminPostResponse = await axios.get('http://39.117.244.34:3385/v1/board?query=&pageRows=&page=', { headers });
-                dispatch(setAdminPostData(adminPostResponse.data.query));
+                dispatch(setAdminBoardData(adminPostResponse.data.query));
             } catch (error) {
                 console.error('Admin User/Post 데이터 가져오기 실패', error);
             }
@@ -134,8 +134,8 @@ const Admin = () => {
                                 <StyledNavGnb className={`div ${visibleDiv === 3 ? 'visible' : ''}`}>
                                     <h3>게시판관리</h3>
                                     <ul style={{marginTop:'20px'}}>
-                                        <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_list">게시판관리</Link></li>
-                                        <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_group">게시판그룹관리</Link></li>
+                                        <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/board_list">게시판관리</Link></li>
+                                        <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_list">게시물관리</Link></li>
                                         <li style={{marginBottom:'10px', paddingBottom:'6px'}}>내용관리</li>
                                     </ul>
                                 </StyledNavGnb>

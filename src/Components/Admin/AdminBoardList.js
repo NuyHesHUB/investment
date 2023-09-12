@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 /* Redux */
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+/* import { setAdminPostData } from '../../store/actions/actions'; */
 
 /* React-Router-Dom */
 import { Link } from 'react-router-dom';
@@ -16,71 +17,30 @@ import Admin from './Admin';
 /* StyledComponents */
 import { StyledFrame, StyledTableWrap, EditSaveBtn, AdminListFrame, AdminModalFrame, StyledInfoBox, StyledSearchBox, StyledAdminBoard, StyledMemberListNav } from './StyledAdminTable';
 
-const AdminPostList = () => {
-    const editPostData = useSelector((state) => state.reducer.adminPostData);
-    const [AdminPostListData, setAdminPostListData] = useState({}); 
+const AdminBoardList = () => {
+    /* const dispatch = useDispatch(); */
+    const editBoardData = useSelector((state) => state.reducer.adminBoardData);
+    const [AdminBoardListData, setAdminBoardListData] = useState([]); 
     const [selectedRows, setSelectedRows] = useState([]);
+    const [newRowData, setNewRowData] = useState({
+        key: '',
+        title: '',
+        authorize: '',
+        categoryList: '',
+        extraFields: '{}',
+        options: '{}',
+        regDt: '',
+        regUser: '',    
+        skins: '',
+        status: 'Y',
+        updDt: '',
+        updUser: '',
+    });
     const accessToken = sessionStorage.getItem('accessToken');
     const userUid = sessionStorage.getItem('userUid');
     const headers = {
         Authorization: `${accessToken}`
     }
-
-    /* const dataToSave = selectedRows.map(item => ({
-        key: item.key,
-        title: item.title,
-        authorize: item.authorize,
-        options: item.options,
-        extraFields: item.extraFields,
-        categoryList: item.categoryList,
-        skins: item.skins,
-        status: item.status,
-        userUid: item.userUid
-    }));
-    
-    const joinedData = `[${dataToSave.map(obj => JSON.stringify(obj)).join(',')}]`; */
-    /* const dataToSave = selectedRows.map(item => ({
-        key: item.key,
-        title: item.title,
-        authorize: JSON.parse(item.authorize),
-        options: JSON.parse(item.options),
-        extraFields: JSON.parse(item.extraFields),
-        categoryList: JSON.parse(item.categoryList),
-        skins: JSON.parse(item.skins),
-        status: item.status,
-        userUid: userUid
-    }));
-    
-    const joinedData = dataToSave.map(obj => JSON.stringify(obj)); */
-
-    /* const dataToSave = selectedRows.map(item => (
-        {
-            key: item.key,
-            title: item.title,
-            authorize: JSON.parse(item.authorize),
-            options: JSON.parse(item.options),
-            extraFields: JSON.parse(item.extraFields),
-            categoryList: JSON.parse(item.categoryList),
-            skins: JSON.parse(item.skins),
-            status: item.status,
-            userUid: userUid
-        }
-    ));
-    
-    const joinedData = dataToSave.map(obj => ({
-        key: obj.key,
-        title: obj.title,
-        authorize: obj.authorize,
-        options: obj.options,
-        extraFields: obj.extraFields,
-        categoryList: obj.categoryList,
-        skins: obj.skins,
-        status: obj.status,
-        userUid: obj.userUid
-    })); */
-
-    
-    
     
     /*------------------------------------------------*\
                   Authorize 읽기 / 쓰기 수정
@@ -105,24 +65,13 @@ const AdminPostList = () => {
         updateAuthorize(index, 'authorize', readValue[index] || 0, value);
     };
     const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
-        setAdminPostListData(prevData => {
+        setAdminBoardListData(prevData => {
             const newData = [...prevData];
-            /* const newAuthorize = `{"읽기":${newReadValue},"쓰기":${newWriteValue}}`;  */
             const newAuthorize = JSON.stringify({ "읽기": newReadValue, "쓰기": newWriteValue });
             newData[index][key] = newAuthorize;
             return newData;
         });
     };
-    /* const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
-        setAdminPostListData(prevData => {
-            const newData = [...prevData];
-            newData[index][key] = {
-                읽기: newReadValue,
-                쓰기: newWriteValue
-            };
-            return newData;
-        });
-    };   */
     
 
     /*------------------------------------------------*\
@@ -147,7 +96,7 @@ const AdminPostList = () => {
         updateSkins(index, 'skins', value, deskTopSkins[index] || '');
     };
     const updateSkins = (index, key, newReadValue, newWriteValue) => {
-        setAdminPostListData(prevData => {
+        setAdminBoardListData(prevData => {
             const newData = [...prevData];
             /* const newSkins = `{"모바일":${newReadValue},"웹":${newWriteValue}}`; */
             /* const newSkins = `{"모바일":${newReadValue},"웹":${newWriteValue}}`; */
@@ -155,6 +104,10 @@ const AdminPostList = () => {
             newData[index][key] = newSkins; 
             return newData;
         });
+    };
+
+    const handleAddRow = () => {
+        setAdminBoardListData(prevData => [...prevData, newRowData]);
     };
 
     /* 나중에 값이 다 생성되고나면 그 값이 input에 값이 남겨지도록 하는 기능인데 값을 다 전송하는 기능을 구현한 뒤에 구현 */
@@ -185,6 +138,7 @@ const AdminPostList = () => {
                   categoryList MODAL 구현
     \*------------------------------------------------*/
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedCategoryList, setSelectedCategoryList] = useState(null);
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
     const [selectedRowIndex, setSelectedRowIndex] = useState(null);
@@ -204,31 +158,20 @@ const AdminPostList = () => {
     const handleCategoryInputChange = (index, e) => {
         const value = e.target.value;
         setSelectedCategoryList(value);
-        /* setSelectedCategoryList(JSON.parse(value)); */
         setIsSaveButtonDisabled(false);
-
-        /* setAdminPostListData(prevData => {
-            const newData = [...prevData];
-            newData[index]['categoryList'] = value; 
-            return newData;
-        }); */
     };
 
     const handleSaveClick = () => {
         setIsSaveButtonDisabled(true);
-        setAdminPostListData(prevData => {
+        setAdminBoardListData(prevData => {
             const newData = [...prevData];
             newData[selectedRowIndex]['categoryList'] = selectedCategoryList;
             return newData;
         });
     }
 
-    /* const handleCancelClick = (index) => {
-        setSelectedCategoryList(prevSelectedCategoryList);
-        setIsSaveButtonDisabled(true);
-    }; */
     console.log('selectedCategoryList',selectedCategoryList);
-    
+    console.log('newRowData',newRowData);
 
     /*------------------------------------------------*\
                       CheckBox onChange
@@ -248,7 +191,7 @@ const AdminPostList = () => {
     \*------------------------------------------------*/
     const handleInputChange = (e, index, key) => {
         const { value } = e.target;
-        setAdminPostListData(prevData => {
+        setAdminBoardListData(prevData => {
             const newData = [...prevData];
             newData[index][key] = value;
             return newData;
@@ -259,103 +202,16 @@ const AdminPostList = () => {
           Redux에 저장한 값을 새로운 useState에 저장
     \*------------------------------------------------*/
     useEffect(() => {
-        if(editPostData.length > 0){
-            setAdminPostListData(editPostData);
-            /* console.log('AdminPostListData',AdminPostListData); */
+        if(editBoardData.length > 0){
+            setAdminBoardListData(editBoardData);
+            /* console.log('AdminBoardListData',AdminPostListData); */
         }else {
-            console.log('editPostData', '해당 인덱스에 데이터가 없습니다.');
+            console.log('editBoardData', '해당 인덱스에 데이터가 없습니다.');
         }
-    },[editPostData])
+    },[editBoardData])
 
-    /* const handlePostEditSaveClick = async(e) => {
+    const handleBoardEditSaveClick = async (e) => {
         e.preventDefault();
-        console.log(joinedData);
-
-        try{
-            const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', joinedData, { headers });
-            console.log('관리자 게시판관리 수정 성공', response);
-        } catch(error) {
-            console.error('관리자 게시판관리 수정 실패', error);
-        }
-    } */
-
-    /* const handlePostEditSaveClick = async(e) => {
-        e.preventDefault();
-        try{
-            const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', selectedRows, { headers });
-            console.log('관리자 게시판관리 수정 성공', response);
-        } catch(error) {
-            console.error('관리자 게시판관리 수정 실패', error);
-        }
-    } */
-
-    /* const handlePostEditSaveClick = async (e) => {
-        e.preventDefault();
-    
-        const jsonData = JSON.stringify(dataToSave, null, 2);
-    
-        const blob = new Blob([jsonData], { type: 'application/json' });
-    
-        const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = 'joinedData.json';
-        downloadLink.click();
-    } */
-    
-    
-    /* const handlePostEditSaveClick = async (e) => {
-        e.preventDefault();
-    
-        const updatedData = selectedRows.map(item => ({
-            key: item.key,
-            title: item.title,
-            authorize: item.authorize,
-            options: item.options,
-            extraFields: item.extraFields,
-            categoryList: item.categoryList,
-            skins: item.skins,
-            status: item.status,
-            userUid: userUid
-        }));
-
-        console.log('updatedData',jsonData);
-
-        try{
-            const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', selectedRows, { headers });
-            console.log('관리자 게시판관리 수정 성공', response);
-        } catch(error) {
-            console.error('관리자 게시판관리 수정 실패', error);
-        }
-
-        const jsonData = JSON.stringify(updatedData[0], null, 2);
-        console.log('jsonData',jsonData);
-        const blob = new Blob([jsonData], { type: 'application/json' });
-    
-        const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = 'updatedData.json';
-        downloadLink.click();
-
-    } */
-    const handlePostEditSaveClick = async (e) => {
-        e.preventDefault();
-        /* const jsonData = JSON.stringify({ 
-            ...selectedRows[0],
-            userUid: userUid 
-          }, null, 2); */
-          /* const transformedData = {
-            key: selectedRows[0].key,
-            status: selectedRows[0].status,
-            title: selectedRows[0].title,
-            skins: JSON.parse(selectedRows[0].skins),
-            authorize: selectedRows[0].authorize,
-            categoryList: selectedRows[0].categoryList,
-            regUser: selectedRows[0].regUser,
-            regDt: selectedRows[0].regDt,
-            updUser: selectedRows[0].updUser,
-            updDt: selectedRows[0].updDt,
-            userUid: userUid
-          }; */
           const transformedData = {
             key: selectedRows[0].key,
             status: selectedRows[0].status,
@@ -369,27 +225,9 @@ const AdminPostList = () => {
             updDt: selectedRows[0].updDt,
             userUid: userUid
           };
-          /* console.log(transformedData); */
+        /* console.log(transformedData); */
         /* console.log('jsonData',jsonData); */
         try{
-            /* const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', {
-                
-                    "key": "gallery",
-                    "status": "Y",
-                    "title": "자유 갤러리22",
-                    "skins": "{\"모바일\":\"basic\",\"웹\":\"basic\"}",
-                    "authorize": "{\"읽기\":0,\"쓰기\":0}",
-                    "options": "{\"옵션1\":1}",
-                    "extraFields": "{}",
-                    "categoryList": "[\"오토바이\",\"자동차\"]",
-                    "regUser": "관리자1",
-                    "regDt": "2023-08-09T03:04:36.000Z",
-                    "updUser": "주세현2",
-                    "updDt": "2023-09-10T14:50:43.000Z",
-                    "userUid": "96443601080ba5209f4a858c3ae33e91ac66d5849a0e502c0c495311b10ba99a"
-                
-            }, { headers }); */
-            
             const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', transformedData, { headers });
             console.log('관리자 게시판관리 수정 성공', response);
         } catch(error) {
@@ -397,25 +235,76 @@ const AdminPostList = () => {
         }
         /* console.log('jsonData',jsonData); */
         // 요청 보내기
-        
       };
+      const handleBoardGroupAddSaveClick = async (e) => {
+        e.preventDefault();
+
+        /* setAdminPostListData(prevData => [...prevData, newRowData]); */
+        setNewRowData({ 
+            key: '',
+            title: '',
+            authorize: '',
+            categoryList: '',
+            extraFields: '',
+            options: '',
+            regDt: '',
+            regUser: '',    
+            skins: '',
+            status: 'Y',
+            updDt: '',
+            updUser: '',
+        });
+        try {
+            const response = await axios.post('http://39.117.244.34:3385/v1/board/form', newRowData, { headers });
+            console.log('새로운 데이터 추가 성공', response);
     
+            // 성공적으로 추가된 데이터가 응답으로 올 것입니다.
+            // response.data를 활용하여 필요한 작업을 수행합니다.
+    
+        } catch (error) {
+            console.error('작업 실패', error);
+        }
+      }
+      /* const handleDeleteRow = (index) => {
+        setAdminPostListData((prevData) => {
+          // index에 해당하는 열을 제외한 나머지 열들을 필터링하여 새로운 배열을 생성
+          const newData = prevData.filter((item, i) => i !== index);
+          return newData;
+        });
+      }; */
+    const handleDeleteSave = async (e) => {
+        e.preventDefault();
+        const deleteData = selectedRows?.[0]?.key;
+        console.log('deleteData',deleteData);
+        const deleteForm = {
+            key: deleteData,
+            userUid: userUid
+        }
+        try{
+            const response = await axios.delete('http://39.117.244.34:3385/v1/board/delete', deleteForm, { headers })
+            console.log('삭제 성공', response);
+        } catch (error) {
+            console.error('삭제 실패', error);
+        }
+    };
     /*------------------------------------------------*\
                     console.log 테스트
     \*------------------------------------------------*/
-    console.log('postData테스트', editPostData);
+    console.log('boardData테스트', editBoardData);
     console.log('selectedRows:', selectedRows);
-    console.log('AdminPostListData',AdminPostListData);
+    console.log('AdminBoardListData',AdminBoardListData);
     return (
         <AdminListFrame $isModalOpen={isModalOpen}>
             <Admin/>
             <StyledFrame>
-                {editPostData.length > 0 ? 
+                {editBoardData.length > 0 ? 
                 <AdminListFrame>
                     <StyledTableWrap>
                     <div style={{display:'flex', width:'100%', justifyContent:'space-between', marginBottom:'50px'}}>
                         <h1>게시판관리</h1>
-                        <EditSaveBtn onClick={handlePostEditSaveClick} className='edit_save_btn'>저 장</EditSaveBtn>
+                        <EditSaveBtn onClick={handleAddRow}>행 추가</EditSaveBtn>
+                        <EditSaveBtn onClick={handleBoardGroupAddSaveClick}>행 추가 저장</EditSaveBtn>
+                        <EditSaveBtn onClick={handleBoardEditSaveClick} className='edit_save_btn'>저 장</EditSaveBtn>
                     </div>
                         <StyledAdminBoard>
                             <div>
@@ -427,7 +316,7 @@ const AdminPostList = () => {
                                                     type="checkbox" 
                                                     onChange={(e) => {
                                                         if (e.target.checked) {
-                                                            setSelectedRows([...editPostData]);
+                                                            setSelectedRows([...editBoardData]);
                                                         } else {
                                                             setSelectedRows([]);
                                                         }
@@ -476,7 +365,7 @@ const AdminPostList = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {editPostData.map((item, index) => (
+                                        {AdminBoardListData.map((item, index) => (
                                                 <tr key={index}>
                                                     <td>
                                                         <input 
@@ -541,11 +430,19 @@ const AdminPostList = () => {
                                                         <Link to={`/admin/post_edit/${index}`} style={{textDecoration:'none'}}>
                                                                 <span style={{background:'#3f51b5',color:'#fff',padding:'5px',fontSize:'12px',borderRadius:'10px'}}>수정</span>
                                                         </Link>
+                                                        <button disabled={!selectedRows.includes(item)} onClick={() => setIsDeleteModalOpen(true)} style={{padding:'5px',fontSize:'12px', marginLeft:'5px'}}>삭제</button>
                                                     </td>
                                                 </tr>
                                             ))}
                                     </tbody>
                                 </table>
+                                {isDeleteModalOpen && (
+                                    <AdminModalFrame>
+                                        <div>삭제 하시겠습니까?</div>
+                                        <button onClick={handleDeleteSave}>네</button>
+                                        <button onClick={() => setIsDeleteModalOpen(false)}>아니오</button>
+                                    </AdminModalFrame>
+                                )}
                                 {isModalOpen && (
                                     <AdminModalFrame >
                                         <div className='modal-header'>카테고리 추가/수정</div>
@@ -582,4 +479,4 @@ const AdminPostList = () => {
     );
 };
 
-export default AdminPostList;
+export default AdminBoardList;

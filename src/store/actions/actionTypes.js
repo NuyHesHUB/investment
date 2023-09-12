@@ -16,4 +16,4 @@ export const SET_CATEGORY_DATA = 'SET_CATEGORY_DATA';
 
 /* Admin */
 export const ADMIN_USER_DATA='ADMIN_USER_DATA';
-export const ADMIN_POST_DATA='ADMIN_POST_DATA';
+export const ADMIN_BOARD_DATA='ADMIN_BOARD_DATA';

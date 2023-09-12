@@ -55,10 +55,10 @@ const reducer = (state = initialState, action) => {
                 adminUserData: action.adminUserData
             };
         
-        case actionTypes.ADMIN_POST_DATA:
+        case actionTypes.ADMIN_BOARD_DATA:
             return {
                 ...state,
-                adminPostData: action.adminPostData
+                adminBoardData: action.adminBoardData
             }
 
         default: return state;
