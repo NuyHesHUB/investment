@@ -20,8 +20,8 @@ import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsPersonCircle } from "react-icons/bs";
 
 const Admin = () => {
-    const adminUserData = useSelector((state) => state.reducer.adminUserData);
-    const adminPostData = useSelector((state) => state.reducer.adminPostData);
+    /* const adminUserData = useSelector((state) => state.reducer.adminUserData);
+    const adminPostData = useSelector((state) => state.reducer.adminPostData); */
     const dispatch = useDispatch();
     const navigate = useNavigate();
     /* dispatch(setBoardData(titles)); */

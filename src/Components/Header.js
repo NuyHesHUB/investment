@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../store/actions/actions';
-import { Link, useNavigate } from 'react-router-dom';
+
+import { logout, setGalleryCategoryData } from '../store/actions/actions';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import axiosInstance from '../axiosInstance';
 import { StyledHeaderFrame, HeaderContainer, HeaderLogo, MenuFrame, HeaderBtn, MenuList } from './StyledComponents/StyledHeader';
 const Header = () => {
+    /* const { key } = useParams(); */
+
+    /* const storeData = useSelector((state) => state.reducer.galleryListData);
+    console.log('storeData',storeData); */
+
+    const dispatch = useDispatch();
     /* 메뉴 카테고리에 뿌려보기 home.js 전역관리 */
     const boardData = useSelector((state) => state.reducer.boardData);
+    const categoryData = useSelector((state) => state.reducer.galleryListData);
 
-
+    /* console.log('header-key-test',key); */
     const [isSubMenuOpen, setSubMenuOpen] = useState(false);
     
     const handleMouseEnter = () => {
@@ -20,7 +28,6 @@ const Header = () => {
         setSubMenuOpen(false);
     };
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     /* 유저 정보 가져오기 */
@@ -29,7 +36,7 @@ const Header = () => {
     
     const [userData, setUserData] = useState(null); 
     const userUid = sessionStorage.getItem('userUid');
-    const key = 'Authorization'
+    const key1 = 'Authorization'
     const headers = {
             Authorization: `${accessToken}`
         };
@@ -37,7 +44,7 @@ const Header = () => {
 
     useEffect(() => {
         if (accessToken) {
-            const url = `/users/${userUid}?${key}=${accessToken}`;
+            const url = `/users/${userUid}?${key1}=${accessToken}`;
             axiosInstance.get(url, { headers })
             .then(response => {
             setUserData(response.data);
@@ -76,13 +83,15 @@ const Header = () => {
             const cleanString = boardData[0].categoryList.replace(/\[|\]|"|/g, "");
             const categoryArray = cleanString.split(",");
             const translatedCategories = categoryArray.map(category => categoryMapping[category] || category);
-            
+
+            dispatch(setGalleryCategoryData(categoryArray));
+
             const items = translatedCategories.map((item,index) => (
                 <li key={index}>
-                  <Link to={`/${categoryArray[index]}`}>{translatedCategories[index]}</Link>
+                  <Link to={`/${boardData[0].key}/${categoryArray[index]}`}>{translatedCategories[index]}</Link>
                 </li>
               ));
-            /* console.log('categoryArray',categoryArray); */
+            console.log('categoryArray',categoryArray);
             /* console.log('translatedCategories', translatedCategories); */
             /* console.log('categoryMapping', categoryMapping[0]); */
             setMenuItems(items);
@@ -118,6 +127,16 @@ const Header = () => {
                         <li style={{width:'100px'}}>
                             <Link style={{color:'#000',fontWeight:'bold'}}>투자하기</Link>
                         </li>
+                        {/* {categoryData.map((item, index)=> (
+                            <div>{item}</div>
+                        ))} */}
+                        
+                        {/* {boardData && categoryData && boardData.map((item, index) => (
+                            <div>
+                                <div>{item.key}</div> 
+                                <div>{categoryData[index]}</div>
+                            </div>
+                        ))} */}
                         {/* {boardData.length > 0 && boardData[0].categoryList} */}
                         {/* {menuItems.length > 0 ? <>{menuItems}</> : 'null'} */}
                     </MenuList>

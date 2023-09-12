@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { StyledFrame, GalleryWrap, LeftFrame, LeftTable, TablePagination, RightFrame } from './StyledBoardTable';
+import { useSelector } from 'react-redux';
 
 const Gallery01 = ({postData}) => {
-
+    const categoryData = useSelector((state) => state.reducer.galleryListData || []);
+    /* const boardData = useSelector((state) => state.reducer.boardData || []); */
       const sortedPostData = [...postData].sort((a, b) => {
         const dateComparison = new Date(b.date) - new Date(a.date);
         if (dateComparison !== 0) {
@@ -26,9 +28,11 @@ const Gallery01 = ({postData}) => {
       const visibleBoardData = sortedPostData.slice(startIndex, endIndex);
 
       console.log('gallery01',postData);
+      /* console.log('gallery01',boardData); */
     return (
         <StyledFrame>
-            <h1>게시판</h1>
+            {/* <h1>게시판 목록 페이지</h1> */}
+            <h1>Gallery01.js</h1>
             <GalleryWrap>
                 <LeftFrame>
                     <LeftTable>
@@ -49,7 +53,7 @@ const Gallery01 = ({postData}) => {
                                     <td>{item.num}</td>
                                     <td>{item.isSecret}</td>
                                     <td>{item.nickname}</td>
-                                    <td><Link to={`${item.id}`}>{item.title}</Link></td>
+                                    <td><Link to={`/gallery/${categoryData?.[0]}/${item.id}`}>{item.title}</Link></td>
                                     <td>{item.like}</td>
                                     <td>{item.brdKey}</td>
                                     <td>{item.post_view_count}</td>

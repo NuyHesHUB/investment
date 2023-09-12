@@ -17,10 +17,11 @@ import { PostDetailFrame, PostMain } from './StyledPostDetail';
 
 const PostDetail = () => {
     const { categoryKey, id } = useParams();
-
+    console.log(categoryKey);
     const boardData = useSelector((state) => state.reducer);
     console.log('boardData',boardData);
     const [ testData, setTestData ] = useState([]);
+    
     const [comments, setComments] = useState([]);
 
     const [post, setPost] = useState(null);
@@ -28,17 +29,18 @@ const PostDetail = () => {
     const [isDisliked, setIsDisliked] = useState(false);
 
     /* console.log('postdetail',boardData); */
-    const url = `http://39.117.244.34:3385/v1/board/${categoryKey}/post/${id}`
+    /* const url = `http://39.117.244.34:3385/v1/board/${categoryKey}/post/${id}` */
+    /* const url = `http://39.117.244.34:3385/v1/board/gallery/post/${id}`
     const accessToken = sessionStorage.getItem('accessToken');
     const userUid = sessionStorage.getItem('userUid');
     const headers = {
         Authorization: `${accessToken}`
-    }
+    } */
     /* console.log('카테고리키', categoryKey); */
     /* console.log('카테고리키', num); */
     /* console.log('아아디',id); */
     
-    const handlePostComment = (comment) => {
+    /* const handlePostComment = (comment) => {
         axios.post(`http://39.117.244.34:3385/v1/board/${categoryKey}/post/${id}/comments`,{
             status: 'Y',
             parentId: id,
@@ -49,7 +51,7 @@ const PostDetail = () => {
             headers
         })
         .then(response => {
-            /* setComments([...comments, response.data]); */
+            
             const newComment = response.data;
             console.log('댓글 게시 성공:', response.data);
             setComments(prevComments => [...prevComments, newComment]);
@@ -58,9 +60,9 @@ const PostDetail = () => {
             console.error('댓글 게시 실패', error);
             alert('로그인해주세요')
         })
-    };
+    }; */
     
-    useEffect(() => {
+    /* useEffect(() => {
         axios.get(url, { headers })
             .then(response => {
                 const test = response.data.query;
@@ -74,7 +76,7 @@ const PostDetail = () => {
         const commentsUrl = `http://39.117.244.34:3385/v1/board/${categoryKey}/post/${id}/comments`;
         axios.get(commentsUrl, { headers })
         .then(response => {
-            const commentData = response.data.query; // 서버에서 반환되는 댓글 목록 데이터
+            const commentData = response.data.query; 
             setComments(commentData);
             console.log('댓글 목록:', commentData);
         })
@@ -82,9 +84,9 @@ const PostDetail = () => {
             console.error('댓글 목록 가져오기 실패', error);
         });
 
-    }, [url, categoryKey, id]);
+    }, [url, categoryKey, id]); */
 
-    const handleLike = () => {
+    /* const handleLike = () => {
             axios.post(`http://39.117.244.34:3385/v1/board/like`, {
                 boardPostId: id,
                 type: 'like',
@@ -104,8 +106,9 @@ const PostDetail = () => {
                     console.error('좋아요 추가 실패', error);
                 });
         
-    };
-    const handleDislike = () => {
+    }; */
+
+    /* const handleDislike = () => {
         if (!isLiked && !isDisliked) {
             // 싫어요 추가 요청 보내기
             axios.post(`http://39.117.244.34:3385/v1/board/like`, {
@@ -127,17 +130,19 @@ const PostDetail = () => {
                     console.error('싫어요 추가 실패', error);
                 });
         }
-    };
+    }; */
+    console.log('testData',testData);
     return (
         <div>
             <Header/>
-                <PostDetailFrame>
+                게시물 페이지
+                {/* <PostDetailFrame>
                     <h4 style={{fontWeight:'normal', textAlign:'center'}}><span style={{fontWeight:'bold'}}>{categoryKey}</span> 카테고리의 게시물 ID <span style={{fontWeight:'bold'}}>{id}</span> 의 상세 페이지</h4>
-                    {/* <div>
+                    <div>
                         <button onClick={handleLike} disabled={isLiked || isDisliked}>좋아요</button>
                         <button onClick={handleDislike} disabled={isLiked || isDisliked}>싫어요</button>
-                    </div> */}
-                    {/* {testData.map((item, index) => (
+                    </div>
+                    {testData.map((item, index) => (
                         <div key={index}>
                             <p>id : {item.id}</p>
                             <p>num : {item.num}</p>
@@ -155,21 +160,10 @@ const PostDetail = () => {
                             <p>thumbnail : {item.thumbnail}</p>
                             <p>nickname : {item.nickname}</p>
                         </div>
-                    ))} */}
+                    ))}
                     {testData.map((item, index) => (
                         <PostMain key={index}>
                             <table>
-                                {/* <thead>
-                                    <th>
-                                        <td>1</td>
-                                    </th>
-                                    <th>
-                                        <td>2</td>
-                                    </th>
-                                    <th>
-                                        <td>3</td>
-                                    </th>
-                                </thead> */}
                                 <tbody>
                                     <tr style={{display:'flex',alignItems:'center'}}>
                                         <td>{item.title}</td>
@@ -229,7 +223,7 @@ const PostDetail = () => {
                             ))
                         }
                     </div>
-                </PostDetailFrame>
+                </PostDetailFrame> */}
             <Footer/>
         </div>
     );

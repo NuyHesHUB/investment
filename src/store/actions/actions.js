@@ -34,7 +34,10 @@ export const setPostData = (postData) => ({
     postData: postData,
   });
 
-
+export const setGalleryCategoryData = (galleryListData) => ({
+    type: actionTypes.SET_CATEGORY_DATA,
+    galleryListData: galleryListData,
+})
 
 export const setAdminUserData = (adminUserData) => ({
     type: actionTypes.ADMIN_USER_DATA,

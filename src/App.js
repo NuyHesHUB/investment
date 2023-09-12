@@ -37,20 +37,16 @@ import AdminEditPost from './Components/Admin/AdminEditPost';
 import AdminPostGroup from './Components/Admin/AdminPostGroup';
 
 
-
-
-
-
-
-
-
-
-
 const App = () => {
     const dispatch = useDispatch();
-    const boardData = useSelector((state) => state.reducer.boardData);
-    const storeData = useSelector((state) => state.reducer);
-    /* console.log('app.js',boardData); */
+    const boardData = useSelector((state) => state.reducer.boardData || []);
+    const categoryData = useSelector((state) => state.reducer.galleryListData || []);
+    const keyData = boardData?.[0]?.key;
+    /* const storeData = useSelector((state) => state.reducer); */
+    console.log('app.js', categoryData);
+
+    console.log('app.js', keyData);
+    
     /* console.log('app.js',storeData); */
 
     useEffect(() => {
@@ -58,7 +54,7 @@ const App = () => {
             .then(response => {
                 const titles = response.data.query;
                 dispatch(setBoardData(titles));
-                /* console.log('home.js',response.data); */
+                /* console.log('home.js',response.data.query); */
             })
             .catch(error => {
                 console.error('게시판 데이터를 가져올 수 없습니다.', error);
@@ -74,24 +70,43 @@ const App = () => {
                 <Route exact path="/login" element={<Login />}></Route>
                 <Route exact path="/sign_up" element={<Signup/>}></Route>
                 <Route exact path="/myinfo" element={<MemberEditPage />}></Route>
-                {/* {boardData.map((item, index) => (
-                    <Route
-                    key={index}
-                    path={`/${item.key}`}
-                    element={<CategoryPage1 categoryKey={item.key} />}
-                    />
-                ))} */}
 
                 {/* Gallery */}
-                <Route exact path='/dining' element={<CategoryPage categoryList="dining"/>}></Route>
-                <Route exact path='/manufacturing' element={<CategoryPage categoryList="manufacturing"/>}></Route>
+                <Route exact path='/gallery/dining' element={<CategoryPage categoryList="dining"/>}></Route>
+                <Route exact path='/gallery/manufacturing' element={<CategoryPage categoryList="manufacturing"/>}></Route>
+                <Route exact path='/gallery/sales' element={<CategoryPage categoryList="sales"/>}></Route>
+                <Route exact path='/gallery/rental' element={<CategoryPage categoryList="rental"/>}></Route>
+                <Route exact path='/gallery/car' element={<CategoryPage categoryList="car"/>}></Route>
+                <Route exact path='/gallery/other' element={<CategoryPage categoryList="other"/>}></Route>
+
+
+                {/* {boardData.legnth > 0 && categoryData.legnth > 0 && boardData.map((item, index) => (
+                    <Route key={index} exact path={`/${item.key}/${categoryData[index]}`} element={<CategoryPage index={index} categoryList={categoryData[index]}/>}
+                    />
+                ))} */}
+                {boardData.length > 0 && categoryData.length > 0 && boardData.map((item, index) => {
+                    const path = `/${boardData?.[0]?.key}/${categoryData[index]}`;
+                    console.log(`Route path: ${path}`);
+                    return (
+                        <Route
+                            key={index}
+                            exact
+                            path={path}
+                            element={<CategoryPage index={index} categoryList={categoryData[index]} />}
+                        />
+                    );
+                })}
+                
+
+                {/* <Route exact path='/:categoryList' element={<CategoryPage categoryList="dining"/>}></Route>
+                <Route exact path='/:key' element={<CategoryPage categoryList="manufacturing"/>}></Route>
                 <Route exact path='/sales' element={<CategoryPage categoryList="sales"/>}></Route>
                 <Route exact path='/rental' element={<CategoryPage categoryList="rental"/>}></Route>
                 <Route exact path='/car' element={<CategoryPage categoryList="car"/>}></Route>
-                <Route exact path='/other' element={<CategoryPage categoryList="other"/>}></Route>
+                <Route exact path='/other' element={<CategoryPage categoryList="other"/>}></Route> */}
 
                 {/* Post */}
-                <Route exact path="/:categoryKey/:id" element={<PostDetail/>} />
+                <Route exact path="/gallery/dining/:id" element={<PostDetail/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
 
                 {/* Admin */}

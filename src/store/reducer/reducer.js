@@ -42,6 +42,12 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 postData: action.postData
             };
+            
+        case actionTypes.SET_CATEGORY_DATA:
+            return {
+                ...state,
+                galleryListData: action.galleryListData
+            };
 
         case actionTypes.ADMIN_USER_DATA:
             return {
