@@ -17,7 +17,8 @@ import Admin from './Admin';
 import { StyledFrame, StyledTableWrap, EditSaveBtn, AdminListFrame, AdminModalFrame, StyledInfoBox, StyledSearchBox, StyledAdminBoard, StyledMemberListNav } from './StyledAdminTable';
 
 const AdminPostList = () => {
-    const editPostData = useSelector((state) => state.reducer.adminPostData);
+    const editPostData = useSelector((state) => state.reducer);
+    
     const [AdminPostListData, setAdminPostListData] = useState({}); 
     const [selectedRows, setSelectedRows] = useState([]);
     const accessToken = sessionStorage.getItem('accessToken');
@@ -25,7 +26,7 @@ const AdminPostList = () => {
     const headers = {
         Authorization: `${accessToken}`
     }
-
+    console.log('editPostData',editPostData);
     /*------------------------------------------------*\
                   Authorize 읽기 / 쓰기 수정
     \*------------------------------------------------*/

@@ -42,37 +42,83 @@ const AdminBoardList = () => {
     const headers = {
         Authorization: `${accessToken}`
     }
-    /* const headers = {
-        Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVWlkIjoiOTY0NDM2MDEwODBiYTUyMDlmNGE4NThjM2FlMzNlOTFhYzY2ZDU4NDlhMGU1MDJjMGM0OTUzMTFiMTBiYTk5YSIsImlhdCI6MTY5NDU5NTQ3MSwiZXhwIjoxNjk1ODA1MDcxfQ.9QDT2G4RQsWns8cAF4VDBjvX05iAZsyCL4A0DTFFguc"
-    } */
     
     /*------------------------------------------------*\
                   Authorize 읽기 / 쓰기 수정
     \*------------------------------------------------*/
     const [readValue, setReadValue] = useState({});
     const [writeValue, setWriteValue] = useState({});
-    const handleReadChange = (e, index) => {
+    /* const handleReadChange = (e, index) => {
         const value = e.target.value;
         setReadValue(prevValues => ({
             ...prevValues,
             [index]: value
         }));
         updateAuthorize(index, 'authorize', value, writeValue[index] || 0);
+    }; */
+    const handleReadChange = (e, index) => {
+        const value = e.target.value;
+        setReadValue(prevValues => ({
+            ...prevValues,
+            [index]: value === '선택' ? '' : value // '선택'일 경우 빈 문자열로 설정
+        }));
+        updateAuthorize(index, 'authorize', value === '선택' ? '' : value, writeValue[index] === '선택' ? '' : writeValue[index]);
     };
-    
-    const handleWriteChange = (e, index) => {
+
+    /* const handleWriteChange = (e, index) => {
         const value = e.target.value;
         setWriteValue(prevValues => ({
             ...prevValues,
             [index]: value
         }));
         updateAuthorize(index, 'authorize', readValue[index] || 0, value);
+    }; */
+    const handleWriteChange = (e, index) => {
+        const value = e.target.value;
+        setWriteValue(prevValues => ({
+            ...prevValues,
+            [index]: value === '선택' ? '' : value // '선택'일 경우 빈 문자열로 설정
+        }));
+        updateAuthorize(index, 'authorize', readValue[index] === '선택' ? '' : readValue[index], value === '선택' ? '' : value);
     };
+
+    /* const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
+        setAdminBoardListData(prevData => {
+            const newData = [...prevData];
+            const newAuthorize = JSON.stringify({ "읽기": newReadValue || null, "쓰기": newWriteValue || null });
+            newData[index][key] = newAuthorize;
+            return newData;
+        });
+    }; */
+    /* const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
+        setAdminBoardListData(prevData => {
+            const newData = [...prevData];
+            const newAuthorize = {};
+            if (newReadValue !== null) {
+                newAuthorize["읽기"] = newReadValue;
+            }
+            if (newWriteValue !== null) {
+                newAuthorize["쓰기"] = newWriteValue;
+            }
+            newData[index][key] = Object.keys(newAuthorize).length > 0 ? JSON.stringify(newAuthorize) : "{}";
+            return newData;
+        });
+    }; */
     const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
         setAdminBoardListData(prevData => {
             const newData = [...prevData];
-            const newAuthorize = JSON.stringify({ "읽기": newReadValue, "쓰기": newWriteValue });
-            newData[index][key] = newAuthorize;
+            const newAuthorize = {};
+    
+            if (newReadValue !== null && newReadValue !== '선택') {
+                newAuthorize["읽기"] = newReadValue;
+            }
+    
+            if (newWriteValue !== null && newWriteValue !== '선택') {
+                newAuthorize["쓰기"] = newWriteValue;
+            }
+    
+            newData[index][key] = JSON.stringify(newAuthorize);
+            console.log('newData',newData);
             return newData;
         });
     };
@@ -104,7 +150,7 @@ const AdminBoardList = () => {
             const newData = [...prevData];
             /* const newSkins = `{"모바일":${newReadValue},"웹":${newWriteValue}}`; */
             /* const newSkins = `{"모바일":${newReadValue},"웹":${newWriteValue}}`; */
-            const newSkins = JSON.stringify({ "모바일": newReadValue, "웹": newWriteValue });
+            const newSkins = JSON.stringify({ "모바일": newReadValue || null , "웹": newWriteValue || null });
             newData[index][key] = newSkins; 
             return newData;
         });
@@ -175,7 +221,7 @@ const AdminBoardList = () => {
     }
 
     console.log('selectedCategoryList',selectedCategoryList);
-    console.log('newRowData',newRowData);
+    /* console.log('newRowData',newRowData); */
 
     /*------------------------------------------------*\
                       CheckBox onChange
@@ -208,12 +254,12 @@ const AdminBoardList = () => {
     useEffect(() => {
         if(editBoardData?.length > 0){
             setAdminBoardListData(editBoardData);
-            /* console.log('AdminBoardListData',AdminPostListData); */
+            console.log('AdminBoardListData',editBoardData);
         }else {
             console.log('editBoardData', '해당 인덱스에 데이터가 없습니다.');
         }
     },[editBoardData])
-
+    
     const handleBoardEditSaveClick = async (e) => {
         e.preventDefault();
           const transformedData = {
@@ -229,7 +275,7 @@ const AdminBoardList = () => {
             updDt: selectedRows[0].updDt, */
             userUid: userUid
           };
-        /* console.log(transformedData); */
+        console.log(transformedData);
         /* console.log('jsonData',jsonData); */
         try{
             const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', transformedData, { headers });
@@ -325,7 +371,8 @@ const AdminBoardList = () => {
                                     <thead>
                                         <tr>
                                             <th scope='col'>
-                                                <input 
+                                                <input
+                                                    name='checkbox' 
                                                     type="checkbox" 
                                                     onChange={(e) => {
                                                         if (e.target.checked) {
@@ -384,6 +431,7 @@ const AdminBoardList = () => {
                                                     <tr key={index}>
                                                     <td>
                                                         <input 
+                                                            name='checkbox'
                                                             type="checkbox" 
                                                             checked={selectedRows.includes(item)}
                                                             onChange={() => handleCheckboxChange(item)} 
@@ -391,6 +439,7 @@ const AdminBoardList = () => {
                                                     </td>
                                                     <td rowSpan={1}>
                                                         <input 
+                                                            name='checkbox'
                                                             placeholder={item.key} 
                                                             value={item.key}
                                                             onChange={(e) => handleInputChange(e, index, 'key')}
@@ -399,6 +448,7 @@ const AdminBoardList = () => {
                                                     </td>
                                                     <td rowSpan={1}>
                                                         <input 
+                                                            name='checkbox'
                                                             placeholder={item.title} 
                                                             value={item.title}
                                                             onChange={(e) => handleInputChange(e, index, 'title')}
@@ -406,16 +456,26 @@ const AdminBoardList = () => {
                                                         />
                                                     </td>
                                                     <td>
-                                                        <select value={readValue[index]} onChange={(e) => handleReadChange(e, index)} disabled={!selectedRows.includes(item)}>
-                                                            {['', 0, 1, 2, 3, 4, 5].map(num => (
-                                                                <option key={num} value={num}>{num}{num === '' ? '선택' : ''}</option>
+                                                        <select 
+                                                            value={readValue[index] === null ? '선택' : readValue[index]} // '선택' 값이면 null 대신 '선택'을 표시
+                                                            onChange={(e) => handleReadChange(e, index)} 
+                                                            disabled={!selectedRows.includes(item)}
+                                                        >
+                                                            <option value={null}>선택</option>
+                                                            {[0, 1, 2, 3, 4, 5].map(num => (
+                                                                <option key={num} value={num}>{num === '' ? '선택' : num}</option>
                                                             ))}
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select value={writeValue[index]} onChange={(e) => handleWriteChange(e, index)} disabled={!selectedRows.includes(item)}>
-                                                            {['', 0, 1, 2, 3, 4, 5].map(num => (
-                                                                <option key={num} value={num}>{num}{num === '' ? '선택' : ''}</option>
+                                                        <select 
+                                                            value={writeValue[index] === null ? '선택' : writeValue[index]} // '선택' 값이면 null 대신 '선택'을 표시
+                                                            onChange={(e) => handleWriteChange(e, index)} 
+                                                            disabled={!selectedRows.includes(item)}
+                                                        >
+                                                            <option value={null}>선택</option>
+                                                            {[0, 1, 2, 3, 4, 5].map(num => (
+                                                                <option key={num} value={num}>{num === '' ? '선택' : num}</option>
                                                             ))}
                                                         </select>
                                                     </td>
@@ -472,6 +532,7 @@ const AdminBoardList = () => {
                                             <div>변경후 : {isSaveButtonDisabled && <>{selectedCategoryList}</> }</div>
                                             {/* {isSaveButtonDisabled && <div>{selectedCategoryList}</div>} */}
                                             <input 
+                                                name='checkbox'
                                                 placeholder={selectedCategoryList} 
                                                 value={selectedCategoryList}
                                                 onChange={(e) => handleCategoryInputChange(selectedRowIndex, e)}

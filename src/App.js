@@ -43,12 +43,13 @@ const App = () => {
     const rdxTest = useSelector((state) => state.reducer)
     const boardData = useSelector((state) => state.reducer.boardData || []);
     const categoryData = useSelector((state) => state.reducer.galleryListData || []);
-    const keyData = boardData?.[0]?.key;
+    
+    /* const keyData = boardData?.[0]?.key; */
     /* const storeData = useSelector((state) => state.reducer); */
-    console.log('rdxTest',rdxTest);
-    console.log('app.js', categoryData);
+    /* console.log('rdxTest',rdxTest); */
+    /* console.log('app.js', categoryData); */
 
-    console.log('app.js', keyData);
+    /* console.log('app.js', keyData); */
     
     /* console.log('app.js',storeData); */
 
