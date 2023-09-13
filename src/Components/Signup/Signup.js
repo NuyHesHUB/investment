@@ -102,7 +102,8 @@ const Signup = () => {
             alert('사용가능한 아이디입니다.')
         } catch (error) {
             console.error('아이디 중복 검사 실패', error);
-            alert('중복된 아이디입니다.')
+            /* alert('중복된 아이디입니다.') */
+            /* 이부분은 진짜로 중복된 값을 출력되게 바꿔야함 */
         }
     };
 

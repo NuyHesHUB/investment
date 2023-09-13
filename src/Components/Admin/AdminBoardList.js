@@ -32,7 +32,8 @@ const AdminBoardList = () => {
         regDt: '',
         regUser: '',    
         skins: '',
-        status: 'Y',
+        /* status: 'Y', */
+        status: '',
         updDt: '',
         updUser: '',
     });
@@ -41,6 +42,9 @@ const AdminBoardList = () => {
     const headers = {
         Authorization: `${accessToken}`
     }
+    /* const headers = {
+        Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVWlkIjoiOTY0NDM2MDEwODBiYTUyMDlmNGE4NThjM2FlMzNlOTFhYzY2ZDU4NDlhMGU1MDJjMGM0OTUzMTFiMTBiYTk5YSIsImlhdCI6MTY5NDU5NTQ3MSwiZXhwIjoxNjk1ODA1MDcxfQ.9QDT2G4RQsWns8cAF4VDBjvX05iAZsyCL4A0DTFFguc"
+    } */
     
     /*------------------------------------------------*\
                   Authorize 읽기 / 쓰기 수정
@@ -249,13 +253,15 @@ const AdminBoardList = () => {
             regDt: '',
             regUser: '',    
             skins: '',
-            status: 'Y',
+            /* status: 'Y', */
+            status: '',
             updDt: '',
             updUser: '',
         });
         try {
             const response = await axios.post('http://39.117.244.34:3385/v1/board/form', newRowData, { headers });
             console.log('새로운 데이터 추가 성공', response);
+            
     
         } catch (error) {
             console.error('작업 실패', error);
@@ -268,25 +274,28 @@ const AdminBoardList = () => {
           return newData;
         });
       }; */
-    const handleDeleteSave = async (e) => {
+      /* const deleteData = selectedRows?.[0]?.key; */
+    
+      const handleDeleteSave = async (e) => {
         e.preventDefault();
-        const deleteData = selectedRows?.[0]?.key;
-        console.log('deleteData',deleteData);
-        /* const deleteForm = {
-            key: deleteData,
-            userUid: userUid
-        } */
+        setIsDeleteModalOpen(false);
         const deleteForm = {
-            key: "test",
-            userUid: "96443601080ba5209f4a858c3ae33e91ac66d5849a0e502c0c495311b10ba99a"
+            key: `${selectedRows?.[0]?.key}`,
+            userUid: `${userUid}`
         }
-        /* console.log('deleteForm',deleteForm); */
-        try{
-            /* const response = await axios.delete('http://39.117.244.34:3385/v1/board/delete', deleteForm, { headers }) */
-            const response = await axios.delete('http://39.117.244.34:3385/v1/board/delete', deleteForm, { headers })
-            console.log('삭제 성공', response);
+        const headers = {
+            Authorization: `${accessToken}`
+        }
+    
+        try {
+            const res = await axios.delete('http://39.117.244.34:3385/v1/board/delete', { data: deleteForm, headers });
+            console.log('삭제 성공', res);
+            console.log('deleteForm', deleteForm);
+            console.log('headers', headers);
         } catch (error) {
             console.error('삭제 실패', error);
+            console.log('deleteForm', deleteForm);
+            console.log('headers', headers);
         }
     };
     /*------------------------------------------------*\
@@ -304,9 +313,11 @@ const AdminBoardList = () => {
                     <StyledTableWrap>
                     <div style={{display:'flex', width:'100%', justifyContent:'space-between', marginBottom:'50px'}}>
                         <h1>게시판관리</h1>
-                        <EditSaveBtn onClick={handleAddRow}>행 추가</EditSaveBtn>
-                        <EditSaveBtn onClick={handleBoardGroupAddSaveClick}>행 추가 저장</EditSaveBtn>
-                        <EditSaveBtn onClick={handleBoardEditSaveClick} className='edit_save_btn'>저 장</EditSaveBtn>
+                        <div>
+                            <EditSaveBtn onClick={handleAddRow}>행 추가</EditSaveBtn>
+                            <EditSaveBtn onClick={handleBoardGroupAddSaveClick}>행 추가 저장</EditSaveBtn>
+                            <EditSaveBtn onClick={handleBoardEditSaveClick} className='edit_save_btn'>저 장</EditSaveBtn>
+                        </div>
                     </div>
                         <StyledAdminBoard>
                             <div>
@@ -367,8 +378,10 @@ const AdminBoardList = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {AdminBoardListData.map((item, index) => (
-                                                <tr key={index}>
+                                        {AdminBoardListData.map((item, index) => {
+                                            if (item.status === 'Y') {
+                                                return (
+                                                    <tr key={index}>
                                                     <td>
                                                         <input 
                                                             type="checkbox" 
@@ -433,9 +446,15 @@ const AdminBoardList = () => {
                                                                 <span style={{background:'#3f51b5',color:'#fff',padding:'5px',fontSize:'12px',borderRadius:'10px'}}>수정</span>
                                                         </Link>
                                                         <button disabled={!selectedRows.includes(item)} onClick={() => setIsDeleteModalOpen(true)} style={{padding:'5px',fontSize:'12px', marginLeft:'5px'}}>삭제</button>
+                                                        {/* <button disabled={!selectedRows.includes(item)} onClick={handleDeleteSave} style={{padding:'5px',fontSize:'12px', marginLeft:'5px'}}>삭제</button> */}
                                                     </td>
                                                 </tr>
-                                            ))}
+                                                );
+                                            } else {
+                                                return null; 
+                                            }
+                                                
+                                            })}
                                     </tbody>
                                 </table>
                                 {isDeleteModalOpen && (

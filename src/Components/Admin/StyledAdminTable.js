@@ -116,6 +116,7 @@ export const EditSaveBtn=styled.button`
     cursor: pointer;
     background-color: ${props => props.disabled ? '#ccc' : '#3f51b5'};
     color: ${props => props.disabled ? '#999' : '#fff'};
+    margin-right: 5px;
 
 `
 
