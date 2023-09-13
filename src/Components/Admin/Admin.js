@@ -45,8 +45,8 @@ const Admin = () => {
                 }));
                 dispatch(setAdminUserData(modifiedUserData)); */
 
-                const adminPostResponse = await axios.get('http://39.117.244.34:3385/v1/board?query=&pageRows=&page=', { headers });
-                dispatch(setAdminBoardData(adminPostResponse.data.query));
+                const adminBoardResponse = await axios.get('http://39.117.244.34:3385/v1/board?query=&pageRows=&page=', { headers });
+                dispatch(setAdminBoardData(adminBoardResponse.data.query));
             } catch (error) {
                 console.error('Admin User/Post 데이터 가져오기 실패', error);
             }

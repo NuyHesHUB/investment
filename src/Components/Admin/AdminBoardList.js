@@ -202,7 +202,7 @@ const AdminBoardList = () => {
           Redux에 저장한 값을 새로운 useState에 저장
     \*------------------------------------------------*/
     useEffect(() => {
-        if(editBoardData.length > 0){
+        if(editBoardData?.length > 0){
             setAdminBoardListData(editBoardData);
             /* console.log('AdminBoardListData',AdminPostListData); */
         }else {
@@ -221,8 +221,8 @@ const AdminBoardList = () => {
             categoryList: selectedRows[0].categoryList,
             regUser: selectedRows[0].regUser,
             regDt: selectedRows[0].regDt,
-            updUser: selectedRows[0].updUser,
-            updDt: selectedRows[0].updDt,
+           /*  updUser: selectedRows[0].updUser,
+            updDt: selectedRows[0].updDt, */
             userUid: userUid
           };
         /* console.log(transformedData); */
@@ -230,11 +230,10 @@ const AdminBoardList = () => {
         try{
             const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', transformedData, { headers });
             console.log('관리자 게시판관리 수정 성공', response);
+            console.log('transformedData',transformedData);
         } catch(error) {
             console.error('관리자 게시판관리 수정 실패', error);
         }
-        /* console.log('jsonData',jsonData); */
-        // 요청 보내기
       };
       const handleBoardGroupAddSaveClick = async (e) => {
         e.preventDefault();
@@ -258,9 +257,6 @@ const AdminBoardList = () => {
             const response = await axios.post('http://39.117.244.34:3385/v1/board/form', newRowData, { headers });
             console.log('새로운 데이터 추가 성공', response);
     
-            // 성공적으로 추가된 데이터가 응답으로 올 것입니다.
-            // response.data를 활용하여 필요한 작업을 수행합니다.
-    
         } catch (error) {
             console.error('작업 실패', error);
         }
@@ -276,11 +272,17 @@ const AdminBoardList = () => {
         e.preventDefault();
         const deleteData = selectedRows?.[0]?.key;
         console.log('deleteData',deleteData);
-        const deleteForm = {
+        /* const deleteForm = {
             key: deleteData,
             userUid: userUid
+        } */
+        const deleteForm = {
+            key: "test",
+            userUid: "96443601080ba5209f4a858c3ae33e91ac66d5849a0e502c0c495311b10ba99a"
         }
+        /* console.log('deleteForm',deleteForm); */
         try{
+            /* const response = await axios.delete('http://39.117.244.34:3385/v1/board/delete', deleteForm, { headers }) */
             const response = await axios.delete('http://39.117.244.34:3385/v1/board/delete', deleteForm, { headers })
             console.log('삭제 성공', response);
         } catch (error) {
@@ -297,7 +299,7 @@ const AdminBoardList = () => {
         <AdminListFrame $isModalOpen={isModalOpen}>
             <Admin/>
             <StyledFrame>
-                {editBoardData.length > 0 ? 
+                {editBoardData?.length > 0 ?
                 <AdminListFrame>
                     <StyledTableWrap>
                     <div style={{display:'flex', width:'100%', justifyContent:'space-between', marginBottom:'50px'}}>
