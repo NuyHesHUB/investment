@@ -17,8 +17,6 @@ import { StyledFrame, StyledTableWrap, StyledInfoBox, StyledSearchBox, StyledAdm
 const AdminMemberList = () => {
     const adminUserData = useSelector((state) => state.reducer.adminUserData);
 
-
-
     /*------------------------------------------------*\
                   <tr/> Select All function
     \*------------------------------------------------*/

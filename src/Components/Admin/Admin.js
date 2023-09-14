@@ -37,7 +37,7 @@ const Admin = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const adminUserResponse = await axios.get('http://39.117.244.34:3385/v1/users/', { headers });
+                const adminUserResponse = await axios.get('/users', { headers });
                 dispatch(setAdminUserData(adminUserResponse.data.query));
                 /* const modifiedUserData = adminUserResponse.data.query.map(user => ({
                     ...user,
@@ -47,6 +47,8 @@ const Admin = () => {
 
                 const adminBoardResponse = await axios.get('http://39.117.244.34:3385/v1/board?query=&pageRows=&page=', { headers });
                 dispatch(setAdminBoardData(adminBoardResponse.data.query));
+
+                const adminPostResponse = await axios.get('')
             } catch (error) {
                 console.error('Admin User/Post 데이터 가져오기 실패', error);
             }
@@ -66,7 +68,12 @@ const Admin = () => {
     \*------------------------------------------------*/
     /* const [visibleDiv, setVisibleDiv] = useState(null); */
     
-    const [visibleDiv, setVisibleDiv] = useState(2); // 항상 2단계 메뉴를 표시하도록 변경
+    /* const [visibleDiv, setVisibleDiv] = useState(2); */ 
+    const [visibleDiv, setVisibleDiv] = useState(parseInt(localStorage.getItem('selectedMenu')) || 2);
+
+    useEffect(() => {
+      localStorage.setItem('selectedMenu', visibleDiv.toString());
+    }, [visibleDiv]);
 
     /* const handleButtonClick = (divNumber) => {
         if (visibleDiv === divNumber) {

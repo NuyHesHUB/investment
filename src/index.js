@@ -16,11 +16,12 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer);
 
 root.render(
+  
+  
   <Provider store={store}>
-    {/* <React.StrictMode> */}
-      <App />
-    {/* </React.StrictMode> */}
-  </Provider>,
+    <App />
+  </Provider>
+
 );
 
 reportWebVitals();

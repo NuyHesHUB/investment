@@ -122,10 +122,10 @@ const Header = () => {
                             </ul>
                         </li>
                         <li style={{width:'100px'}}>
-                            <Link style={{color:'#000',fontWeight:'bold'}}>투자받기</Link>
+                            <Link to="/123" style={{color:'#000',fontWeight:'bold'}}>투자받기</Link>
                         </li>
                         <li style={{width:'100px'}}>
-                            <Link style={{color:'#000',fontWeight:'bold'}}>투자하기</Link>
+                            <Link to="/456" style={{color:'#000',fontWeight:'bold'}}>투자하기</Link>
                         </li>
                         {/* {categoryData.map((item, index)=> (
                             <div>{item}</div>

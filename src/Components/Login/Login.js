@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../Header';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import axiosInstance from '../../axiosInstance';
 import { StyledFrame, StyledLoginFrame } from './StyledLoginFrame';
 import { useDispatch } from 'react-redux';
@@ -70,7 +70,7 @@ const Login = () => {
 
         try {
         /* const response = await axios.post('http://192.168.0.14:3300/v1/authorize/sign_in', { */
-        const response = await axiosInstance.post('/authorize/sign_in', {
+        const response = await axios.post('/authorize/sign_in', {
             loginId,/* otz4193 */
             loginPassword/* 동탄test1234! */
         });

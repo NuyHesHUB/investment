@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 
 /* React-Router-Dom */
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 /* Axios */
 import axios from 'axios';
+import Axios from 'axios'
 import axiosInstance from './axiosInstance';
 
 /* Redux */
@@ -39,11 +40,16 @@ import AdminEditPost from './Components/Admin/AdminEditPost';
 
 
 const App = () => {
+
+    axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL + "/v1";
+    axios.defaults.withCredentials = true;
+    
+    const userUid = sessionStorage.getItem('userUid');
     const dispatch = useDispatch();
     const rdxTest = useSelector((state) => state.reducer)
     const boardData = useSelector((state) => state.reducer.boardData || []);
     const categoryData = useSelector((state) => state.reducer.galleryListData || []);
-    
+
     /* const keyData = boardData?.[0]?.key; */
     /* const storeData = useSelector((state) => state.reducer); */
     /* console.log('rdxTest',rdxTest); */
@@ -54,9 +60,9 @@ const App = () => {
     /* console.log('app.js',storeData); */
 
     useEffect(() => {
-        axiosInstance.get('/board/')
+        axios.get('/board/')
             .then(response => {
-                const titles = response.data.query;
+                const titles = response.data?.query;
                 dispatch(setBoardData(titles));
                 /* console.log('home.js',response.data.query); */
             })
@@ -65,7 +71,35 @@ const App = () => {
             });
     }, []);
 
+    /* const sendPageLog = (userUid, page) => {
+        axios.post('/add-log', {
+          userUid: userUid,
+          page: page,
+        })
+        .then(response => {
+          console.log('로그가 추가되었습니다:', response.data);
+        })
+        .catch(error => {
+          console.error('로그 추가 중 오류 발생:', error);
+        });
+      }; */
+      
+      /* const trackPageChange = () => {
+        const userUid = sessionStorage.getItem('userUid'); // 유저의 UID
+        const currentPage = window.location.pathname;
+        sendPageLog(userUid, currentPage);
+        console.log(`페이지 이동 감지: ${currentPage}`);
+      }; */
+      
+      // 페이지 이동이 감지될 때마다 trackPageChange 함수를 호출
+      /* window.addEventListener('popstate', trackPageChange); */
+      
+      // 초기 페이지 로딩 시에도 호출
+      /* trackPageChange(); */
+    
+
     return (
+        
         <Router>
             <Routes>
 
