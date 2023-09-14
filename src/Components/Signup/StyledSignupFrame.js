@@ -37,6 +37,10 @@ export const StyledSigninFrame=styled.div`
         justify-content: center;
         align-items: center;
         margin-bottom: 20px;
+        /* .error-box{
+            position: absolute;
+            left: 0;
+        } */
     }
     .form-input-wrap .id-check-btn a{
         display: block;
@@ -55,6 +59,10 @@ export const StyledSigninFrame=styled.div`
         position: relative;
         width: 400px;
         /* height: 48px; */
+    }
+    .form-input-radio-box{
+        position: relative;
+        width: 400px;
     }
     .form-input-box input{
         width: 100%;

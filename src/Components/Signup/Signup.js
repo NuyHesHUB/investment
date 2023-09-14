@@ -1,20 +1,55 @@
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+
+/* React-Router-Dom */
+import { Link, useNavigate } from 'react-router-dom';
 /* import { useForm } from 'react-hook-form'; */
+
+/* Axios */
 import axios from 'axios';
 import axiosInstance from '../../axiosInstance';
+
+/* Components */
 import Header from '../Header';
-import { StyledFrame, StyledSigninFrame } from './StyledSignupFrame';
 import Footer from '../Footer';
 
+/* StyledComponents */
+import { StyledFrame, StyledSigninFrame } from './StyledSignupFrame';
+
 const Signup = () => {
+    /* React-Router-Dom */
+    const navigate = useNavigate();
+
+    /* FormData State */
+    const [formData, setFormData] = useState({
+        group: '',
+        loginId: '',
+        loginPassword: '',
+        nickname: '',
+        phone: '',
+        email: '',
+        img: '',
+        receiveSms: 'Y',
+        receiveEmail: 'Y',
+        note: ''
+    });
+
+    /* Submit Error State */
     const [errorFromSubmit, setErrorFromSubmit] = useState("");
 
+    /* Error State */
+    const [groupError, setGroupError] = useState('');
     const [loginIdError, setLoginIdError] = useState('');
     const [nicknameError, setNicknameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [loginPasswordError, setLoginPasswordError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
 
+    /* LoginID Check State */
+    const [loginIdCheck, setLoginIdCheck] = useState(false);
+
+    /*------------------------------------------------*\
+                    Login ID 유효성 검사
+    \*------------------------------------------------*/
     const validateLoginId = (loginId) => {
         const regExp = /^[A-Za-z0-9_]{3,}$/;
         if (!regExp.test(loginId)) {
@@ -24,6 +59,9 @@ const Signup = () => {
         }
     };
 
+    /*------------------------------------------------*\
+                    nickname 유효성 검사
+    \*------------------------------------------------*/
     const validateNickname = (nickname) => {
         if (nickname.length < 3) {
             setNicknameError('닉네임은 최소 3자 이상이어야 합니다.');
@@ -32,6 +70,9 @@ const Signup = () => {
         }
     };
 
+    /*------------------------------------------------*\
+                      E-mail 유효성 검사
+    \*------------------------------------------------*/
     const validateEmail = (email) => {
         const regExp = /^[A-Za-z0-9]+(.[A-Za-z0-9-_])*@[A-Za-z]+(.[A-Za-z])+(.[A-Za-z]{2,3})$/;
         if (!regExp.test(email)) {
@@ -41,6 +82,9 @@ const Signup = () => {
         }
     };
 
+    /*------------------------------------------------*\
+                    PassWord 유효성 검사
+    \*------------------------------------------------*/
     const validatePassword = (password) => {
         if (password.length < 8) {
             setLoginPasswordError('비밀번호는 8자 이상이어야 합니다.');
@@ -49,6 +93,106 @@ const Signup = () => {
         }
     };
 
+    /*------------------------------------------------*\
+                    Phone 유효성 검사
+    \*------------------------------------------------*/
+    const validatePhone = (phone) => {
+        const phoneRegex = /^[0-9]{10,11}$/; // 10자 또는 11자 숫자만 허용하는 정규식
+        if (!phoneRegex.test(phone)) {
+            setPhoneError('유효한 휴대폰 번호가 아닙니다.');
+        } else {
+            setPhoneError('');
+        }
+    };
+    
+    /*------------------------------------------------*\
+                    LoginID 중복체크 API
+    \*------------------------------------------------*/
+    const handleCheckId = async () => {
+        try {
+            const response = await axiosInstance.get(`/users/check_id/${formData.loginId}`);
+            console.log("아이디 중복 확인 요청이 성공했습니다.", response);
+            if (response.data.result === "사용 가능한 아이디 입니다.") {
+                console.log(`아이디 "${formData.loginId}"는 사용 가능합니다.`);
+                alert(`아이디 "${formData.loginId}"는 사용 가능합니다.`);
+                setLoginIdCheck(true);
+            }
+        } catch (error) {
+            if (error.response && error.response.data.error === '중복된 아이디 입니다.') {
+                console.log(`아이디 "${formData.loginId}"는 이미 사용 중입니다. 다른 아이디를 선택해주세요.`);
+                alert(`아이디 "${formData.loginId}"는 이미 사용 중입니다. 다른 아이디를 선택해주세요.`);
+                setLoginIdCheck(false);
+            } else {
+                console.error('아이디 중복 확인 요청 중 오류가 발생했습니다.', error);
+                setLoginIdCheck(false);
+            }
+        }
+    };
+    /*------------------------------------------------*\
+                    회원가입 onSubmit Btn
+    \*------------------------------------------------*/
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        // 각 입력값의 유효성 검사
+        validateLoginId(formData.loginId);
+        validateNickname(formData.nickname);
+        validateEmail(formData.email);
+        validatePassword(formData.loginPassword);
+        validatePhone(formData.phone);
+
+        if (loginIdCheck === false) {
+            alert('아이디 중복을 확인해주세요.');
+            return;
+        }
+
+        if (!formData.group) {
+            setGroupError('일반 또는 기업을 선택해주세요.');
+        } else {
+            setGroupError('');
+        }
+
+        if (
+            loginIdError ||
+            nicknameError ||
+            emailError ||
+            loginPasswordError ||
+            phoneError ||
+            !formData.loginId ||
+            !formData.nickname ||
+            !formData.email ||
+            !formData.loginPassword ||
+            !formData.confirmPassword ||
+            !formData.phone ||
+            !formData.group
+        ) {
+            alert('입력값을 확인해주세요.');
+            return;
+        }
+
+        try {
+            const response = await axiosInstance.post('/users/sign_up', formData);
+            console.log('회원가입 성공:', response);
+            navigate("/login") 
+        } catch (error) {
+            console.error('회원가입 실패:', error);
+            setErrorFromSubmit(error.message);
+        }
+    };
+
+    /*------------------------------------------------*\
+                    HandleInputChange
+    \*------------------------------------------------*/
+    const handleGroupChange = (e) => {
+        const { value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            group: value
+        }));
+    };
+
+    /*------------------------------------------------*\
+                    HandleInputChange
+    \*------------------------------------------------*/
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({
@@ -61,61 +205,14 @@ const Signup = () => {
             validateNickname(value);
         } else if (name === 'email') {
             validateEmail(value);
-        }else if (name === 'loginId') {
+        } else if (name === 'loginId') {
             validateLoginId(value);
-        }else if (name === 'loginPassword') {
+        } else if (name === 'loginPassword') {
             validatePassword(value);
+        } else if (name === 'phone') {
+            validatePhone(value);
         }
     };
-    const onSubmit = async (e) => {
-        e.preventDefault(); // 기본 동작인 새로고침 막기
-        // 회원가입 로직 구현
-        try {
-            const response = await axiosInstance.post('/users/sign_up', formData);
-            console.log('회원가입 성공:', response);
-            // 성공 처리 로직 추가
-        } catch (error) {
-            console.error('회원가입 실패:', error);
-            setErrorFromSubmit(error.message)
-            // 실패 처리 로직 추가
-        }
-    };
-
-
-    const [formData, setFormData] = useState({
-        group: '',
-        loginId: '',
-        loginPassword: '',
-        nickname: '',
-        phone: '01095768881',
-        email: '',
-        img: '',
-        receiveSms: 'Y',
-        receiveEmail: 'Y',
-        note: '테스트'
-    });
-
-    const handleCheckId = async () => {
-        try {
-            const response = await axiosInstance.get(`/users/check_id/${formData.loginId}`);
-            console.log("아이디 중복 검사 응답:", response);
-            alert('사용가능한 아이디입니다.')
-        } catch (error) {
-            console.error('아이디 중복 검사 실패', error);
-            /* alert('중복된 아이디입니다.') */
-            /* 이부분은 진짜로 중복된 값을 출력되게 바꿔야함 */
-        }
-    };
-
-
-    const handleGroupChange = (e) => {
-        const { value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            group: value
-        }));
-    };
-
     console.log(formData);
 
     return (
@@ -130,27 +227,37 @@ const Signup = () => {
                         </Link>
                     </div>
                     <form onSubmit={onSubmit}>
-                        <div className='form-container'>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="group"
-                                    value="일반"
-                                    checked={formData.group === '일반'}
-                                    onChange={handleGroupChange}
-                                />
-                                일반
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="group"
-                                    value="기업"
-                                    checked={formData.group === '기업'}
-                                    onChange={handleGroupChange}
-                                />
-                                기업
-                            </label>
+                        <div className='form-input-wrap'>
+                            <div style={{width:'140px', textAlign:'left'}}>
+                                <label>그룹</label>
+                                <span>*</span>
+                            </div>
+                            <div className='form-input-radio-box'>
+                                <div style={{display:'flex',justifyContent:'center'}}>
+                                    <div style={{marginRight:'5px', display:'flex',alignItems:'center'}}>
+                                        <label style={{marginRight:'5px'}}>일반</label>
+                                        <input
+                                            type="radio"
+                                            name="group"
+                                            value="일반"
+                                            checked={formData.group === '일반'}
+                                            onChange={handleGroupChange}
+                                        />
+                                    </div>
+                                    <div style={{display:'flex',alignItems:'center'}}>
+                                        <label style={{marginRight:'5px'}}>기업</label>
+                                        <input
+                                            type="radio"
+                                            name="group"
+                                            value="기업"
+                                            checked={formData.group === '기업'}
+                                            onChange={handleGroupChange}
+                                        />
+                                    </div>
+                                </div>
+                                {groupError && <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{groupError}</div>}
+                            </div>
+                            <div style={{width:'120px', marginLeft:'8px'}}></div>
                         </div>
                         <div className='form-input-wrap'>
                             <div style={{width:'140px', textAlign:'left'}}>
@@ -167,7 +274,9 @@ const Signup = () => {
                                 />
                             </div>
                             <div className='id-check-btn' style={{width:'120px', marginLeft:'8px'}}>
-                                <Link style={{display:'flex',alignItems:'center',justifyContent:'center', textDecoration:'none'}} onClick={handleCheckId}>
+                                <Link 
+                                    style={{display:'flex',alignItems:'center',justifyContent:'center', textDecoration:'none'}} 
+                                    onClick={handleCheckId}>
                                     <span style={{color:'rgb(95, 0, 128)'}}>중복검사</span>
                                 </Link>
                             </div>
@@ -192,14 +301,14 @@ const Signup = () => {
                         </div>
                         <div className='form-input-wrap'>
                             <div style={{width:'140px', textAlign:'left'}}>
-                                <label>이름</label>
+                                <label>닉네임</label>
                                 <span>*</span>
                             </div>
                             <div className='form-input-box'>
                                 <input
                                     name="nickname"
                                     type='text'
-                                    placeholder='이름을 입력해주세요.'
+                                    placeholder='닉네임을 입력해주세요.'
                                     value={formData.nickname}
                                     onChange={handleInputChange}
                                 />
@@ -237,11 +346,28 @@ const Signup = () => {
                                     /* value={formData.confirmPassword} */
                                     onChange={handleInputChange}
                                 />
-                                {formData.loginPassword !== formData.confirmPassword && (
-                                    <div>비밀번호가 일치하지 않습니다.</div>
-                                )}
                             </div>
                             <div style={{width:'120px', marginLeft:'8px'}}></div>
+                        </div>
+                        {formData.loginPassword && formData.confirmPassword && formData.loginPassword !== formData.confirmPassword && (
+                            <div className='error-box' style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>비밀번호가 일치하지 않습니다.</div>
+                        )}
+                        <div className='form-input-wrap'>
+                            <div style={{width:'140px', textAlign:'left'}}>
+                                <label>전화번호</label>
+                                <span>*</span>
+                            </div>
+                            <div className='form-input-box'>
+                                <input
+                                    name="phone"
+                                    type='text'
+                                    placeholder='전화번호를 입력해주세요.'
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                />
+                                {phoneError && <div className='error-box' style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{phoneError}</div>}
+                             </div>
+                             <div style={{width:'120px', marginLeft:'8px'}}></div>
                         </div>
                         <button className='submit-btn' type='submit'>제출</button>
                     </form>
