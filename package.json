@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
+    "env-cmd": "^10.1.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
@@ -21,10 +22,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start:dev": "cp .env.development .env && react-scripts start",
-    "start:pro": "cp .env.production .env && react-scripts start",
-    "build:dev": "cp .env.development .env && react-scripts build",
-    "build:pro": "cp .env.production .env && react-scripts build",
+    "start:dev": "env-cmd -f .env.development react-scripts start",
+    "start:pro": "env-cmd -f .env.production react-scripts start",
+    "build:dev": "env-cmd -f .env.development react-scripts build",
+    "build:pro": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

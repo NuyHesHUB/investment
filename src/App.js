@@ -41,9 +41,21 @@ import AdminEditPost from './Components/Admin/AdminEditPost';
 
 const App = () => {
 
-    axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL + "/v1";
-    axios.defaults.withCredentials = true;
-    
+    /* Axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL + "/v1";
+    Axios.defaults.withCredentials = true; */
+
+    console.log('process.env.NODE_ENV :',process.env.NODE_ENV);
+    console.log('process.env.REACT_APP_BASEURL :',process.env.REACT_APP_BASEURL);
+
+    const fetcher = async (url) => {
+        try {
+          const res = await axios.get(url);
+          return res.data;
+        } catch (error) {
+          throw error.response.data
+        }
+      }
+
     const userUid = sessionStorage.getItem('userUid');
     const dispatch = useDispatch();
     const rdxTest = useSelector((state) => state.reducer)

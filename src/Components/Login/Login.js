@@ -9,11 +9,11 @@ import { login, logout, setUserUid } from '../../store/actions/actions';
 import Footer from '../Footer';
 
 const Login = () => {
+    const baseURL = process.env.REACT_APP_URL;
     const navigate = useNavigate();
     const [loginId, setLoginId] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const dispatch = useDispatch();
-
     /* header key value 값 보내서 회원정보 가져오기를 로그인하면 으로 옮김 */
     /* const [userData, setUserData] = useState(null); 
     const userUid = sessionStorage.getItem('userUid');
@@ -69,8 +69,8 @@ const Login = () => {
         e.preventDefault();
 
         try {
-        /* const response = await axios.post('http://192.168.0.14:3300/v1/authorize/sign_in', { */
-        const response = await axios.post('/authorize/sign_in', {
+        const response = await axios.post(`${baseURL}/v1/authorize/sign_in`, {
+        /* const response = await axios.post('/authorize/sign_in', { */
             loginId,/* otz4193 */
             loginPassword/* 동탄test1234! */
         });
