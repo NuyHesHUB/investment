@@ -5,7 +5,7 @@ import axios from 'axios';
 
 /* Redux */
 import { useDispatch, useSelector } from 'react-redux';
-import { setAdminUserData, setAdminBoardData, logout } from '../../store/actions/actions';
+import { setAdminUserData, setAdminBoardData, setAdminPostData, logout } from '../../store/actions/actions';
 
 /* StyledComponents */
 import { StyledAdminFrame, StyledAdminHeader, StyledAdminTop, StyledAdminNav, AdminNavUl, StyledNavGnb } from './StyledAdmin';
@@ -20,12 +20,16 @@ import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsPersonCircle } from "react-icons/bs";
 
 const Admin = () => {
+
+    const baseURL = process.env.REACT_APP_BASEURL;
+    const testData = useSelector((state) => state.reducer)
     /* const adminUserData = useSelector((state) => state.reducer.adminUserData);
     const adminPostData = useSelector((state) => state.reducer.adminPostData); */
     const dispatch = useDispatch();
     const navigate = useNavigate();
     /* dispatch(setBoardData(titles)); */
     
+    console.log('testData',testData);
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {
         Authorization: `${accessToken}`
@@ -37,18 +41,21 @@ const Admin = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const adminUserResponse = await axios.get('/users', { headers });
-                dispatch(setAdminUserData(adminUserResponse.data.query));
+                const adminUserResponse = await axios.get(`${baseURL}/v1/users`, { headers });
+                dispatch(setAdminUserData(adminUserResponse.data?.query));
                 /* const modifiedUserData = adminUserResponse.data.query.map(user => ({
                     ...user,
                     selected: false
                 }));
                 dispatch(setAdminUserData(modifiedUserData)); */
 
-                const adminBoardResponse = await axios.get('http://39.117.244.34:3385/v1/board?query=&pageRows=&page=', { headers });
-                dispatch(setAdminBoardData(adminBoardResponse.data.query));
+                const adminBoardResponse = await axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers });
+                dispatch(setAdminBoardData(adminBoardResponse.data?.query));
 
-                const adminPostResponse = await axios.get('')
+                /* http://39.117.244.34:3385/v1/board/investment/post */
+                const adminPostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
+                dispatch(setAdminPostData(adminPostResponse.data?.query))
+                
             } catch (error) {
                 console.error('Admin User/Post 데이터 가져오기 실패', error);
             }

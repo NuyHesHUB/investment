@@ -567,9 +567,9 @@ const AdminBoardList = () => {
                                                         </select>
                                                     </td>
                                                     <td rowSpan={1}>
-                                                        <Link to={`/admin/post_edit/${index}`} style={{textDecoration:'none'}}>
+                                                        {/* <Link to={`/admin/post_edit/${index}`} style={{textDecoration:'none'}}>
                                                                 <span style={{background:'#3f51b5',color:'#fff',padding:'5px',fontSize:'12px',borderRadius:'10px'}}>수정</span>
-                                                        </Link>
+                                                        </Link> */}
                                                         <button disabled={!selectedRows.includes(item)} onClick={() => setIsDeleteModalOpen(true)} style={{padding:'5px',fontSize:'12px', marginLeft:'5px'}}>삭제</button>
                                                         {/* <button disabled={!selectedRows.includes(item)} onClick={handleDeleteSave} style={{padding:'5px',fontSize:'12px', marginLeft:'5px'}}>삭제</button> */}
                                                     </td>

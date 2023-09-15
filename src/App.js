@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 
 /* React-Router-Dom */
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+
 /* Axios */
 import axios from 'axios';
-import Axios from 'axios'
-import axiosInstance from './axiosInstance';
 
 /* Redux */
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,21 +40,12 @@ import AdminEditPost from './Components/Admin/AdminEditPost';
 
 const App = () => {
 
-    /* Axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL + "/v1";
-    Axios.defaults.withCredentials = true; */
-
-    console.log('process.env.NODE_ENV :',process.env.NODE_ENV);
-    console.log('process.env.REACT_APP_BASEURL :',process.env.REACT_APP_BASEURL);
-
-    const fetcher = async (url) => {
-        try {
-          const res = await axios.get(url);
-          return res.data;
-        } catch (error) {
-          throw error.response.data
-        }
-      }
-
+    /*------------------------------------------------*\
+                      .env console.log
+    \*------------------------------------------------*/
+    /* console.log('process.env.NODE_ENV :',process.env.NODE_ENV); */
+    /* console.log('process.env.REACT_APP_BASEURL :',process.env.REACT_APP_BASEURL); */
+    const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
     const dispatch = useDispatch();
     const rdxTest = useSelector((state) => state.reducer)
@@ -70,13 +60,12 @@ const App = () => {
     /* console.log('app.js', keyData); */
     
     /* console.log('app.js',storeData); */
-
+  
     useEffect(() => {
-        axios.get('/board/')
+        axios.get(`${baseURL}/v1/board/`)
             .then(response => {
                 const titles = response.data?.query;
                 dispatch(setBoardData(titles));
-                /* console.log('home.js',response.data.query); */
             })
             .catch(error => {
                 console.error('게시판 데이터를 가져올 수 없습니다.', error);

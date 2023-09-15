@@ -9,7 +9,7 @@ import { login, logout, setUserUid } from '../../store/actions/actions';
 import Footer from '../Footer';
 
 const Login = () => {
-    const baseURL = process.env.REACT_APP_URL;
+    const baseURL = process.env.REACT_APP_BASEURL;
     const navigate = useNavigate();
     const [loginId, setLoginId] = useState('');
     const [loginPassword, setLoginPassword] = useState('');

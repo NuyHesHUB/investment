@@ -16,6 +16,9 @@ import Footer from '../Footer';
 import { StyledFrame, StyledSigninFrame } from './StyledSignupFrame';
 
 const Signup = () => {
+
+    const baseURL = process.env.REACT_APP_BASEURL;
+
     /* React-Router-Dom */
     const navigate = useNavigate();
 
@@ -110,7 +113,7 @@ const Signup = () => {
     \*------------------------------------------------*/
     const handleCheckId = async () => {
         try {
-            const response = await axiosInstance.get(`/users/check_id/${formData.loginId}`);
+            const response = await axios.get(`${baseURL}/v1/users/check_id/${formData.loginId}`);
             console.log("아이디 중복 확인 요청이 성공했습니다.", response);
             if (response.data.result === "사용 가능한 아이디 입니다.") {
                 console.log(`아이디 "${formData.loginId}"는 사용 가능합니다.`);
@@ -170,7 +173,7 @@ const Signup = () => {
         }
 
         try {
-            const response = await axiosInstance.post('/users/sign_up', formData);
+            const response = await axios.post(`${baseURL}/v1/users/sign_up`, formData);
             console.log('회원가입 성공:', response);
             navigate("/login") 
         } catch (error) {

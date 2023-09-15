@@ -6,6 +6,7 @@ const initialState = {
     boardData: [],
     postData: [],
     adminUserData: [],
+    adminBoardData: [],
     adminPostData: [],
 }
 
@@ -60,7 +61,12 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 adminBoardData: action.adminBoardData
             }
-
+        
+        case actionTypes.ADMIN_POST_DATA:
+            return {
+                ...state,
+                adminPostData: action.adminPostData
+            }
         default: return state;
     }
     

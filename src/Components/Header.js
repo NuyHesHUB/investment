@@ -121,24 +121,6 @@ const Header = () => {
                                 {menuItems}
                             </ul>
                         </li>
-                        <li style={{width:'100px'}}>
-                            <Link to="/123" style={{color:'#000',fontWeight:'bold'}}>투자받기</Link>
-                        </li>
-                        <li style={{width:'100px'}}>
-                            <Link to="/456" style={{color:'#000',fontWeight:'bold'}}>투자하기</Link>
-                        </li>
-                        {/* {categoryData.map((item, index)=> (
-                            <div>{item}</div>
-                        ))} */}
-                        
-                        {/* {boardData && categoryData && boardData.map((item, index) => (
-                            <div>
-                                <div>{item.key}</div> 
-                                <div>{categoryData[index]}</div>
-                            </div>
-                        ))} */}
-                        {/* {boardData.length > 0 && boardData[0].categoryList} */}
-                        {/* {menuItems.length > 0 ? <>{menuItems}</> : 'null'} */}
                     </MenuList>
                 </MenuFrame>
                 <div style={{display:'flex'}}>

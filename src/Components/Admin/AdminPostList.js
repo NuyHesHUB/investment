@@ -17,9 +17,11 @@ import Admin from './Admin';
 import { StyledFrame, StyledTableWrap, EditSaveBtn, AdminListFrame, AdminModalFrame, StyledInfoBox, StyledSearchBox, StyledAdminBoard, StyledMemberListNav } from './StyledAdminTable';
 
 const AdminPostList = () => {
-    const editPostData = useSelector((state) => state.reducer);
+    const baseURL = process.env.REACT_APP_BASEURL;
+
+    const editPostData = useSelector((state) => state.reducer.adminPostData);
     
-    const [AdminPostListData, setAdminPostListData] = useState({}); 
+    const [AdminPostListData, setAdminPostListData] = useState([]); 
     const [selectedRows, setSelectedRows] = useState([]);
     const accessToken = sessionStorage.getItem('accessToken');
     const userUid = sessionStorage.getItem('userUid');
@@ -30,7 +32,7 @@ const AdminPostList = () => {
     /*------------------------------------------------*\
                   Authorize 읽기 / 쓰기 수정
     \*------------------------------------------------*/
-    const [readValue, setReadValue] = useState({});
+    /* const [readValue, setReadValue] = useState({});
     const [writeValue, setWriteValue] = useState({});
     const handleReadChange = (e, index) => {
         const value = e.target.value;
@@ -52,18 +54,17 @@ const AdminPostList = () => {
     const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
         setAdminPostListData(prevData => {
             const newData = [...prevData];
-            /* const newAuthorize = `{"읽기":${newReadValue},"쓰기":${newWriteValue}}`;  */
             const newAuthorize = JSON.stringify({ "읽기": newReadValue, "쓰기": newWriteValue });
             newData[index][key] = newAuthorize;
             return newData;
         });
-    };
+    }; */
     
 
     /*------------------------------------------------*\
                   skins 데스크탑 / 모바일 수정
     \*------------------------------------------------*/
-    const [deskTopSkins, setDeskTopSkins] = useState({});
+    /* const [deskTopSkins, setDeskTopSkins] = useState({});
     const [mobileSkins, setMobileSkins] = useState({});
     const handleDeskTopSkinsChange = (e, index) => {
         const value = e.target.value;
@@ -88,21 +89,19 @@ const AdminPostList = () => {
             newData[index][key] = newSkins; 
             return newData;
         });
-    };
+    }; */
     
     /*------------------------------------------------*\
                   categoryList MODAL 구현
     \*------------------------------------------------*/
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    /* const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCategoryList, setSelectedCategoryList] = useState(null);
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
     const [selectedRowIndex, setSelectedRowIndex] = useState(null);
     const [prevSelectedCategoryList, setPrevSelectedCategoryList] = useState(null);
-    // 모달을 열고 닫는 함수
     const openModal = (index, categoryList) => {
         setIsModalOpen(true);
         setSelectedCategoryList(categoryList);
-        /* 추가 */
         setPrevSelectedCategoryList(categoryList)
         setSelectedRowIndex(index);
     };
@@ -125,7 +124,7 @@ const AdminPostList = () => {
         });
     }
 
-    console.log('selectedCategoryList',selectedCategoryList);
+    console.log('selectedCategoryList',selectedCategoryList); */
     
 
     /*------------------------------------------------*\
@@ -157,9 +156,9 @@ const AdminPostList = () => {
           Redux에 저장한 값을 새로운 useState에 저장
     \*------------------------------------------------*/
     useEffect(() => {
-        if(editPostData.length > 0){
+        if(editPostData !== undefined && editPostData !== null){
             setAdminPostListData(editPostData);
-            /* console.log('AdminPostListData',AdminPostListData); */
+            console.log('AdminPostListData',AdminPostListData);
         }else {
             console.log('editPostData', '해당 인덱스에 데이터가 없습니다.');
         }
@@ -183,10 +182,10 @@ const AdminPostList = () => {
         /* console.log(transformedData); */
         /* console.log('jsonData',jsonData); */
         try{
-            const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', transformedData, { headers });
-            console.log('관리자 게시판관리 수정 성공', response);
+            const response = await axios.patch(`${baseURL}/v1/board/modify`, transformedData, { headers });
+            console.log('관리자 게시물관리 수정 성공', response);
         } catch(error) {
-            console.error('관리자 게시판관리 수정 실패', error);
+            console.error('관리자 게시물관리 수정 실패', error);
         }
         /* console.log('jsonData',jsonData); */
         // 요청 보내기
@@ -200,14 +199,14 @@ const AdminPostList = () => {
     console.log('selectedRows:', selectedRows);
     console.log('AdminPostListData',AdminPostListData);
     return (
-        <AdminListFrame $isModalOpen={isModalOpen}>
+        <AdminListFrame /* $isModalOpen={isModalOpen} */>
             <Admin/>
             <StyledFrame>
                 {editPostData.length > 0 ? 
                 <AdminListFrame>
                     <StyledTableWrap>
                     <div style={{display:'flex', width:'100%', justifyContent:'space-between', marginBottom:'50px'}}>
-                        <h1>게시물 관리1111111111111111</h1>
+                        <h1>게시물 관리</h1>
                         <EditSaveBtn onClick={handlePostEditSaveClick} className='edit_save_btn'>저 장</EditSaveBtn>
                     </div>
                         <StyledAdminBoard>
@@ -228,40 +227,40 @@ const AdminPostList = () => {
                                                 />
                                             </th>
                                             <th scope='col'>
-                                                <Link>그룹(Key)</Link>
+                                                <Link>status</Link>
+                                            </th>
+                                            <th scope='col'>
+                                                <Link>카테고리</Link>
                                             </th>
                                             <th scope='col'>
                                                 <Link>제목(title)</Link>
                                             </th>
                                             <th scope='col'>
-                                                <Link>읽기</Link>
+                                                <Link>내용(content)</Link>
                                             </th>
                                             <th scope='col'>
-                                                <Link>쓰기</Link>
-                                            </th>
-                                            {/* <th scope='col'>
-                                                <Link>Authorize</Link>
-                                            </th> */}
-                                            <th scope='col'>
-                                                <Link>카테고리(Category)</Link>
-                                            </th>
-                                            {/* <th scope='col'>
-                                                <Link>extraFields</Link>
-                                            </th> */}
-                                            {/* <th scope='col'>
-                                                <Link>Options</Link>
-                                            </th> */}
-                                            <th scope='col'>
-                                                <Link>regDt</Link>
+                                                <Link>조회수</Link>
                                             </th>
                                             <th scope='col'>
-                                                <Link>regUser</Link>
+                                                <Link>댓글수</Link>
                                             </th>
                                             <th scope='col'>
-                                                <Link>웹(Skins)</Link>
+                                                <Link>좋아요</Link>
                                             </th>
                                             <th scope='col'>
-                                                <Link>모바일(Skins)</Link>
+                                                <Link>싫어요</Link>
+                                            </th>
+                                            <th scope='col'>
+                                                <Link>비밀글</Link>
+                                            </th>
+                                            <th scope='col'>
+                                                <Link>썸네일</Link>
+                                            </th>
+                                            <th scope='col'>
+                                                <Link>닉네임</Link>
+                                            </th>
+                                            <th scope='col'>
+                                                <Link>extraField</Link>
                                             </th>
                                             <th scope='col'>
                                                 관리
@@ -280,9 +279,17 @@ const AdminPostList = () => {
                                                     </td>
                                                     <td rowSpan={1}>
                                                         <input 
-                                                            placeholder={item.key} 
-                                                            value={item.key}
-                                                            onChange={(e) => handleInputChange(e, index, 'key')}
+                                                            placeholder={item.status} 
+                                                            value={item.status}
+                                                            onChange={(e) => handleInputChange(e, index, 'status')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                        />
+                                                    </td>
+                                                    <td rowSpan={1}>
+                                                        <input 
+                                                            placeholder={item.category} 
+                                                            value={item.category}
+                                                            onChange={(e) => handleInputChange(e, index, 'category')}
                                                             disabled={!selectedRows.includes(item)}
                                                         />
                                                     </td>
@@ -294,77 +301,88 @@ const AdminPostList = () => {
                                                             disabled={!selectedRows.includes(item)}
                                                         />
                                                     </td>
-                                                    <td>
-                                                        <select value={readValue[index]} onChange={(e) => handleReadChange(e, index)} disabled={!selectedRows.includes(item)}>
-                                                            {['', 0, 1, 2, 3, 4, 5].map(num => (
-                                                                <option key={num} value={num}>{num}{num === '' ? '선택' : ''}</option>
-                                                            ))}
-                                                        </select>
+                                                    <td rowSpan={1}>
+                                                        <input 
+                                                            placeholder={item.content} 
+                                                            value={item.content}
+                                                            onChange={(e) => handleInputChange(e, index, 'content')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                        />
                                                     </td>
-                                                    <td>
-                                                        <select value={writeValue[index]} onChange={(e) => handleWriteChange(e, index)} disabled={!selectedRows.includes(item)}>
-                                                            {['', 0, 1, 2, 3, 4, 5].map(num => (
-                                                                <option key={num} value={num}>{num}{num === '' ? '선택' : ''}</option>
-                                                            ))}
-                                                        </select>
+                                                    <td rowSpan={1}>
+                                                        <input 
+                                                            placeholder={item.post_view_count} 
+                                                            value={item.post_view_count}
+                                                            onChange={(e) => handleInputChange(e, index, 'post_view_count')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                        />
                                                     </td>
-                                                    {/* <td rowSpan={1}>{item.authorize}</td> */}
-                                                    {/* <td rowSpan={1}>{item.categoryList}</td> */}
-                                                    <td rowSpan={1}><button onClick={() => openModal(index, item.categoryList)} disabled={!selectedRows.includes(item)}>카테고리 추가/수정</button></td>
-                                                    {/* <td rowSpan={1}>{item.extraFields}</td> */}
-                                                    {/* <td rowSpan={1}>{item.options}</td> */}
-                                                    <td rowSpan={1}>{item.regDt}</td>
-                                                    <td rowSpan={1}>{item.regUser}</td>
-                                                    {/* <td rowSpan={1}>{item.skins}</td> */}
-                                                    <td>
-                                                        <select value={deskTopSkins[index]} onChange={(e) => handleDeskTopSkinsChange(e, index)} disabled={!selectedRows.includes(item)}>
-                                                            {['선택', 'deskTop-basic', 'red', 'orange', 'yellow', 'green', 'blue'].map(num => (
-                                                                <option key={num} value={num}>{num}{num === '' ? '선택' : ''}</option>
-                                                            ))}
-                                                        </select>
+                                                    <td rowSpan={1}>
+                                                        <input 
+                                                            placeholder={item.comment_count} 
+                                                            value={item.comment_count}
+                                                            onChange={(e) => handleInputChange(e, index, 'comment_count')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                        />
                                                     </td>
-                                                    <td>
-                                                        <select value={mobileSkins[index]} onChange={(e) => handleMobileSkinsChange(e, index)} disabled={!selectedRows.includes(item)}>
-                                                            {['선택', 'mobil-basic', 'red', 'orange', 'yellow', 'green', 'blue'].map(num => (
-                                                                <option key={num} value={num}>{num}{num === '' ? '선택' : ''}</option>
-                                                            ))}
-                                                        </select>
+                                                    <td rowSpan={1}>
+                                                        <input 
+                                                            placeholder={item.like} 
+                                                            value={item.like}
+                                                            onChange={(e) => handleInputChange(e, index, 'like')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                        />
+                                                    </td>
+                                                    <td rowSpan={1}>
+                                                        <input 
+                                                            placeholder={item.dislike} 
+                                                            value={item.dislike}
+                                                            onChange={(e) => handleInputChange(e, index, 'dislike')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                        />
+                                                    </td>
+                                                    <td rowSpan={1}>
+                                                        <input 
+                                                            placeholder={item.isSecret} 
+                                                            value={item.isSecret}
+                                                            onChange={(e) => handleInputChange(e, index, 'isSecret')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                        />
+                                                    </td>
+                                                    <td rowSpan={1}>
+                                                        <input 
+                                                            placeholder={item.thumbnail} 
+                                                            value={item.thumbnail}
+                                                            onChange={(e) => handleInputChange(e, index, 'thumbnail')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                        />
+                                                    </td>
+                                                    <td rowSpan={1}>
+                                                        <input 
+                                                            placeholder={item.nickname} 
+                                                            value={item.nickname}
+                                                            onChange={(e) => handleInputChange(e, index, 'nickname')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                        />
+                                                    </td>
+                                                    <td rowSpan={1}>
+                                                        <input 
+                                                            placeholder={item.extraField} 
+                                                            value={item.extraField}
+                                                            onChange={(e) => handleInputChange(e, index, 'extraField')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                        />
                                                     </td>
                                                     <td rowSpan={1}>
                                                         <Link to={`/admin/post_edit/${index}`} style={{textDecoration:'none'}}>
                                                                 <span style={{background:'#3f51b5',color:'#fff',padding:'5px',fontSize:'12px',borderRadius:'10px'}}>수정</span>
                                                         </Link>
+                                                        <button disabled={!selectedRows.includes(item)} style={{padding:'5px',fontSize:'12px', marginLeft:'5px'}}>삭제</button>
                                                     </td>
                                                 </tr>
                                             ))}
                                     </tbody>
                                 </table>
-                                {isModalOpen && (
-                                    <AdminModalFrame >
-                                        <div className='modal-header'>카테고리 추가/수정</div>
-                                        <div className='modal-contents'>
-                                            <div>변경전 : {prevSelectedCategoryList} </div>
-                                            <div>변경후 : {isSaveButtonDisabled && <>{selectedCategoryList}</> }</div>
-                                            {/* {isSaveButtonDisabled && <div>{selectedCategoryList}</div>} */}
-                                            <input 
-                                                placeholder={selectedCategoryList} 
-                                                value={selectedCategoryList}
-                                                onChange={(e) => handleCategoryInputChange(selectedRowIndex, e)}
-                                            />
-                                        </div>
-                                        <div className='modal-btn' style={{textAlign:'center'}}>
-                                            <EditSaveBtn 
-                                                style={{margin:'0 5px'}}
-                                                onClick={handleSaveClick}
-                                                disabled={isSaveButtonDisabled}
-                                            >저장</EditSaveBtn>
-                                            <EditSaveBtn onClick={() => { 
-                                                
-                                                closeModal();
-                                            }} style={{margin:'0 5px'}}>닫기</EditSaveBtn>
-                                        </div>
-                                    </AdminModalFrame>
-                                )}
                             </div>
                         </StyledAdminBoard>
                     </StyledTableWrap>
