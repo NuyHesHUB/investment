@@ -8,24 +8,57 @@ import axiosInstance from '../axiosInstance';
 import { StyledHeaderFrame, HeaderContainer, HeaderLogo, MenuFrame, HeaderBtn, MenuList } from './StyledComponents/StyledHeader';
 const Header = () => {
     /* const { key } = useParams(); */
-
+    
     /* const storeData = useSelector((state) => state.reducer.galleryListData);
     console.log('storeData',storeData); */
 
     const dispatch = useDispatch();
     /* 메뉴 카테고리에 뿌려보기 home.js 전역관리 */
-    const boardData = useSelector((state) => state.reducer.boardData);
-    const categoryData = useSelector((state) => state.reducer.galleryListData);
+    const boardData = useSelector((state) => state.reducer?.adminBoardData
+    );
 
-    /* console.log('header-key-test',key); */
-    const [isSubMenuOpen, setSubMenuOpen] = useState(false);
+    console.log('boardData',boardData[6]?.categoryList);
+    const categoryData = boardData[6]?.categoryList || [];
+
     
-    const handleMouseEnter = () => {
-        setSubMenuOpen(true);
-    };
+    let parsedCategoryData = [];
 
-    const handleMouseLeave = () => {
-        setSubMenuOpen(false);
+    if (typeof categoryData === 'string' && categoryData.length > 0) {
+    try {
+        parsedCategoryData = JSON.parse(categoryData);
+    } catch (error) {
+        console.error('JSON 파싱 오류:', error);
+    }
+    }
+    console.log('categoryData',parsedCategoryData);
+
+
+    const filteredItems = boardData.filter(item => {
+        const key = item.key;
+        return ['economic', 'free', 'humor', 'investment', 'marketing'].includes(key);
+      });
+
+    console.log('filteredItems',filteredItems);
+      
+    /* console.log('categoryData',categoryData); */
+
+    const [subMenuOpen, setSubMenuOpen] = useState({
+        investment: false,
+        board: false,
+      });
+    
+    const handleMouseEnter = (menu) => {
+        setSubMenuOpen({
+            investment: menu === 'investment',
+            board: menu === 'board',
+        });
+    };
+      
+    const handleMouseLeave = (menu) => {
+    setSubMenuOpen({
+        ...subMenuOpen,
+        [menu]: false,
+    });
     };
 
     const navigate = useNavigate();
@@ -66,39 +99,6 @@ const Header = () => {
         dispatch(logout());
         navigate("/login");
     };
-    /* console.log('authenticated',authenticated); */
-    /* console.log('boardData',boardData); */
-    useEffect(() => {
-        if (boardData.length > 0) {
-            const categoryMapping = {
-                dining: "외식",
-                manufacturing: "제조",
-                sales: "판매",
-                service: "서비스",
-                rental: "렌탈",
-                car: "자동차",
-                other: "기타",
-                // 다른 영어 단어들에 대한 매핑 추가
-            };
-            const cleanString = boardData[0].categoryList.replace(/\[|\]|"|/g, "");
-            const categoryArray = cleanString.split(",");
-            const translatedCategories = categoryArray.map(category => categoryMapping[category] || category);
-
-            dispatch(setGalleryCategoryData(categoryArray));
-
-            const items = translatedCategories.map((item,index) => (
-                <li key={index}>
-                  <Link to={`/${boardData[0].key}/${categoryArray[index]}`}>{translatedCategories[index]}</Link>
-                </li>
-              ));
-            console.log('categoryArray',categoryArray);
-            /* console.log('translatedCategories', translatedCategories); */
-            /* console.log('categoryMapping', categoryMapping[0]); */
-            setMenuItems(items);
-        }
-    }, [boardData]);
-    
-    /* console.log('menuItems',menuItems); */
 
     return (
         <StyledHeaderFrame>
@@ -111,15 +111,33 @@ const Header = () => {
                 <MenuFrame>
                     <MenuList>
                         <li 
-                            onMouseEnter={handleMouseEnter}
-                            onMouseLeave={handleMouseLeave}
+                            onMouseEnter={() => handleMouseEnter('investment')}
+                            onMouseLeave={() => handleMouseLeave('investment')}
                         >
-                            <span style={{color:'#000',fontWeight:'bold'}}>카테고리</span>
-                            <ul id='SubMenu' className={isSubMenuOpen ? 'sub-menu on' : 'sub-menu'}>
-                                {/* {categoryArray.length > 0 ? (<li>{categoryArray}</li>) : (null)} */}
-                                {/* {menuItems} */}
-                                {menuItems}
+                            투자게시판
+                            <ul id='SubMenu' className={subMenuOpen.investment ? 'sub-menu on' : 'sub-menu'}>
+                                {parsedCategoryData && parsedCategoryData.map((item,index) => (
+                                    <li key={index}>
+                                        <Link to={`/investment/${index}`}>{item}</Link>
+                                  </li>
+                                ))}         
                             </ul>
+                        </li>
+                        <li 
+                            onMouseEnter={() => handleMouseEnter('board')}
+                            onMouseLeave={() => handleMouseLeave('board')}
+                        >
+                            게시판
+                            <ul id='SubMenu' className={subMenuOpen.board ? 'sub-menu on' : 'sub-menu'}>
+                                {filteredItems.map((item, index)=>(
+                                    <Link key={index} to={`/board/${item.key}`}>
+                                        <li>{item.title}</li>
+                                    </Link>
+                                ))}
+                            </ul>
+                        </li>
+                        <li>
+                            <Link to={`${boardData[8]?.key}`}>{boardData[8]?.title}</Link>
                         </li>
                     </MenuList>
                 </MenuFrame>

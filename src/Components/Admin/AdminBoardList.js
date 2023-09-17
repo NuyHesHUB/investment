@@ -323,7 +323,20 @@ const AdminBoardList = () => {
             console.log('editBoardData', '해당 인덱스에 데이터가 없습니다.');
         }
     },[editBoardData])
-    
+
+    const formatDate = (isoDateString) => {
+        const date = new Date(isoDateString);
+      
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+      
+        return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
+      };
+
     const handleBoardEditSaveClick = async (e) => {
         e.preventDefault();
           const transformedData = {
@@ -549,7 +562,8 @@ const AdminBoardList = () => {
                                                     <td rowSpan={1}><button onClick={() => openModal(index, item.categoryList)} disabled={!selectedRows.includes(item)}>카테고리 추가/수정</button></td>
                                                     {/* <td rowSpan={1}>{item.extraFields}</td> */}
                                                     {/* <td rowSpan={1}>{item.options}</td> */}
-                                                    <td rowSpan={1}>{item.regDt}</td>
+                                                    {/* <td rowSpan={1}>{item.regDt}</td> */}
+                                                    <td rowSpan={1}>{formatDate(item.regDt)}</td>
                                                     <td rowSpan={1}>{item.regUser}</td>
                                                     {/* <td rowSpan={1}>{item.skins}</td> */}
                                                     <td>

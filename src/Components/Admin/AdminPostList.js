@@ -164,25 +164,27 @@ const AdminPostList = () => {
         }
     },[editPostData])
 
+    const key = selectedRows[0]?.brdKey;
+    const id = selectedRows[0]?.id;
+
+    
     const handlePostEditSaveClick = async (e) => {
         e.preventDefault();
           const transformedData = {
-            key: selectedRows[0].key,
             status: selectedRows[0].status,
+            category: selectedRows[0].category,
+            isNotice: selectedRows[0].isNotice,
             title: selectedRows[0].title,
-            skins: JSON.parse(selectedRows[0].skins),
-            authorize: JSON.parse(selectedRows[0].authorize),
-            categoryList: selectedRows[0].categoryList,
-            regUser: selectedRows[0].regUser,
-            regDt: selectedRows[0].regDt,
-            updUser: selectedRows[0].updUser,
-            updDt: selectedRows[0].updDt,
+            content: selectedRows[0].content,
+            isSecret: selectedRows[0].isSecret,
+            extraField: selectedRows[0].extraField,
             userUid: userUid
           };
         /* console.log(transformedData); */
         /* console.log('jsonData',jsonData); */
-        try{
-            const response = await axios.patch(`${baseURL}/v1/board/modify`, transformedData, { headers });
+
+        try{/* /v1/board/:key/post/:boardPostId */
+            const response = await axios.patch(`${baseURL}/v1/board/${key}/post/${id}`, transformedData, { headers });
             console.log('관리자 게시물관리 수정 성공', response);
         } catch(error) {
             console.error('관리자 게시물관리 수정 실패', error);
@@ -253,9 +255,9 @@ const AdminPostList = () => {
                                             <th scope='col'>
                                                 <Link>비밀글</Link>
                                             </th>
-                                            <th scope='col'>
+                                            {/* <th scope='col'>
                                                 <Link>썸네일</Link>
-                                            </th>
+                                            </th> */}
                                             <th scope='col'>
                                                 <Link>닉네임</Link>
                                             </th>
@@ -268,7 +270,7 @@ const AdminPostList = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {editPostData.map((item, index) => (
+                                        {AdminPostListData.map((item, index) => (
                                                 <tr key={index}>
                                                     <td>
                                                         <input 
@@ -278,12 +280,28 @@ const AdminPostList = () => {
                                                         />
                                                     </td>
                                                     <td rowSpan={1}>
-                                                        <input 
-                                                            placeholder={item.status} 
-                                                            value={item.status}
+                                                        <label>
+                                                            <input
+                                                            type="radio"
+                                                            name={`status-radio-${index}`}
+                                                            value="Y"
+                                                            checked={item.status === "Y"}
                                                             onChange={(e) => handleInputChange(e, index, 'status')}
                                                             disabled={!selectedRows.includes(item)}
-                                                        />
+                                                            />
+                                                            YES
+                                                        </label>
+                                                        <label>
+                                                            <input
+                                                            type="radio"
+                                                            name={`status-radio-${index}`}
+                                                            value="N"
+                                                            checked={item.status === "N"}
+                                                            onChange={(e) => handleInputChange(e, index, 'status')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                            />
+                                                            NO
+                                                        </label>
                                                     </td>
                                                     <td rowSpan={1}>
                                                         <input 
@@ -310,57 +328,77 @@ const AdminPostList = () => {
                                                         />
                                                     </td>
                                                     <td rowSpan={1}>
-                                                        <input 
+                                                        {/* <input 
                                                             placeholder={item.post_view_count} 
                                                             value={item.post_view_count}
                                                             onChange={(e) => handleInputChange(e, index, 'post_view_count')}
                                                             disabled={!selectedRows.includes(item)}
-                                                        />
+                                                        /> */}
+                                                        <span>{item.post_view_count}</span>
                                                     </td>
                                                     <td rowSpan={1}>
-                                                        <input 
+                                                        {/* <input 
                                                             placeholder={item.comment_count} 
                                                             value={item.comment_count}
                                                             onChange={(e) => handleInputChange(e, index, 'comment_count')}
                                                             disabled={!selectedRows.includes(item)}
-                                                        />
+                                                        /> */}
+                                                        <span>{item.comment_count}</span>
                                                     </td>
                                                     <td rowSpan={1}>
-                                                        <input 
+                                                        {/* <input 
                                                             placeholder={item.like} 
                                                             value={item.like}
                                                             onChange={(e) => handleInputChange(e, index, 'like')}
                                                             disabled={!selectedRows.includes(item)}
-                                                        />
+                                                        /> */}
+                                                        <span>{item.like}</span>
                                                     </td>
                                                     <td rowSpan={1}>
-                                                        <input 
+                                                        {/* <input 
                                                             placeholder={item.dislike} 
                                                             value={item.dislike}
                                                             onChange={(e) => handleInputChange(e, index, 'dislike')}
                                                             disabled={!selectedRows.includes(item)}
-                                                        />
+                                                        /> */}
+                                                        <span>{item.dislike}</span>
                                                     </td>
                                                     <td rowSpan={1}>
-                                                        <input 
-                                                            placeholder={item.isSecret} 
-                                                            value={item.isSecret}
+                                                        <label>
+                                                            <input
+                                                            type="radio"
+                                                            name={`isSecret-radio-${index}`}
+                                                            value="Y"
+                                                            checked={item.isSecret === "Y"}
                                                             onChange={(e) => handleInputChange(e, index, 'isSecret')}
                                                             disabled={!selectedRows.includes(item)}
-                                                        />
+                                                            />
+                                                            YES
+                                                        </label>
+                                                        <label>
+                                                            <input
+                                                            type="radio"
+                                                            name={`isSecret-radio-${index}`}
+                                                            value="N"
+                                                            checked={item.isSecret === "N"}
+                                                            onChange={(e) => handleInputChange(e, index, 'isSecret')}
+                                                            disabled={!selectedRows.includes(item)}
+                                                            />
+                                                            NO
+                                                        </label>
                                                     </td>
-                                                    <td rowSpan={1}>
+                                                    {/* <td rowSpan={1}>
                                                         <input 
                                                             placeholder={item.thumbnail} 
                                                             value={item.thumbnail}
                                                             onChange={(e) => handleInputChange(e, index, 'thumbnail')}
                                                             disabled={!selectedRows.includes(item)}
                                                         />
-                                                    </td>
+                                                    </td> */}
                                                     <td rowSpan={1}>
                                                         <input 
                                                             placeholder={item.nickname} 
-                                                            value={item.nickname}
+                                                            value={item.nickname || ''}
                                                             onChange={(e) => handleInputChange(e, index, 'nickname')}
                                                             disabled={!selectedRows.includes(item)}
                                                         />

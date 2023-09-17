@@ -31,6 +31,7 @@ const Signup = () => {
         phone: '',
         email: '',
         img: '',
+        /* isAdmin:'Y', */
         receiveSms: 'Y',
         receiveEmail: 'Y',
         note: ''

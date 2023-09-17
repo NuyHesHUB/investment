@@ -43,18 +43,12 @@ const Admin = () => {
             try {
                 const adminUserResponse = await axios.get(`${baseURL}/v1/users`, { headers });
                 dispatch(setAdminUserData(adminUserResponse.data?.query));
-                /* const modifiedUserData = adminUserResponse.data.query.map(user => ({
-                    ...user,
-                    selected: false
-                }));
-                dispatch(setAdminUserData(modifiedUserData)); */
 
-                const adminBoardResponse = await axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers });
+                /* const adminBoardResponse = await axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers });
                 dispatch(setAdminBoardData(adminBoardResponse.data?.query));
 
-                /* http://39.117.244.34:3385/v1/board/investment/post */
                 const adminPostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
-                dispatch(setAdminPostData(adminPostResponse.data?.query))
+                dispatch(setAdminPostData(adminPostResponse.data?.query)) */
                 
             } catch (error) {
                 console.error('Admin User/Post 데이터 가져오기 실패', error);
@@ -112,7 +106,9 @@ const Admin = () => {
                             <Link to="/">
                                 <HeaderLogo style={{color:'#fff'}}>Hwajin</HeaderLogo>
                             </Link>
-                            <h3 style={{marginTop:'10px', marginLeft:'10px',color:'#fff'}}>관리자 페이지</h3>
+                            <Link to="/admin">
+                                <h3 style={{marginTop:'10px', marginLeft:'10px',color:'#fff'}}>관리자 페이지</h3>
+                            </Link>
                         </div>
                     </div>
                     <div className='right-admin-top'>
@@ -134,8 +130,8 @@ const Admin = () => {
                                     <h3>회원관리</h3>
                                     <ul style={{marginTop:'20px'}}>
                                         <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/member_list">회원관리</Link></li>
-                                        <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link>접속자집계</Link></li>
-                                        <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link>접속자검색</Link></li>
+                                        {/* <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link>접속자집계</Link></li> */}
+                                        {/* <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link>접속자검색</Link></li> */}
                                     </ul>
                                 </StyledNavGnb>
                             </div>
@@ -150,12 +146,12 @@ const Admin = () => {
                                     <ul style={{marginTop:'20px'}}>
                                         <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/board_list">게시판관리</Link></li>
                                         <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_list">게시물관리</Link></li>
-                                        <li style={{marginBottom:'10px', paddingBottom:'6px'}}>내용관리</li>
+                                        <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_list">댓글관리</Link></li>
                                     </ul>
                                 </StyledNavGnb>
                             </div>
                         </li>
-                        <li>
+                        {/* <li>
                             <button onClick={() => setVisibleDiv(1)}>
                                 <AiFillSetting/>
                             </button>
@@ -170,7 +166,7 @@ const Admin = () => {
                                     </ul>
                                 </StyledNavGnb>
                             </div>
-                        </li>
+                        </li> */}
                     </AdminNavUl>
                 </StyledAdminNav>
             </StyledAdminHeader>

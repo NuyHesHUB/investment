@@ -46,8 +46,8 @@ const Home = () => {
     
     /* const dispatch = useDispatch(); */
 
-    const boardData = useSelector((state) => state.reducer.boardData);
-    
+    const boardData = useSelector((state) => state.reducer?.boardData);
+    console.log('boardData',boardData);
 
     /* useEffect(() => {
         axios.get('http://211.198.44.123:3385/v1/board/')
@@ -161,15 +161,7 @@ const Home = () => {
                             </Swiper>
                             <div className='swiper-button-next'></div>
                     </SwiperCustomWrap>
-                <div style={{textAlign:'center', marginTop:'100px'}}>
-                    <img style={{width:'70%'}} src={Demo1} alt="demo"/>
-                </div>
-                <div style={{textAlign:'center', marginTop:'100px'}}>
-                    <img style={{width:'70%'}} src={Demo2} alt="demo"/>
-                </div>
-                <div style={{textAlign:'center', marginTop:'100px'}}>
-                    <img style={{width:'70%'}} src={Demo3} alt="demo"/>
-                </div>
+
             <Footer/>
             </StyledFrame>
             

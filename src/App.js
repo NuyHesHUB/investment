@@ -9,7 +9,7 @@ import axios from 'axios';
 
 /* Redux */
 import { useDispatch, useSelector } from 'react-redux';
-import { setBoardData } from './store/actions/actions';
+import { setAdminUserData, setAdminBoardData, setAdminPostData } from './store/actions/actions';
 
 /* Basic Component */
 import Home from './Components/Home';
@@ -45,13 +45,14 @@ const App = () => {
     \*------------------------------------------------*/
     /* console.log('process.env.NODE_ENV :',process.env.NODE_ENV); */
     /* console.log('process.env.REACT_APP_BASEURL :',process.env.REACT_APP_BASEURL); */
+
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
     const dispatch = useDispatch();
-    const rdxTest = useSelector((state) => state.reducer)
-    const boardData = useSelector((state) => state.reducer.boardData || []);
-    const categoryData = useSelector((state) => state.reducer.galleryListData || []);
-
+    const accessToken = sessionStorage.getItem('accessToken');
+    const headers = {
+        Authorization: `${accessToken}`
+    }
     /* const keyData = boardData?.[0]?.key; */
     /* const storeData = useSelector((state) => state.reducer); */
     /* console.log('rdxTest',rdxTest); */
@@ -61,7 +62,7 @@ const App = () => {
     
     /* console.log('app.js',storeData); */
   
-    useEffect(() => {
+    /* useEffect(() => {
         axios.get(`${baseURL}/v1/board/`)
             .then(response => {
                 const titles = response.data?.query;
@@ -70,8 +71,66 @@ const App = () => {
             .catch(error => {
                 console.error('게시판 데이터를 가져올 수 없습니다.', error);
             });
-    }, []);
+    }, []); */
+    /* const boardDataString = localStorage.getItem('adminBoardData');
+    const boardData = JSON.parse(boardDataString);
+    const categoryData = JSON.parse(boardData.query[6].categoryList);
 
+    const postDataString = localStorage.getItem('adminPostData');
+    const postData = JSON.parse(postDataString); */
+    const boardData = useSelector((state) => state.reducer.adminBoardData);
+    console.log('postData',boardData);
+    const postData = useSelector((state) => state.reducer.adminPostData);
+    console.log('postData',postData);
+
+    console.log('boardData',boardData[6]?.categoryList);
+
+    const categoryData = boardData[6]?.categoryList || [];
+
+    
+    let parsedCategoryData = [];
+
+    if (typeof categoryData === 'string' && categoryData.length > 0) {
+    try {
+        parsedCategoryData = JSON.parse(categoryData);
+    } catch (error) {
+        console.error('JSON 파싱 오류:', error);
+    }
+    }
+
+    console.log('categoryData',parsedCategoryData);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+
+                /* const adminUserResponse = await axios.get(`${baseURL}/v1/users`, { headers });
+                dispatch(setAdminUserData(adminUserResponse.data?.query)); */
+
+                const adminBoardResponse = await axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers });
+                dispatch(setAdminBoardData(adminBoardResponse.data?.query));
+                /* const adminBoardData = adminBoardResponse.data?.query; */
+                /* console.log('adminBoardData',adminBoardData); */
+                const adminPostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
+                dispatch(setAdminPostData(adminPostResponse.data?.query))
+                /* const adminPostData = adminPostResponse.data?.query; */
+                /* console.log('adminPostData',adminPostData); */
+
+                /* localStorage.clear(); */
+                /* localStorage.setItem('adminUserData', JSON.stringify(adminUserResponse.data?.query)); */
+                /* localStorage.setItem('adminBoardData', JSON.stringify(adminBoardResponse.data?.query)); */
+                /* localStorage.setItem('adminBoardData', JSON.stringify(adminBoardResponse.data)); */
+                /* localStorage.setItem('adminPostData', JSON.stringify(adminPostResponse.data?.query)); */
+                console.log('app.js 통신 테스트');
+            } catch (error) {
+                console.error('Admin User/Post 데이터 가져오기 실패', error);
+            }
+        }
+        fetchData();
+    }, []);
+    /* console.log('test' ,boardData.query[6].key); */
+    /* console.log('categoryData' ,categoryData); */
+    /* const categoryData1 = JSON.parse(boardData.query[6].categoryList); */
+    /* console.log('categoryData1',categoryData1[1]); */
     /* const sendPageLog = (userUid, page) => {
         axios.post('/add-log', {
           userUid: userUid,
@@ -111,19 +170,21 @@ const App = () => {
                 <Route exact path="/myinfo" element={<MemberEditPage />}></Route>
 
                 {/* Gallery */}
-                <Route exact path='/gallery/dining' element={<CategoryPage categoryList="dining"/>}></Route>
+                {/* <Route exact path='/gallery/dining' element={<CategoryPage categoryList="dining"/>}></Route>
                 <Route exact path='/gallery/manufacturing' element={<CategoryPage categoryList="manufacturing"/>}></Route>
                 <Route exact path='/gallery/sales' element={<CategoryPage categoryList="sales"/>}></Route>
                 <Route exact path='/gallery/rental' element={<CategoryPage categoryList="rental"/>}></Route>
                 <Route exact path='/gallery/car' element={<CategoryPage categoryList="car"/>}></Route>
-                <Route exact path='/gallery/other' element={<CategoryPage categoryList="other"/>}></Route>
+                <Route exact path='/gallery/other' element={<CategoryPage categoryList="other"/>}></Route> */}
 
+                {parsedCategoryData.map((item, index) => (
+                    <Route key={index} exact path={`/investment/${index}`} element={<CategoryPage categoryIndex={index} categoryData={parsedCategoryData[index]}/>}
+                    />             
+                ))}
 
-                {/* {boardData.legnth > 0 && categoryData.legnth > 0 && boardData.map((item, index) => (
-                    <Route key={index} exact path={`/${item.key}/${categoryData[index]}`} element={<CategoryPage index={index} categoryList={categoryData[index]}/>}
-                    />
-                ))} */}
-                {boardData.length > 0 && categoryData.length > 0 && boardData.map((item, index) => {
+                {/* <Route exact path='/investment/0' element={<CategoryPage categoryList="manufacturing"/>}></Route> */}
+
+                {/* {boardData.length > 0 && categoryData.length > 0 && boardData.map((item, index) => {
                     const path = `/${boardData?.[0]?.key}/${categoryData[index]}`;
                     console.log(`Route path: ${path}`);
                     return (
@@ -134,7 +195,7 @@ const App = () => {
                             element={<CategoryPage index={index} categoryList={categoryData[index]} />}
                         />
                     );
-                })}
+                })} */}
                 
 
                 {/* <Route exact path='/:categoryList' element={<CategoryPage categoryList="dining"/>}></Route>
@@ -145,7 +206,7 @@ const App = () => {
                 <Route exact path='/other' element={<CategoryPage categoryList="other"/>}></Route> */}
 
                 {/* Post */}
-                <Route exact path="/gallery/dining/:id" element={<PostDetail/>} />
+                <Route exact path="/investment/:number/:id" element={<PostDetail/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
 
                 {/* Admin */}

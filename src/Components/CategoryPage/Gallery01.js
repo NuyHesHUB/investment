@@ -4,9 +4,10 @@ import { StyledFrame, GalleryWrap, LeftFrame, LeftTable, TablePagination, RightF
 import { useSelector } from 'react-redux';
 
 const Gallery01 = ({postData}) => {
-    const categoryData = useSelector((state) => state.reducer.galleryListData || []);
+    /* const categoryData = useSelector((state) => state.reducer.galleryListData || []); */
     /* const boardData = useSelector((state) => state.reducer.boardData || []); */
-      const sortedPostData = [...postData].sort((a, b) => {
+      
+    const sortedPostData = [...postData].sort((a, b) => {
         const dateComparison = new Date(b.date) - new Date(a.date);
         if (dateComparison !== 0) {
           return dateComparison;
@@ -53,7 +54,7 @@ const Gallery01 = ({postData}) => {
                                     <td>{item.num}</td>
                                     <td>{item.isSecret}</td>
                                     <td>{item.nickname}</td>
-                                    <td><Link to={`/gallery/${categoryData?.[0]}/${item.id}`}>{item.title}</Link></td>
+                                    <td><Link /* to={`/gallery/${categoryData?.[0]}/${item.id}`} */>{item.title}</Link></td>
                                     <td>{item.like}</td>
                                     <td>{item.brdKey}</td>
                                     <td>{item.post_view_count}</td>
@@ -62,7 +63,7 @@ const Gallery01 = ({postData}) => {
                         </tbody>
                     </LeftTable>
                     <TablePagination className="pagination">
-                        {Array.from({ length: totalPages }, (_, index) => (
+                        {/* {Array.from({ length: totalPages }, (_, index) => (
                             <span
                                 key={index}
                                 className={currentPage === index + 1 ? 'active' : ''}
@@ -70,7 +71,7 @@ const Gallery01 = ({postData}) => {
                             >
                                 {index + 1}
                             </span>
-                        ))}
+                        ))} */}
                     </TablePagination>
                 </LeftFrame>
                 <RightFrame>

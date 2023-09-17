@@ -16,10 +16,12 @@ import { PostDetailFrame, PostMain } from './StyledPostDetail';
 
 
 const PostDetail = () => {
-    const { categoryKey, id } = useParams();
-    console.log(categoryKey);
-    const boardData = useSelector((state) => state.reducer);
-    console.log('boardData',boardData);
+    const { number, id } = useParams();
+
+    console.log('number',number);
+    console.log('id',id);
+    
+
     const [ testData, setTestData ] = useState([]);
     
     const [comments, setComments] = useState([]);
