@@ -428,6 +428,7 @@ const AdminBoardList = () => {
     console.log('selectedRows:', selectedRows);
     console.log('AdminBoardListData',AdminBoardListData);
     console.log('authorize',AdminBoardListData?.[0]?.authorize);
+    
     return (
         <AdminListFrame $isModalOpen={isModalOpen}>
             <Admin/>

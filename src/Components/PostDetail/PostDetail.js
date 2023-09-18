@@ -11,72 +11,48 @@ import { BsList } from 'react-icons/bs';
 import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
 import { FiEye } from 'react-icons/fi';
 import CommentInput from '../InputGroup/CommentInput';
+import Cookies from 'js-cookie';
 
 import { PostDetailFrame, PostMain } from './StyledPostDetail';
 
 
-const PostDetail = () => {
+const PostDetail = ({postData, parsedCategoryData}) => {
+    const baseURL = process.env.REACT_APP_BASEURL;
     const { number, id } = useParams();
 
     console.log('number',number);
     console.log('id',id);
     
+    console.log('parsedCategoryData',parsedCategoryData);
+    console.log('postData',postData);
 
     const [ testData, setTestData ] = useState([]);
-    
     const [comments, setComments] = useState([]);
-
     const [post, setPost] = useState(null);
     const [isLiked, setIsLiked] = useState(false);
     const [isDisliked, setIsDisliked] = useState(false);
 
-    /* console.log('postdetail',boardData); */
-    /* const url = `http://39.117.244.34:3385/v1/board/${categoryKey}/post/${id}` */
-    /* const url = `http://39.117.244.34:3385/v1/board/gallery/post/${id}`
+
     const accessToken = sessionStorage.getItem('accessToken');
     const userUid = sessionStorage.getItem('userUid');
     const headers = {
         Authorization: `${accessToken}`
-    } */
-    /* console.log('카테고리키', categoryKey); */
-    /* console.log('카테고리키', num); */
-    /* console.log('아아디',id); */
-    
-    /* const handlePostComment = (comment) => {
-        axios.post(`http://39.117.244.34:3385/v1/board/${categoryKey}/post/${id}/comments`,{
-            status: 'Y',
-            parentId: id,
-            content: comment,
-            isSecret: 'N',
-            userUid: userUid, 
-        }, {
-            headers
-        })
-        .then(response => {
-            
-            const newComment = response.data;
-            console.log('댓글 게시 성공:', response.data);
-            setComments(prevComments => [...prevComments, newComment]);
-        })
-        .catch(error => {
-            console.error('댓글 게시 실패', error);
-            alert('로그인해주세요')
-        })
-    }; */
-    
-    /* useEffect(() => {
-        axios.get(url, { headers })
+    }
+
+    useEffect(() => {
+        axios.get(`${baseURL}/v1/board/investment/post/${id}` , { headers })
             .then(response => {
                 const test = response.data.query;
                 setTestData(test);
                 console.log('res 테스트', test);
+                console.log('res 테스트', response);
+                handleResponse(response);
+
             })
             .catch(error => {
                 console.error('res 테스트 실패', error);
             });
-
-        const commentsUrl = `http://39.117.244.34:3385/v1/board/${categoryKey}/post/${id}/comments`;
-        axios.get(commentsUrl, { headers })
+        axios.get(`${baseURL}/v1/board/investment/post/${id}/comments`, { headers })
         .then(response => {
             const commentData = response.data.query; 
             setComments(commentData);
@@ -86,7 +62,102 @@ const PostDetail = () => {
             console.error('댓글 목록 가져오기 실패', error);
         });
 
-    }, [url, categoryKey, id]); */
+    }, []);
+
+    const handleResponse = (response) => {
+        const setCookieHeader = response.headers['Set-Cookie'];
+        console.log('setCookieHeader',setCookieHeader);
+        if (setCookieHeader) {
+          const cookieValue = setCookieHeader[0].split(';')[0];
+          document.cookie = cookieValue;
+          console.log('쿠키가 저장되었습니다:', cookieValue);
+    
+          localStorage.setItem('myCookie', cookieValue);
+          console.log('쿠키가 로컬 스토리지에 저장되었습니다.');
+        }
+      }
+    /* const setCookieHeader = response.headers['Set-Cookie'];
+    console.log('setCookieHeader',setCookieHeader);
+    if (setCookieHeader) {
+        // Set-Cookie 헤더에서 쿠키 값을 추출
+        const cookieValue = setCookieHeader[0].split(';')[0];
+        // Document.cookie 속성을 사용하여 쿠키를 저장
+        document.cookie = cookieValue;
+        console.log('쿠키가 저장되었습니다:', cookieValue);
+    } */
+    /* function getCookieFromResponse(response) {
+        const cookies = response.headers.get('Set-Cookie');
+        return cookies;
+      }
+      
+      const response = {
+        headers: new Headers({
+          'Set-Cookie': 'board_post=j%3A%5B%229%22%5D; Path=/'
+        })
+      };
+      
+      const cookieString = getCookieFromResponse(response);
+      
+      console.log(cookieString); */
+      
+    /* const getCookie = (name) => {
+        const cookieName = `${name}=`;
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const cookieArray = decodedCookie.split(';');
+        console.log('decodedCookie',decodedCookie);
+        for (let i = 0; i < cookieArray.length; i++) {
+          let cookie = cookieArray[i];
+          while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1);
+          }
+          if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+          }
+        }
+        return null;
+      };
+
+    getCookie(); */
+
+/* const setCookieHeader = response.headers['Set-Cookie'];
+                console.log('setCookieHeader',setCookieHeader);
+                if (setCookieHeader) {
+                    const cookieValue = setCookieHeader[0].split(';')[0];
+                    document.cookie = cookieValue;
+                    console.log('쿠키가 저장되었습니다:', cookieValue);
+                } */
+
+                /* const setCookieHeader = response.headers['Set-Cookie'];
+                console.log('setCookieHeader',setCookieHeader);
+                    if (setCookieHeader) {
+                        const cookieValue = setCookieHeader[0].split(';')[0];
+                        document.cookie = cookieValue;
+                        console.log('쿠키가 저장되었습니다:', cookieValue);
+
+                        localStorage.setItem('myCookie', cookieValue);
+                        console.log('쿠키가 로컬 스토리지에 저장되었습니다.');
+                    } */
+    const handlePostComment = (comment) => {
+        axios.post(`${baseURL}/v1/board/investment/post/${id}/comments`,{
+            status: 'Y',
+            parentId: id,
+            content: comment,
+            isSecret: 'N',
+            userUid: userUid, 
+        }, { headers })
+        .then(response => {
+            const newComment = response.data;
+            console.log('댓글 게시 성공:', response.data);
+            setComments(prevComments => [...prevComments, newComment]);
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('댓글 게시 실패', error);
+        })
+    };
+    
+
+    
 
     /* const handleLike = () => {
             axios.post(`http://39.117.244.34:3385/v1/board/like`, {
@@ -133,16 +204,16 @@ const PostDetail = () => {
                 });
         }
     }; */
-    console.log('testData',testData);
+    
     return (
         <div>
             <Header/>
-                게시물 페이지
-                {/* <PostDetailFrame>
-                    <h4 style={{fontWeight:'normal', textAlign:'center'}}><span style={{fontWeight:'bold'}}>{categoryKey}</span> 카테고리의 게시물 ID <span style={{fontWeight:'bold'}}>{id}</span> 의 상세 페이지</h4>
+                게시물 페이지dd
+                <PostDetailFrame>
+                    <h4 style={{fontWeight:'normal', textAlign:'center'}}><span style={{fontWeight:'bold'}}>{/* {categoryKey} */}</span> 카테고리의 게시물 ID <span style={{fontWeight:'bold'}}>{id}</span> 의 상세 페이지</h4>
                     <div>
-                        <button onClick={handleLike} disabled={isLiked || isDisliked}>좋아요</button>
-                        <button onClick={handleDislike} disabled={isLiked || isDisliked}>싫어요</button>
+                        {/* <button onClick={handleLike} disabled={isLiked || isDisliked}>좋아요</button>
+                        <button onClick={handleDislike} disabled={isLiked || isDisliked}>싫어요</button> */}
                     </div>
                     {testData.map((item, index) => (
                         <div key={index}>
@@ -225,7 +296,7 @@ const PostDetail = () => {
                             ))
                         }
                     </div>
-                </PostDetailFrame> */}
+                </PostDetailFrame>
             <Footer/>
         </div>
     );

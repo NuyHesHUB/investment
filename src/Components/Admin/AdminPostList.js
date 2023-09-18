@@ -29,6 +29,7 @@ const AdminPostList = () => {
         Authorization: `${accessToken}`
     }
     console.log('editPostData',editPostData);
+    
     /*------------------------------------------------*\
                   Authorize 읽기 / 쓰기 수정
     \*------------------------------------------------*/

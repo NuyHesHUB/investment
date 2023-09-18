@@ -7,7 +7,8 @@ const CommentInput = ({ onPostComment }) => {
     setComment(event.target.value);
   };
 
-  const handlePostComment = () => {
+  const handlePostComment = (e) => {
+    e.preventDefault();
     if (comment.trim() === '') {
       alert('댓글을 입력하세요.');
       return;

@@ -17,10 +17,11 @@ const Header = () => {
     const boardData = useSelector((state) => state.reducer?.adminBoardData
     );
 
-    console.log('boardData',boardData[6]?.categoryList);
+    /* console.log('boardData',boardData[6]?.categoryList); */
+    /* console.log('boardData-test',boardData[6]?.key); */
+
     const categoryData = boardData[6]?.categoryList || [];
 
-    
     let parsedCategoryData = [];
 
     if (typeof categoryData === 'string' && categoryData.length > 0) {
@@ -30,15 +31,16 @@ const Header = () => {
         console.error('JSON 파싱 오류:', error);
     }
     }
-    console.log('categoryData',parsedCategoryData);
+    /* console.log('categoryData',parsedCategoryData); */
 
+    /* const sessionCategoryData = JSON.parse(sessionStorage.getItem('CategoryData'));  */
 
     const filteredItems = boardData.filter(item => {
         const key = item.key;
         return ['economic', 'free', 'humor', 'investment', 'marketing'].includes(key);
       });
 
-    console.log('filteredItems',filteredItems);
+    /* console.log('filteredItems',filteredItems); */
       
     /* console.log('categoryData',categoryData); */
 
@@ -118,8 +120,8 @@ const Header = () => {
                             <ul id='SubMenu' className={subMenuOpen.investment ? 'sub-menu on' : 'sub-menu'}>
                                 {parsedCategoryData && parsedCategoryData.map((item,index) => (
                                     <li key={index}>
-                                        <Link to={`/investment/${index}`}>{item}</Link>
-                                  </li>
+                                        <Link to={`/${boardData[6]?.key}/${index}`}>{item}</Link>
+                                    </li>
                                 ))}         
                             </ul>
                         </li>

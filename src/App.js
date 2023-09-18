@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 /* React-Router-Dom */
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+/* import { useHistory } from "react-router-dom"; */
 
 /* Axios */
 import axios from 'axios';
@@ -35,6 +35,7 @@ import AdminBoardList from './Components/Admin/AdminBoardList';
 import AdminPostList from './Components/Admin/AdminPostList';
 import AdminEditUser from './Components/Admin/AdminEditUser';
 import AdminEditPost from './Components/Admin/AdminEditPost';
+import Header from './Components/Header';
 
 
 
@@ -79,11 +80,13 @@ const App = () => {
     const postDataString = localStorage.getItem('adminPostData');
     const postData = JSON.parse(postDataString); */
     const boardData = useSelector((state) => state.reducer.adminBoardData);
-    console.log('postData',boardData);
+    console.log('App.js > postData',boardData);
     const postData = useSelector((state) => state.reducer.adminPostData);
-    console.log('postData',postData);
+    console.log('App.js > postData',postData);
 
-    console.log('boardData',boardData[6]?.categoryList);
+    /* console.log('boardData',boardData[6]?.categoryList); */
+
+
 
     const categoryData = boardData[6]?.categoryList || [];
 
@@ -91,18 +94,22 @@ const App = () => {
     let parsedCategoryData = [];
 
     if (typeof categoryData === 'string' && categoryData.length > 0) {
-    try {
-        parsedCategoryData = JSON.parse(categoryData);
-    } catch (error) {
-        console.error('JSON 파싱 오류:', error);
-    }
+        try {
+            parsedCategoryData = JSON.parse(categoryData);
+        } catch (error) {
+            console.error('JSON 파싱 오류:', error);
+        }
     }
 
-    console.log('categoryData',parsedCategoryData);
+    /* console.log('categoryData',parsedCategoryData); */
+
+    /* sessionStorage.setItem('CategoryData', JSON.stringify(parsedCategoryData));
+    const sessionCategoryData = JSON.parse(sessionStorage.getItem('CategoryData'));
+    console.log('sessionCategoryData',sessionCategoryData); */
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-
                 /* const adminUserResponse = await axios.get(`${baseURL}/v1/users`, { headers });
                 dispatch(setAdminUserData(adminUserResponse.data?.query)); */
 
@@ -159,12 +166,11 @@ const App = () => {
     
 
     return (
-        
         <Router>
             <Routes>
-
+                    
                 {/* Home, Login, Signup */}
-                <Route exact path="/" element={<Home/>}></Route>
+                <Route exact path="/" element={<Home parsedCategoryData={parsedCategoryData}/>}></Route>
                 <Route exact path="/login" element={<Login />}></Route>
                 <Route exact path="/sign_up" element={<Signup/>}></Route>
                 <Route exact path="/myinfo" element={<MemberEditPage />}></Route>
@@ -177,8 +183,8 @@ const App = () => {
                 <Route exact path='/gallery/car' element={<CategoryPage categoryList="car"/>}></Route>
                 <Route exact path='/gallery/other' element={<CategoryPage categoryList="other"/>}></Route> */}
 
-                {parsedCategoryData.map((item, index) => (
-                    <Route key={index} exact path={`/investment/${index}`} element={<CategoryPage categoryIndex={index} categoryData={parsedCategoryData[index]}/>}
+                {parsedCategoryData.length > 0 && parsedCategoryData.map((item, index) => (
+                    <Route key={index} path={`/${boardData[6]?.key}/${index}`} element={<CategoryPage categoryIndex={index} parsedCategoryData={parsedCategoryData[index]}/>}
                     />             
                 ))}
 
@@ -206,7 +212,7 @@ const App = () => {
                 <Route exact path='/other' element={<CategoryPage categoryList="other"/>}></Route> */}
 
                 {/* Post */}
-                <Route exact path="/investment/:number/:id" element={<PostDetail/>} />
+                <Route exact path="/investment/:number/:id" element={<PostDetail parsedCategoryData={parsedCategoryData} postData={postData}/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
 
                 {/* Admin */}

@@ -27,7 +27,7 @@ const CategoryPageFrame = styled.div`
     margin: 0 auto;
     text-align: center;
 `
-const CategoryPage = ({ categoryIndex, categoryData }) => {
+const CategoryPage = ({ categoryIndex, parsedCategoryData }) => {
     /* AccessToken */
     const accessToken = sessionStorage.getItem('accessToken');
     /* const boardDataString = localStorage.getItem('adminBoardData');
@@ -39,10 +39,11 @@ const CategoryPage = ({ categoryIndex, categoryData }) => {
     const postData = JSON.parse(postDataString); */
     /* console.log('postData',postData); */
     console.log('index',categoryIndex);
+    console.log('categoryData',parsedCategoryData);
 
     /* Redux */
     const boardData = useSelector((state) => state.reducer?.adminBoardData);
-    console.log('postData',boardData);
+    console.log('boardData',boardData);
     const postData = useSelector((state) => state.reducer?.adminPostData);
     console.log('postData',postData);
     /* const urlKey = boardData?.[0]?.key; */
@@ -87,7 +88,6 @@ const CategoryPage = ({ categoryIndex, categoryData }) => {
                      Contents Return
     \*------------------------------------------------*/
     /* let content = null; */
-    console.log('test',categoryData);
 
     /* if (categoryData === '제조') {
         content = <Gallery01 postData={postData}></Gallery01>;
@@ -117,7 +117,7 @@ const CategoryPage = ({ categoryIndex, categoryData }) => {
         content = <div>기본 내용을 보여줍니다.</div>;
     } */
     const filteredPostData = postData.filter(post => {
-        return categoryData.includes(post.category); // categoryData 배열에 포함된 경우만 반환
+        return parsedCategoryData.includes(post.category); // categoryData 배열에 포함된 경우만 반환
       });
 
 
@@ -146,7 +146,7 @@ const CategoryPage = ({ categoryIndex, categoryData }) => {
             <Header/>
             <CategoryPageFrame>
                 {/* <CategoryPageFrame> */}
-                    <h2>{categoryData}</h2>
+                    <h2>{parsedCategoryData}</h2>
                     <Link to="/post_regist">
                         게시글작성
                     </Link>

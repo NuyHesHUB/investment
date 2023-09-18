@@ -114,7 +114,6 @@ const MemberEditPage = () => {
         }
     };
     
-    
     /*------------------------------------------------------*\
                         회원정보 불러오기
     \*------------------------------------------------------*/
@@ -123,6 +122,10 @@ const MemberEditPage = () => {
     
     const key = 'Authorization'
     const headers = { Authorization: `${accessToken}` }
+
+    const baseURL = process.env.REACT_APP_BASEURL;
+
+    
 
     useEffect(() => {
         if (accessToken) {

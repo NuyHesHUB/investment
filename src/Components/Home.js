@@ -30,8 +30,8 @@ import ServicesIcon from '../assets/category-image/services.png';
 import { Link } from 'react-router-dom';
 import { setBoardData} from '../store/actions/actions';
 
-const Home = () => {
-
+const Home = ({parsedCategoryData}) => {
+    const baseURL = process.env.REACT_APP_BASEURL;
     const categoryImage = [
         AllIcon,
         FoodIcon,
@@ -42,8 +42,13 @@ const Home = () => {
         ServicesIcon,
         ServicesIcon,
     ];
+    const userUid = sessionStorage.getItem('userUid');
+    const accessToken = sessionStorage.getItem('accessToken');
+    const headers = {
+        Authorization: `${accessToken}`
+    }
 
-    
+    console.log('home-test',parsedCategoryData);
     /* const dispatch = useDispatch(); */
 
     const boardData = useSelector((state) => state.reducer?.boardData);
@@ -60,9 +65,42 @@ const Home = () => {
             });
     }, []); */
 
+
+    /* useEffect(() => {
+        axios.post(`http://39.117.244.34:3385/v1/log/access/form`, { data: userUid }, { headers })
+          .then(response => {
+            console.log('로그 성공', userUid);
+          })
+          .catch(error => {
+            console.error('로그 실패', error);
+          });
+      }, []); */
+
+      useEffect(() => {
+        const sendDataToServer = async () => {
+          try {
+            const requestData = { userUid: userUid };
+            const requestConfig = { headers };
+    
+            console.log('보내는 데이터:', requestData);
+            console.log('헤더 정보:', requestConfig);
+    
+            const response = await axios.post(
+              'http://39.117.244.34:3385/v1/log/access/form',{ requestData} ,{headers}
+            );
+    
+            console.log('서버 응답:', response.data);
+          } catch (error) {
+            console.error('에러 발생:', error);
+          }
+        };
+    
+        sendDataToServer();
+      }, [userUid, headers]);
+    
     return (
             <StyledFrame>
-                <Header/>
+                <Header parsedCategoryData={parsedCategoryData}/>
                     <div>
                         <Swiper
                             autoplay={{
