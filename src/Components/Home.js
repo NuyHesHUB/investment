@@ -76,7 +76,7 @@ const Home = ({parsedCategoryData}) => {
           });
       }, []); */
 
-      useEffect(() => {
+      /* useEffect(() => {
         const sendDataToServer = async () => {
           try {
             const requestData = { userUid: userUid };
@@ -96,7 +96,7 @@ const Home = ({parsedCategoryData}) => {
         };
     
         sendDataToServer();
-      }, [userUid, headers]);
+      }, [userUid, headers]); */
     
     return (
             <StyledFrame>
