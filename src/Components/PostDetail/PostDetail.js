@@ -29,6 +29,7 @@ const PostDetail = ({postData, parsedCategoryData}) => {
     const [ testData, setTestData ] = useState([]);
     const [comments, setComments] = useState([]);
     const [post, setPost] = useState(null);
+
     const [isLiked, setIsLiked] = useState(false);
     const [isDisliked, setIsDisliked] = useState(false);
 
@@ -46,7 +47,7 @@ const PostDetail = ({postData, parsedCategoryData}) => {
                 setTestData(test);
                 console.log('res 테스트', test);
                 console.log('res 테스트', response);
-                handleResponse(response);
+                /* handleResponse(response); */
 
             })
             .catch(error => {
@@ -64,7 +65,7 @@ const PostDetail = ({postData, parsedCategoryData}) => {
 
     }, []);
 
-    const handleResponse = (response) => {
+    /* const handleResponse = (response) => {
         const setCookieHeader = response.headers['Set-Cookie'];
         console.log('setCookieHeader',setCookieHeader);
         if (setCookieHeader) {
@@ -75,68 +76,19 @@ const PostDetail = ({postData, parsedCategoryData}) => {
           localStorage.setItem('myCookie', cookieValue);
           console.log('쿠키가 로컬 스토리지에 저장되었습니다.');
         }
-      }
-    /* const setCookieHeader = response.headers['Set-Cookie'];
-    console.log('setCookieHeader',setCookieHeader);
-    if (setCookieHeader) {
-        // Set-Cookie 헤더에서 쿠키 값을 추출
-        const cookieValue = setCookieHeader[0].split(';')[0];
-        // Document.cookie 속성을 사용하여 쿠키를 저장
-        document.cookie = cookieValue;
-        console.log('쿠키가 저장되었습니다:', cookieValue);
-    } */
-    /* function getCookieFromResponse(response) {
-        const cookies = response.headers.get('Set-Cookie');
-        return cookies;
-      }
-      
-      const response = {
-        headers: new Headers({
-          'Set-Cookie': 'board_post=j%3A%5B%229%22%5D; Path=/'
-        })
-      };
-      
-      const cookieString = getCookieFromResponse(response);
-      
-      console.log(cookieString); */
-      
-    /* const getCookie = (name) => {
-        const cookieName = `${name}=`;
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const cookieArray = decodedCookie.split(';');
-        console.log('decodedCookie',decodedCookie);
-        for (let i = 0; i < cookieArray.length; i++) {
-          let cookie = cookieArray[i];
-          while (cookie.charAt(0) === ' ') {
-            cookie = cookie.substring(1);
-          }
-          if (cookie.indexOf(cookieName) === 0) {
-            return cookie.substring(cookieName.length, cookie.length);
-          }
-        }
-        return null;
-      };
+      } */
 
-    getCookie(); */
+      /* const setCookieFromResponse = (cookieHeader) => {
+        const cookiesArray = cookieHeader.split(';'); 
+        cookiesArray.forEach(cookieString => {
+          const cookieParts = cookieString.split('=');
+          const cookieName = cookieParts[0].trim();
+          const cookieValue = cookieParts[1];
+      
+          document.cookie = `${cookieName}=${cookieValue}; path=/`;
+        });
+      }; */
 
-/* const setCookieHeader = response.headers['Set-Cookie'];
-                console.log('setCookieHeader',setCookieHeader);
-                if (setCookieHeader) {
-                    const cookieValue = setCookieHeader[0].split(';')[0];
-                    document.cookie = cookieValue;
-                    console.log('쿠키가 저장되었습니다:', cookieValue);
-                } */
-
-                /* const setCookieHeader = response.headers['Set-Cookie'];
-                console.log('setCookieHeader',setCookieHeader);
-                    if (setCookieHeader) {
-                        const cookieValue = setCookieHeader[0].split(';')[0];
-                        document.cookie = cookieValue;
-                        console.log('쿠키가 저장되었습니다:', cookieValue);
-
-                        localStorage.setItem('myCookie', cookieValue);
-                        console.log('쿠키가 로컬 스토리지에 저장되었습니다.');
-                    } */
     const handlePostComment = (comment) => {
         axios.post(`${baseURL}/v1/board/investment/post/${id}/comments`,{
             status: 'Y',
@@ -159,29 +111,26 @@ const PostDetail = ({postData, parsedCategoryData}) => {
 
     
 
-    /* const handleLike = () => {
+    const handleLike = () => {
             axios.post(`http://39.117.244.34:3385/v1/board/like`, {
                 boardPostId: id,
                 type: 'like',
-                userUid: userUid,
-            },{
-                headers
-            })
+                userUid: userUid
+            }, { headers })
                 .then(response => {
                     console.log('좋아요 추가 성공:', response.data);
-                    setIsLiked(true);
+                    /* setIsLiked(true);
                     setPost({
                         ...post,
                         like: post.like + 1,
-                    });
+                    }); */
                 })
                 .catch(error => {
                     console.error('좋아요 추가 실패', error);
                 });
-        
-    }; */
+    };
 
-    /* const handleDislike = () => {
+    const handleDislike = () => {
         if (!isLiked && !isDisliked) {
             // 싫어요 추가 요청 보내기
             axios.post(`http://39.117.244.34:3385/v1/board/like`, {
@@ -193,18 +142,19 @@ const PostDetail = ({postData, parsedCategoryData}) => {
             })
                 .then(response => {
                     console.log('싫어요 추가 성공:', response.data);
-                    setIsDisliked(true);
+                    /* setIsDisliked(true);
                     setPost({
                         ...post,
                         dislike: post.dislike + 1,
-                    });
+                    }); */
                 })
                 .catch(error => {
                     console.error('싫어요 추가 실패', error);
                 });
         }
-    }; */
-    
+    };
+
+    console.log('post',post);
     return (
         <div>
             <Header/>
@@ -212,8 +162,8 @@ const PostDetail = ({postData, parsedCategoryData}) => {
                 <PostDetailFrame>
                     <h4 style={{fontWeight:'normal', textAlign:'center'}}><span style={{fontWeight:'bold'}}>{/* {categoryKey} */}</span> 카테고리의 게시물 ID <span style={{fontWeight:'bold'}}>{id}</span> 의 상세 페이지</h4>
                     <div>
-                        {/* <button onClick={handleLike} disabled={isLiked || isDisliked}>좋아요</button>
-                        <button onClick={handleDislike} disabled={isLiked || isDisliked}>싫어요</button> */}
+                        <button onClick={handleLike} disabled={isLiked || isDisliked}>좋아요</button>
+                        <button onClick={handleDislike} disabled={isLiked || isDisliked}>싫어요</button>
                     </div>
                     {testData.map((item, index) => (
                         <div key={index}>
