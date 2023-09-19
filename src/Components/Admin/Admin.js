@@ -20,42 +20,58 @@ import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsPersonCircle } from "react-icons/bs";
 
 const Admin = () => {
-
     const baseURL = process.env.REACT_APP_BASEURL;
-    const testData = useSelector((state) => state.reducer)
-    /* const adminUserData = useSelector((state) => state.reducer.adminUserData);
-    const adminPostData = useSelector((state) => state.reducer.adminPostData); */
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    /* dispatch(setBoardData(titles)); */
-    
-    console.log('testData',testData);
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {
         Authorization: `${accessToken}`
     }
 
+
+    /* const testData = useSelector((state) => state.reducer) */
+    /* console.log('testData',testData); */
+
+    /* const adminUserData = useSelector((state) => state.reducer.adminUserData);
+    const adminPostData = useSelector((state) => state.reducer.adminPostData); */
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    /* dispatch(setBoardData(titles)); */
+    
+    
+    
+
     /*------------------------------------------------*\
                    Admin User / Post Data API
     \*------------------------------------------------*/
+    
+    /* const [adminUserData, setAdminUserData] = useState(null);
+    const [adminBoardData, setAdminBoardData] = useState(null);
+    const [adminPostData, setAdminPostData] = useState(null);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const adminUserResponse = await axios.get(`${baseURL}/v1/users`, { headers });
                 dispatch(setAdminUserData(adminUserResponse.data?.query));
+                const userdata = adminUserResponse.data?.query;
+                setAdminUserData(userdata);
 
-                /* const adminBoardResponse = await axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers });
+                const adminBoardResponse = await axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers });
                 dispatch(setAdminBoardData(adminBoardResponse.data?.query));
+                const boarddata = adminBoardResponse.data?.query;
+                setAdminBoardData(boarddata);
 
                 const adminPostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
-                dispatch(setAdminPostData(adminPostResponse.data?.query)) */
+                dispatch(setAdminPostData(adminPostResponse.data?.query))
+                const postdata = adminPostResponse.data?.query;
+                setAdminPostData(postdata);
                 
             } catch (error) {
-                console.error('Admin User/Post 데이터 가져오기 실패', error);
+                console.error('Admin User/Board/Post 데이터 가져오기 실패', error);
             }
         }
         fetchData();
-    }, []);
+    }, []); */
     
     /*------------------------------------------------*\
                         console 테스트 
@@ -70,6 +86,7 @@ const Admin = () => {
     /* const [visibleDiv, setVisibleDiv] = useState(null); */
     
     /* const [visibleDiv, setVisibleDiv] = useState(2); */ 
+
     const [visibleDiv, setVisibleDiv] = useState(parseInt(localStorage.getItem('selectedMenu')) || 2);
 
     useEffect(() => {

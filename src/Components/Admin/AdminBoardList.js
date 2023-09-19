@@ -19,7 +19,16 @@ import { StyledFrame, StyledTableWrap, EditSaveBtn, AdminListFrame, AdminModalFr
 
 const AdminBoardList = () => {
     /* const dispatch = useDispatch(); */
-    const editBoardData = useSelector((state) => state.reducer.adminBoardData);
+    const baseURL = process.env.REACT_APP_BASEURL;
+    const accessToken = sessionStorage.getItem('accessToken');
+    const userUid = sessionStorage.getItem('userUid');
+    const headers = {
+        Authorization: `${accessToken}`
+    }
+
+    /* const editBoardData = useSelector((state) => state.reducer.adminBoardData); */
+
+    const [adminBoardData, setAdminBoardData] = useState(null);
     const [AdminBoardListData, setAdminBoardListData] = useState([]); 
     const [selectedRows, setSelectedRows] = useState([]);
     const [newRowData, setNewRowData] = useState({
@@ -37,12 +46,24 @@ const AdminBoardList = () => {
         updDt: '',
         updUser: '',
     });
-    const accessToken = sessionStorage.getItem('accessToken');
-    const userUid = sessionStorage.getItem('userUid');
-    const headers = {
-        Authorization: `${accessToken}`
-    }
     
+    /*------------------------------------------------*\
+                    관리자 보드 정보 가져오기
+    \*------------------------------------------------*/
+    useEffect(() => {
+        const fotchData = async () => {
+            try {
+                const adminBoardResponse = await axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers });
+                const boarddata = adminBoardResponse.data?.query;
+                setAdminBoardData(boarddata);
+            } catch (error) {
+                console.error('Admin Board 데이터 가져오기 실패');
+            }
+        }
+        fotchData();
+    },[])
+    
+
     /*------------------------------------------------*\
                   Authorize 읽기 / 쓰기 수정
     \*------------------------------------------------*/
@@ -257,7 +278,7 @@ const AdminBoardList = () => {
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
     const [selectedRowIndex, setSelectedRowIndex] = useState(null);
     const [prevSelectedCategoryList, setPrevSelectedCategoryList] = useState(null);
-    // 모달을 열고 닫는 함수
+
     const openModal = (index, categoryList) => {
         setIsModalOpen(true);
         setSelectedCategoryList(categoryList);
@@ -313,20 +334,19 @@ const AdminBoardList = () => {
     };
     
     /*------------------------------------------------*\
-          Redux에 저장한 값을 새로운 useState에 저장
+                    새로운 useState에 저장
     \*------------------------------------------------*/
     useEffect(() => {
-        if(editBoardData?.length > 0){
-            setAdminBoardListData(editBoardData);
-            console.log('AdminBoardListData',editBoardData);
+        if(adminBoardData?.length > 0){
+            setAdminBoardListData(adminBoardData);
+            console.log('adminBoardData',adminBoardData);
         }else {
-            console.log('editBoardData', '해당 인덱스에 데이터가 없습니다.');
+            console.log('adminBoardData', '해당 인덱스에 데이터가 없습니다.');
         }
-    },[editBoardData])
+    },[adminBoardData])
 
     const formatDate = (isoDateString) => {
         const date = new Date(isoDateString);
-      
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
@@ -335,8 +355,12 @@ const AdminBoardList = () => {
         const seconds = String(date.getSeconds()).padStart(2, '0');
       
         return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
+
       };
 
+    /*------------------------------------------------*\
+                        수정 저장 기능
+    \*------------------------------------------------*/
     const handleBoardEditSaveClick = async (e) => {
         e.preventDefault();
           const transformedData = {
@@ -353,16 +377,20 @@ const AdminBoardList = () => {
             userUid: userUid
           };
         console.log(transformedData);
-        /* console.log('jsonData',jsonData); */
         try{
-            const response = await axios.patch('http://39.117.244.34:3385/v1/board/modify', transformedData, { headers });
+            const response = await axios.patch(`${baseURL}/v1/board/modify`, transformedData, { headers });
             console.log('관리자 게시판관리 수정 성공', response);
             console.log('transformedData',transformedData);
         } catch(error) {
             console.error('관리자 게시판관리 수정 실패', error);
         }
-      };
-      const handleBoardGroupAddSaveClick = async (e) => {
+    };
+
+
+    /*------------------------------------------------*\
+                    행 추가 / 저장 기능
+    \*------------------------------------------------*/
+    const handleBoardGroupAddSaveClick = async (e) => {
         e.preventDefault();
 
         /* setAdminPostListData(prevData => [...prevData, newRowData]); */
@@ -382,14 +410,13 @@ const AdminBoardList = () => {
             updUser: '',
         });
         try {
-            const response = await axios.post('http://39.117.244.34:3385/v1/board/form', newRowData, { headers });
+            const response = await axios.post(`${baseURL}/v1/board/form`, newRowData, { headers });
             console.log('새로운 데이터 추가 성공', response);
-            
-    
         } catch (error) {
             console.error('작업 실패', error);
         }
-      }
+    }
+
       /* const handleDeleteRow = (index) => {
         setAdminPostListData((prevData) => {
           // index에 해당하는 열을 제외한 나머지 열들을 필터링하여 새로운 배열을 생성
@@ -398,7 +425,11 @@ const AdminBoardList = () => {
         });
       }; */
       /* const deleteData = selectedRows?.[0]?.key; */
-    
+
+
+    /*------------------------------------------------*\
+                        삭제 기능
+    \*------------------------------------------------*/
       const handleDeleteSave = async (e) => {
         e.preventDefault();
         setIsDeleteModalOpen(false);
@@ -409,9 +440,8 @@ const AdminBoardList = () => {
         const headers = {
             Authorization: `${accessToken}`
         }
-    
         try {
-            const res = await axios.delete('http://39.117.244.34:3385/v1/board/delete', { data: deleteForm, headers });
+            const res = await axios.delete(`${baseURL}/v1/board/delete`, { data: deleteForm, headers });
             console.log('삭제 성공', res);
             console.log('deleteForm', deleteForm);
             console.log('headers', headers);
@@ -421,10 +451,13 @@ const AdminBoardList = () => {
             console.log('headers', headers);
         }
     };
+
+
+
     /*------------------------------------------------*\
                     console.log 테스트
     \*------------------------------------------------*/
-    console.log('boardData테스트', editBoardData);
+    console.log('boardData테스트', adminBoardData);
     console.log('selectedRows:', selectedRows);
     console.log('AdminBoardListData',AdminBoardListData);
     console.log('authorize',AdminBoardListData?.[0]?.authorize);
@@ -433,7 +466,7 @@ const AdminBoardList = () => {
         <AdminListFrame $isModalOpen={isModalOpen}>
             <Admin/>
             <StyledFrame>
-                {editBoardData?.length > 0 ?
+                {adminBoardData?.length > 0 ?
                 <AdminListFrame>
                     <StyledTableWrap>
                     <div style={{display:'flex', width:'100%', justifyContent:'space-between', marginBottom:'50px'}}>
@@ -455,7 +488,7 @@ const AdminBoardList = () => {
                                                     type="checkbox" 
                                                     onChange={(e) => {
                                                         if (e.target.checked) {
-                                                            setSelectedRows([...editBoardData]);
+                                                            setSelectedRows([...adminBoardData]);
                                                         } else {
                                                             setSelectedRows([]);
                                                         }

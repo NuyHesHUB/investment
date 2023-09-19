@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 
 /* Axios */
 import axios from 'axios';
-import axiosInstance from '../../axiosInstance';
 
 /* Styled Components */
 import { StyledFrame, StyledMemberFrame, MemberForm, MemberBody, MemberInfoBox, MemberInfoTitle, MemberTextBox, MemberBtn, EditWrapFrame, EditInputFrame, EditInput } from './StyledMemberEditPageFrame';
@@ -19,14 +18,80 @@ import Header from '../Header';
 import Footer from '../Footer';
 
 const MemberEditPage = () => {
+    //API
+    const baseURL = process.env.REACT_APP_BASEURL;
+    const accessToken = sessionStorage.getItem('accessToken');
+    const userUid = sessionStorage.getItem('userUid');
+    const headers = {
+        Authorization: `${accessToken}`
+    }
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
+    //에러 메세지
     const [nicknameError, setNicknameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [phoneError, setPhoneError] = useState('');
     const [loginPasswordError, setLoginPasswordError] = useState('');
-    const userUid = sessionStorage.getItem('userUid');
+
+    //이메일 인증
+    const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false);
+
+    /*------------------------------------------------------*\
+                        회원정보 불러오기
+    \*------------------------------------------------------*/
+    const [userData, setUserData] = useState(''); 
+    const [formData, setFormData] = useState({
+        nickname: '',
+        email: '',
+        phone: '',
+        img: '',
+        receiveSms: '',
+        receiveEmail: '',
+        status : "Y",
+        isAdmin: "N",
+        group : "일반",
+        userUid: userUid
+    });
+
+    const [passwordData, setPassWordData] = useState({
+        userUid : userUid,    
+        loginPassword : ''
+    })
+    
+    console.log('formData',formData);
+
+    useEffect(() => {
+        if (accessToken) {
+            axios.get(`${baseURL}/v1/users/${userUid}`, { headers })
+                .then(response => {
+                    const userdata = response.data?.query[0];
+                    setUserData(userdata);
+                    setFormData({
+                        nickname: userdata.nickname,
+                        email: userdata.email,
+                        phone: userdata.phone,
+                        img: userdata.img,
+                        receiveSms: userdata.receiveSms,
+                        receiveEmail: userdata.receiveEmail,
+                        status : userdata.status,
+                        isAdmin: "N",
+                        group : "일반",
+                        userUid: userUid
+                    });
+                }).catch(error => {
+                    console.error('회원 정보 가져오기 실패', error);
+                });
+        } else{
+            dispatch(logout());
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[dispatch])
+    
+    /*------------------------------------------------*\
+                        유효성 검사
+    \*------------------------------------------------*/
     const validateNickname = (nickname) => {
         if (nickname.length < 3) {
             setNicknameError('닉네임은 최소 3자 이상이어야 합니다.');
@@ -50,13 +115,15 @@ const MemberEditPage = () => {
         }
     };
 
+    /*------------------------------------------------*\
+                        input change
+    \*------------------------------------------------*/
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value
         }));
-        // 각각의 유효성 검사 함수 호출
         if (name === 'nickname') {
             validateNickname(value);
         } else if (name === 'email') {
@@ -65,18 +132,27 @@ const MemberEditPage = () => {
             validatePassword(value);
         }
     };
+    const handleRadioChange = (e, key) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value
+        }));
+    }
     const handlePWInputChange = (e) => {
         const { name, value } = e.target;
         setPassWordData((prevFormData) => ({
             ...prevFormData,
             [name]: value
         }));
-        // 각각의 유효성 검사 함수 호출
         if (name === 'loginPassword') {
             validatePassword(value);
         }
     };
 
+    /*------------------------------------------------*\
+                      변경 아코디언 메뉴
+    \*------------------------------------------------*/
     const [showPasswordChange, setShowPasswordChange] = useState(false);
     const [showNicknameChange, setShowNicknameChange] = useState(false);
     const [showEmailChange, setShowEmailChange] = useState(false);
@@ -84,124 +160,52 @@ const MemberEditPage = () => {
 
     const handlePasswordBtnClick = (e) => {
         e.preventDefault();
-        setShowPasswordChange(!showPasswordChange); // 상태 값 반전
+        setShowPasswordChange(!showPasswordChange);
       };
     const handleNicknameBtnClick = (e) => {
         e.preventDefault();
-        setShowNicknameChange(!showNicknameChange); // 상태 값 반전
+        setShowNicknameChange(!showNicknameChange);
     };
     const handleEmailBtnClick = (e) => {
         e.preventDefault();
-        setShowEmailChange(!showEmailChange); // 상태 값 반전
+        setShowEmailChange(!showEmailChange);
     };
     const handlePhoneBtnClick = (e) => {
         e.preventDefault();
-        setShowPhoneChange(!showPhoneChange); // 상태 값 반전
+        setShowPhoneChange(!showPhoneChange);
     };
 
+    /*------------------------------------------------*\
+                      비밀번호 변경 저장
+    \*------------------------------------------------*/
     const handlePasswordSaveClick = async (e) => {
         e.preventDefault();
         try {
-            const url = `http://39.117.244.34:3385/v1/users/password`;
-            const response = await axios.patch(url, passwordData, { headers });
+            const response = await axios.patch(`${baseURL}/v1/users/password`, passwordData, { headers });
             console.log('비밀번호 업데이트 성공:', response.data);
-            // 여기서 필요한 추가 동작 수행 가능 (예: 사용자에게 알림 등)
             alert('비밀번호가 성공적으로 변경되었습니다.')
-    
         } catch (error) {
-            console.error('비밀번호 업데이트 실패:', error);
-            // 에러 처리 (예: 사용자에게 알림 등)
+            if (error.response && error.response.data === '[비밀번호]는 8~20자리의 영문,숫자,특수문자를 포함하여야 합니다.') {
+                alert('비밀번호는 8~20자리의 영문,숫자,특수문자를 포함하여야 합니다.')
+            } else{
+                console.error('비밀번호 업데이트 실패:', error);
+            }
         }
     };
-    
-    /*------------------------------------------------------*\
-                        회원정보 불러오기
-    \*------------------------------------------------------*/
-    const accessToken = sessionStorage.getItem('accessToken');
-    const [userData, setUserData] = useState(''); 
-    
-    const key = 'Authorization'
-    const headers = { Authorization: `${accessToken}` }
 
-    const baseURL = process.env.REACT_APP_BASEURL;
-
-    
-
-    useEffect(() => {
-        if (accessToken) {
-            const url = `/users/${userUid}?${key}=${accessToken}`;
-            axiosInstance.get(url, { headers })
-            .then(response => {
-            setUserData(response.data.query[0]);
-            /* setFormData(response.data.query[0]); */
-            setFormData({
-                nickname: response.data.query[0].nickname,
-                email: response.data.query[0].email,
-                phone: response.data.query[0].phone,
-                img: response.data.query[0].img,
-                receiveSms: response.data.query[0].receiveSms,
-                receiveEmail: response.data.query[0].receiveEmail,
-                status : response.data.query[0].status,
-                isAdmin: "N",
-                group : "일반",
-                userUid: userUid
-            });
-            })
-            .catch(error => {
-            console.error('회원 정보 가져오기 실패', error);
-            });
-        } else{
-            dispatch(logout());
-        }
-    },[dispatch])
-    
-    console.log('userData' , userData.nickname);
-
-    const [formData, setFormData] = useState({
-        nickname: '',
-        email: '',
-        phone: '',
-        img: '',
-        receiveSms: 'Y',
-        receiveEmail: 'Y',
-        status : "Y",
-        isAdmin: "N",
-        group : "일반",
-        userUid: userUid
-    });
-
-    const [passwordData, setPassWordData] = useState({
-        userUid : userUid,    
-        loginPassword : ''
-    })
-    
-    console.log('formData',formData);
-
-    const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false);
-    /* const [remainingTime, setRemainingTime] = useState(0); */
-
-    
+    /*------------------------------------------------*\
+                    이메일 변경 검사 및 인증
+    \*------------------------------------------------*/
     const handleSendVerificationEmail = (e) => {
         e.preventDefault();
         if(formData.email === userData.email){
             alert('기존의 이메일과 같습니다. 변경할 이메일을 입력해 주세요.')
-        }else{
-            const url = '/users/email_send';
-            // 이메일 전송 요청 보내기
-            axiosInstance.post(url, { email: formData.email })
+        } else{
+            axios.post(`${baseURL}/v1/users/email_send`, { email: formData.email })
                 .then(response => {
                     console.log('이메일 전송 성공:', response.data);
+                    alert('인증 메일이 전송되었습니다.')
                     setIsVerificationEmailSent(true); 
-                    /* setRemainingTime(5 * 60);  */
-        
-                    /* const timerInterval = setInterval(() => {
-                        setRemainingTime(prevTime => prevTime - 1);
-        
-                        if (remainingTime <= 0) {
-                            clearInterval(timerInterval); 
-                            setIsVerificationEmailSent(false);
-                        }
-                    }, 1000); */
                 })
                 .catch(error => {
                     console.error('이메일 전송 실패:', error);
@@ -209,10 +213,10 @@ const MemberEditPage = () => {
         }
     };
 
-
     const [emailToken, setEmailToken] = useState({
         token:''
     });
+
     const handleTokenInputChange = (e) => {
         const { value } = e.target;
         setEmailToken((prevEmailToken) => ({
@@ -220,32 +224,38 @@ const MemberEditPage = () => {
             token: value
         }));
     };
-    /* console.log('emailToken.token', emailToken); */
 
+    /*------------------------------------------------*\
+                  이메일 변경 인증번호 검사
+    \*------------------------------------------------*/
     const handleCheckVerificationCode = (e) => {
             e.preventDefault();
-            const url = '/users/email_check';
-            // 인증 번호 체크 요청 보내기
-            axiosInstance.post(url, { email: formData.email, token: emailToken.token})
+            axios.post(`${baseURL}/v1/users/email_check`, { email: formData.email, token: emailToken.token})
                 .then(response => {
                     console.log('인증 번호 확인 성공:', response.data);
                     alert('인증이 완료되었습니다.')
                     setShowEmailChange(!showEmailChange);
+
                 })
                 .catch(error => {
+                    if (error.response && error.response.data.result === '인증번호가 일치하지 않습니다.') {
+                        alert('인증번호가 일치하지 않습니다.')
+                    } else{
+                        console.error('비밀번호 업데이트 실패:', error);
+                    }
                     console.error('인증 번호 확인 실패:', error);
                 });
     };
-    const handleMemberEditSaveClick = async (e) => {
-        e.preventDefault();
+
+    /*------------------------------------------------*\
+                  나머지 회원 정보 수정 저장
+    \*------------------------------------------------*/
+    const handleMemberEditSaveClick = async () => {
+        /* e.preventDefault(); */
         try {
-            const url = `http://39.117.244.34:3385/v1/users/modify`;
-            /* const updatedFormData = { ...formData, userUid: userUid }; */
-            const response = await axios.patch(url, formData, { headers });
+            const response = await axios.patch(`${baseURL}/v1/users/modify`, formData, { headers });
             console.log('회원정보 업데이트 성공:', response.data);
-            // 여기서 필요한 추가 동작 수행 가능 (예: 사용자에게 알림 등)
-            alert('회원정보가 성공적으로 변경되었습니다.')
-    
+            alert('회원정보가 성공적으로 변경되었습니다.');
         } catch (error) {
             /* const updatedFormData = { ...formData, userUid: userUid };
             console.log('updatedFormData',updatedFormData); */
@@ -253,6 +263,7 @@ const MemberEditPage = () => {
             // 에러 처리 (예: 사용자에게 알림 등)
         }
     };
+    
     return (
         <StyledFrame>
             <Header/>

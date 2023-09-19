@@ -7,6 +7,43 @@ import axios from 'axios';
 import axiosInstance from '../axiosInstance';
 import { StyledHeaderFrame, HeaderContainer, HeaderLogo, MenuFrame, HeaderBtn, MenuList } from './StyledComponents/StyledHeader';
 const Header = () => {
+
+    const baseURL = process.env.REACT_APP_BASEURL;
+    const accessToken = sessionStorage.getItem('accessToken');
+    const userUid = sessionStorage.getItem('userUid');
+    const headers = {
+        Authorization: `${accessToken}`
+    }
+
+    const [userName, setUserName] = useState(null);
+    const [menuItems, setMenuItems] = useState([]);
+    const testData = useSelector((state) => state.reducer)
+
+    console.log('testData',testData);
+     /* 유저 정보 가져오기 */
+     useEffect(() => {
+         if (accessToken) {
+             axios.get(`${baseURL}/v1/users/${userUid}`, { headers })
+                .then(response => {
+                    const data = response.data?.query[0].nickname;
+                    setUserName(data);
+                }).catch(error => {
+                    console.error('회원 이름 가져오기 실패', error);
+                });
+         } else{
+             dispatch(logout());
+         }
+     },[])
+ 
+     /* 로그아웃 하면 상태관리 로그아웃 & 토큰 삭제 */
+     const handleLogout = (e) => {
+         e.preventDefault();
+         sessionStorage.removeItem('accessToken');
+         sessionStorage.removeItem('refreshToken');
+         sessionStorage.removeItem('userUid');
+         dispatch(logout());
+         navigate("/login");
+     };
     /* const { key } = useParams(); */
     
     /* const storeData = useSelector((state) => state.reducer.galleryListData);
@@ -65,42 +102,7 @@ const Header = () => {
 
     const navigate = useNavigate();
 
-    /* 유저 정보 가져오기 */
-    
-    const accessToken = sessionStorage.getItem('accessToken');
-    
-    const [userData, setUserData] = useState(null); 
-    const userUid = sessionStorage.getItem('userUid');
-    const key1 = 'Authorization'
-    const headers = {
-            Authorization: `${accessToken}`
-        };
-    const [menuItems, setMenuItems] = useState([]);
-
-    useEffect(() => {
-        if (accessToken) {
-            const url = `/users/${userUid}?${key1}=${accessToken}`;
-            axiosInstance.get(url, { headers })
-            .then(response => {
-            setUserData(response.data);
-            })
-            .catch(error => {
-            console.error('회원 정보 가져오기 실패', error);
-            });
-        } else{
-            dispatch(logout());
-        }
-    },[dispatch])
-
-    /* 로그아웃 하면 상태관리 로그아웃 & 토큰 삭제 */
-    const handleLogout = (e) => {
-        e.preventDefault();
-        sessionStorage.removeItem('accessToken');
-        sessionStorage.removeItem('refreshToken');
-        sessionStorage.removeItem('userUid');
-        dispatch(logout());
-        navigate("/login");
-    };
+   
 
     return (
         <StyledHeaderFrame>
@@ -146,8 +148,8 @@ const Header = () => {
                 <div style={{display:'flex'}}>
                     <div style={{display:'flex', marginLeft:'50px'}}>
                         <ul style={{display:'flex', alignItems:'center'}}>
-                            {userData && userData.query && userData.query.length > 0 ? (
-                                    <><div style={{fontWeight:'bold',fontSize:'16px'}}>{userData.query[0].nickname}</div><span>님 반갑습니다 😊</span></>
+                            {userName &&  userName.length > 0 ? (
+                                    <><div style={{fontWeight:'bold',fontSize:'16px'}}>{userName}</div><span>님 반갑습니다 😊</span></>
                                 ) : (
                                     <><div style={{fontWeight:'bold',fontSize:'16px'}}>Loading...</div></>
                                 )}

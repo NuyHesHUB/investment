@@ -48,11 +48,8 @@ const Home = ({parsedCategoryData}) => {
         Authorization: `${accessToken}`
     }
 
-    console.log('home-test',parsedCategoryData);
+    /* console.log('home-test',parsedCategoryData); */
     /* const dispatch = useDispatch(); */
-
-    const boardData = useSelector((state) => state.reducer?.boardData);
-    console.log('boardData',boardData);
 
     /* useEffect(() => {
         axios.get('http://211.198.44.123:3385/v1/board/')
@@ -76,7 +73,7 @@ const Home = ({parsedCategoryData}) => {
           });
       }, []); */
 
-      /* useEffect(() => {
+      useEffect(() => {
         const sendDataToServer = async () => {
           try {
             const requestData = { userUid: userUid };
@@ -86,7 +83,9 @@ const Home = ({parsedCategoryData}) => {
             console.log('헤더 정보:', requestConfig);
     
             const response = await axios.post(
-              'http://39.117.244.34:3385/v1/log/access/form',{ requestData} ,{headers}
+              'http://39.117.244.34:3385/v1/log/access/form',{ requestData} ,{headers} ,{
+                withCredentials: true,
+              }
             );
     
             console.log('서버 응답:', response.data);
@@ -96,8 +95,59 @@ const Home = ({parsedCategoryData}) => {
         };
     
         sendDataToServer();
-      }, [userUid, headers]); */
+      }, []);
+      
+      /* const cookieValue = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('myCookie='))
+      .split('=')[1];
     
+    localStorage.setItem('myCookieValue', cookieValue); */
+
+    /* function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = `expires=${date.toUTCString()}`;
+        document.cookie = `${name}=${value}; ${expires}; path=/`;
+    }
+
+    function addCookie(id) {
+        var items = getCookie('productItems'); 
+        var maxItemNum = 5; 
+        var expire = 7; 
+        if (items) {
+            var itemArray = items.split(',');
+            if (itemArray.indexOf(id) !== -1) {
+                console.log('Already exists.');
+            } else {
+                itemArray.unshift(id);
+                if (itemArray.length > maxItemNum) itemArray.length = 5;
+                items = itemArray.join(',');
+                setCookie('productItems', items, expire);
+            }
+        } else {
+            setCookie('productItems', id, expire);
+        }
+    }
+    addCookie(); */
+
+
+    // 현재 시간을 기준으로 만료 날짜를 계산합니다.
+    //let expiresDate = new Date();
+    //expiresDate.setFullYear(expiresDate.getFullYear() + 1); // 예: 현재로부터 1년 뒤로 설정
+
+    // 만료 날짜를 GMT 형식으로 변환합니다.
+    //let expiresString = expiresDate.toGMTString();
+
+    // 쿠키를 설정합니다.
+    //document.cookie = "visit=1; expires=" + expiresString + "; path=/";
+
     return (
             <StyledFrame>
                 <Header parsedCategoryData={parsedCategoryData}/>
@@ -184,7 +234,7 @@ const Home = ({parsedCategoryData}) => {
                                     prevEl : '.swiper-button-prev', 
                                 }}
                             >
-                                {boardData.map((item, index) => (
+                                {/* {boardData.map((item, index) => (
                                     <SwiperSlide key={index}>
                                         <SlideWrap>
                                             <Link to={item.key}>
@@ -195,7 +245,7 @@ const Home = ({parsedCategoryData}) => {
                                             </Link>
                                         </SlideWrap>
                                     </SwiperSlide>
-                                ))}
+                                ))} */}
                             </Swiper>
                             <div className='swiper-button-next'></div>
                     </SwiperCustomWrap>

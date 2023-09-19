@@ -18,16 +18,17 @@ import { StyledFrame, StyledTableWrap, EditSaveBtn, AdminListFrame, AdminModalFr
 
 const AdminPostList = () => {
     const baseURL = process.env.REACT_APP_BASEURL;
-
-    const editPostData = useSelector((state) => state.reducer.adminPostData);
-    
-    const [AdminPostListData, setAdminPostListData] = useState([]); 
-    const [selectedRows, setSelectedRows] = useState([]);
     const accessToken = sessionStorage.getItem('accessToken');
     const userUid = sessionStorage.getItem('userUid');
     const headers = {
         Authorization: `${accessToken}`
     }
+
+    
+    const editPostData = useSelector((state) => state.reducer.adminPostData);
+    
+    const [AdminPostListData, setAdminPostListData] = useState([]); 
+    const [selectedRows, setSelectedRows] = useState([]);
     console.log('editPostData',editPostData);
     
     /*------------------------------------------------*\

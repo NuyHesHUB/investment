@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /* Axios */
-/* import axiosInstance from '../../axiosInstance'; */
 import axios from 'axios';
 
 /* Components */
@@ -18,17 +17,34 @@ import { StyledFrame, StyledTableWrap, EditSaveBtn, AdminListFrame, AdminModalFr
 
 const AdminMemberList = () => {
     const baseURL = process.env.REACT_APP_BASEURL;
-
-    const editMemberData = useSelector((state) => state.reducer.adminUserData);
-    const [AdminMemberListData, setAdminMemberListData] = useState([]); 
-    const [selectedRows, setSelectedRows] = useState([]);
     const accessToken = sessionStorage.getItem('accessToken');
     const userUid = sessionStorage.getItem('userUid');
     const headers = {
         Authorization: `${accessToken}`
     }
-    console.log('editMemberData',editMemberData);
+
+    const [adminUserData, setAdminUserData] = useState(null);
+    const [AdminMemberListData, setAdminMemberListData] = useState([]); 
+    const [selectedRows, setSelectedRows] = useState([]);
     
+    
+    /*------------------------------------------------*\
+                    관리자 회원 정보 가져오기
+    \*------------------------------------------------*/
+    useEffect(() => {
+        const fotchData = async () => {
+            try {
+                const adminUserResponse = await axios.get(`${baseURL}/v1/users`, { headers });
+                const userdata = adminUserResponse.data?.query;
+                setAdminUserData(userdata);
+            } catch (error) {
+                console.error('Admin User 데이터 가져오기 실패');
+            }
+        }
+        fotchData();
+    },[])
+
+
     /*------------------------------------------------*\
                       CheckBox onChange
     \*------------------------------------------------*/
@@ -55,16 +71,15 @@ const AdminMemberList = () => {
     };
     
     /*------------------------------------------------*\
-          Redux에 저장한 값을 새로운 useState에 저장
+                    새로운 useState에 저장
     \*------------------------------------------------*/
     useEffect(() => {
-        if (editMemberData !== undefined && editMemberData !== null) {
-          setAdminMemberListData(editMemberData);
-          /* console.log('AdminMemberListData',AdminMemberListData); */
+        if (adminUserData !== undefined && adminUserData !== null) {
+          setAdminMemberListData(adminUserData);
         } else {
-          console.log('editMemberData', '해당 인덱스에 데이터가 없습니다.');
+          console.log('adminUserData', '해당 인덱스에 데이터가 없습니다.');
         }
-      }, [editMemberData]);
+      }, [adminUserData]);
 
     const handleMemberEditSaveClick = async (e) => {
         e.preventDefault();
@@ -95,14 +110,14 @@ const AdminMemberList = () => {
     /*------------------------------------------------*\
                     console.log 테스트
     \*------------------------------------------------*/
-    console.log('memberData테스트', editMemberData);
+    console.log('memberData테스트', adminUserData);
     console.log('selectedRows:', selectedRows);
     console.log('AdminMemberListData',AdminMemberListData);
     return (
         <AdminListFrame>
             <Admin/>
             <StyledFrame>
-                {editMemberData?.length > 0 ?
+                {adminUserData?.length > 0 ?
                 <AdminListFrame>
                     <StyledTableWrap>
                     <div style={{display:'flex', width:'100%', justifyContent:'space-between', marginBottom:'50px'}}>
@@ -122,7 +137,7 @@ const AdminMemberList = () => {
                                                     type="checkbox" 
                                                     onChange={(e) => {
                                                         if (e.target.checked) {
-                                                            setSelectedRows([...editMemberData]);
+                                                            setSelectedRows([...adminUserData]);
                                                         } else {
                                                             setSelectedRows([]);
                                                         }

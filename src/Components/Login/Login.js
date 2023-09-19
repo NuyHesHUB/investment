@@ -67,16 +67,13 @@ const Login = () => {
     
     const handleLogin = async (e) => {
         e.preventDefault();
-
         try {
         const response = await axios.post(`${baseURL}/v1/authorize/sign_in`, {
-        /* const response = await axios.post('/authorize/sign_in', { */
             loginId,/* otz4193 */
             loginPassword/* 동탄test1234! */
         });
-        
-        
         console.log("로그인 성공");
+        
         const userData = response.data.userData;
         const accessToken = response.data.accessToken;
         const refreshToken = response.data.refreshToken;

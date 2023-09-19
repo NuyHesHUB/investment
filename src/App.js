@@ -24,8 +24,8 @@ import PostDetail from './Components/PostDetail/PostDetail';
 import PostRegist from './Components/PostRegist/PostRegist';
 
 /* Gallery */
-import CategoryPage from './Components/CategoryPage/CategoryPage';
-import Gallery01 from './Components/CategoryPage/Gallery01';
+import InvestBoardPage from './Components/Page/InvestBoardPage';
+import Gallery01 from './Components/Page/Gallery01';
 
 
 /* Admin Components */
@@ -80,7 +80,8 @@ const App = () => {
     const postDataString = localStorage.getItem('adminPostData');
     const postData = JSON.parse(postDataString); */
     const boardData = useSelector((state) => state.reducer.adminBoardData);
-    console.log('App.js > postData',boardData);
+    console.log('App.js > boardData',boardData);
+
     const postData = useSelector((state) => state.reducer.adminPostData);
     console.log('App.js > postData',postData);
 
@@ -117,8 +118,8 @@ const App = () => {
                 dispatch(setAdminBoardData(adminBoardResponse.data?.query));
                 /* const adminBoardData = adminBoardResponse.data?.query; */
                 /* console.log('adminBoardData',adminBoardData); */
-                const adminPostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
-                dispatch(setAdminPostData(adminPostResponse.data?.query))
+                /* const adminPostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
+                dispatch(setAdminPostData(adminPostResponse.data?.query)) */
                 /* const adminPostData = adminPostResponse.data?.query; */
                 /* console.log('adminPostData',adminPostData); */
 
@@ -184,7 +185,7 @@ const App = () => {
                 <Route exact path='/gallery/other' element={<CategoryPage categoryList="other"/>}></Route> */}
 
                 {parsedCategoryData.length > 0 && parsedCategoryData.map((item, index) => (
-                    <Route key={index} path={`/${boardData[6]?.key}/${index}`} element={<CategoryPage categoryIndex={index} parsedCategoryData={parsedCategoryData[index]}/>}
+                    <Route key={index} path={`/${boardData[6]?.key}/${index}`} element={<InvestBoardPage categoryIndex={index} parsedCategoryData={parsedCategoryData[index]}/>}
                     />             
                 ))}
 
@@ -211,9 +212,12 @@ const App = () => {
                 <Route exact path='/car' element={<CategoryPage categoryList="car"/>}></Route>
                 <Route exact path='/other' element={<CategoryPage categoryList="other"/>}></Route> */}
 
-                {/* Post */}
+                {/* Investment Post */}
                 <Route exact path="/investment/:number/:id" element={<PostDetail parsedCategoryData={parsedCategoryData} postData={postData}/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
+
+                {/* 게시판 */}
+                
 
                 {/* Admin */}
                 <Route exact path="/admin" element={<Admin />}></Route>

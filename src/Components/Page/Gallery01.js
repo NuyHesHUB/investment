@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+/* import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { StyledFrame, GalleryWrap, LeftFrame, LeftTable, TablePagination, RightFrame } from './StyledBoardTable';
 import { useSelector } from 'react-redux';
 
 const Gallery01 = ({postData}) => {
-    /* const categoryData = useSelector((state) => state.reducer.galleryListData || []); */
-    /* const boardData = useSelector((state) => state.reducer.boardData || []); */
       
     const sortedPostData = [...postData].sort((a, b) => {
         const dateComparison = new Date(b.date) - new Date(a.date);
@@ -29,10 +27,8 @@ const Gallery01 = ({postData}) => {
       const visibleBoardData = sortedPostData.slice(startIndex, endIndex);
 
       console.log('gallery01',postData);
-      /* console.log('gallery01',boardData); */
     return (
         <StyledFrame>
-            {/* <h1>게시판 목록 페이지</h1> */}
             <h1>Gallery01.js</h1>
             <GalleryWrap>
                 <LeftFrame>
@@ -54,7 +50,7 @@ const Gallery01 = ({postData}) => {
                                     <td>{item.num}</td>
                                     <td>{item.isSecret}</td>
                                     <td>{item.nickname}</td>
-                                    <td><Link /* to={`/gallery/${categoryData?.[0]}/${item.id}`} */>{item.title}</Link></td>
+                                    <td><Link to={`/gallery/${categoryData?.[0]}/${item.id}`}>{item.title}</Link></td>
                                     <td>{item.like}</td>
                                     <td>{item.brdKey}</td>
                                     <td>{item.post_view_count}</td>
@@ -63,7 +59,7 @@ const Gallery01 = ({postData}) => {
                         </tbody>
                     </LeftTable>
                     <TablePagination className="pagination">
-                        {/* {Array.from({ length: totalPages }, (_, index) => (
+                        {Array.from({ length: totalPages }, (_, index) => (
                             <span
                                 key={index}
                                 className={currentPage === index + 1 ? 'active' : ''}
@@ -71,7 +67,7 @@ const Gallery01 = ({postData}) => {
                             >
                                 {index + 1}
                             </span>
-                        ))} */}
+                        ))}
                     </TablePagination>
                 </LeftFrame>
                 <RightFrame>
@@ -82,4 +78,4 @@ const Gallery01 = ({postData}) => {
     );
 };
 
-export default Gallery01;
+export default Gallery01; */
