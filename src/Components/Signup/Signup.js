@@ -90,8 +90,9 @@ const Signup = () => {
                     PassWord 유효성 검사
     \*------------------------------------------------*/
     const validatePassword = (password) => {
-        if (password.length < 8) {
-            setLoginPasswordError('비밀번호는 8자 이상이어야 합니다.');
+        const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+        if (!regex.test(password)) {
+            setLoginPasswordError('비밀번호는 8~20자리의 영문, 숫자, 특수문자를 포함해야 합니다.');
         } else {
             setLoginPasswordError('');
         }
@@ -332,6 +333,7 @@ const Signup = () => {
                                     placeholder='비밀번호를 입력해주세요. (8자 이상)'
                                     value={formData.loginPassword}
                                     onChange={handleInputChange}
+                                    autoComplete="off"
                                 />
                                 {loginPasswordError && <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{loginPasswordError}</div>}
                             </div>
@@ -349,6 +351,7 @@ const Signup = () => {
                                     placeholder='비밀번호를 다시 입력해주세요.'
                                     /* value={formData.confirmPassword} */
                                     onChange={handleInputChange}
+                                    autoComplete="off"
                                 />
                             </div>
                             <div style={{width:'120px', marginLeft:'8px'}}></div>

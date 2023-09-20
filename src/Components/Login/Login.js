@@ -68,39 +68,42 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-        const response = await axios.post(`${baseURL}/v1/authorize/sign_in`, {
-            loginId,/* otz4193 */
-            loginPassword/* 동탄test1234! */
+            const response = await axios.post(`${baseURL}/v1/authorize/sign_in`, {
+                loginId,/* otz4193 */
+                loginPassword/* 동탄test1234! */
         });
-        console.log("로그인 성공");
+            console.log("로그인 성공");
         
-        const userData = response.data.userData;
-        const accessToken = response.data.accessToken;
-        const refreshToken = response.data.refreshToken;
+            const userData = response.data.userData;
+            const accessToken = response.data.accessToken;
+            const refreshToken = response.data.refreshToken;
 
-        /* userUid */
-        const userUid = response.data.userData.id;
+            /* userUid */
+            const userUid = response.data.userData.id;
 
-        sessionStorage.setItem('accessToken', accessToken);
-        sessionStorage.setItem('refreshToken', refreshToken);
+            sessionStorage.setItem('accessToken', accessToken);
+            sessionStorage.setItem('refreshToken', refreshToken);
         
-        console.log('로그인 유저 정보',userUid);
+            console.log('로그인 유저 정보',userUid);
         
-        dispatch(login(userUid));
-        dispatch(setUserUid(userUid));
-        /* 관리자 권한으로 로그인을 하게되면 "/admin" 페이지로 이동 */
-        console.log('Updated userUid:', userUid);
-        sessionStorage.setItem('userUid', userUid);
+            dispatch(login(userUid));
+            dispatch(setUserUid(userUid));
+
+            /* 관리자 권한으로 로그인을 하게되면 "/admin" 페이지로 이동 */
+            console.log('Updated userUid:', userUid);
+            sessionStorage.setItem('userUid', userUid);
 
         if (userData.group === '관리자' && userData.isAdmin === 'Y') {
             navigate("/admin") 
         } else {
             navigate("/")
         }
-        
-
         } catch (error) {
-        console.error('로그인 실패', error);
+            if (error.response && error.response.data && error.response.data.error === '가입되지 않은 [아이디]이거나 [비밀번호]가 올바르지 않습니다.') {
+                alert('가입되지 않은 아이디이거나 비밀번호가 올바르지 않습니다.');
+            } else {
+                console.error('로그인 실패', error);
+            }
         }
     };
     
@@ -139,11 +142,19 @@ const Login = () => {
                             value={loginId}
                             onChange={(e) => setLoginId(e.target.value)}
                         />
+                        {/* <input 
+                            type="password" 
+                            placeholder="비밀번호를 입력해주세요." 
+                            autocomplete="current-password"
+                            value={loginPassword}
+                            onChange={(e) => setLoginPassword(e.target.value)}
+                        /> */}
                         <input
                             type="password"
                             placeholder="비밀번호를 입력해주세요."
                             value={loginPassword}
                             onChange={(e) => setLoginPassword(e.target.value)}
+                            autoComplete="off"
                         />
                         <button type='submit'>로그인</button>
                     </form>
