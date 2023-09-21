@@ -13,6 +13,9 @@ import { Link, useNavigate } from 'react-router-dom';
 /* Components */
 import Header from '../Header';
 import Footer from '../Footer';
+import KakaoLogin from './SocialKakaoLogin';
+import NaverLogin from './SocialNaverLogin';
+import GoogleLogin from './SocialGoogleLogin';
 
 /* StyledComponents */
 import { StyledFrame, LoginWrap, LoginBox, LoginTitle, LoginFormBox, LoginContentsBox, ForgetDivideBox, Divider, SocialLoginBox, SocialIconBox, SocialIcon } from './StyledLoginFrame';
@@ -156,13 +159,6 @@ const Login = () => {
                             value={loginId}
                             onChange={(e) => setLoginId(e.target.value)}
                         />
-                        {/* <input 
-                            type="password" 
-                            placeholder="비밀번호를 입력해주세요." 
-                            autocomplete="current-password"
-                            value={loginPassword}
-                            onChange={(e) => setLoginPassword(e.target.value)}
-                        /> */}
                         <input
                             type="password"
                             placeholder="비밀번호를 입력해주세요"
@@ -182,7 +178,7 @@ const Login = () => {
                                 </span>
                             </div>
                             <div style={{marginRight:'7px'}}>
-                                <span><Link to="/sign_up">회원가입</Link></span>
+                                <span><Link to="/member_type">회원가입</Link></span>
                             </div>
                         </LoginContentsBox>
                         <Divider></Divider>
@@ -192,12 +188,9 @@ const Login = () => {
                                 <SocialIcon>
                                     <img src={Google} alt="google아이콘"/>
                                 </SocialIcon>
-                                <SocialIcon>
-                                    <img src={Kakao} alt="kakao아이콘"/>
-                                </SocialIcon>
-                                <SocialIcon>
-                                    <img src={Naver} alt="naver아이콘"/>
-                                </SocialIcon>
+                                {/* <GoogleLogin/> */}
+                                <KakaoLogin/>
+                                <NaverLogin/>
                             </SocialIconBox>
                         </SocialLoginBox>
                     </LoginFormBox>

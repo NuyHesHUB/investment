@@ -136,6 +136,7 @@ export const SocialIcon=styled.div`
     width: 60px;
     height: 60px;
     border-radius: 50%;
+    cursor: pointer;
     &:first-child{
         border: 1px solid rgb(209,209,209);
         background: #fff;

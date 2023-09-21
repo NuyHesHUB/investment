@@ -14,6 +14,7 @@ import { setAdminUserData, setAdminBoardData, setAdminPostData } from './store/a
 /* Basic Component */
 import Home from './Components/Home';
 import Login from './Components/Login/Login';
+import MemberType from './Components/Signup/MemberType';
 import Signup from './Components/Signup/Signup';
 
 /* Member Edit */
@@ -36,6 +37,11 @@ import AdminPostList from './Components/Admin/AdminPostList';
 import AdminEditUser from './Components/Admin/AdminEditUser';
 import AdminEditPost from './Components/Admin/AdminEditPost';
 import Header from './Components/Header';
+
+
+import KakaoRedirection from './Components/Login/KakaoRedirection';
+import NaverRedirection from './Components/Login/NaverRedirection';
+
 
 
 
@@ -173,6 +179,11 @@ const App = () => {
                 {/* Home, Login, Signup */}
                 <Route exact path="/" element={<Home parsedCategoryData={parsedCategoryData}/>}></Route>
                 <Route exact path="/login" element={<Login />}></Route>
+                <Route exact path="/member_type" element={<MemberType />}></Route>
+
+
+
+
                 <Route exact path="/sign_up" element={<Signup/>}></Route>
                 <Route exact path="/myinfo" element={<MemberEditPage />}></Route>
 
@@ -229,7 +240,14 @@ const App = () => {
                 <Route exact path="/admin/post_edit/:index" element={<AdminEditPost/>}></Route>
                 {/* <Route exact path="/admin/post_edit/:key/:index" element={<AdminEditPost/>}></Route> */}
                 
-                
+
+
+
+
+
+
+                <Route exact path='/login/kakao_login' element={<KakaoRedirection />} />
+                <Route exact path='/login/naver_login' element={<NaverRedirection />} />
 
             </Routes>
         </Router>
