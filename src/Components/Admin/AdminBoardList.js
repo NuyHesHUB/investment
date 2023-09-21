@@ -69,173 +69,72 @@ const AdminBoardList = () => {
     \*------------------------------------------------*/
     const [readValue, setReadValue] = useState({});
     const [writeValue, setWriteValue] = useState({});
-    /* const handleReadChange = (e, index) => {
-        const value = e.target.value;
-        setReadValue(prevValues => ({
-            ...prevValues,
-            [index]: value
-        }));
-        updateAuthorize(index, 'authorize', value, writeValue[index] || 0);
-    }; */
+
     const handleReadChange = (e, index) => {
         const value = e.target.value;
         setReadValue(prevValues => ({
             ...prevValues,
-            [index]: value === '선택' ? '' : value
+            [index]: value === '선택' || value === '0' ? '' : value
         }));
-        updateAuthorize(index, 'authorize', value === '선택' ? '' : value, writeValue[index] === '선택' ? '' : writeValue[index] );
+        updateAuthorize(index, 'authorize', 
+            value === '선택' || value === '0' ? setReadValue({}) : value, 
+            writeValue[index] === '선택' || writeValue[index] === '0' ? setReadValue({}) : writeValue[index]
+        );
     };
-
-    /* const handleWriteChange = (e, index) => {
-        const value = e.target.value;
-        setWriteValue(prevValues => ({
-            ...prevValues,
-            [index]: value
-        }));
-        updateAuthorize(index, 'authorize', readValue[index] || 0, value);
-    }; */
+    
     const handleWriteChange = (e, index) => {
         const value = e.target.value;
         setWriteValue(prevValues => ({
             ...prevValues,
-            [index]: value === '선택' ? '' : value 
+            [index]: value === '선택' || value === '0' ? '' : value 
         }));
-        updateAuthorize(index, 'authorize', readValue[index] === '선택' ? '' : readValue[index], value === '선택' ? '' : value);
+        updateAuthorize(index, 'authorize', 
+            readValue[index] === '선택' || readValue[index] === '0' ? setWriteValue({}) : readValue[index], 
+            value === '선택' || value === '0' ? setWriteValue({}) : value
+        );
     };
 
-    /* const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
-        setAdminBoardListData(prevData => {
-            const newData = [...prevData];
-            const newAuthorize = JSON.stringify({ "읽기": newReadValue || null, "쓰기": newWriteValue || null });
-            newData[index][key] = newAuthorize;
-            return newData;
-        });
-    }; */
     const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
         setAdminBoardListData(prevData => {
             const newData = [...prevData];
-            
-            const createAuthorize = (value) => {
-                if ((newReadValue === '선택' || newReadValue === null) && (newWriteValue === '선택' || newWriteValue === null)) {
-                    setAdminBoardListData(prevData => {
-                        const newData = [...prevData];
-                        newData[index][key] = JSON.stringify({});
-                        
-                        return newData;
-                        
-                    });
-                } else {
-                    setAdminBoardListData(prevData => {
-                        const newData = [...prevData];
-                        const newAuthorize = {};
-                        newAuthorize[key] = value;
-                        newData[index][key] = JSON.stringify(newAuthorize);
-                        return newData;
-                    });
-                }
-            };
-    
             const newAuthorize = JSON.stringify({
-                "읽기": createAuthorize(newReadValue),
-                "쓰기": createAuthorize(newWriteValue)
+                "읽기": newReadValue,
+                "쓰기": newWriteValue
             });
     
             newData[index][key] = newAuthorize;
             return newData;
         });
     };
-    /* const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
-        setAdminBoardListData(prevData => {
-            const newData = [...prevData];
-            const newAuthorize = {};
-    
-            if (newReadValue !== null && newReadValue !== '선택') {
-                newAuthorize["읽기"] = newReadValue;
-            }
-    
-            if (newWriteValue !== null && newWriteValue !== '선택') {
-                newAuthorize["쓰기"] = newWriteValue;
-            }
-    
-            newData[index][key] = Object.keys(newAuthorize).length > 0 ? JSON.stringify(newAuthorize) : ''; // 빈 문자열로 설정
-    
-            return newData;
-        });
-    }; */
-    /* const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
-        setAdminBoardListData(prevData => {
-            const newData = [...prevData];
-            const newAuthorize = {};
-    
-            if (newReadValue !== null && newReadValue !== '선택') {
-                newAuthorize["읽기"] = newReadValue;
-            }
-    
-            if (newWriteValue !== null && newWriteValue !== '선택') {
-                newAuthorize["쓰기"] = newWriteValue;
-            }
-    
-            if (Object.keys(newAuthorize).length > 0) {
-                newData[index][key] = JSON.stringify(newAuthorize);
-            } else {
-                delete newData[index][key];
-            }
-    
-            return newData;
-        });
-    }; */
-    /* const updateAuthorize = (index, key, newReadValue, newWriteValue) => {
-        setAdminBoardListData(prevData => {
-            const newData = [...prevData];
-            if ((newReadValue === null || newReadValue === '선택') && (newWriteValue === null || newWriteValue === '선택')) {
-                
-                delete newData[index][key];
-                
-            } else {
-                const newAuthorize = {};
-    
-                if (newReadValue !== null && newReadValue !== '선택') {
-                    newAuthorize["읽기"] = newReadValue;
-                }
-    
-                if (newWriteValue !== null && newWriteValue !== '선택') {
-                    newAuthorize["쓰기"] = newWriteValue;
-                }
-    
-                newData[index][key] = JSON.stringify(newAuthorize);
-            }
-            return newData;
-            
-        });
-    }; */
 
     /*------------------------------------------------*\
                   skins 데스크탑 / 모바일 수정
     \*------------------------------------------------*/
     const [deskTopSkins, setDeskTopSkins] = useState({});
     const [mobileSkins, setMobileSkins] = useState({});
+
     const handleDeskTopSkinsChange = (e, index) => {
         const value = e.target.value;
         setDeskTopSkins(prevValues => ({
             ...prevValues,
-            [index]: value
+            [index]: value === '선택' ? '' : value
         }));
-        updateSkins(index, 'skins', mobileSkins[index] || '', value);
+        updateSkins(index, 'skins', mobileSkins[index] === '선택' ?  setMobileSkins({}) : mobileSkins[index], value === '선택' ? setMobileSkins({}) : value);
     };
+
     const handleMobileSkinsChange = (e, index) => {
         const value = e.target.value;
         setMobileSkins(prevValues => ({
             ...prevValues,
-            [index]: value
+            [index]: value === '선택' ? '' : value
         }));
-        updateSkins(index, 'skins', value, deskTopSkins[index] || '');
+        updateSkins(index, 'skins', value, deskTopSkins[index] === '선택' ? setDeskTopSkins({}) : value, deskTopSkins[index] === '선택' ? setDeskTopSkins({}) : deskTopSkins[index] );
     };
+
     const updateSkins = (index, key, newReadValue, newWriteValue) => {
         setAdminBoardListData(prevData => {
             const newData = [...prevData];
-            /* const newSkins = `{"모바일":${newReadValue},"웹":${newWriteValue}}`; */
-            /* const newSkins = `{"모바일":${newReadValue},"웹":${newWriteValue}}`; */
-            const newSkins = JSON.stringify({ "모바일": newReadValue || null , "웹": newWriteValue || null });
+            const newSkins = JSON.stringify({ "모바일": newReadValue, "웹": newWriteValue });
             newData[index][key] = newSkins; 
             return newData;
         });
@@ -460,7 +359,8 @@ const AdminBoardList = () => {
     console.log('boardData테스트', adminBoardData);
     console.log('selectedRows:', selectedRows);
     console.log('AdminBoardListData',AdminBoardListData);
-    console.log('authorize',AdminBoardListData?.[0]?.authorize);
+    /* console.log('authorize',AdminBoardListData?.[0]?.authorize); */
+    console.log('skins',AdminBoardListData?.[0]?.skins);
     
     return (
         <AdminListFrame $isModalOpen={isModalOpen}>
@@ -569,7 +469,8 @@ const AdminBoardList = () => {
                                                     </td>
                                                     <td>
                                                         <select 
-                                                            value={readValue[index] === '선택' ? '선택' : readValue[index]} // '선택' 값이면 null 대신 '선택'을 표시
+                                                            /* value={readValue[index] === '선택' ? '선택' : readValue[index]} */
+                                                            value={readValue[index] || '선택'}
                                                             onChange={(e) => handleReadChange(e, index)} 
                                                             disabled={!selectedRows.includes(item)}
                                                         >
@@ -581,7 +482,8 @@ const AdminBoardList = () => {
                                                     </td>
                                                     <td>
                                                         <select 
-                                                            value={writeValue[index] === '선택' ? '선택' : writeValue[index]} // '선택' 값이면 null 대신 '선택'을 표시
+                                                            /* value={writeValue[index] === '선택' ? '선택' : writeValue[index]} */ 
+                                                            value={writeValue[index] || '선택'}
                                                             onChange={(e) => handleWriteChange(e, index)} 
                                                             disabled={!selectedRows.includes(item)}
                                                         >
