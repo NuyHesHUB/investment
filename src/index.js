@@ -7,6 +7,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+//Fonts
+import './fonts/pretendard/pretendard.css'
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const rootReducer = combineReducers({

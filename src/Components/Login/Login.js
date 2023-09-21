@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Header from '../Header';
-import axios, { Axios } from 'axios';
-import axiosInstance from '../../axiosInstance';
-import { StyledFrame, StyledLoginFrame } from './StyledLoginFrame';
+
+/* Axios */
+import axios from 'axios';
+
+/* Redux */
 import { useDispatch } from 'react-redux';
 import { login, logout, setUserUid } from '../../store/actions/actions';
+
+/* React-Router-Dom */
+import { Link, useNavigate } from 'react-router-dom';
+
+/* Components */
+import Header from '../Header';
 import Footer from '../Footer';
+
+/* StyledComponents */
+import { StyledFrame, LoginWrap, LoginBox, LoginTitle, LoginFormBox, LoginContentsBox, ForgetDivideBox, Divider, SocialLoginBox, SocialIconBox, SocialIcon } from './StyledLoginFrame';
+
+/* Imgage */
+import Google from '../../assets/Login-Image/google.png';
+import Kakao from '../../assets/Login-Image/kakao.png';
+import Naver from '../../assets/Login-Image/naver.png';
 
 const Login = () => {
     const baseURL = process.env.REACT_APP_BASEURL;
@@ -132,13 +146,13 @@ const Login = () => {
     return (
         <StyledFrame>
             <Header/>
-            <StyledLoginFrame>
-                <div style={{textAlign:'center'}}>
-                    <h1>로그인</h1>
-                    <form onSubmit={handleLogin} style={{display:'flex', flexDirection:'column', marginTop:'30px'}}>
+            <LoginWrap>
+                <LoginBox>
+                    <LoginTitle>로그인</LoginTitle>
+                    <LoginFormBox onSubmit={handleLogin}>
                         <input
                             type="text"
-                            placeholder="아이디를 입력해주세요."
+                            placeholder="아이디를 입력해주세요"
                             value={loginId}
                             onChange={(e) => setLoginId(e.target.value)}
                         />
@@ -151,21 +165,44 @@ const Login = () => {
                         /> */}
                         <input
                             type="password"
-                            placeholder="비밀번호를 입력해주세요."
+                            placeholder="비밀번호를 입력해주세요"
                             value={loginPassword}
                             onChange={(e) => setLoginPassword(e.target.value)}
                             autoComplete="off"
                         />
                         <button type='submit'>로그인</button>
-                    </form>
-                </div>
-                <div style={{marginTop:'50px', textAlign:'center'}}>
-                    <p style={{marginBottom:'20px'}}>아직 화진 회원이 아니신가요?</p>
-                    <Link to="/sign_up">
-                        <button>화진 회원가입 하기</button>
-                    </Link>
-                </div>
-            </StyledLoginFrame>
+                        <LoginContentsBox>
+                            <div style={{marginLeft:'7px'}}>
+                                <span>
+                                    <Link>아이디</Link>
+                                </span>
+                                <ForgetDivideBox>/</ForgetDivideBox>
+                                <span>
+                                    <Link>비밀번호 찾기</Link>
+                                </span>
+                            </div>
+                            <div style={{marginRight:'7px'}}>
+                                <span><Link to="/sign_up">회원가입</Link></span>
+                            </div>
+                        </LoginContentsBox>
+                        <Divider></Divider>
+                        <SocialLoginBox>
+                            <span>다른 계정으로 로그인</span>
+                            <SocialIconBox>
+                                <SocialIcon>
+                                    <img src={Google} alt="google아이콘"/>
+                                </SocialIcon>
+                                <SocialIcon>
+                                    <img src={Kakao} alt="kakao아이콘"/>
+                                </SocialIcon>
+                                <SocialIcon>
+                                    <img src={Naver} alt="naver아이콘"/>
+                                </SocialIcon>
+                            </SocialIconBox>
+                        </SocialLoginBox>
+                    </LoginFormBox>
+                </LoginBox>
+            </LoginWrap>
             <Footer/>
         </StyledFrame>
         
