@@ -245,9 +245,10 @@ const App = () => {
 
 
 
-
-                <Route exact path='/login/kakao_login' element={<KakaoRedirection />} />
-                <Route exact path='/login/naver_login' element={<NaverRedirection />} />
+                {/* Social Login Redirection */}
+                {/* <Route exact path='/login/kakao_login' element={<KakaoRedirection />} /> */}
+                <Route exact path='/auth/kakao/callback' element={<KakaoRedirection />} />
+                <Route exact path='/auth/naver/callback' element={<NaverRedirection />} />
 
             </Routes>
         </Router>

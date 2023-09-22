@@ -6,7 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 /* Axios */
 import axios from 'axios';
-import axiosInstance from '../../axiosInstance';
 
 /* Components */
 import Header from '../Header';
@@ -25,16 +24,18 @@ const Signup = () => {
     /* FormData State */
     const [formData, setFormData] = useState({
         group: '',
+        isAdmin:'N',
         loginId: '',
         loginPassword: '',
         nickname: '',
         phone: '',
         email: '',
         img: '',
-        /* isAdmin:'Y', */
-        receiveSms: 'Y',
-        receiveEmail: 'Y',
-        note: ''
+        termsOfService: '',
+        privacyPolicy: '',
+        note: '',
+        companyName: '',
+        businessNum: ''
     });
 
     /* Submit Error State */
