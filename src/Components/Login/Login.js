@@ -123,7 +123,10 @@ const Login = () => {
             }
         }
     };
-    
+    console.log('test',process.env.REACT_APP_NAVERKEY);
+    console.log('test',process.env.REACT_APP_NAVERURI);
+    console.log('test',process.env.REACT_APP_KAKAOKEY);
+    console.log('test',process.env.REACT_APP_KAKAOURI);
     /* useEffect(() => {
     const refreshAccessToken = async () => {
         try {

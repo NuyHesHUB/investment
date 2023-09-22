@@ -6,7 +6,7 @@ const NaverRedirection = () => {
     const code = new URL(document.location.toString()).searchParams.get('code');
     console.log('code',code);
 
-    /* useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
             try{
                 const response = await axios.post(`${baseURL}/v1/authorize/naver_login`, { code: code, socialType: "naver"} , { withCredentials : true})
@@ -16,7 +16,7 @@ const NaverRedirection = () => {
             }
         }
         fetchData();
-    }, []); */
+    }, []);
 
     return (
         <div>

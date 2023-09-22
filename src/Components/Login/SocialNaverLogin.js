@@ -13,8 +13,11 @@ const SocialNaverLogin = () => {
     const naverURL=`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${Rest_api_key}&state=${state}&redirect_uri=${redirect_uri}`; */
 
     //영석씨
-    const Rest_api_key='AZP_wlwaxUxgLB76A1FT';
-    const redirect_uri = 'http://localhost:3000/auth/naver/callback';
+    //const Rest_api_key='AZP_wlwaxUxgLB76A1FT';
+    //const redirect_uri = 'http://localhost:3000/auth/naver/callback';
+    
+    const Rest_api_key=process.env.REACT_APP_NAVERKEY;
+    const redirect_uri =process.env.REACT_APP_NAVERURI;
     const state = "RAMDOM_STATE";
     const naverURL=`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${Rest_api_key}&state=${state}&redirect_uri=${redirect_uri}`;
 

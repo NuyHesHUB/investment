@@ -34,7 +34,7 @@ const MemberType = () => {
     \*------------------------------------------------*/
     const handleBuisnessSignUp = async (e) => {
         e.preventDefault();
-        //사업자 번호 샘플 : 7848801575
+        //사업자 번호 샘플 : 7848801575 
         try { 
             const response = await axios.post(`${baseURL}/v1/users/validate` , { b_no : BusinessNumber} , { withCredentials : true });
             const validBusinessData = response.data.data.b_stt; 
@@ -81,7 +81,7 @@ const MemberType = () => {
             </Contents>
         ) },
     ];
-    
+
     const selectMenuHandler = (index) => {
         setCurrentTab(index);
     }
