@@ -29,7 +29,22 @@ const AdminPostList = () => {
     
     const [AdminPostListData, setAdminPostListData] = useState([]); 
     const [selectedRows, setSelectedRows] = useState([]);
-    console.log('editPostData',editPostData);
+    
+    /*------------------------------------------------*\
+                    관리자 포스트 정보 가져오기
+    \*------------------------------------------------*/
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const adminInvestPostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers })
+                const InvestPostData = adminInvestPostResponse.data
+                console.log('InvestPostData',InvestPostData);
+            } catch (error) {
+                console.error('Admin Post 데이터 가져오기 실패');
+            }
+        }
+        fetchData();
+    },[])
     
     /*------------------------------------------------*\
                   Authorize 읽기 / 쓰기 수정

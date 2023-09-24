@@ -51,7 +51,7 @@ const AdminBoardList = () => {
                     관리자 보드 정보 가져오기
     \*------------------------------------------------*/
     useEffect(() => {
-        const fotchData = async () => {
+        const fetchData = async () => {
             try {
                 const adminBoardResponse = await axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers });
                 const boarddata = adminBoardResponse.data?.query;
@@ -60,7 +60,7 @@ const AdminBoardList = () => {
                 console.error('Admin Board 데이터 가져오기 실패');
             }
         }
-        fotchData();
+        fetchData();
     },[])
     
 

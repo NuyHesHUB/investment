@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
+/* Redux */
+import { useSelector, useDispatch } from 'react-redux';
 import { logout, setGalleryCategoryData } from '../store/actions/actions';
+
+/* React-Router-Dom */
 import { Link, useNavigate, useParams } from 'react-router-dom';
+
+/* Axios */
 import axios from 'axios';
-import axiosInstance from '../axiosInstance';
-import { StyledHeaderFrame, HeaderContainer, HeaderLogo, MenuFrame, HeaderBtn, MenuList } from './StyledComponents/StyledHeader';
+
+/* StyledComponents */
+import { StyledFrame, Container, WrapBox, HeaderLogo, HeaderMenu, HeaderBtn, MenuList, MenuItem } from './StyledComponents/StyledHeader';
+
+/* Image */
+import Logo from '../assets/image/logo.png';
+
 const Header = () => {
 
     const baseURL = process.env.REACT_APP_BASEURL;
@@ -82,13 +92,14 @@ const Header = () => {
     /* console.log('categoryData',categoryData); */
 
     const [subMenuOpen, setSubMenuOpen] = useState({
-        investment: false,
+        processing: false,
         board: false,
       });
     
     const handleMouseEnter = (menu) => {
         setSubMenuOpen({
-            investment: menu === 'investment',
+            processing: menu === 'processing',
+            finish:menu === 'finish',
             board: menu === 'board',
         });
     };
@@ -105,46 +116,58 @@ const Header = () => {
    
 
     return (
-        <StyledHeaderFrame>
-            <HeaderContainer>
-                <div style={{display:'flex'/* , width:'70%' */, justifyContent:'space-between',alignItems:'center',height:'100%'}}>
-                    <Link to="/">
-                        <HeaderLogo>Hwajin</HeaderLogo>
-                    </Link>
-                </div>
-                <MenuFrame>
-                    <MenuList>
-                        <li 
-                            onMouseEnter={() => handleMouseEnter('investment')}
-                            onMouseLeave={() => handleMouseLeave('investment')}
-                        >
-                            투자게시판
-                            <ul id='SubMenu' className={subMenuOpen.investment ? 'sub-menu on' : 'sub-menu'}>
-                                {parsedCategoryData && parsedCategoryData.map((item,index) => (
-                                    <li key={index}>
-                                        <Link to={`/${boardData[6]?.key}/${index}`}>{item}</Link>
-                                    </li>
-                                ))}         
-                            </ul>
-                        </li>
-                        <li 
-                            onMouseEnter={() => handleMouseEnter('board')}
-                            onMouseLeave={() => handleMouseLeave('board')}
-                        >
-                            게시판
-                            <ul id='SubMenu' className={subMenuOpen.board ? 'sub-menu on' : 'sub-menu'}>
-                                {filteredItems.map((item, index)=>(
-                                    <Link key={index} to={`/board/${item.key}`}>
-                                        <li>{item.title}</li>
-                                    </Link>
-                                ))}
-                            </ul>
-                        </li>
-                        <li>
-                            <Link to={`${boardData[8]?.key}`}>{boardData[8]?.title}</Link>
-                        </li>
-                    </MenuList>
-                </MenuFrame>
+        <StyledFrame>
+            <Container>
+                <WrapBox>
+                    <HeaderLogo>
+                        <Link to="/">
+                            <img src={Logo} alt="logo"/>
+                        </Link>
+                    </HeaderLogo>
+                    <HeaderMenu>
+                        <MenuList>
+                            <MenuItem 
+                                onMouseEnter={() => handleMouseEnter('processing')}
+                                onMouseLeave={() => handleMouseLeave('processing')}
+                            >
+                                진행중
+                                <ul className={subMenuOpen.processing ? 'sub-menu on' : 'sub-menu'}>
+                                    {parsedCategoryData && parsedCategoryData.map((item,index) => (
+                                        <li key={index}>
+                                            <Link to={`/${boardData[6]?.key}/${index}`}>{item}</Link>
+                                        </li>
+                                    ))}         
+                                </ul>
+                            </MenuItem>
+                            <MenuItem 
+                                onMouseEnter={() => handleMouseEnter('finish')}
+                                onMouseLeave={() => handleMouseLeave('finish')}
+                            >
+                                마감
+                                <ul className={subMenuOpen.finish ? 'sub-menu on' : 'sub-menu'}>
+                                    {filteredItems.map((item, index)=>(
+                                        <Link key={index} to={`/board/${item.key}`}>
+                                            <li>{item.title}</li>
+                                        </Link>
+                                    ))}
+                                </ul>
+                            </MenuItem>
+                            <MenuItem 
+                                onMouseEnter={() => handleMouseEnter('board')}
+                                onMouseLeave={() => handleMouseLeave('board')}
+                            >
+                                커뮤니티
+                                <ul className={subMenuOpen.board ? 'sub-menu on' : 'sub-menu'}>
+                                    {parsedCategoryData && parsedCategoryData.map((item,index) => (
+                                        <li key={index}>
+                                            <Link to={`/${boardData[6]?.key}/${index}`}>{item}</Link>
+                                        </li>
+                                    ))}         
+                                </ul>
+                            </MenuItem>
+                        </MenuList>
+                    </HeaderMenu>
+                </WrapBox>
                 <div style={{display:'flex'}}>
                     <div style={{display:'flex', marginLeft:'50px'}}>
                         <ul style={{display:'flex', alignItems:'center'}}>
@@ -177,8 +200,8 @@ const Header = () => {
                         </ul>
                     </div>
                 </div>
-            </HeaderContainer>
-        </StyledHeaderFrame>
+            </Container>
+        </StyledFrame>
     );
 };
 
