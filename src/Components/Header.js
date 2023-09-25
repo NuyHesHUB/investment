@@ -32,7 +32,7 @@ const Header = () => {
     console.log('testData',testData);
      /* 유저 정보 가져오기 */
      useEffect(() => {
-         if (accessToken) {
+         if (accessToken) { 
              axios.get(`${baseURL}/v1/users/${userUid}`, { headers })
                 .then(response => {
                     const data = response.data?.query[0].nickname;
