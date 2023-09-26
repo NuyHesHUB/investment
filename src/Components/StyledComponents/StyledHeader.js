@@ -1,21 +1,33 @@
 import styled from 'styled-components';
 
 export const StyledFrame=styled.div`
-    width: 1920px;
+    /* width: 1920px; */
+    width: 100%;
     height: 80px;
     margin: 0 auto;
     position: relative;
     display: flex;
     align-items: center;
-    background: #fff;
+    background: transparent;
+    /* background: rgba(255,255,255,0.1); */
+    color: #fff;
+    position: fixed;
     z-index: 999;
+    transition: background-color .3s;
     /* filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3)); */
+    &.header-scrolled{
+        background: #fff;
+        color: #000;
+    }
 `
+
+
 export const Container=styled.div`
     width: 100%;
     height: 100%;
     max-width: 1920px;
     margin: 0 auto;
+    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -69,18 +81,20 @@ export const MenuItem=styled.li`
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
 `
 export const HeaderBtn=styled.button`
     border: none;
     outline: none;
     padding: 10px 10px;
-    background: rgba(69,74,252,1);
+    background: #3FA9F5;
     /* background: #0D1282; */
+    cursor: pointer;
     color: #fff;
     font-weight: bold;
     border-radius: 5px;
     transition: .3s;
     &:hover{
-        background: #000;
+        background: #1A9CF9;
     }
 `
