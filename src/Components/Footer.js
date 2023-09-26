@@ -11,6 +11,7 @@ const StyledFrame=styled.div`
 const StyledFooterWrap=styled.div`
     width: 100%;
     height: 100%;
+    padding: 0 30px;
 `
 const StyledFooterContainer=styled.div`
     max-width: 1920px;

@@ -113,10 +113,29 @@ const Header = () => {
 
     const navigate = useNavigate();
 
+
+    ///
+
+
+
+    const [scrolled, setScrolled] = useState(false);
+
+    const handleScroll = () => {
+        const isScrolled = window.scrollY > 0;
+        setScrolled(isScrolled);
+    };
+    
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
    
 
     return (
-        <StyledFrame>
+        <StyledFrame  className={`${scrolled ? 'header-scrolled' : ''}`}>
+            
             <Container>
                 <WrapBox>
                     <HeaderLogo>
@@ -172,7 +191,7 @@ const Header = () => {
                     <div style={{display:'flex', marginLeft:'50px'}}>
                         <ul style={{display:'flex', alignItems:'center'}}>
                             {userName &&  userName.length > 0 ? (
-                                    <><div style={{fontWeight:'bold',fontSize:'16px'}}>{userName}</div><span>님 반갑습니다 😊</span></>
+                                    <><div style={{fontWeight:'bold',fontSize:'16px'}}>{userName}</div><span>님 반갑습니다</span></>
                                 ) : (
                                     <><div style={{fontWeight:'bold',fontSize:'16px'}}>Loading...</div></>
                                 )}
@@ -195,7 +214,7 @@ const Header = () => {
                                         <li style={{margin:'0 5px'}}>|</li>
                                         <li><Link to="/sign_up" style={{color:'#454afc',fontWeight:'bold'}}>회원가입</Link></li>
                                     </ul>
-                                ) }
+                                )}
                             
                         </ul>
                     </div>

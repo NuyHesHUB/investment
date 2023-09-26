@@ -2,7 +2,9 @@ import styled from 'styled-components';
 
 export const StyledFrame=styled.div`
     width: calc(100vw - (100vw - 100%));
-    height: 2000px;
+    overflow: hidden;
+    /* height: 2000px; */
+    height: 100%;
 `
 
 export const SlideWrap=styled.div`
@@ -95,6 +97,7 @@ export const SwiperCustomWrap=styled.div`
     max-width: 1920px;
     position: relative;
     height: 160px;
+    height: 1000px; /* 임시높이 */
     display: flex;
     align-items: center;
     margin: 0 auto;

@@ -58,6 +58,40 @@ const AdminMemberList = () => {
         });
     };
 
+
+    /////////////////////////////////////////////////
+
+    // const [checkedItems, setCheckedItems] = useState(new Set());
+
+    // const checkedItemHandler = (id, isChecked) => {
+    //     if (isChecked) {
+    //       checkedItems.add(id);
+    //       setCheckedItems(checkedItems);
+    //     } else if (!isChecked && checkedItems.has(id)) {
+    //       checkedItems.delete(id);
+    //       setCheckedItems(checkedItems);
+    //     }
+    //   };
+
+
+
+    // let test = document.getElementsByClassName("checkbox")
+    // console.log("test", test)
+
+    // const checkOnlyOne = (e) => {
+        
+    //     for (let i = 0; i < test.length; i++) {
+    //         if (test[i].checked === false) {
+    //             return true
+    //         } else {
+    //             return false
+    //         }
+    //     };
+    // };
+
+    ///////////////////////////////////////////////////////////
+
+
     /*------------------------------------------------*\
                         input onChange
     \*------------------------------------------------*/
@@ -112,14 +146,14 @@ const AdminMemberList = () => {
     \*------------------------------------------------*/
     console.log('memberData테스트', adminUserData);
     console.log('selectedRows:', selectedRows);
+    // console.log('adminUserData:', adminUserData);
     console.log('AdminMemberListData',AdminMemberListData);
     console.log('StyledAdminBoard',StyledAdminBoard);
 
 
-    const box = document.getElementsByName("checkbox")
-    const test = document.getElementsByClassName("checkbox")
-    
-    console.log("test", test[0].checked)
+   
+
+    // console.log("test", test.forEach(value => value.checked))
     
 
     // const checkOnlyOne = (c) => {
@@ -144,6 +178,10 @@ const AdminMemberList = () => {
                             <EditSaveBtn onClick={handleMemberEditSaveClick} className='edit_save_btn'>저 장</EditSaveBtn>
                         </div>
                     </div>
+
+
+
+                    
                         <StyledAdminBoard>
                             <div>
                                 <table>
@@ -202,13 +240,15 @@ const AdminMemberList = () => {
                                             return (
                                                 <tr key={index}>
                                                 <td>
+
                                                     <input 
                                                         name='checkbox'
                                                         type="checkbox" 
                                                         checked={selectedRows.includes(item)}
                                                         onChange={() => handleCheckboxChange(item)}
-                                                        className='checkbox'
+                                                        // className='checkbox'
                                                     />
+                                                    
                                                 </td>
                                                 <td rowSpan={1}>
                                                     {/* <input 

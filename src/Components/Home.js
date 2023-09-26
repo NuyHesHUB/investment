@@ -250,7 +250,7 @@ const Home = ({parsedCategoryData}) => {
                             <div className='swiper-button-next'></div>
                     </SwiperCustomWrap>
 
-            <Footer/>
+                <Footer/>
             </StyledFrame>
             
     );
