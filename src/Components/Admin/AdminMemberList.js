@@ -113,6 +113,24 @@ const AdminMemberList = () => {
     console.log('memberData테스트', adminUserData);
     console.log('selectedRows:', selectedRows);
     console.log('AdminMemberListData',AdminMemberListData);
+    console.log('StyledAdminBoard',StyledAdminBoard);
+
+
+    const box = document.getElementsByName("checkbox")
+    const test = document.getElementsByClassName("checkbox")
+    
+    console.log("test", test[0].checked)
+    
+
+    // const checkOnlyOne = (c) => {
+    //     const boxes = document.getElementsByName(
+    //         for (let i = 0; i < boxes.length; i++) {
+    //             console.log("A")
+    //         }
+    //     )
+    // }
+
+
     return (
         <AdminListFrame>
             <Admin/>
@@ -181,241 +199,237 @@ const AdminMemberList = () => {
                                     </thead>
                                     <tbody>
                                         {AdminMemberListData.map((item, index) => {
-                                            if (item.status === 'Y') {
-                                                return (
-                                                    <tr key={index}>
-                                                    <td>
-                                                        <input 
-                                                            name='checkbox'
-                                                            type="checkbox" 
-                                                            checked={selectedRows.includes(item)}
-                                                            onChange={() => handleCheckboxChange(item)} 
+                                            return (
+                                                <tr key={index}>
+                                                <td>
+                                                    <input 
+                                                        name='checkbox'
+                                                        type="checkbox" 
+                                                        checked={selectedRows.includes(item)}
+                                                        onChange={() => handleCheckboxChange(item)}
+                                                        className='checkbox'
+                                                    />
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    {/* <input 
+                                                        name='checkbox'
+                                                        placeholder={item.status} 
+                                                        value={item.status}
+                                                        onChange={(e) => handleInputChange(e, index, 'status')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                    /> */}
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`status-radio-${index}`}
+                                                        value="Y"
+                                                        checked={item.status === "Y"}
+                                                        onChange={(e) => handleInputChange(e, index, 'status')}
+                                                        disabled={!selectedRows.includes(item)}
                                                         />
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        {/* <input 
-                                                            name='checkbox'
-                                                            placeholder={item.status} 
-                                                            value={item.status}
-                                                            onChange={(e) => handleInputChange(e, index, 'status')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                        /> */}
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`status-radio-${index}`}
-                                                            value="Y"
-                                                            checked={item.status === "Y"}
-                                                            onChange={(e) => handleInputChange(e, index, 'status')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            YES
-                                                        </label>
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`status-radio-${index}`}
-                                                            value="N"
-                                                            checked={item.status === "N"}
-                                                            onChange={(e) => handleInputChange(e, index, 'status')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            NO
-                                                        </label>
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        {/* <input 
-                                                            name='checkbox'
-                                                            placeholder={item.group} 
-                                                            value={item.group}
-                                                            onChange={(e) => handleInputChange(e, index, 'group')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                        /> */}
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`group-radio-${index}`}
-                                                            value="일반"
-                                                            checked={item.group === "일반"}
-                                                            onChange={(e) => handleInputChange(e, index, 'group')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            일반
-                                                        </label>
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`group-radio-${index}`}
-                                                            value="기업"
-                                                            checked={item.group === "기업"}
-                                                            onChange={(e) => handleInputChange(e, index, 'group')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            기업
-                                                        </label>
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`group-radio-${index}`}
-                                                            value="프리미엄"
-                                                            checked={item.group === "프리미엄"}
-                                                            onChange={(e) => handleInputChange(e, index, 'group')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            프리미엄
-                                                        </label>
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        {/* <input 
-                                                            name='checkbox'
-                                                            placeholder={item.isAdmin} 
-                                                            value={item.isAdmin}
-                                                            onChange={(e) => handleInputChange(e, index, 'isAdmin')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                        /> */}
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`isAdmin-radio-${index}`}
-                                                            value="Y"
-                                                            checked={item.isAdmin === "Y"}
-                                                            onChange={(e) => handleInputChange(e, index, 'isAdmin')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            YES
-                                                        </label>
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`isAdmin-radio-${index}`}
-                                                            value="N"
-                                                            checked={item.isAdmin === "N"}
-                                                            onChange={(e) => handleInputChange(e, index, 'isAdmin')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            NO
-                                                        </label>
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        {/* <input 
-                                                            name='checkbox'
-                                                            placeholder={item.loginId} 
-                                                            value={item.loginId}
-                                                            onChange={(e) => handleInputChange(e, index, 'loginId')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                        /> */}
-                                                        <span>{item.loginId}</span>
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        <input 
-                                                            name='checkbox'
-                                                            placeholder={item.nickname} 
-                                                            value={item.nickname}
-                                                            onChange={(e) => handleInputChange(e, index, 'nickname')}
-                                                            disabled={!selectedRows.includes(item)}
+                                                        YES
+                                                    </label>
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`status-radio-${index}`}
+                                                        value="N"
+                                                        checked={item.status === "N"}
+                                                        onChange={(e) => handleInputChange(e, index, 'status')}
+                                                        disabled={!selectedRows.includes(item)}
                                                         />
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        <input 
-                                                            name='checkbox'
-                                                            placeholder={item.email} 
-                                                            value={item.email}
-                                                            onChange={(e) => handleInputChange(e, index, 'email')}
-                                                            disabled={!selectedRows.includes(item)}
+                                                        NO
+                                                    </label>
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    {/* <input 
+                                                        name='checkbox'
+                                                        placeholder={item.group} 
+                                                        value={item.group}
+                                                        onChange={(e) => handleInputChange(e, index, 'group')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                    /> */}
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`group-radio-${index}`}
+                                                        value="일반"
+                                                        checked={item.group === "일반"}
+                                                        onChange={(e) => handleInputChange(e, index, 'group')}
+                                                        disabled={!selectedRows.includes(item)}
                                                         />
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        <input 
-                                                            name='checkbox'
-                                                            placeholder={item.phone} 
-                                                            value={item.phone}
-                                                            onChange={(e) => handleInputChange(e, index, 'phone')}
-                                                            disabled={!selectedRows.includes(item)}
+                                                        일반
+                                                    </label>
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`group-radio-${index}`}
+                                                        value="기업"
+                                                        checked={item.group === "기업"}
+                                                        onChange={(e) => handleInputChange(e, index, 'group')}
+                                                        disabled={!selectedRows.includes(item)}
                                                         />
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        <input 
-                                                            name='checkbox'
-                                                            placeholder={item.img} 
-                                                            value={item.img}
-                                                            onChange={(e) => handleInputChange(e, index, 'img')}
-                                                            disabled={!selectedRows.includes(item)}
+                                                        기업
+                                                    </label>
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`group-radio-${index}`}
+                                                        value="프리미엄"
+                                                        checked={item.group === "프리미엄"}
+                                                        onChange={(e) => handleInputChange(e, index, 'group')}
+                                                        disabled={!selectedRows.includes(item)}
                                                         />
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        {/* <input 
-                                                            name='checkbox'
-                                                            placeholder={item.receiveSms} 
-                                                            value={item.receiveSms}
-                                                            onChange={(e) => handleInputChange(e, index, 'receiveSms')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                        /> */}
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`receiveSms-radio-${index}`}
-                                                            value="Y"
-                                                            checked={item.receiveSms === "Y"}
-                                                            onChange={(e) => handleInputChange(e, index, 'receiveSms')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            YES
-                                                        </label>
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`receiveSms-radio-${index}`}
-                                                            value="N"
-                                                            checked={item.receiveSms === "N"}
-                                                            onChange={(e) => handleInputChange(e, index, 'receiveSms')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            NO
-                                                        </label>
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        {/* <input 
-                                                            name='checkbox'
-                                                            placeholder={item.receiveEmail} 
-                                                            value={item.receiveEmail}
-                                                            onChange={(e) => handleInputChange(e, index, 'receiveEmail')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                        /> */}
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`receiveEmail-radio-${index}`}
-                                                            value="Y"
-                                                            checked={item.receiveEmail === "Y"}
-                                                            onChange={(e) => handleInputChange(e, index, 'receiveEmail')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            YES
-                                                        </label>
-                                                        <label>
-                                                            <input
-                                                            type="radio"
-                                                            name={`receiveEmail-radio-${index}`}
-                                                            value="N"
-                                                            checked={item.receiveEmail === "N"}
-                                                            onChange={(e) => handleInputChange(e, index, 'receiveEmail')}
-                                                            disabled={!selectedRows.includes(item)}
-                                                            />
-                                                            NO
-                                                        </label>
-                                                    </td>
-                                                    <td rowSpan={1}>
-                                                        {/* <Link to={`/admin/post_edit/${index}`} style={{textDecoration:'none'}}>
-                                                                <span style={{background:'#3f51b5',color:'#fff',padding:'5px',fontSize:'12px',borderRadius:'10px'}}>수정</span>
-                                                        </Link> */}
-                                                        <button disabled={!selectedRows.includes(item)} style={{padding:'5px',fontSize:'12px', marginLeft:'5px'}}>삭제</button>
-                                                    </td>
-                                                </tr>
-                                                );
-                                            } else {
-                                                return null; 
-                                            }
-                                                
+                                                        프리미엄
+                                                    </label>
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    {/* <input 
+                                                        name='checkbox'
+                                                        placeholder={item.isAdmin} 
+                                                        value={item.isAdmin}
+                                                        onChange={(e) => handleInputChange(e, index, 'isAdmin')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                    /> */}
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`isAdmin-radio-${index}`}
+                                                        value="Y"
+                                                        checked={item.isAdmin === "Y"}
+                                                        onChange={(e) => handleInputChange(e, index, 'isAdmin')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                        />
+                                                        YES
+                                                    </label>
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`isAdmin-radio-${index}`}
+                                                        value="N"
+                                                        checked={item.isAdmin === "N"}
+                                                        onChange={(e) => handleInputChange(e, index, 'isAdmin')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                        />
+                                                        NO
+                                                    </label>
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    {/* <input 
+                                                        name='checkbox'
+                                                        placeholder={item.loginId} 
+                                                        value={item.loginId}
+                                                        onChange={(e) => handleInputChange(e, index, 'loginId')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                    /> */}
+                                                    <span>{item.loginId}</span>
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    <input 
+                                                        name='checkbox'
+                                                        placeholder={item.nickname} 
+                                                        value={item.nickname}
+                                                        onChange={(e) => handleInputChange(e, index, 'nickname')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                    />
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    <input 
+                                                        name='checkbox'
+                                                        placeholder={item.email} 
+                                                        value={item.email}
+                                                        onChange={(e) => handleInputChange(e, index, 'email')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                    />
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    <input 
+                                                        name='checkbox'
+                                                        placeholder={item.phone} 
+                                                        value={item.phone}
+                                                        onChange={(e) => handleInputChange(e, index, 'phone')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                    />
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    <input 
+                                                        name='checkbox'
+                                                        placeholder={item.img} 
+                                                        value={item.img}
+                                                        onChange={(e) => handleInputChange(e, index, 'img')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                    />
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    {/* <input 
+                                                        name='checkbox'
+                                                        placeholder={item.receiveSms} 
+                                                        value={item.receiveSms}
+                                                        onChange={(e) => handleInputChange(e, index, 'receiveSms')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                    /> */}
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`receiveSms-radio-${index}`}
+                                                        value="Y"
+                                                        checked={item.receiveSms === "Y"}
+                                                        onChange={(e) => handleInputChange(e, index, 'receiveSms')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                        />
+                                                        YES
+                                                    </label>
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`receiveSms-radio-${index}`}
+                                                        value="N"
+                                                        checked={item.receiveSms === "N"}
+                                                        onChange={(e) => handleInputChange(e, index, 'receiveSms')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                        />
+                                                        NO
+                                                    </label>
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    {/* <input 
+                                                        name='checkbox'
+                                                        placeholder={item.receiveEmail} 
+                                                        value={item.receiveEmail}
+                                                        onChange={(e) => handleInputChange(e, index, 'receiveEmail')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                    /> */}
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`receiveEmail-radio-${index}`}
+                                                        value="Y"
+                                                        checked={item.receiveEmail === "Y"}
+                                                        onChange={(e) => handleInputChange(e, index, 'receiveEmail')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                        />
+                                                        YES
+                                                    </label>
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name={`receiveEmail-radio-${index}`}
+                                                        value="N"
+                                                        checked={item.receiveEmail === "N"}
+                                                        onChange={(e) => handleInputChange(e, index, 'receiveEmail')}
+                                                        disabled={!selectedRows.includes(item)}
+                                                        />
+                                                        NO
+                                                    </label>
+                                                </td>
+                                                <td rowSpan={1}>
+                                                    {/* <Link to={`/admin/post_edit/${index}`} style={{textDecoration:'none'}}>
+                                                            <span style={{background:'#3f51b5',color:'#fff',padding:'5px',fontSize:'12px',borderRadius:'10px'}}>수정</span>
+                                                    </Link> */}
+                                                    <button disabled={!selectedRows.includes(item)} style={{padding:'5px',fontSize:'12px', marginLeft:'5px'}}>삭제</button>
+                                                </td>
+                                            </tr>
+                                            );
                                         })}
                                     </tbody>
                                 </table>
