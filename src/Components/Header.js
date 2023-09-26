@@ -19,7 +19,8 @@ import Logo from '../assets/image/logo.png';
 const Header = () => {
 
     const baseURL = process.env.REACT_APP_BASEURL;
-    const accessToken = sessionStorage.getItem('accessToken');
+    const accessToken = sessionStorage.getItem('accessToken')
+    ;
     const userUid = sessionStorage.getItem('userUid');
     const headers = {
         Authorization: `${accessToken}`
@@ -190,6 +191,7 @@ const Header = () => {
                 <div style={{display:'flex'}}>
                     <div style={{display:'flex', marginLeft:'50px'}}>
                         <ul style={{display:'flex', alignItems:'center'}}>
+                            {/* 브랜치 테스트 */}
                             {userName &&  userName.length > 0 ? (
                                     <><div style={{fontWeight:'bold',fontSize:'16px'}}>{userName}</div><span>님 반갑습니다</span></>
                                 ) : (
