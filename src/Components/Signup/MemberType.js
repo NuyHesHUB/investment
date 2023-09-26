@@ -12,21 +12,44 @@ import { StyledFrame, MemberTypeWrap, MemberTypeBox, SignUpTitle, TabBox, TabMen
 /* Components */
 import Header from '../Header';
 import Footer from '../Footer';
+import NaverLogin from '../Login/SocialNaverLogin';
+import KakaoLogin from '../Login/SocialKakaoLogin';
 
 const MemberType = () => {
     const navigate = useNavigate();
     const baseURL = process.env.REACT_APP_BASEURL;
     const [currentTab, setCurrentTab] = useState(0);
-    const [BusinessNumber, setBusinessNumber] = useState('');
+    /* const [BusinessNumber, setBusinessNumber] = useState(''); */
+
+    const [isVerified, setIsVerified] = useState(false);
+
+    const [BusinessFormData, setBusinessFormData] = useState({
+        businessNum: '',
+        businessName: '',
+        representativeName:'',
+    })
 
     /*------------------------------------------------*\
                         Input Change
     \*------------------------------------------------*/
-    const handleInputChange = (e) => {
+    const handleBNChange = (e) => {
         const value = e.target.value;
-        if (/^[0-9]*$/.test(value)) {
+        /* if (/^[0-9]*$/.test(value)) {
             setBusinessNumber(value);
+        } */
+        if (/^[0-9]*$/.test(value)) {
+            setBusinessFormData({
+                ...BusinessFormData,
+                businessNum: value
+            });
         }
+    };
+    const handleInputChange = (e, field) => {
+        const value = e.target.value;
+        setBusinessFormData({
+            ...BusinessFormData,
+            [field]: value
+        });
     };
 
     /*------------------------------------------------*\
@@ -36,12 +59,14 @@ const MemberType = () => {
         e.preventDefault();
         //사업자 번호 샘플 : 7848801575 
         try { 
-            const response = await axios.post(`${baseURL}/v1/users/validate` , { b_no : BusinessNumber} , { withCredentials : true });
+            const response = await axios.post(`${baseURL}/v1/users/validate` , { b_no : BusinessFormData.businessNum} , { withCredentials : true });
             const validBusinessData = response.data.data.b_stt; 
             /* console.log('response', response); */
             if (validBusinessData === '계속사업자') {
-                navigate('/sign_up')
-                sessionStorage.setItem('BusinessNumber', BusinessNumber)
+                /* navigate('/sign_up') */
+                sessionStorage.setItem('BusinessNumber', BusinessFormData.businessNum)
+                setIsVerified(true)
+                
             } else {
                 alert('오류가 발생하였습니다.')
             } 
@@ -53,7 +78,8 @@ const MemberType = () => {
             }
         }
     };
-
+    console.log('테스트', isVerified);
+    console.log('사업자 폼 테스트', BusinessFormData);
     /*------------------------------------------------*\
                       Tab Menu Contents
     \*------------------------------------------------*/
@@ -61,23 +87,57 @@ const MemberType = () => {
         { name: '개인 회원', content: (
             <Contents>
                 <div className='contents-wrap personal-contents'>
-                    <h6>후핀에 오신 것을 환영합니다.</h6>
-                    <Link to="/sign_up"><button>가입하기</button></Link>
+                    {/* <h6>후핀에 오신 것을 환영합니다.</h6> */}
+                    {/* <Link to="/sign_up"><button>가입하기</button></Link> */}
+                    <NaverLogin contents="네이버 회원가입"/>
+                    <KakaoLogin contents="카카오 회원가입"/>
                 </div>
             </Contents>
         ) },
         { name: '사업자 회원', content: (
             <Contents>
-                <div className='contents-wrap buisness-contents'>
-                    <h6>사업자 등록 번호를 입력해 주세요.</h6>
-                    <input 
-                        type='text' 
-                        maxLength='10'
-                        value={BusinessNumber}
-                        onChange={handleInputChange}
-                    />
-                    <button onClick={handleBuisnessSignUp}>인증하기</button>
-                </div>
+                {isVerified ? (
+                    <div className='contents-wrap buisness-contents'>
+                        <NaverLogin contents="네이버 회원가입"/>
+                        <KakaoLogin contents="카카오 회원가입"/>
+                    </div>
+                ):(
+                    <div className='contents-wrap buisness-contents'>
+                        {/* <h6>사업자 등록 번호를 입력해 주세요.</h6> */}
+                        <div>
+                            <form>
+                                <div>
+                                    <label>사업자 번호</label>
+                                    <input 
+                                        type='text' 
+                                        maxLength='10'
+                                        value={BusinessFormData.businessNum}
+                                        onChange={handleBNChange}
+                                    />
+                                </div>
+                                <div>
+                                    <label>사업자명</label>
+                                    <input 
+                                        type='text'
+                                        value={BusinessFormData.businessName}
+                                        onChange={(e) => handleInputChange(e, 'businessName')}
+                                    />
+                                </div>
+                                <div>
+                                    <label>대표자명</label>
+                                    <input 
+                                        type='text'
+                                        value={BusinessFormData.representativeName}
+                                        onChange={(e) => handleInputChange(e, 'representativeName')}
+                                    />
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <button onClick={handleBuisnessSignUp}>인증하기</button>
+                    </div>
+                )}
+                
             </Contents>
         ) },
     ];

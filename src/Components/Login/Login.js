@@ -18,12 +18,11 @@ import NaverLogin from './SocialNaverLogin';
 import GoogleLogin from './SocialGoogleLogin';
 
 /* StyledComponents */
-import { StyledFrame, LoginWrap, LoginBox, LoginTitle, LoginFormBox, LoginContentsBox, ForgetDivideBox, Divider, SocialLoginBox, SocialIconBox, SocialIcon } from './StyledLoginFrame';
+import { StyledFrame, LoginWrap, LoginBox, LoginTitle, LoginSignUpBox,LoginFormBox, LoginContentsBox, ForgetDivideBox, Divider, SocialLoginBox, SocialIconBox, SocialIcon } from './StyledLoginFrame';
 
 /* Imgage */
-import Google from '../../assets/Login-Image/google.png';
-import Kakao from '../../assets/Login-Image/kakao.png';
-import Naver from '../../assets/Login-Image/naver.png';
+import NaverBtn from '../../assets/Login-Image/naver_bar.png';
+import KakaoBtn from '../../assets/Login-Image/kakao_bar.png';
 
 const Login = () => {
     const baseURL = process.env.REACT_APP_BASEURL;
@@ -123,10 +122,7 @@ const Login = () => {
             }
         }
     };
-    console.log('test',process.env.REACT_APP_NAVERKEY);
-    console.log('test',process.env.REACT_APP_NAVERURI);
-    console.log('test',process.env.REACT_APP_KAKAOKEY);
-    console.log('test',process.env.REACT_APP_KAKAOURI);
+
     /* useEffect(() => {
     const refreshAccessToken = async () => {
         try {
@@ -155,48 +151,11 @@ const Login = () => {
             <LoginWrap>
                 <LoginBox>
                     <LoginTitle>로그인</LoginTitle>
-                    <LoginFormBox onSubmit={handleLogin}>
-                        <input
-                            type="text"
-                            placeholder="아이디를 입력해주세요"
-                            value={loginId}
-                            onChange={(e) => setLoginId(e.target.value)}
-                        />
-                        <input
-                            type="password"
-                            placeholder="비밀번호를 입력해주세요"
-                            value={loginPassword}
-                            onChange={(e) => setLoginPassword(e.target.value)}
-                            autoComplete="off"
-                        />
-                        <button type='submit'>로그인</button>
-                        <LoginContentsBox>
-                            <div style={{marginLeft:'7px'}}>
-                                <span>
-                                    <Link>아이디</Link>
-                                </span>
-                                <ForgetDivideBox>/</ForgetDivideBox>
-                                <span>
-                                    <Link>비밀번호 찾기</Link>
-                                </span>
-                            </div>
-                            <div style={{marginRight:'7px'}}>
-                                <span><Link to="/member_type">회원가입</Link></span>
-                            </div>
-                        </LoginContentsBox>
-                        <Divider></Divider>
-                        <SocialLoginBox>
-                            <span>다른 계정으로 로그인</span>
-                            <SocialIconBox>
-                                <SocialIcon>
-                                    <img src={Google} alt="google아이콘"/>
-                                </SocialIcon>
-                                {/* <GoogleLogin/> */}
-                                <KakaoLogin/>
-                                <NaverLogin/>
-                            </SocialIconBox>
-                        </SocialLoginBox>
-                    </LoginFormBox>
+                        <NaverLogin contents="네이버 로그인"/>
+                        <KakaoLogin contents="카카오 로그인"/>
+                    <LoginSignUpBox>
+                        <p>아직 계정이 없으신가요?</p><Link>가입하기</Link>
+                    </LoginSignUpBox>
                 </LoginBox>
             </LoginWrap>
             <Footer/>

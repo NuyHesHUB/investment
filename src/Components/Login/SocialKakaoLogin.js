@@ -1,11 +1,11 @@
 import React from 'react';
 /* StyledComponents */
-import { SocialIcon } from './StyledLoginFrame';
+import { SocialIcon, LogoWrap, TextWrap } from './StyledLoginFrame';
 
 /* Image */
 import KakaoIcon from '../../assets/Login-Image/kakao.png';
 
-const SocialKakaoLogin = () => {
+const SocialKakaoLogin = ({ contents }) => {
     
     /* const Rest_api_key='66000f2f2a2d8b9680ad9166fcdb83dc' */
     /* const redirect_uri = 'http://localhost:3000/login/kakao_login' */ 
@@ -29,8 +29,13 @@ const SocialKakaoLogin = () => {
     }
 
     return(
-        <SocialIcon onClick={handleLogin}>
-            <img src={KakaoIcon} alt="kakao아이콘"/>
+        <SocialIcon style={{background:'rgb(253, 220, 63)'}} onClick={handleLogin}>
+            <LogoWrap>
+                <img src={KakaoIcon} alt="kakao아이콘"/>
+            </LogoWrap>
+            <TextWrap>
+                <p style={{color:'rgb(58, 41, 41)'}}>{contents}</p>
+            </TextWrap>
         </SocialIcon>
     );
 };

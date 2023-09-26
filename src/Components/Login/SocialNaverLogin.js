@@ -1,11 +1,11 @@
 import React from 'react';
 /* StyledComponents */
-import { SocialIcon } from './StyledLoginFrame';
+import { SocialIcon, LogoWrap, TextWrap } from './StyledLoginFrame';
 
 /* Image */
 import NaverIcon from '../../assets/Login-Image/naver.png';
 
-const SocialNaverLogin = () => {
+const SocialNaverLogin = ({ contents }) => {
 
     /* const Rest_api_key='JGN2AeHmBKGnaZE0teQw';
     const redirect_uri = 'http://localhost:3000/login/naver_login';
@@ -25,8 +25,13 @@ const SocialNaverLogin = () => {
         window.location.href = naverURL
     }
     return (
-        <SocialIcon onClick={handleLogin}>
-            <img src={NaverIcon} alt="kakao아이콘"/>
+        <SocialIcon style={{background:'#00C73C'}} onClick={handleLogin}>
+            <LogoWrap>
+                <img src={NaverIcon} alt="naver아이콘"/>
+            </LogoWrap>
+            <TextWrap>
+                <p style={{color:'#fff'}}>{contents}</p>
+            </TextWrap>
         </SocialIcon>
     );
 };

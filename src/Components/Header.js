@@ -197,7 +197,8 @@ const Header = () => {
                                     <ul style={{display:'flex',alignItems:'center'}}>
                                         <li><Link to="/login">로그인</Link></li>
                                         <li style={{margin:'0 5px'}}>|</li>
-                                        <li><Link to="/sign_up" style={{color:'#454afc',fontWeight:'bold'}}>회원가입</Link></li>
+                                        {/* <li><Link to="/sign_up" style={{color:'#454afc',fontWeight:'bold'}}>회원가입</Link></li> */}
+                                        <li><Link to="/member_type" style={{color:'#454afc',fontWeight:'bold'}}>회원가입</Link></li>
                                     </ul>
                                 ) }
                             

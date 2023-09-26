@@ -27,11 +27,14 @@ const NaverRedirection = () => {
         fetchData();
     }, []);
 
-    return (
+    return null;
+
+    
+    /* return (
         <div>
             네이버 Redirection 페이지
         </div>
-    );
+    ); */
 };
 
 export default NaverRedirection;
