@@ -7,13 +7,22 @@ import {Wrap} from "./StyledAdminBoard"
 
 import Admin from "./Admin"
 
-const baseURL = process.env.REACT_APP_BASEURL;
+
 
 const AdminBoard = () => {
+  const baseURL = process.env.REACT_APP_BASEURL;
+
+  //jwt
+  const accessToken = sessionStorage.getItem('accessToken'); 
+  const headers = {
+    Authorization: `${accessToken}`
+  }
+
+  //데이터 가져오기
   const [boardData, setBoardData] = useState([]);
-  
+
   useEffect(() => {
-    axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`,).then((res) => {
+    axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers }).then((res) => {
       console.log("testtest", res.data.query)
       setBoardData(res.data.query)
     }).catch(() => {
@@ -21,8 +30,22 @@ const AdminBoard = () => {
     })
   }, [])
 
-  //수정삭제하는거 안 함
 
+  // 수정 버튼 눌렀을 때
+  const [modify, setModify] = useState('');
+
+  const modifying = (key) => {
+    if (modify.length === 0) {
+      setModify(key)
+    } else if (modify === key) {
+      setModify('')
+    }
+  }
+
+  console.log("modify", modify)
+
+
+  //수정삭제하는거 안 함
 
   return(
     <>
@@ -39,25 +62,32 @@ const AdminBoard = () => {
               <th>수정/삭제</th>
             </tr>
           </thead>
-          {boardData.map((v) => {
+          {boardData.map((v,i) => {
             return(
               <tbody key={v.key}>
-                <tr>
+                <tr className={`${modify === v.key ? 'active' : ''}`} >
                   <td>
-                    <select>
+                    <select disabled = { modify !== v.key }>
                       <option value="Y">{v.status === "Y" ? "Y" : "N"}</option>
                       <option value="N">{v.status === "Y" ? "N" : "Y"}</option>
                     </select>
-                    {/* {v.status} */}
                   </td>
                   <td>
-                    {v.title}
+                    <input 
+                      type="text"
+                      value={v.title}
+                      disabled = { modify !== v.key }
+                    ></input>
                   </td>
                   <td>
-                    {v.categoryList}
+                    <input 
+                      type="text"
+                      value={v.categoryList}
+                      disabled = { modify !== v.key }
+                    ></input>
                   </td>
                   <td>
-                    <button className='modify'>수정</button>
+                    <button className='modify' onClick={() => {modifying(v.key)}}>수정</button>
                     <button className='delete'>삭제</button>
                   </td>
                 </tr>

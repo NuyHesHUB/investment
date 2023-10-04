@@ -10,8 +10,10 @@ export const Wrap = styled.div`
     border: 1px solid #222;
     padding: 3px 8px;
   }
+  tr {background: #eee;}
+  tr.active {background: #fff;} // 수정 활성화 시에
   th {background: #6371c2; color: #fff;}
-  button {border: none; padding: 2px 5px; border-radius: 3px; cursor: pointer;}
+  button {border: none; padding: 2px 5px; border-radius: 3px; cursor: pointer; }
   button.modify {margin-right: 5px; background: #73bbff;}
   button.delete {background: #ff7373;}
 `
