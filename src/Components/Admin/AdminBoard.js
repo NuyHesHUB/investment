@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-import {TableWrap} from "./StyledAdminBoard"
+//style
+import {Wrap} from "./StyledAdminBoard"
+
 import Admin from "./Admin"
+
 const baseURL = process.env.REACT_APP_BASEURL;
 
 const AdminBoard = () => {
-
   const [boardData, setBoardData] = useState([]);
   
   useEffect(() => {
@@ -26,7 +28,7 @@ const AdminBoard = () => {
     <>
       <Admin /> {/* 헤더랑 메뉴 */}
       
-      <TableWrap>
+      <Wrap>
         <input type="search" placeholder='검색' className='search' /> <input type="submit" value='검색' />
         <table>
           <thead>
@@ -55,15 +57,15 @@ const AdminBoard = () => {
                     {v.categoryList}
                   </td>
                   <td>
-                    <button>수정</button>
-                    <button>삭제</button>
+                    <button className='modify'>수정</button>
+                    <button className='delete'>삭제</button>
                   </td>
                 </tr>
               </tbody>
             )
           })}
         </table>
-      </TableWrap>
+      </Wrap>
     </>
   )
 }
