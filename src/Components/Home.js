@@ -73,7 +73,7 @@ const Home = ({parsedCategoryData}) => {
           });
       }, []); */
 
-      useEffect(() => {
+      /* useEffect(() => {
         const sendDataToServer = async () => {
           try {
             const requestData = { userUid: userUid };
@@ -95,7 +95,7 @@ const Home = ({parsedCategoryData}) => {
         };
     
         sendDataToServer();
-      }, []);
+      }, []); */
       
       /* const cookieValue = document.cookie
       .split('; ')
