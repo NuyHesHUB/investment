@@ -128,17 +128,31 @@ const App = () => {
     if (typeof communityCategoryData === 'string' && communityCategoryData.length > 0) {
         try {
             parsedCommunityCategoryData = JSON.parse(communityCategoryData);
-            console.log('성공');
+            /* console.log('성공'); */
         } catch (error) {
             console.error('커뮤니티 게시판 JSON 파싱 오류', error);
         }
     }
+
+    const englishCategories = parsedCommunityCategoryData.map((koreanName) => {
+        const mapping = {
+          '일상': 'daily',
+          '유머': 'humor',
+          '경제': 'economy',
+          '토론': 'debate',
+          '정보': 'information'
+        };
+        
+        return mapping[koreanName] || koreanName;
+
+      });
 
     /*-----------------------------------------------------*\
                         console.log 테스트
     \*-----------------------------------------------------*/
     console.log('communityCategoryData',communityCategoryData);
     console.log('parsedCommunityCategoryData',parsedCommunityCategoryData);
+    /* console.log('englishCategories',englishCategories); */
 
     useEffect(() => {
         const fetchData = async () => {
@@ -258,9 +272,22 @@ const App = () => {
                 <Route exact path='/other' element={<CategoryPage categoryList="other"/>}></Route> */}
 
                 {/* Community */}
-                <Route exact path="/community" element={<CommunityViewAll/>}></Route>
-                <Route exact path="/community/daily" element={<DetailCommunity parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
+                <Route exact path="/community" element={<CommunityViewAll parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
+                {/* <Route exact path="/community/daily" element={<DetailCommunity parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route> */}
 
+                {englishCategories.length > 0  && englishCategories.map((item, index) => {
+                    const path = `/community/${item}`
+                    console.log('테스트', path);
+                    return(
+                        <Route
+                            key={index}
+                            exact
+                            path={path}
+                            element={<DetailCommunity num={index} koreanCategory={parsedCommunityCategoryData[index]} /* parsedCommunityCategoryData={parsedCommunityCategoryData} *//>}
+                        />
+                    )
+                })}
+                
                 {/* Investment Post */}
                 <Route exact path="/investment/:number/:id" element={<PostDetail /* parsedCategoryData={parsedCategoryData} */ postData={postData}/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
