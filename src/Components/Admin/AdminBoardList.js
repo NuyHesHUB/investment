@@ -27,18 +27,16 @@ const AdminBoardList = () => {
     axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers }).then((res) => {
       console.log("testtest", res.data.query);
       setBoardData(res.data.query);
+      
     }).catch(() => {
       console.error("error");
     })
   }, []);
 
-
   //////////////////////////
   ////////// 수정 //////////
   //////////////////////////
   const [boardDataModi, setBoardDataModi] = useState([]);
-
-  
   const [modify, setModify] = useState([]); // 수정 버튼 활성화 여부
 
   const { status, title, categoryList } = boardDataModi;

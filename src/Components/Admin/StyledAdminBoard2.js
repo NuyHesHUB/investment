@@ -10,7 +10,7 @@ export const Wrap = styled.div`
     border: 1px solid #222;
     padding: 3px 8px;
   }
-  tr {background: #eee;}
+  tr {background: #ccc;}
   tr.active {background: #fff;} // 수정 활성화 시에
   /* tr.active button.modify {background: #4294ff;} */
   th {background: #6371c2; color: #fff;}
