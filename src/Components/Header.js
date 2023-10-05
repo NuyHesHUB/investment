@@ -16,11 +16,11 @@ import { StyledFrame, Container, WrapBox, HeaderLogo, HeaderMenu, HeaderBtn, Men
 /* Image */
 import Logo from '../assets/image/logo.png';
 
-const Header = () => {
+const Header = ({parsedCommunityCategoryData}) => {
+    const navigate = useNavigate();
 
     const baseURL = process.env.REACT_APP_BASEURL;
-    const accessToken = sessionStorage.getItem('accessToken')
-    ;
+    const accessToken = sessionStorage.getItem('accessToken');
     const userUid = sessionStorage.getItem('userUid');
     const headers = {
         Authorization: `${accessToken}`
@@ -28,9 +28,12 @@ const Header = () => {
 
     const [userName, setUserName] = useState(null);
     const [menuItems, setMenuItems] = useState([]);
+
+
     const testData = useSelector((state) => state.reducer)
 
-    console.log('testData',testData);
+    /* console.log('testData',testData); */
+    /* console.log('parsedCommunityCategoryData', parsedCommunityCategoryData); */
      /* 유저 정보 가져오기 */
      useEffect(() => {
          if (accessToken) { 
@@ -44,88 +47,113 @@ const Header = () => {
          } else{
              dispatch(logout());
          }
-     },[])
+     },[accessToken])
  
      /* 로그아웃 하면 상태관리 로그아웃 & 토큰 삭제 */
-     const handleLogout = (e) => {
+     /* const handleLogout = (e) => {
          e.preventDefault();
          sessionStorage.removeItem('accessToken');
          sessionStorage.removeItem('refreshToken');
          sessionStorage.removeItem('userUid');
          dispatch(logout());
          navigate("/login");
-     };
-    /* const { key } = useParams(); */
+     }; */
+     const handleLogout = (e) => {
+        e.preventDefault();
+        
+     }
+
+
     
     /* const storeData = useSelector((state) => state.reducer.galleryListData);
     console.log('storeData',storeData); */
 
     const dispatch = useDispatch();
     /* 메뉴 카테고리에 뿌려보기 home.js 전역관리 */
-    const boardData = useSelector((state) => state.reducer?.adminBoardData
-    );
+    const boardData = useSelector((state) => state.reducer?.adminBoardData);
 
     /* console.log('boardData',boardData[6]?.categoryList); */
     /* console.log('boardData-test',boardData[6]?.key); */
 
-    const categoryData = boardData[6]?.categoryList || [];
+    /* const categoryData = boardData[6]?.categoryList || [];
 
     let parsedCategoryData = [];
 
     if (typeof categoryData === 'string' && categoryData.length > 0) {
-    try {
-        parsedCategoryData = JSON.parse(categoryData);
-    } catch (error) {
-        console.error('JSON 파싱 오류:', error);
-    }
-    }
+        try {
+            parsedCategoryData = JSON.parse(categoryData);
+        } catch (error) {
+            console.error('JSON 파싱 오류:', error);
+        }
+    } */
+
     /* console.log('categoryData',parsedCategoryData); */
 
     /* const sessionCategoryData = JSON.parse(sessionStorage.getItem('CategoryData'));  */
 
-    const filteredItems = boardData.filter(item => {
+    /* const filteredItems = boardData.filter(item => {
         const key = item.key;
         return ['economic', 'free', 'humor', 'investment', 'marketing'].includes(key);
-      });
+      }); */
 
     /* console.log('filteredItems',filteredItems); */
       
     /* console.log('categoryData',categoryData); */
 
+
+
+
     const [subMenuOpen, setSubMenuOpen] = useState({
         processing: false,
         board: false,
+        community: false
       });
     
     const handleMouseEnter = (menu) => {
         setSubMenuOpen({
             processing: menu === 'processing',
-            finish:menu === 'finish',
+            deadline: menu === 'deadline',
             board: menu === 'board',
+            community: menu === 'community',
         });
     };
       
     const handleMouseLeave = (menu) => {
-    setSubMenuOpen({
-        ...subMenuOpen,
-        [menu]: false,
-    });
+        setSubMenuOpen({
+            ...subMenuOpen,
+            [menu]: false,
+        });
     };
 
-    const navigate = useNavigate();
+    /*-----------------------------------------------------*\
+                    자유 게시판 카테고리 변환
+    \*-----------------------------------------------------*/
+    const convertToUrlFormat = (category) => {
+        const conversionMap = {
+            '일상': 'daily',
+            '유머': 'humor',
+            '경제': 'economy',
+            '토론': 'debate',
+            '정보': 'information'
+        };
+    
+        const formattedCategory = conversionMap[category];
+    
+        if (formattedCategory) {
+            return formattedCategory.toLowerCase();
+        }
 
+        return category.toLowerCase();
+    }
 
-    ///
-
-
-
+    /*-----------------------------------------------------*\
+                      Scroll Event function
+    \*-----------------------------------------------------*/
     const [scrolled, setScrolled] = useState(false);
-
     const handleScroll = () => {
         const isScrolled = window.scrollY > 0;
         setScrolled(isScrolled);
     };
-    
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => {
@@ -150,37 +178,37 @@ const Header = () => {
                                 onMouseEnter={() => handleMouseEnter('processing')}
                                 onMouseLeave={() => handleMouseLeave('processing')}
                             >
-                                진행중
-                                <ul className={subMenuOpen.processing ? 'sub-menu on' : 'sub-menu'}>
+                                <Link to="/processing">진행중</Link>
+                                {/* <ul className={subMenuOpen.processing ? 'sub-menu on' : 'sub-menu'}>
                                     {parsedCategoryData && parsedCategoryData.map((item,index) => (
                                         <li key={index}>
                                             <Link to={`/${boardData[6]?.key}/${index}`}>{item}</Link>
                                         </li>
                                     ))}         
-                                </ul>
+                                </ul> */}
                             </MenuItem>
                             <MenuItem 
-                                onMouseEnter={() => handleMouseEnter('finish')}
-                                onMouseLeave={() => handleMouseLeave('finish')}
+                                onMouseEnter={() => handleMouseEnter('deadline')}
+                                onMouseLeave={() => handleMouseLeave('deadline')}
                             >
-                                마감
-                                <ul className={subMenuOpen.finish ? 'sub-menu on' : 'sub-menu'}>
+                                <Link to="/deadline">마감</Link>
+                                {/* <ul className={subMenuOpen.deadline ? 'sub-menu on' : 'sub-menu'}>
                                     {filteredItems.map((item, index)=>(
                                         <Link key={index} to={`/board/${item.key}`}>
                                             <li>{item.title}</li>
                                         </Link>
                                     ))}
-                                </ul>
+                                </ul> */}
                             </MenuItem>
                             <MenuItem 
-                                onMouseEnter={() => handleMouseEnter('board')}
-                                onMouseLeave={() => handleMouseLeave('board')}
+                                onMouseEnter={() => handleMouseEnter('community')}
+                                onMouseLeave={() => handleMouseLeave('community')}
                             >
-                                커뮤니티
-                                <ul className={subMenuOpen.board ? 'sub-menu on' : 'sub-menu'}>
-                                    {parsedCategoryData && parsedCategoryData.map((item,index) => (
+                                <Link to="/community">커뮤니티</Link>
+                                <ul className={subMenuOpen.community ? 'sub-menu on' : 'sub-menu'}>
+                                    {parsedCommunityCategoryData && parsedCommunityCategoryData.map((item,index) => (
                                         <li key={index}>
-                                            <Link to={`/${boardData[6]?.key}/${index}`}>{item}</Link>
+                                            <Link to={`/community/${convertToUrlFormat(item)}`}>{item}</Link>
                                         </li>
                                     ))}         
                                 </ul>
@@ -191,7 +219,6 @@ const Header = () => {
                 <div style={{display:'flex'}}>
                     <div style={{display:'flex', marginLeft:'50px'}}>
                         <ul style={{display:'flex', alignItems:'center'}}>
-                            {/* 브랜치 테스트 */}
                             {userName &&  userName.length > 0 ? (
                                     <><div style={{fontWeight:'bold',fontSize:'16px'}}>{userName}</div><span>님 반갑습니다</span></>
                                 ) : (

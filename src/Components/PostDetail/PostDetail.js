@@ -16,14 +16,14 @@ import Cookies from 'js-cookie';
 import { PostDetailFrame, PostMain } from './StyledPostDetail';
 
 
-const PostDetail = ({postData, parsedCategoryData}) => {
+const PostDetail = ({postData, /* parsedCategoryData */}) => {
     const baseURL = process.env.REACT_APP_BASEURL;
     const { number, id } = useParams();
 
     console.log('number',number);
     console.log('id',id);
     
-    console.log('parsedCategoryData',parsedCategoryData);
+    /* console.log('parsedCategoryData',parsedCategoryData); */
     console.log('postData',postData);
 
     const [ testData, setTestData ] = useState([]);

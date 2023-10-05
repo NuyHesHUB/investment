@@ -30,7 +30,7 @@ import ServicesIcon from '../assets/category-image/services.png';
 import { Link } from 'react-router-dom';
 import { setBoardData} from '../store/actions/actions';
 
-const Home = ({parsedCategoryData}) => {
+const Home = ({parsedCommunityCategoryData}) => {
     const baseURL = process.env.REACT_APP_BASEURL;
     const categoryImage = [
         AllIcon,
@@ -150,7 +150,7 @@ const Home = ({parsedCategoryData}) => {
 
     return (
             <StyledFrame>
-                <Header parsedCategoryData={parsedCategoryData}/>
+                <Header parsedCommunityCategoryData={parsedCommunityCategoryData}/>
                     <div>
                         <Swiper
                             autoplay={{

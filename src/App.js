@@ -41,6 +41,8 @@ import Header from './Components/Header';
 
 import KakaoRedirection from './Components/Login/KakaoRedirection';
 import NaverRedirection from './Components/Login/NaverRedirection';
+import CommunityViewAll from './Components/Board/CommunityViewAll';
+import DetailCommunity from './Components/Board/DetailCommunity';
 
 
 
@@ -53,9 +55,9 @@ const App = () => {
     /* console.log('process.env.NODE_ENV :',process.env.NODE_ENV); */
     /* console.log('process.env.REACT_APP_BASEURL :',process.env.REACT_APP_BASEURL); */
 
+    const dispatch = useDispatch();
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
-    const dispatch = useDispatch();
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {
         Authorization: `${accessToken}`
@@ -94,8 +96,10 @@ const App = () => {
     /* console.log('boardData',boardData[6]?.categoryList); */
 
 
-
-    const categoryData = boardData[6]?.categoryList || [];
+    /*-----------------------------------------------------*\
+                          투자 카테고리 
+    \*-----------------------------------------------------*/
+    /* const categoryData = boardData[6]?.categoryList || [];
 
     
     let parsedCategoryData = [];
@@ -106,13 +110,35 @@ const App = () => {
         } catch (error) {
             console.error('JSON 파싱 오류:', error);
         }
-    }
+    } */
 
     /* console.log('categoryData',parsedCategoryData); */
 
     /* sessionStorage.setItem('CategoryData', JSON.stringify(parsedCategoryData));
     const sessionCategoryData = JSON.parse(sessionStorage.getItem('CategoryData'));
     console.log('sessionCategoryData',sessionCategoryData); */
+
+    /*-----------------------------------------------------*\
+                    커뮤니티(일반 게시판) 카테고리 
+    \*-----------------------------------------------------*/
+    const communityCategoryData = boardData[2]?.categoryList || [];
+
+    let parsedCommunityCategoryData = [];
+
+    if (typeof communityCategoryData === 'string' && communityCategoryData.length > 0) {
+        try {
+            parsedCommunityCategoryData = JSON.parse(communityCategoryData);
+            console.log('성공');
+        } catch (error) {
+            console.error('커뮤니티 게시판 JSON 파싱 오류', error);
+        }
+    }
+
+    /*-----------------------------------------------------*\
+                        console.log 테스트
+    \*-----------------------------------------------------*/
+    console.log('communityCategoryData',communityCategoryData);
+    console.log('parsedCommunityCategoryData',parsedCommunityCategoryData);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -145,6 +171,13 @@ const App = () => {
     /* console.log('categoryData' ,categoryData); */
     /* const categoryData1 = JSON.parse(boardData.query[6].categoryList); */
     /* console.log('categoryData1',categoryData1[1]); */
+
+
+
+
+    /*-----------------------------------------------------*\
+                    페이지 이동 로그 테스트
+    \*-----------------------------------------------------*/
     /* const sendPageLog = (userUid, page) => {
         axios.post('/add-log', {
           userUid: userUid,
@@ -177,15 +210,16 @@ const App = () => {
             <Routes>
                     
                 {/* Home, Login, Signup */}
-                <Route exact path="/" element={<Home parsedCategoryData={parsedCategoryData}/>}></Route>
+                <Route exact path="/" element={<Home /* parsedCategoryData={parsedCategoryData} */ parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
                 <Route exact path="/login" element={<Login />}></Route>
                 <Route exact path="/member_type" element={<MemberType />}></Route>
-
-
-
-
                 <Route exact path="/sign_up" element={<Signup/>}></Route>
                 <Route exact path="/myinfo" element={<MemberEditPage />}></Route>
+
+                {/* Social Login Redirection */}
+                <Route exact path='/auth/kakao/callback' element={<KakaoRedirection />} />
+                <Route exact path='/auth/naver/callback' element={<NaverRedirection />} />
+
 
                 {/* Gallery */}
                 {/* <Route exact path='/gallery/dining' element={<CategoryPage categoryList="dining"/>}></Route>
@@ -195,10 +229,10 @@ const App = () => {
                 <Route exact path='/gallery/car' element={<CategoryPage categoryList="car"/>}></Route>
                 <Route exact path='/gallery/other' element={<CategoryPage categoryList="other"/>}></Route> */}
 
-                {parsedCategoryData.length > 0 && parsedCategoryData.map((item, index) => (
+                {/* {parsedCategoryData.length > 0 && parsedCategoryData.map((item, index) => (
                     <Route key={index} path={`/${boardData[6]?.key}/${index}`} element={<InvestBoardPage categoryIndex={index} parsedCategoryData={parsedCategoryData[index]}/>}
                     />             
-                ))}
+                ))} */}
 
                 {/* <Route exact path='/investment/0' element={<CategoryPage categoryList="manufacturing"/>}></Route> */}
 
@@ -223,8 +257,12 @@ const App = () => {
                 <Route exact path='/car' element={<CategoryPage categoryList="car"/>}></Route>
                 <Route exact path='/other' element={<CategoryPage categoryList="other"/>}></Route> */}
 
+                {/* Community */}
+                <Route exact path="/community" element={<CommunityViewAll/>}></Route>
+                <Route exact path="/community/daily" element={<DetailCommunity parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
+
                 {/* Investment Post */}
-                <Route exact path="/investment/:number/:id" element={<PostDetail parsedCategoryData={parsedCategoryData} postData={postData}/>} />
+                <Route exact path="/investment/:number/:id" element={<PostDetail /* parsedCategoryData={parsedCategoryData} */ postData={postData}/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
 
                 {/* 게시판 */}
@@ -245,10 +283,7 @@ const App = () => {
 
 
 
-                {/* Social Login Redirection */}
-                {/* <Route exact path='/login/kakao_login' element={<KakaoRedirection />} /> */}
-                <Route exact path='/auth/kakao/callback' element={<KakaoRedirection />} />
-                <Route exact path='/auth/naver/callback' element={<NaverRedirection />} />
+                
 
             </Routes>
         </Router>
