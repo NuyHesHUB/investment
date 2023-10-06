@@ -13,11 +13,13 @@ export const StyledFrame=styled.div`
     color: #fff;
     position: fixed;
     z-index: 999;
-    transition: background-color .3s;
+    transition: background-color .1s;
     /* filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3)); */
     &.header-scrolled{
         background: #fff;
         color: #000;
+        /* filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3)); */
+        border-bottom: 1px solid #000;
     }
 `
 

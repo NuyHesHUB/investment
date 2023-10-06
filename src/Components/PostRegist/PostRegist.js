@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
-import axiosInstance from '../../axiosInstance';
+
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 

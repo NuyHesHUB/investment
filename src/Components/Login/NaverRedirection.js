@@ -11,16 +11,18 @@ const NaverRedirection = () => {
     useEffect(() => {
         const fetchData = async () => {
             try{/* /v1/authorize/social_login */
-                const response = await axios.post(`${baseURL}/v1/authorize/social_login`, { code: code, socialType: "naver"} , { withCredentials : true})
+                const response = await axios.post(`${baseURL}/v1/authorize/social_login`, { code: code, socialType: "naver" } , { withCredentials : true})
                 const userData = response.data.userData;
                 /* console.log('response', response); */
                 /* console.log('루트 테스트',userData); */
                 const userUid = response.data.userData.id;
                 const accessToken = response.data.accessToken;
                 const refreshToken = response.data.refreshToken;
+
+                sessionStorage.setItem('userUid', userUid);
                 sessionStorage.setItem('accessToken', accessToken);
                 sessionStorage.setItem('refreshToken', refreshToken);
-                sessionStorage.setItem('userUid', userUid);
+                
 
                 if (userData.group === '관리자' && userData.isAdmin === 'Y') {
                     navigate("/admin");

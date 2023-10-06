@@ -41,10 +41,13 @@ import Header from './Components/Header';
 
 import KakaoRedirection from './Components/Login/KakaoRedirection';
 import NaverRedirection from './Components/Login/NaverRedirection';
-import CommunityViewAll from './Components/Board/CommunityViewAll';
-import DetailCommunity from './Components/Board/DetailCommunity';
 
+/* Community Board */
+import CommunityViewAll from './Components/Board/CommunityBoard/CommunityViewAll';
+import DetailCommunity from './Components/Board/CommunityBoard/DetailCommunity';
 
+import OngoingBoard from './Components/Board/InvestmentBoard/OngoingBoard';
+import DeadlineBoard from './Components/Board/InvestmentBoard/DaedlineBoard';
 
 
 const App = () => {
@@ -134,7 +137,7 @@ const App = () => {
         }
     }
 
-    const englishCategories = parsedCommunityCategoryData.map((koreanName) => {
+    const communityEnglishCategories = parsedCommunityCategoryData.map((koreanName) => {
         const mapping = {
           '일상': 'daily',
           '유머': 'humor',
@@ -148,12 +151,50 @@ const App = () => {
       });
 
     /*-----------------------------------------------------*\
+            투자 게시판 카테고리 (추후 카테고리 분류를 위해)
+    \*-----------------------------------------------------*/
+    const investmentCategoryData = boardData[3]?.categoryList || [];
+
+    let parsedInvestmentCategoryData = [];
+
+    if (typeof investmentCategoryData === 'string' && investmentCategoryData.length > 0) {
+        try {
+            parsedInvestmentCategoryData = JSON.parse(investmentCategoryData);
+            console.log('성공', parsedInvestmentCategoryData);
+        } catch (error) {
+            console.error('투자 게시판 JSON 파싱 오류', error);
+        }
+    }
+
+    const investmentEnglishCategories = parsedInvestmentCategoryData.map((koreanName) => {
+        const mapping = {
+            '제조' : 'manufacturing',
+            'IT' : 'it',
+            '외식' : 'foodservice',
+            '서비스' : 'sevice',
+            '의료' : 'medical ',
+            '유통/물류' : 'distribution',
+            '운송' : 'express',
+            '대여' : 'rental',
+            '기타' : 'etc',
+            '엔터테이먼트' : 'entertainment',
+            '교육' : 'education',
+            '부동산' : 'realestate'
+        };
+        
+        return mapping[koreanName] || koreanName;
+
+    });
+
+
+    /*-----------------------------------------------------*\
                         console.log 테스트
     \*-----------------------------------------------------*/
-    console.log('communityCategoryData',communityCategoryData);
-    console.log('parsedCommunityCategoryData',parsedCommunityCategoryData);
+    /* console.log('communityCategoryData',communityCategoryData); */
+    /* console.log('parsedCommunityCategoryData',parsedCommunityCategoryData); */
     /* console.log('englishCategories',englishCategories); */
-
+    console.log('boardData',boardData);
+    console.log('investmentEnglishCategories',investmentEnglishCategories);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -174,7 +215,6 @@ const App = () => {
                 /* localStorage.setItem('adminBoardData', JSON.stringify(adminBoardResponse.data?.query)); */
                 /* localStorage.setItem('adminBoardData', JSON.stringify(adminBoardResponse.data)); */
                 /* localStorage.setItem('adminPostData', JSON.stringify(adminPostResponse.data?.query)); */
-                console.log('app.js 통신 테스트');
             } catch (error) {
                 console.error('Admin User/Post 데이터 가져오기 실패', error);
             }
@@ -275,9 +315,9 @@ const App = () => {
                 <Route exact path="/community" element={<CommunityViewAll parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
                 {/* <Route exact path="/community/daily" element={<DetailCommunity parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route> */}
 
-                {englishCategories.length > 0  && englishCategories.map((item, index) => {
+                {communityEnglishCategories.length > 0  && communityEnglishCategories.map((item, index) => {
                     const path = `/community/${item}`
-                    console.log('테스트', path);
+                    /* console.log('테스트', path); */
                     return(
                         <Route
                             key={index}
@@ -287,8 +327,16 @@ const App = () => {
                         />
                     )
                 })}
+
+                {/* Investment 게시판 */}
+                <Route exact path="/investment/ongoing" element={<OngoingBoard koreanCategory={parsedInvestmentCategoryData}/>}></Route>
+                <Route exact path="/investment/deadline" element={<DeadlineBoard koreanCategory={parsedInvestmentCategoryData}/>}></Route>
+
+
+
+
                 
-                {/* Investment Post */}
+                {/* Investment Post 보류 */}
                 <Route exact path="/investment/:number/:id" element={<PostDetail /* parsedCategoryData={parsedCategoryData} */ postData={postData}/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
 

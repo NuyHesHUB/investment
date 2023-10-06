@@ -18,6 +18,7 @@ import Logo from '../assets/image/logo.png';
 
 const Header = ({parsedCommunityCategoryData}) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
@@ -34,6 +35,7 @@ const Header = ({parsedCommunityCategoryData}) => {
 
     /* console.log('testData',testData); */
     /* console.log('parsedCommunityCategoryData', parsedCommunityCategoryData); */
+
      /* 유저 정보 가져오기 */
      useEffect(() => {
          if (accessToken) { 
@@ -50,25 +52,21 @@ const Header = ({parsedCommunityCategoryData}) => {
      },[accessToken])
  
      /* 로그아웃 하면 상태관리 로그아웃 & 토큰 삭제 */
-     /* const handleLogout = (e) => {
+     const handleLogout = (e) => {
          e.preventDefault();
          sessionStorage.removeItem('accessToken');
          sessionStorage.removeItem('refreshToken');
          sessionStorage.removeItem('userUid');
          dispatch(logout());
          navigate("/login");
-     }; */
-     const handleLogout = (e) => {
-        e.preventDefault();
-        
-     }
+     };
 
 
     
     /* const storeData = useSelector((state) => state.reducer.galleryListData);
     console.log('storeData',storeData); */
 
-    const dispatch = useDispatch();
+    
     /* 메뉴 카테고리에 뿌려보기 home.js 전역관리 */
     const boardData = useSelector((state) => state.reducer?.adminBoardData);
 
@@ -102,28 +100,7 @@ const Header = ({parsedCommunityCategoryData}) => {
 
 
 
-
-    const [subMenuOpen, setSubMenuOpen] = useState({
-        processing: false,
-        board: false,
-        community: false
-      });
     
-    const handleMouseEnter = (menu) => {
-        setSubMenuOpen({
-            processing: menu === 'processing',
-            deadline: menu === 'deadline',
-            board: menu === 'board',
-            community: menu === 'community',
-        });
-    };
-      
-    const handleMouseLeave = (menu) => {
-        setSubMenuOpen({
-            ...subMenuOpen,
-            [menu]: false,
-        });
-    };
 
     /*-----------------------------------------------------*\
                     자유 게시판 카테고리 변환
@@ -147,6 +124,28 @@ const Header = ({parsedCommunityCategoryData}) => {
     }
 
     /*-----------------------------------------------------*\
+                        헤더 2DEPTH 메뉴 기능
+    \*-----------------------------------------------------*/
+    const [subMenuOpen, setSubMenuOpen] = useState({
+        ongoing: false,
+        deadline: false,
+        community: false
+    });
+    const handleMouseEnter = (menu) => {
+        setSubMenuOpen({
+            ongoing: menu === 'ongoing',
+            deadline: menu === 'deadline',
+            community: menu === 'community',
+        });
+    };
+    const handleMouseLeave = (menu) => {
+        setSubMenuOpen({
+            ...subMenuOpen,
+            [menu]: false,
+        });
+    };
+    
+    /*-----------------------------------------------------*\
                       Scroll Event function
     \*-----------------------------------------------------*/
     const [scrolled, setScrolled] = useState(false);
@@ -160,8 +159,7 @@ const Header = ({parsedCommunityCategoryData}) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-   
-
+    
     return (
         <StyledFrame  className={`${scrolled ? 'header-scrolled' : ''}`}>
             
@@ -175,10 +173,10 @@ const Header = ({parsedCommunityCategoryData}) => {
                     <HeaderMenu>
                         <MenuList>
                             <MenuItem 
-                                onMouseEnter={() => handleMouseEnter('processing')}
-                                onMouseLeave={() => handleMouseLeave('processing')}
+                                onMouseEnter={() => handleMouseEnter('ongoing')}
+                                onMouseLeave={() => handleMouseLeave('ongoing')}
                             >
-                                <Link to="/processing">진행중</Link>
+                                <Link to="/investment/ongoing">진행중</Link>
                                 {/* <ul className={subMenuOpen.processing ? 'sub-menu on' : 'sub-menu'}>
                                     {parsedCategoryData && parsedCategoryData.map((item,index) => (
                                         <li key={index}>
@@ -191,7 +189,7 @@ const Header = ({parsedCommunityCategoryData}) => {
                                 onMouseEnter={() => handleMouseEnter('deadline')}
                                 onMouseLeave={() => handleMouseLeave('deadline')}
                             >
-                                <Link to="/deadline">마감</Link>
+                                <Link to="/investment/deadline">마감</Link>
                                 {/* <ul className={subMenuOpen.deadline ? 'sub-menu on' : 'sub-menu'}>
                                     {filteredItems.map((item, index)=>(
                                         <Link key={index} to={`/board/${item.key}`}>
