@@ -2,36 +2,8 @@ import styled from 'styled-components';
 
 export const Wrap = styled.div`
   /* background: pink; */
-  *{padding: 0; margin: 0; box-sizing: border-box;}
-  padding: 90px 0 0 300px ;
-  position: relative;
-  .top {
-    background: blue;
-    width: 80%;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  table{width: 80%;} // 임시 테이블 넓이
-  table, th, td {
-    border-collapse: collapse;
-    border: 1px solid #222;
-    padding: 3px 8px;
-  }
-  th {background: #6371c2; color: #fff;}
-  select {width: 100%;}
-  input.search {margin-bottom: 20px;}
-  // Btn //
-  button, .searchBtn {border: none; padding: 2px 5px; border-radius: 3px; cursor: pointer; }
-  .modifyBtn {margin-right: 5px; background: #73bbff;}
-  .deleteBtn {background: #ff7373;}
-  .createBtn {background: yellowgreen;}
-  .searchBtn {background: skyblue;}
-`
-
-export const PopUpWrap = styled.div`
+  /* opacity: 0.5; */
   display: none;
-
   &.active{
     display: block;
     position: absolute;
@@ -55,7 +27,7 @@ export const PopUpWrap = styled.div`
       left: 50%;
       top: 25%;
       /* margin: 90px 0 0 200px ; */
-      transform: translateX(-50%);
+      /* transform: translateX(-50%); */
       padding: 10px;
       input {border: 1px solid #000; width: 500px;}
       input:disabled {border: 1px solid #bbb; background: #eee;}
