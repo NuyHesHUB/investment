@@ -67,8 +67,7 @@ const AdminBoardList3 = () => {
     if (window.confirm("삭제하시겠습니까?")) {
       axios.delete(`${baseURL}/v1/board/delete`,  {
         data: {
-          "key": key,
-          "userUid": userUid
+          "key": key
         },
         headers}).then((res) => {
         alert("삭제되었습니디");
