@@ -4,7 +4,10 @@ import Footer from '../../Footer';
 import { StyledFrame } from '../../StyledComponents/StyledHome';
 import axios from 'axios';
 
-const InvestOngoingBoard = ({koreanCategory}) => {
+import OngoingPostCard from './OngoingPostCard';
+import { BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap } from './StyledOngoingBoard';
+
+const InvestOngoingBoard = () => {
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
     const accessToken = sessionStorage.getItem('accessToken');
@@ -30,14 +33,30 @@ const InvestOngoingBoard = ({koreanCategory}) => {
 
     console.log('investOngoingPostData',investOngoingPostData);
     /* console.log('koreanCategory',koreanCategory); */
+
+    const formattedDates = Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
+        investOngoingPostData
+        .filter(item => item && item.condition === 'ongoing')
+        .map((item, index) => {
+            const endDt = new Date(item.endDt);
+            const startDt = new Date(item.startDt);
+
+            const timeDiff = endDt - startDt;
+            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+            return `D-${daysDiff}`
+        })
+    
+        console.log('formattedDates',formattedDates);
     return (
         <StyledFrame>
             <Header/>
-                <div style={{height:'1000px', paddingTop:'80px'}}>
-                    {
+                <BoardWrap>
+                    <DummyBanner>visual</DummyBanner>
+                    {/* {
                         Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
                         investOngoingPostData
-                        .filter(item => item && item.condition === 'ongoing' /* && item.category === '제조' */)
+                        .filter(item => item && item.condition === 'ongoing')
                         .map((item, index) => (
                             <tr key={index}>
                                 <td>{item.brdKey}</td>
@@ -47,8 +66,22 @@ const InvestOngoingBoard = ({koreanCategory}) => {
                                 <td>{item.content}</td>
                             </tr>
                         ))
-                    }
-                </div>
+                    } */}
+                    <PostCardTitleWrap>
+                        <h3>진행 중인 투자</h3>
+                    </PostCardTitleWrap>
+                    <PostCardWrap>
+                        {/* <OngoingPostCard/> */}
+                        {
+                            Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
+                            investOngoingPostData
+                            .filter(item => item && item.condition === 'ongoing')
+                            .map((item, index) => (
+                                <OngoingPostCard key={index} name={item.title} content={item.content} category={item.category} date={formattedDates[index]}/>
+                            ))
+                        }
+                    </PostCardWrap>
+                </BoardWrap>
             <Footer/>
         </StyledFrame>
     );

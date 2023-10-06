@@ -8,9 +8,9 @@ export const StyledFrame=styled.div`
     position: relative;
     display: flex;
     align-items: center;
-    background: transparent;
+    background: #fff;
     /* background: rgba(255,255,255,0.1); */
-    color: #fff;
+    color: #000;
     position: fixed;
     z-index: 999;
     transition: background-color .1s;
@@ -18,7 +18,6 @@ export const StyledFrame=styled.div`
     &.header-scrolled{
         background: #fff;
         color: #000;
-        /* filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3)); */
         border-bottom: 1px solid #000;
     }
 `
