@@ -79,13 +79,6 @@ const AdminBoardList3 = () => {
     }
   }
 
-
-
-
-
-
-
-
   /////////////////////////
   ///// 추가버튼 클릭 /////
   /////////////////////////
@@ -148,18 +141,26 @@ const AdminBoardList3 = () => {
     <>
       <Admin /> {/* 헤더랑 메뉴 */}
       <Wrap>
-        <div className="top">
-          <div className="search-box">
-            <input type="search" placeholder='검색' className='search' />
-            <input type="submit" value='검색' className='searchBtn' />
-          </div>
-          <div>
+        <ul className="top">
+          <li className="search-box">
+            <input 
+              type="search" 
+              placeholder='검색' 
+              className='searchInput' 
+            />
+            <input 
+              type="submit" 
+              value='검색' 
+              className='searchBtn' 
+            />
+          </li>
+          <li className="btn-box">
             <button 
               className="createBtn"
               onClick={createBtnClick}
             >추가</button>
-          </div>
-        </div>
+          </li>
+        </ul>
         <table>
           <thead>
             <tr>
