@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Wrap, PageNation } from "./AdminStyledComponents/StyledAdminMemberList"
 
 import Admin from "./Admin"
+import Pagenation from "./Pagenation"
 
 
 const AdminMemberList = () => {
@@ -30,13 +31,13 @@ const AdminMemberList = () => {
 
   useEffect(() => {
     axios.get(`${baseURL}/v1/users/?query=&pageRows=${pageRows}&page=${page}`, { headers }).then((res) => {
-      console.log("GET START", res.data.query, res.data.totalRows);
+      // console.log("GET START", res.data.query, res.data.totalRows);
       setMemberData(res.data.query);
       setTotalRows(res.data.totalRows);
     }).catch(() => {
       console.error("error");
     })
-  }, [page]);
+  }, [page,pageRows]);
   
   // const pageLimitUrl = `${baseURL}/v1/users/?query=&pageRows=${pageRows}&page=${endPage}`//페이지 위치에 따른 총 데이터 갯수 알아내는 용
   // useEffect(() => {
@@ -49,7 +50,9 @@ const AdminMemberList = () => {
   // }, [endPage])
 
 
-
+  const changePageSize = (e) => {
+    setPageRows(e.target.value)
+  }
 
   return (
     <>
@@ -57,6 +60,17 @@ const AdminMemberList = () => {
 
     <Wrap>
       <p>회원목록</p>
+      <div className="top">
+        <select
+          className='page-size'
+          onChange={(e) => changePageSize(e)}
+        >
+          <option value={2}>2개씩</option>
+          <option value={4}>4개씩</option>
+          <option value={6}>6개씩</option>
+          <option value={10}>10개씩</option>
+        </select>
+      </div>
       <table>
         <thead>
           <tr>
@@ -115,9 +129,7 @@ const AdminMemberList = () => {
           })}
         </table>
 
-
         <PageNation>
-          {/* 페이지네이션 */}
           <div className='box'>
             <button 
               onClick = {() => {
@@ -178,11 +190,11 @@ const AdminMemberList = () => {
               disabled = {!(endPage < Math.ceil((totalRows/pageRows))-(endPage*count))}
             >&gt;&gt;</button>
           </div>
-          {/* 페이지네이션 끝 */}
         </PageNation>
-      </Wrap>
 
+        {/* <Pagenation page={page} pageRows={pageRows} totalRows={totalRows} endPage={endPage} count={count}  /> */}
+      </Wrap>
     </>
   )
-}
+};
 export default AdminMemberList;

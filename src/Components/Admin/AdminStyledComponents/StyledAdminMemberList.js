@@ -7,11 +7,11 @@ export const Wrap = styled.div`
   *{padding: 0; margin: 0; box-sizing: border-box;}
 
   // top
-  ul.top {
+  .top {
     /* background: blue; */
     width: 800px;
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     margin-bottom: 10px;
   }
   button, .search-btn {border: none; padding: 2px 5px; border-radius: 3px; cursor: pointer;}
@@ -41,7 +41,7 @@ export const Wrap = styled.div`
     padding: 3px 8px;
   }
   th {background: #6371c2; color: #fff;}
-  select {width: 100%;}
+  select {width: 100px;}
 `
 
 export const PageNation = styled.div`

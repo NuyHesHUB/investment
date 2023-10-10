@@ -38,3 +38,27 @@ export const Wrap = styled.div`
   th {background: #6371c2; color: #fff;}
   select {width: 80px;}
 `
+
+export const PageNation = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  button {
+    background: none;
+    color: #555;
+    font-family: 'Pretendard-Regular';
+    font-size: 16px; 
+    padding: 10px 10px; 
+
+  }
+  button:disabled {color: #ccc; cursor: default;}
+  button.current-page {color: blue ;}
+  button#num {
+    background: none; 
+    padding: 10px 10px; 
+  }
+  div.box {
+    /* background: pink; */
+  }
+`

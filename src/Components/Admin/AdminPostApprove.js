@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
 ///// style /////
-import {Wrap, PopUpWrap} from "./AdminStyledComponents/StyledAdminPostApprove"
+import {Wrap, PageNation} from "./AdminStyledComponents/StyledAdminPostApprove"
 ///// import component /////
 import Admin from "./Admin"
 
@@ -24,10 +24,18 @@ const AdminPostApprove = () => {
   const [postData, setPostData] = useState([]);
   // const [postKey, setPostKey] = useState('');
 
+  //페이지네이션데이터
+  const [page, setPage] = useState(1); // 현재 페이지
+  const [pageRows, setPageRows] = useState(2); // 한 페이지에 보여질 데이터 개수
+  const [totalRows, setTotalRows] = useState(0); //데이터 정보 개수 (현재 3개)
+  const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
+  const [count, setCount] = useState(0); 
+
   useEffect(() => {
     axios.get(`${baseURL}/v1/board/${'investment'}/post?query&pageRows=&page=&category=&status=&condition=pending`, { headers }).then((res) => {
-      console.log("GET START", res.data);
+      console.log("GET START", res.data, res.data.totalRows);
       setPostData(res.data.query);
+      setTotalRows(res.data.totalRows);
     }).catch(() => {
       console.error("error");
     })
@@ -61,7 +69,10 @@ const AdminPostApprove = () => {
   //   setPostKey(e.target.value)
   //   console.log(postKey, e.target.value, "postKey")
   // }
-
+  const changePageSize = (e) => {
+    setPageRows(e.target.value)
+  }
+  
   return (
     <>
       <Admin /> {/* 헤더랑 메뉴 */}
@@ -81,6 +92,17 @@ const AdminPostApprove = () => {
             />
           </li>
         </ul> */}
+        <div className="top">
+          <select
+            className='page-size'
+            onChange={(e) => changePageSize(e)}
+          >
+            <option value={2}>2개씩</option>
+            <option value={4}>4개씩</option>
+            <option value={6}>6개씩</option>
+            <option value={10}>10개씩</option>
+          </select>
+        </div>
         <table>
           <thead>
             <tr>
@@ -146,6 +168,73 @@ const AdminPostApprove = () => {
             )
           })}
         </table>
+
+        <PageNation>
+          {/* 페이지네이션 */}
+          <div className='box'>
+            <button 
+              onClick = {() => {
+                // setPageLimit(pageLimit - 10)
+                setCount(count - 1)
+                setPage((endPage*(count-1))+1)
+              }}
+              disabled = {page <= endPage}
+            >&lt;&lt;</button>
+
+            <button 
+              onClick = {() => {
+                setPage(page - 1)
+                if (page % endPage === 1) {
+                  // setPageLimit(pageLimit - 10)
+                  setCount(count - 1)
+                }
+                }} 
+              disabled = {page === 1}
+            >prev</button>
+          
+
+          {Array(
+            endPage < Math.ceil((totalRows/pageRows))-(endPage*count) ?
+            endPage :
+            (Math.ceil((totalRows/pageRows))-(endPage*count))
+            ).fill().map((v,i) => {
+            return(
+              <button 
+                onClick = {() => setPage((endPage*count)+i+1)} 
+                className={page === (endPage*count)+i+1 ? "current-page" : ""}
+                // id='num'
+                key={i}
+              >{(endPage*count)+i+1}</button>
+            )
+          })}
+
+          <button 
+            onClick = {() => {
+              setPage(page + 1)
+              console.log("next")
+              if (page % endPage === 0) {
+                // setPageLimit(pageLimit + 10)
+                setCount(count + 1)
+              }
+            }}
+            // disabled = {totalRows - (page * endPage) < 0}
+            disabled = {page === Math.ceil((totalRows/pageRows))}
+            >next</button>
+
+            <button 
+              onClick = {() => { 
+                // setPageLimit(pageLimit + 10)
+                setCount(count + 1)
+                setPage((endPage*(count+1))+1)
+              }}
+              // disabled = {pageRows * page >= totalRows || page <= endPage}
+              disabled = {!(endPage < Math.ceil((totalRows/pageRows))-(endPage*count))}
+            >&gt;&gt;</button>
+          </div>
+          {/* 페이지네이션 끝 */}
+        </PageNation>
+
+
       </Wrap>
     </>
 
