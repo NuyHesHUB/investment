@@ -34,6 +34,7 @@ import Admin from './Components/Admin/Admin';
 import AdminBoardList3 from './Components/Admin/AdminBoardList3';
 // import AdminBoardList from './Components/Admin/AdminBoardList';
 import AdminPostApprove from './Components/Admin/AdminPostApprove';
+import AdminMemberList from './Components/Admin/AdminMemberList';
 // import AdminPostList from './Components/Admin/AdminPostList';
 // import AdminEditUser from './Components/Admin/AdminEditUser';
 // import AdminEditPost from './Components/Admin/AdminEditPost';
@@ -236,6 +237,7 @@ const App = () => {
                 {/* <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route> */}
                 <Route exact path="/admin/board_list" element={<AdminBoardList3 />}></Route>
                 <Route exact path="/admin/post_approve" element={<AdminPostApprove/>}></Route>
+                <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route>
                 {/* <Route exact path="/admin/post_list" element={<AdminPostList/>}></Route> */}
                 {/* <Route exact path="/admin/member_edit/:index" element={<AdminEditUser/>}></Route>
                 <Route exact path="/admin/post_edit/:index" element={<AdminEditPost/>}></Route> */}
