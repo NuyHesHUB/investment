@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate  } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
 ///// style /////
-import {Wrap, PopUpWrap} from "./StyledAdminBoard3"
+import {Wrap, PopUpWrap} from "./AdminStyledComponents/StyledAdminBoard3"
 ///// import component /////
 import Admin from "./Admin"
 
@@ -21,7 +21,6 @@ const AdminBoardList3 = () => {
   ///// boardList 데이터 가져오기 /////
   /////////////////////////////////////
   const [boardData, setBoardData] = useState([]);
-
   useEffect(() => {
     axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers }).then((res) => {
       console.log("GET START");
@@ -30,7 +29,6 @@ const AdminBoardList3 = () => {
       console.error("error");
     })
   }, []);
-
 
   //////////////////////////
   ////////// 수정 //////////
@@ -119,6 +117,7 @@ const AdminBoardList3 = () => {
     }
   }
 
+  // 팝업(게시판 추가)
   const onChange = (e, name) => {
     const value = e.target.value
     setNewBoardList({
