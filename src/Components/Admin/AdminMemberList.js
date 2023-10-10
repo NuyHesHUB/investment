@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Wrap, PageNation } from "./AdminStyledComponents/StyledAdminMemberList"
 
 import Admin from "./Admin"
-import Pagenation from "./Pagenation"
+import Pagenation from "./PageNation"
 
 
 const AdminMemberList = () => {
@@ -129,7 +129,7 @@ const AdminMemberList = () => {
           })}
         </table>
 
-        <PageNation>
+        {/* <PageNation>
           <div className='box'>
             <button 
               onClick = {() => {
@@ -190,9 +190,9 @@ const AdminMemberList = () => {
               disabled = {!(endPage < Math.ceil((totalRows/pageRows))-(endPage*count))}
             >&gt;&gt;</button>
           </div>
-        </PageNation>
+        </PageNation> */}
 
-        {/* <Pagenation page={page} pageRows={pageRows} totalRows={totalRows} endPage={endPage} count={count}  /> */}
+        {/* <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} /> */}
       </Wrap>
     </>
   )

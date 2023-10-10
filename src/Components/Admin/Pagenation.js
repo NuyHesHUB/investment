@@ -27,7 +27,7 @@ export const PageNation = styled.div`
   }
 `
 
-const Pagenation = ({ page, headers, pageRows, totalRows, endPage, count }) => {
+const Pagenation = ({ page, setPage, pageRows, setPageRows, totalRows, setTotalRows, endPage, setEndPage, count, setCount }) => {
   // const baseURL = process.env.REACT_APP_BASEURL;
 
   // const [page, setPage] = useState(1); // 현재 페이지
