@@ -14,8 +14,8 @@ export const Wrap = styled.div`
     justify-content: space-between;
     margin-bottom: 10px;
   }
-  button, .searchBtn {border: none; padding: 2px 5px; border-radius: 3px; cursor: pointer;}
-  .searchInput {
+  button, .search-btn {border: none; padding: 2px 5px; border-radius: 3px; cursor: pointer;}
+  .search-input {
     margin-right: 5px;
     border-radius: 3px;
     border: 1px solid #ccc;
@@ -25,7 +25,7 @@ export const Wrap = styled.div`
     background: yellowgreen; //임시색
     padding: 4px 5px;
   }
-  .searchBtn {
+  .search-btn {
     background: skyblue; //임시색
     padding: 4px 5px;
   }
@@ -46,7 +46,7 @@ export const Wrap = styled.div`
 
 export const PopUpWrap = styled.div`
   display: none;
-
+  
   &.active{
     display: block;
     position: absolute;
@@ -72,11 +72,18 @@ export const PopUpWrap = styled.div`
       /* margin: 90px 0 0 200px ; */
       transform: translateX(-50%);
       padding: 10px;
-      input {border: 1px solid #000; width: 500px;}
+      select {width: 100px;}
+      input {border: 1px solid #000; width: 100%;}
       input:disabled {border: 1px solid #bbb; background: #eee;}
-      .btn-box {display: flex; justify-content: space-between; margin-bottom: 4px;}
-      .createBtnClick {background: yellowgreen;}
-      .cancelBtn {background: red;}
+      .popup-top {
+        display: flex; 
+        justify-content: 
+        space-between; 
+        margin-bottom: 4px;
+      }
+      .create-btn {background: yellowgreen;}
+      .cancel-btn {background: red;}
+      th {width: 120px;}
     }
   }
 

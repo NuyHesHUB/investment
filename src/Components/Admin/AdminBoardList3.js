@@ -146,12 +146,12 @@ const AdminBoardList3 = () => {
             <input 
               type="search" 
               placeholder='검색' 
-              className='searchInput' 
+              className='search-input' 
             />
             <input 
               type="submit" 
               value='검색' 
-              className='searchBtn' 
+              className='search-btn' 
             />
           </li>
           <li className="btn-box">
@@ -223,128 +223,119 @@ const AdminBoardList3 = () => {
               </tbody>
             )
           })}
-
         </table>
 
-        {/* <AdminCreateBoardList open = {createBtn} test={!createBtn} /> */}
-        {/* <AdminCreateBoardList open={open} setOpen={setOpen} /> */}
-        
-
-
-
-        <PopUpWrap 
-          className={open ? "active" : ''}
-        >
-      <div 
-        className="background"
-        onClick={cancel}
-      ></div>
-      <div className="popup">
-        <div className="btn-box">
-          <button
-            className="createBtn"
-            onClick={newBoardListCreate}
-          >추가</button>
-          <button
-            className="cancelBtn"
+        {/* 게시판 리스트 추가 팝업창 */}
+        <PopUpWrap className={open ? "active" : ''}>
+          <div 
+            className="background"
             onClick={cancel}
-          >X</button> {/* 취소버튼 */}
-        </div>
-        <table>
-          <tbody>
-            <tr>
-              <th>key</th>
-              <td>
-                <input 
-                  type="text"
-                  name="key"
-                  maxLength='20'
-                  onChange={(e) => onChange(e, "key")}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>status</th>
-              <td>
-                <select 
-                  name="status"
-                  onChange={(e) => onChange(e, "status")}
-                >
-                  <option value="Y">
-                    Y
-                  </option>
-                  <option value="N">
-                    N
-                  </option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <th>title</th>
-              <td>
-                <input 
-                  type="text"
-                  name="title"
-                  onChange={(e) => onChange(e, "title")}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>authorize</th>
-              <td>
-                <input 
-                  type="text"
-                  name="" 
-                  disabled={true}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>options</th>
-              <td>
-                <input 
-                  type="text"
-                  name="options" 
-                  disabled={true}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>extraField</th>
-              <td>
-                <input 
-                  type="text"
-                  name="extraField" 
-                  disabled={true}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>categoryList</th>
-              <td>
-                <input 
-                  type="text"
-                  name="categoryList" 
-                  onChange={(e) => onChange(e, "categoryList")}
-                  disabled={true}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>skins</th>
-              <td>
-                <input 
-                  type="text"
-                  name="skins" 
-                  disabled={true}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </PopUpWrap>
+          ></div>
+          <div className="popup">
+            <div className="popup-top">
+              <button
+                className="create-btn"
+                onClick={newBoardListCreate}
+              >추가</button>
+              <button
+                className="cancel-btn"
+                onClick={cancel}
+              >X</button> {/* 취소버튼 */}
+            </div>
+            <table>
+              <tbody>
+                <tr>
+                  <th>key</th>
+                  <td>
+                    <input 
+                      type="text"
+                      name="key"
+                      maxLength='20'
+                      onChange={(e) => onChange(e, "key")}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>status</th>
+                  <td>
+                    <select 
+                      name="status"
+                      onChange={(e) => onChange(e, "status")}
+                    >
+                      <option value="Y">
+                        Y
+                      </option>
+                      <option value="N">
+                        N
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th>title</th>
+                  <td>
+                    <input 
+                      type="text"
+                      name="title"
+                      onChange={(e) => onChange(e, "title")}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>authorize</th>
+                  <td>
+                    <input 
+                      type="text"
+                      name="" 
+                      disabled={true}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>options</th>
+                  <td>
+                    <input 
+                      type="text"
+                      name="options" 
+                      disabled={true}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>extraField</th>
+                  <td>
+                    <input 
+                      type="text"
+                      name="extraField" 
+                      disabled={true}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>categoryList</th>
+                  <td>
+                    <input 
+                      type="text"
+                      name="categoryList" 
+                      onChange={(e) => onChange(e, "categoryList")}
+                      disabled={true}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>skins</th>
+                  <td>
+                    <input 
+                      type="text"
+                      name="skins" 
+                      disabled={true}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </PopUpWrap>
       </Wrap>
     </>
   )
