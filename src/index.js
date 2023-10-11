@@ -20,7 +20,6 @@ const store = createStore(rootReducer);
 
 root.render(
   
-  
   <Provider store={store}>
     <App />
   </Provider>
