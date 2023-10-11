@@ -211,6 +211,9 @@ const Header = ({parsedCommunityCategoryData}) => {
                                     ))}         
                                 </ul>
                             </MenuItem>
+                            <MenuItem>
+                                <Link to="/company">글쓰기</Link>
+                            </MenuItem>
                         </MenuList>
                     </HeaderMenu>
                 </WrapBox>

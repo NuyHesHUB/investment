@@ -14,12 +14,16 @@ const KakaoRedirection = () => {
                 const response = await axios.post(`${baseURL}/v1/authorize/social_login`, { code: code, socialType: "kakao"/* , group: "일반" */} , { withCredentials : true})
                 const userData = response.data.userData;
                 const userUid = response.data.userData.id;
+                const userGroup = response.data.userData.group;
+                const userIsAdmin = response.data.userData.isAdmin;
                 const accessToken = response.data.accessToken;
                 const refreshToken = response.data.refreshToken;
 
                 sessionStorage.setItem('userUid', userUid);
                 sessionStorage.setItem('accessToken', accessToken);
                 sessionStorage.setItem('refreshToken', refreshToken);
+                sessionStorage.setItem('userGroup', userGroup);
+                sessionStorage.setItem('userIsAdmin', userIsAdmin);
                 
                 console.log('response', response);
                 if (userData.group === '관리자' && userData.isAdmin === 'Y') {
