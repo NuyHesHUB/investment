@@ -92,8 +92,6 @@ const App = () => {
     const postData = JSON.parse(postDataString); */
     const boardData = useSelector((state) => state.reducer.adminBoardData);
     /* console.log('App.js > boardData',boardData); */
-
-    const postData = useSelector((state) => state.reducer.adminPostData);
     /* console.log('App.js > postData',postData); */
 
     /* console.log('boardData',boardData[6]?.categoryList); */
@@ -337,7 +335,7 @@ const App = () => {
 
                 
                 {/* Investment Post 보류 */}
-                <Route exact path="/investment/:number/:id" element={<PostDetail /* parsedCategoryData={parsedCategoryData} */ postData={postData}/>} />
+                <Route exact path="/investment/:condition/:id" element={<PostDetail/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
 
                 {/* 게시판 */}

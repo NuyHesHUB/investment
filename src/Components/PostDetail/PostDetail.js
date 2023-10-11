@@ -8,51 +8,53 @@ import axios from 'axios';
 import { HiUser } from 'react-icons/hi';
 import { MdOutlineComment } from 'react-icons/md';
 import { BsList } from 'react-icons/bs';
-import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
+import { AiOutlineLike, AiOutlineDislike, AiOutlineHeart } from 'react-icons/ai';
 import { FiEye } from 'react-icons/fi';
 import CommentInput from '../InputGroup/CommentInput';
 import Cookies from 'js-cookie';
 
-import { PostDetailFrame, PostMain } from './StyledPostDetail';
+import { PostDetailFrame, PostDetailContainer, PostDetailTitleBox, PostDetailTitleWrap, LeftTitleBox, RightTitleBox, RightTitleTopBox, RightTitleCenterBox, RightTitleBottomBox, RightTitleBottomLeftBox, RightTitleBottomRightBox, PostMain } from './StyledPostDetail';
 
 
-const PostDetail = ({postData, /* parsedCategoryData */}) => {
+const PostDetail = () => {
+    const { condition, id } = useParams();
     const baseURL = process.env.REACT_APP_BASEURL;
-    const { number, id } = useParams();
-
-    console.log('number',number);
-    console.log('id',id);
+    const userUid = sessionStorage.getItem('userUid');
+    const accessToken = sessionStorage.getItem('accessToken');
+    const headers = {
+        Authorization: `${accessToken}`
+    }
     
-    /* console.log('parsedCategoryData',parsedCategoryData); */
-    console.log('postData',postData);
-
     const [ testData, setTestData ] = useState([]);
     const [comments, setComments] = useState([]);
+
     const [post, setPost] = useState(null);
 
     const [isLiked, setIsLiked] = useState(false);
     const [isDisliked, setIsDisliked] = useState(false);
 
 
-    const accessToken = sessionStorage.getItem('accessToken');
-    const userUid = sessionStorage.getItem('userUid');
-    const headers = {
-        Authorization: `${accessToken}`
-    }
+    
 
     useEffect(() => {
-        axios.get(`${baseURL}/v1/board/investment/post/${id}` , { headers })
+        if( userUid ) {
+            axios.get(`${baseURL}/v1/board/investment/post/${id}` , { headers })
             .then(response => {
-                const test = response.data.query;
+                const test = response.data?.query;
                 setTestData(test);
-                console.log('res 테스트', test);
-                console.log('res 테스트', response);
-                /* handleResponse(response); */
-
+                console.log('로그인 테스트', test);
             })
             .catch(error => {
                 console.error('res 테스트 실패', error);
             });
+        } else {
+            axios.get(`${baseURL}/v1/board/investment/post/${id}/unlogin`)
+            .then(response => {
+                const test = response.data?.query;
+                setTestData(test);
+                console.log('비로그인 테스트');
+            })
+        }
         axios.get(`${baseURL}/v1/board/investment/post/${id}/comments`, { headers })
         .then(response => {
             const commentData = response.data.query; 
@@ -89,6 +91,11 @@ const PostDetail = ({postData, /* parsedCategoryData */}) => {
         });
       }; */
 
+    /*-----------------------------------------------*\
+                    Console.log 테스트
+    \*-----------------------------------------------*/
+    console.log('condition',condition);
+    console.log('id',id);
     const handlePostComment = (comment) => {
         axios.post(`${baseURL}/v1/board/investment/post/${id}/comments`,{
             status: 'Y',
@@ -101,10 +108,23 @@ const PostDetail = ({postData, /* parsedCategoryData */}) => {
             const newComment = response.data;
             console.log('댓글 게시 성공:', response.data);
             setComments(prevComments => [...prevComments, newComment]);
-            window.location.reload();
+
+            axios.get(`${baseURL}/v1/board/investment/post/${id}/comments`, { headers })
+            .then(response => {
+                const commentData = response.data.query; 
+                setComments(commentData);
+                console.log('댓글 목록:', commentData);
+            })
+            .catch(error => {
+                console.error('댓글 목록 가져오기 실패', error);
+            },[]);
         })
         .catch(error => {
-            console.error('댓글 게시 실패', error);
+            if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
+                alert('로그인 후 이용가능합니다.')
+            } else {
+                console.error('댓글게시 실패', error);
+            }
         })
     };
     
@@ -158,8 +178,27 @@ const PostDetail = ({postData, /* parsedCategoryData */}) => {
     return (
         <div>
             <Header/>
-                게시물 페이지dd
                 <PostDetailFrame>
+                    <PostDetailContainer>
+                        <PostDetailTitleBox>
+                            <PostDetailTitleWrap>
+                                <LeftTitleBox>ICON</LeftTitleBox>
+                                <RightTitleBox>
+                                    <RightTitleTopBox>
+                                        <div className='category'>IT</div>
+                                    </RightTitleTopBox>
+                                    <RightTitleCenterBox>
+                                        <h2>회사이름</h2>
+                                    </RightTitleCenterBox>
+                                    <RightTitleBottomBox>
+                                        <RightTitleBottomLeftBox>회사설명</RightTitleBottomLeftBox>
+                                        <RightTitleBottomRightBox>
+                                            <AiOutlineHeart/>관심 0명</RightTitleBottomRightBox>
+                                    </RightTitleBottomBox>
+                                </RightTitleBox>
+                            </PostDetailTitleWrap>
+                        </PostDetailTitleBox>
+                    </PostDetailContainer>
                     <h4 style={{fontWeight:'normal', textAlign:'center'}}><span style={{fontWeight:'bold'}}>{/* {categoryKey} */}</span> 카테고리의 게시물 ID <span style={{fontWeight:'bold'}}>{id}</span> 의 상세 페이지</h4>
                     <div>
                         <button onClick={handleLike} disabled={isLiked || isDisliked}>좋아요</button>
@@ -184,6 +223,13 @@ const PostDetail = ({postData, /* parsedCategoryData */}) => {
                             <p>nickname : {item.nickname}</p>
                         </div>
                     ))}
+
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    
                     {testData.map((item, index) => (
                         <PostMain key={index}>
                             <table>
@@ -226,7 +272,7 @@ const PostDetail = ({postData, /* parsedCategoryData */}) => {
                         <div style={{display:'flex',alignItems:'center'}}>
                             <MdOutlineComment style={{marginLeft:'5px'}}/>
                             <span>댓글 작성</span>
-                        </div>
+                        </div> 
                         <CommentInput onPostComment={handlePostComment} />
                     </div>
                     <br/>
@@ -242,6 +288,19 @@ const PostDetail = ({postData, /* parsedCategoryData */}) => {
                                 <div key={index} style={{border:'1px solid #000',marginTop:'15px',padding:'5px'}}>
                                     <p>{item.nickname}</p>
                                     <p>{item.content}</p>
+                                    {
+                                        comments.map((reply, replyIndex) => {
+                                            if ( reply.parentId === item.id) {
+                                                return (
+                                                    <div key={replyIndex} style={{border:'1px solid #000', marginLeft:'50px'}}>
+                                                        <p>{reply.nickname}</p>
+                                                        <p>{reply.content}</p>
+                                                    </div>
+                                                );
+                                            }
+                                            return null;
+                                        })
+                                    }
                                 </div>
                             ))
                         }

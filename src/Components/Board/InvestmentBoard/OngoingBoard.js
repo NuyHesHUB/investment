@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import OngoingPostCard from './OngoingPostCard';
 import { BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap } from './StyledOngoingBoard';
+import { Link } from 'react-router-dom';
 
 const InvestOngoingBoard = () => {
     const baseURL = process.env.REACT_APP_BASEURL;
@@ -14,16 +15,18 @@ const InvestOngoingBoard = () => {
     const headers = {
         Authorization: `${accessToken}`
     };
-
     const [investOngoingPostData, setInvestOngoingPostData] = useState(null);
 
+    /*-----------------------------------------------*\
+                  investment post 데이터 API
+    \*-----------------------------------------------*/
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
                 const data = PostResponse.data?.query;
                 setInvestOngoingPostData(data);
-                /* console.log('investPostResponse',data); */
+                console.log('investPostResponse',data);
             } catch (error) {
                 console.error('investOngoingBoardData 데이터 가져오기 실패', error);
             }
@@ -31,23 +34,32 @@ const InvestOngoingBoard = () => {
         fetchData();
     },[])
 
-    console.log('investOngoingPostData',investOngoingPostData);
+    
+
+    /*-----------------------------------------------*\
+                        End Date
+    \*-----------------------------------------------*/
+    const formattedDates = Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
+    investOngoingPostData
+    .filter(item => item && item.condition === 'ongoing')
+    .map((item, index) => {
+        const endDt = new Date(item.endDt);
+        /* const startDt = new Date(item.startDt); */
+        const currentDt = new Date();
+
+        const timeDiff = endDt - currentDt;
+        const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+        return `D-${daysDiff}`
+    })
+
+    /*-----------------------------------------------*\
+                    Console.log 테스트
+    \*-----------------------------------------------*/
+    /* console.log('formattedDates',formattedDates); */
+    /* console.log('investOngoingPostData',investOngoingPostData); */
     /* console.log('koreanCategory',koreanCategory); */
 
-    const formattedDates = Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
-        investOngoingPostData
-        .filter(item => item && item.condition === 'ongoing')
-        .map((item, index) => {
-            const endDt = new Date(item.endDt);
-            const startDt = new Date(item.startDt);
-
-            const timeDiff = endDt - startDt;
-            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-            return `D-${daysDiff}`
-        })
-    
-        console.log('formattedDates',formattedDates);
     return (
         <StyledFrame>
             <Header/>
@@ -77,7 +89,9 @@ const InvestOngoingBoard = () => {
                             investOngoingPostData
                             .filter(item => item && item.condition === 'ongoing')
                             .map((item, index) => (
-                                <OngoingPostCard key={index} name={item.title} content={item.content} category={item.category} date={formattedDates[index]}/>
+                                <Link key={index} to={`/investment/ongoing/${item.id}`}>
+                                    <OngoingPostCard key={index} name={item.title} content={item.content} category={item.category} date={formattedDates[index]}/>
+                                </Link>
                             ))
                         }
                     </PostCardWrap>
