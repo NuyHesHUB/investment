@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Wrap, PageNation } from "./AdminStyledComponents/StyledAdminMemberList"
 
 import Admin from "./Admin"
-import Pagenation from "./PageNation"
+import Pagenation from "./Pagenation"
 
 
 const AdminMemberList = () => {
@@ -52,6 +52,8 @@ const AdminMemberList = () => {
 
   const changePageSize = (e) => {
     setPageRows(e.target.value)
+    setPage(1)
+    setCount(0)
   }
 
   return (
@@ -83,6 +85,7 @@ const AdminMemberList = () => {
             <th>email</th>
             <th>nickname</th>
             <th>phone</th>
+            <th>regDt</th>
             <th>수정</th>
           </tr>
         </thead>
@@ -116,6 +119,9 @@ const AdminMemberList = () => {
                 </td>
                 <td>
                   {v.phone}
+                </td>
+                <td>
+                  {v.regDt}
                 </td>
                 <td>
                   <button 
@@ -192,7 +198,7 @@ const AdminMemberList = () => {
           </div>
         </PageNation> */}
 
-        {/* <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} /> */}
+        <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} />
       </Wrap>
     </>
   )

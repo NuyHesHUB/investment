@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate  } from "react-router-dom";
+// import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
 ///// style /////
 import {Wrap, PageNation} from "./AdminStyledComponents/StyledAdminPostApprove"
 ///// import component /////
 import Admin from "./Admin"
-
+import Pagenation from "./Pagenation"
 
 const AdminPostApprove = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
@@ -18,9 +18,9 @@ const AdminPostApprove = () => {
     Authorization: `${accessToken}`
   }
 
-  /////////////////////////////////////
-  ///// PostList 데이터 가져오기 /////
-  /////////////////////////////////////
+  ///////////////////////////
+  ///// 데이터 가져오기 /////
+  ///////////////////////////
   const [postData, setPostData] = useState([]);
   // const [postKey, setPostKey] = useState('');
 
@@ -39,7 +39,7 @@ const AdminPostApprove = () => {
     }).catch(() => {
       console.error("error");
     })
-  }, []);
+  }, [page,pageRows]);
 
   // condition 수정 //
   // const conditionChange = (e, i) => {
@@ -71,6 +71,8 @@ const AdminPostApprove = () => {
   // }
   const changePageSize = (e) => {
     setPageRows(e.target.value)
+    setPage(1)
+    setCount(0)
   }
   
   return (
@@ -78,20 +80,6 @@ const AdminPostApprove = () => {
       <Admin /> {/* 헤더랑 메뉴 */}
       <Wrap>
         <p>승인목록</p>
-        {/* <ul className="top">
-          <li className="search-box">
-            <input 
-              type="search" 
-              placeholder='검색' 
-              className='search-input' 
-            />
-            <input 
-              type="submit" 
-              value='검색' 
-              className='search-btn' 
-            />
-          </li>
-        </ul> */}
         <div className="top">
           <select
             className='page-size'
@@ -124,24 +112,25 @@ const AdminPostApprove = () => {
               <th>category</th>
               <th>title</th>
               <th>content</th>
+              <th>regDt</th>
               <th>상세보기</th>
             </tr>
           </thead>
-          {postData.map((v,i) => {
+          {postData.map((item,i) => {
             return(
-              <tbody key={v.brdKey}>
+              <tbody key={item.brdKey}>
                 <tr>
                   {/* <td>
                     {v.brdKey}
                   </td> */}
                   <td>
-                    {v.num}
+                    {item.num}
                   </td>
                   <td>
-                    {v.status}
+                    {item.status}
                   </td>
                   <td>
-                    {v.condition}
+                    {item.condition}
                     {/* <select 
                       name="condition" 
                       onChange={(e) => conditionChange(e, i)}
@@ -149,92 +138,26 @@ const AdminPostApprove = () => {
                     </select> */}
                   </td>
                   <td>
-                    {v.category}
+                    {item.category}
                   </td>
                   <td>
-                    {v.title}
+                    {item.title}
                   </td>
                   <td>
-                    {v.content}
+                    {item.content}
                   </td>
                   <td>
-                    <button 
-                      className='modifyBtn' 
-                      onClick={() => navigate(`/v1/board/${v.brdKey}/post/${v.id}`)}
-                    ></button>
+                    {item.regDt}
+                  </td>
+                  <td>
+                    <button>상세보기</button>
                   </td>
                 </tr>
               </tbody>
             )
           })}
         </table>
-
-        <PageNation>
-          {/* 페이지네이션 */}
-          <div className='box'>
-            <button 
-              onClick = {() => {
-                // setPageLimit(pageLimit - 10)
-                setCount(count - 1)
-                setPage((endPage*(count-1))+1)
-              }}
-              disabled = {page <= endPage}
-            >&lt;&lt;</button>
-
-            <button 
-              onClick = {() => {
-                setPage(page - 1)
-                if (page % endPage === 1) {
-                  // setPageLimit(pageLimit - 10)
-                  setCount(count - 1)
-                }
-                }} 
-              disabled = {page === 1}
-            >prev</button>
-          
-
-          {Array(
-            endPage < Math.ceil((totalRows/pageRows))-(endPage*count) ?
-            endPage :
-            (Math.ceil((totalRows/pageRows))-(endPage*count))
-            ).fill().map((v,i) => {
-            return(
-              <button 
-                onClick = {() => setPage((endPage*count)+i+1)} 
-                className={page === (endPage*count)+i+1 ? "current-page" : ""}
-                // id='num'
-                key={i}
-              >{(endPage*count)+i+1}</button>
-            )
-          })}
-
-          <button 
-            onClick = {() => {
-              setPage(page + 1)
-              console.log("next")
-              if (page % endPage === 0) {
-                // setPageLimit(pageLimit + 10)
-                setCount(count + 1)
-              }
-            }}
-            // disabled = {totalRows - (page * endPage) < 0}
-            disabled = {page === Math.ceil((totalRows/pageRows))}
-            >next</button>
-
-            <button 
-              onClick = {() => { 
-                // setPageLimit(pageLimit + 10)
-                setCount(count + 1)
-                setPage((endPage*(count+1))+1)
-              }}
-              // disabled = {pageRows * page >= totalRows || page <= endPage}
-              disabled = {!(endPage < Math.ceil((totalRows/pageRows))-(endPage*count))}
-            >&gt;&gt;</button>
-          </div>
-          {/* 페이지네이션 끝 */}
-        </PageNation>
-
-
+        <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} />
       </Wrap>
     </>
 

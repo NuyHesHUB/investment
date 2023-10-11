@@ -335,7 +335,6 @@ const AdminBoardList3 = () => {
             </table>
           </div>
         </PopUpWrap>
-
       </Wrap>
     </>
   )

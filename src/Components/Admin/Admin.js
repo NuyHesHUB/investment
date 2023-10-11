@@ -17,7 +17,7 @@ import { Link, useNavigate } from 'react-router-dom';
 /* React-Icons */
 import { AiFillSetting } from "react-icons/ai";
 import { AiOutlineUnorderedList } from "react-icons/ai";
-import { BsPersonCircle } from "react-icons/bs";
+import { BsPersonCircle, BsFillBuildingFill } from "react-icons/bs";
 
 const Admin = () => {
     const baseURL = process.env.REACT_APP_BASEURL;
@@ -165,6 +165,19 @@ const Admin = () => {
                                         <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_approve">승인목록</Link></li>
                                         <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_list">게시물관리</Link></li>
                                         <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_list">댓글관리</Link></li>
+                                    </ul>
+                                </StyledNavGnb>
+                            </div>
+                        </li>
+                        <li>
+                            <button onClick={() => setVisibleDiv(4)}>
+                                <BsFillBuildingFill/>
+                            </button>
+                            <div>
+                                <StyledNavGnb className={`div ${visibleDiv === 4 ? 'visible' : ''}`}>
+                                    <h3>업체관리</h3>
+                                    <ul style={{marginTop:'20px'}}>
+                                        <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/company_list">업체관리</Link></li>
                                     </ul>
                                 </StyledNavGnb>
                             </div>
