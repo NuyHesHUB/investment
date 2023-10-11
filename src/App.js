@@ -31,11 +31,14 @@ import Gallery01 from './Components/Page/Gallery01';
 
 /* Admin Components */
 import Admin from './Components/Admin/Admin';
+import AdminBoardList3 from './Components/Admin/AdminBoardList3';
+// import AdminBoardList from './Components/Admin/AdminBoardList';
+import AdminPostApprove from './Components/Admin/AdminPostApprove';
 import AdminMemberList from './Components/Admin/AdminMemberList';
-import AdminBoardList from './Components/Admin/AdminBoardList';
-import AdminPostList from './Components/Admin/AdminPostList';
-import AdminEditUser from './Components/Admin/AdminEditUser';
-import AdminEditPost from './Components/Admin/AdminEditPost';
+import AdminCompanyList from './Components/Admin/AdminCompanyList';
+// import AdminPostList from './Components/Admin/AdminPostList';
+// import AdminEditUser from './Components/Admin/AdminEditUser';
+// import AdminEditPost from './Components/Admin/AdminEditPost';
 import Header from './Components/Header';
 
 
@@ -232,12 +235,25 @@ const App = () => {
 
                 {/* Admin */}
                 <Route exact path="/admin" element={<Admin />}></Route>
+                {/* <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route> */}
+                <Route exact path="/admin/board_list" element={<AdminBoardList3 />}></Route>
+                <Route exact path="/admin/post_approve" element={<AdminPostApprove/>}></Route>
+                <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route>
+                <Route exact path="/admin/company_list" element={<AdminCompanyList/>}></Route>
+                {/* <Route exact path="/admin/post_list" element={<AdminPostList/>}></Route> */}
+                {/* <Route exact path="/admin/member_edit/:index" element={<AdminEditUser/>}></Route>
+                <Route exact path="/admin/post_edit/:index" element={<AdminEditPost/>}></Route> */}
+                {/* <Route exact path="/admin/post_edit/:key/:index" element={<AdminEditPost/>}></Route> */}
+                
+
+                {/* Admin */}
+                {/* <Route exact path="/admin" element={<Admin />}></Route>
                 <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route>
                 <Route exact path="/admin/board_list" element={<AdminBoardList/>}></Route>
                 <Route exact path="/admin/post_list" element={<AdminPostList/>}></Route>
 
                 <Route exact path="/admin/member_edit/:index" element={<AdminEditUser/>}></Route>
-                <Route exact path="/admin/post_edit/:index" element={<AdminEditPost/>}></Route>
+                <Route exact path="/admin/post_edit/:index" element={<AdminEditPost/>}></Route> */}
                 {/* <Route exact path="/admin/post_edit/:key/:index" element={<AdminEditPost/>}></Route> */}
                 
 
