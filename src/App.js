@@ -53,7 +53,10 @@ import OngoingBoard from './Components/Board/InvestmentBoard/OngoingBoard';
 import DeadlineBoard from './Components/Board/InvestmentBoard/DaedlineBoard';
 
 
+/* 업체등록, 글쓰기 페이지 */
 import CompanyUpload from './Components/CompanyUpload/CompanyUpload';
+import CompanyIntroductionWrite from './Components/CompanyUpload/CompanyIntroductionWrite';
+import BusinessNumberCheck from './Components/CompanyUpload/BusinessNumberCheck';
 
 const App = () => {
 
@@ -343,9 +346,10 @@ const App = () => {
                 <Route exact path="/investment/:condition/:id" element={<PostDetail/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
 
-                {/* 글쓰기 */}
-                {/* 업체등록 */}
+                {/* 글쓰기 & 업체등록 */}
                 <Route exact path="/company_upload" element={<CompanyUpload />}></Route>
+                <Route exact path="/company_introduction_write" element={<CompanyIntroductionWrite />}></Route>
+                <Route exact path="/business_number_check" element={<BusinessNumberCheck />}></Route>
 
                 {/* 게시판 */}
                 

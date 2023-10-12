@@ -159,19 +159,27 @@ const Header = ({parsedCommunityCategoryData}) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
-    const userGroup = sessionStorage.getItem('userGroup');
-    console.log(userGroup)
-
-
-
+    
+    
+    
     /*-----------------------------------------------------*\
                     글쓰기 업체등록확인 팝업창
     \*-----------------------------------------------------*/
 
+    // 관리자, 일반, 업체 확인하기
+    const userGroup = sessionStorage.getItem('userGroup');
+    // console.log(userGroup)
+    
     const checkCompanyRegistration = () => {
-        if(window.confirm("업체 등록이 되어있지 않습니다. 등록하시겠습니까?")) {
-            navigate('/company_upload')
+        // console.log(["업체", "관리자"].includes(userGroup))
+        if (["업체", "관리자"].includes(userGroup))/* 나중에 false일때로 바꾸기!!! */ {
+            if(window.confirm("업체가 등록되어있지 않습니다. 등록하시겠습니까?")) {
+                // navigate('/company_upload') // 진위여부 확인하는 곳으로 바꾸기
+                navigate('/business_number_check') 
+            }
+        } else {
+            //userGroup이 업체 or 관리자일 경우, 글쓰기 페이지 이동
+            navigate('/company_introduction_write')
         }
     }
     

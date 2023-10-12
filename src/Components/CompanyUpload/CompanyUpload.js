@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 //import component
@@ -22,6 +22,8 @@ const CompanyUpload = () => {
     Authorization: `${accessToken}`
   }
 
+  const b_no = sessionStorage.getItem('b_no')
+
   const [placeholderActive, setPlaceholderActive] = useState(true);
   const [logoImage, setLogoImage] = useState('');
   const [companyData, setCompanyData] = useState({
@@ -37,17 +39,19 @@ const CompanyUpload = () => {
   const inputFileChange = async (e) => {
     try {
       const file = e.target.files[0]
+      const encodedFilename = encodeURIComponent(file.name);
+    
+
       const imgUrl = URL.createObjectURL(file)
       // console.log(file, imgUrl, "input file test")
       // console.dir(e.target)
       setPlaceholderActive(false) // 플레이스홀더없애기
       setLogoImage(imgUrl) //미리보기 이미지 링크
 
-     
-
       const formData = new FormData();
       formData.append('file', file);
       formData.append('brdKey', "companyLogoImg");
+      formData.append('filename', encodedFilename);
       
       await axios.post(`${baseURL}/v1/img/upload`, formData , { headers }).then((res) => {
         console.log(res, "res")
@@ -66,6 +70,10 @@ const CompanyUpload = () => {
     }
   }
 
+  console.log("확인!!!!!!!!!!!")
+
+
+  //input 값 입력(onchange)
   const companyValueWrite = (e, name) => {
     const value = e.target.value
     setCompanyData({
@@ -75,19 +83,22 @@ const CompanyUpload = () => {
     console.log("테슽스스ㅡ틋", companyData)
   }
 
-  const newCompanyUpload = async () => {
+
+  const uploadBtnClick = async () => {
     console.log("업체등록 test", companyData)
     if(window.confirm("업체를 등록하시겠습니까?")) {
       await axios.post(`${baseURL}/v1/company/form`, companyData, { headers }).then((res) => {
         console.log("추가test")
+        sessionStorage.removeItem('b_no');
+        alert("추가하였습니다")
       }).catch((error) => {
         console.error(error)
+        alert("error")
       })
-      alert("추가하였습니다")
       // navigate(``) 글쓰기 페이지로
       }
     }
-
+    console.log(companyData)
   return(
     <StyledFrame>
       <Header />
@@ -96,6 +107,12 @@ const CompanyUpload = () => {
           <h2>업체 등록하기</h2>
           <Inner>
             <ul>
+              <li>
+                <input 
+                  type="text" 
+                  value={b_no}
+                />
+              </li>
               <li>
                 <label htmlFor="logo-upload">
                   <div className={placeholderActive ? 'placeholder-active' : 'placeholder-none'}>
@@ -139,7 +156,7 @@ const CompanyUpload = () => {
                 />
               </li>
               <li>
-                <button onClick={() => newCompanyUpload()}>등록</button>
+                <button onClick={() => uploadBtnClick()}>등록</button>
               </li>
             </ul>
           </Inner>
