@@ -53,6 +53,8 @@ import OngoingBoard from './Components/Board/InvestmentBoard/OngoingBoard';
 import DeadlineBoard from './Components/Board/InvestmentBoard/DaedlineBoard';
 
 
+import CompanyUpload from './Components/CompanyUpload/CompanyUpload';
+
 const App = () => {
 
     /*------------------------------------------------*\
@@ -340,6 +342,10 @@ const App = () => {
                 {/* Investment Post 보류 */}
                 <Route exact path="/investment/:condition/:id" element={<PostDetail/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
+
+                {/* 글쓰기 */}
+                {/* 업체등록 */}
+                <Route exact path="/company_upload" element={<CompanyUpload />}></Route>
 
                 {/* 게시판 */}
                 

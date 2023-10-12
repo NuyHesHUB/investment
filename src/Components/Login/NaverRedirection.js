@@ -16,7 +16,7 @@ const NaverRedirection = () => {
                 /* console.log('response', response); */
                 /* console.log('루트 테스트',userData); */
                 const userUid = response.data.userData.id;
-                const userGroup = response.data.userData.group;
+                const userGroup = response.data.userData.group; /* 관리자, 업체, 일반 */
                 const userIsAdmin = response.data.userData.isAdmin;
                 const accessToken = response.data.accessToken;
                 const refreshToken = response.data.refreshToken;

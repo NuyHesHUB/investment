@@ -159,6 +159,21 @@ const Header = ({parsedCommunityCategoryData}) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
+    const userGroup = sessionStorage.getItem('userGroup');
+    console.log(userGroup)
+
+
+
+    /*-----------------------------------------------------*\
+                    글쓰기 업체등록확인 팝업창
+    \*-----------------------------------------------------*/
+
+    const checkCompanyRegistration = () => {
+        if(window.confirm("업체 등록이 되어있지 않습니다. 등록하시겠습니까?")) {
+            navigate('/company_upload')
+        }
+    }
     
     return (
         <StyledFrame  className={`${scrolled ? 'header-scrolled' : ''}`}>
@@ -212,7 +227,7 @@ const Header = ({parsedCommunityCategoryData}) => {
                                 </ul>
                             </MenuItem>
                             <MenuItem>
-                                <Link to="/company">글쓰기</Link>
+                                <p to="#" onClick={checkCompanyRegistration}>글쓰기</p>
                             </MenuItem>
                         </MenuList>
                     </HeaderMenu>
