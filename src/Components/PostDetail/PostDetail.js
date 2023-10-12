@@ -539,7 +539,7 @@ const PostDetail = () => {
                                     <RightTitleBottomBox>
                                         <RightTitleBottomLeftBox>
                                             회사설명
-                                            <img src="https://qevxdf1345375451.s3.ap-northeast-2.amazonaws.com/companyLogoImg/1697097484_82af7909-d581-4c59-864b-4fb7abf9270c_%C3%AC%C2%9E%C2%84%C3%AC%C2%8B%C2%9C%C3%AC%C2%95%C2%B1%C3%AC%C2%95%C2%84%C3%AC%C2%9D%C2%B4%C3%AC%C2%BD%C2%98.png" alt="img"/>
+                                            {/* <img src="https://qevxdf1345375451.s3.ap-northeast-2.amazonaws.com/companyLogoImg/1697097484_82af7909-d581-4c59-864b-4fb7abf9270c_%C3%AC%C2%9E%C2%84%C3%AC%C2%8B%C2%9C%C3%AC%C2%95%C2%B1%C3%AC%C2%95%C2%84%C3%AC%C2%9D%C2%B4%C3%AC%C2%BD%C2%98.png" alt="img"/> */}
                                         </RightTitleBottomLeftBox>
                                         <RightTitleBottomRightBox>
                                             <AiOutlineHeart/>

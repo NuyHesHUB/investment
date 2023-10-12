@@ -49,7 +49,7 @@ const InvestOngoingBoard = () => {
                     try {
                         const BusinessResponse = await axios.get(`${baseURL}/v1/company/${businessNum}?userUid=`, { headers });
                         console.log('성공');
-                        return BusinessResponse.data?.query?.companyName;
+                        return BusinessResponse.data?.query?.logoImg;
 
                     } catch (error) {
                         console.error('BusinessNumber 오류', error);
@@ -61,8 +61,6 @@ const InvestOngoingBoard = () => {
                     acc[businessNum] = logoUrls[index];
                     return acc;
                 }, {})
-
-                console.log('logoUrls',logoUrls);
                 
                 setLogoUrls(logoUrlMap);
 
