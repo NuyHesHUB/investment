@@ -17,6 +17,10 @@ const InvestOngoingBoard = () => {
     };
     const [investOngoingPostData, setInvestOngoingPostData] = useState(null);
 
+    // logoUrls 상태와 그 상태를 업데이트하는 setLogoUrls 함수
+    const [logoUrls, setLogoUrls] = useState([]);
+
+/* const [investOngoingPostData, setInvestOngoingPostData] = useState([]); */
     /*-----------------------------------------------*\
                   investment post 데이터 API
     \*-----------------------------------------------*/
@@ -25,16 +29,57 @@ const InvestOngoingBoard = () => {
             try {
                 const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
                 const data = PostResponse.data?.query;
-                setInvestOngoingPostData(data);
+                /* setInvestOngoingPostData(data); */
                 console.log('investPostResponse',data);
+                /* const BusinessResponse = await axios.get(`${baseURL}/v1/company/{businessNum}?userUid=`, { headers }); */
+
+                const businessNums = data
+                .filter(item => item.condition === 'ongoing')
+                .map(item => item.businessNum);
+
+                console.log('businessNums',businessNums);
+
+                /* 여기까지ok */
+
+
+
+
+
+                const logoUrls = await Promise.all(businessNums.map(async businessNum => {
+                    try {
+                        const BusinessResponse = await axios.get(`${baseURL}/v1/company/${businessNum}?userUid=`, { headers });
+                        console.log('성공');
+                        return BusinessResponse.data?.query?.companyName;
+
+                    } catch (error) {
+                        console.error('BusinessNumber 오류', error);
+                        return null;
+                    }
+                }));
+                
+                const logoUrlMap = businessNums.reduce((acc, businessNum, index) => {
+                    acc[businessNum] = logoUrls[index];
+                    return acc;
+                }, {})
+
+                console.log('logoUrls',logoUrls);
+                
+                setLogoUrls(logoUrlMap);
+
+                setInvestOngoingPostData(data.filter(item => item.condition === 'ongoing'));
             } catch (error) {
                 console.error('investOngoingBoardData 데이터 가져오기 실패', error);
             }
         }
         fetchData();
+
     },[])
 
     
+    /* const businessNums = investOngoingPostData?.map(item => item.businessNum);
+
+    console.log('businessNums',businessNums); */
+
 
     /*-----------------------------------------------*\
                         End Date
@@ -59,7 +104,7 @@ const InvestOngoingBoard = () => {
     /* console.log('formattedDates',formattedDates); */
     /* console.log('investOngoingPostData',investOngoingPostData); */
     /* console.log('koreanCategory',koreanCategory); */
-
+    /* console.log('logoUrls',logoUrls); */
     return (
         <StyledFrame>
             <Header/>
@@ -83,14 +128,36 @@ const InvestOngoingBoard = () => {
                         <h3>진행 중인 투자</h3>
                     </PostCardTitleWrap>
                     <PostCardWrap>
-                        {/* <OngoingPostCard/> */}
-                        {
+                        {/* {
                             Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
                             investOngoingPostData
                             .filter(item => item && item.condition === 'ongoing')
                             .map((item, index) => (
                                 <Link key={index} to={`/investment/ongoing/${item.id}`}>
-                                    <OngoingPostCard key={index} name={item.title} content={item.content} category={item.category} date={formattedDates[index]}/>
+                                    <OngoingPostCard 
+                                        key={index} 
+                                        name={item.title} 
+                                        content={item.content} 
+                                        category={item.category} 
+                                        date={formattedDates[index]}
+
+                                    />
+                                </Link>
+                            ))
+                        } */}
+                        {
+                            investOngoingPostData && investOngoingPostData.length > 0 &&
+                            investOngoingPostData
+                            .map((item, index) => (
+                                <Link key={index} to={`/investment/ongoing/${item.id}`}>
+                                    <OngoingPostCard 
+                                        key={index} 
+                                        name={item.title} 
+                                        content={item.content} 
+                                        category={item.category} 
+                                        date={formattedDates[index]}
+
+                                    />
                                 </Link>
                             ))
                         }

@@ -213,6 +213,7 @@ export const PostDetailContentsBox=styled.div`
 `
 export const TabMenu=styled.div`
     margin-top: 46px;
+    margin-bottom: 45px;
     display: flex;
     .focused{
         color: rgb(34, 34, 34);
@@ -232,10 +233,103 @@ export const TabMenuItem=styled.div`
 
 
 
+export const CommentWrap=styled.div`
+    width: 893px;
+`
+export const CommentFrame=styled.div`
+    margin-top: 33px;
+`
+export const CommentBox=styled.div`
+    position: relative;
+    /* width: 893px; */
+    width: 100%;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    box-sizing: border-box;
+    background: rgb(255, 255, 255);
+    /* border-top: 1px solid rgb(221, 221, 221); */
+    border-bottom: 1px solid rgb(221, 221, 221);
+`
+export const CommentTopBox=styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 13px;
+`
+export const CommentTopLeftBox=styled.div`
+    display: flex;
+    align-items: center;
+    p:nth-child(1){
+        color: rgb(85, 85, 85);
+        font-family: Pretendard;
+        font-size: 18px;
+        font-weight: 600;
+    }
+    p:nth-child(2){
+        margin-left: 15px;
+        color: #aaa;
+        font-size: 12px;
+    }
+`
+export const CommentTopRightBox=styled.div`
+    display: flex;
+    color: rgb(170, 170, 170);
+`
+export const CommentLikeBox=styled.div`
+    display: flex;
+    align-items: center;
+    &:first-child{
+        margin-right: 15px;
+    }
+    span{
+        margin-left: 5px;
+    }
+    svg{
+        font-size: 21px;
+    }
+`
 
-
-
-
+export const CommentCenterBox=styled.div`
+    /* color: rgb(85, 85, 85); */
+    color: #242424;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-weight: 300;
+`
+export const CommentBottomBox=styled.div`
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: rgb(85, 85, 85);
+    font-size: 14px;
+    font-weight: 300;
+    cursor: pointer;
+    &:hover{
+        text-decoration: underline;
+    }
+`
+export const ReplyBox=styled.div`
+    width: 100%;
+    background: rgb(246, 247, 247);
+    border-bottom: 1px solid rgb(221, 221, 221);
+    display: flex;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+`
+export const ReplyLeftWrap=styled.div`
+    svg{
+        rotate: 180deg;
+        margin-right: 5px;
+        font-size: 20px;
+        color: rgb(63, 169, 245);
+    }
+`
+export const ReplyRightWrap=styled.div`
+    width: 100%;
+`
 
 
 

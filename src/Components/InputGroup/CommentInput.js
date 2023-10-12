@@ -1,6 +1,47 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
-const CommentInput = ({ onPostComment }) => {
+const CommentFrame=styled.div`
+    position: relative;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+`
+const TextArea=styled.textarea`
+    resize: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    &::placeholder{
+        color: rgb(153, 153, 153);
+        font-family: Pretendard;
+        font-size: 14px;
+        font-weight: 400;
+    }
+`
+const CommentBtn=styled.button`
+    width: 109px;
+    height: 40px;
+    background: rgb(63, 169, 245);
+    border-radius: 10px;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    border: none;
+    color: rgb(255, 255, 255);
+    font-family: Pretendard;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+`
+
+const CommentInput = ({ frameHeight, onPostComment, btnText, holder }) => {
+
   const [comment, setComment] = useState('');
 
   const handleCommentChange = (event) => {
@@ -10,7 +51,7 @@ const CommentInput = ({ onPostComment }) => {
   const handlePostComment = (e) => {
     e.preventDefault();
     if (comment.trim() === '') {
-      alert('댓글을 입력하세요.');
+      alert('텍스트를 입력하세요.');
       return;
     }
     onPostComment(comment);
@@ -23,15 +64,20 @@ const CommentInput = ({ onPostComment }) => {
   };
 
   return (
-    <div style={{height:'40px',display:'flex',marginLeft:'20px'}}>
-      <textarea
-        placeholder="댓글을 입력하세요..."
+    <CommentFrame
+        style={{height: frameHeight}}
+    >
+        <TextArea
+        placeholder={holder}
         value={comment}
         onChange={handleCommentChange}
-        style={{width:'700px',height:'100%',padding:'5px',boxSizing:'border-box'}}
-      />
-      <button style={{width:'100px',height:'100%',marginLeft:'20px'}} onClick={handlePostComment}>게시</button>
-    </div>
+        />
+        <CommentBtn 
+        onClick={handlePostComment}
+        >
+            {btnText}
+        </CommentBtn>
+    </CommentFrame>
   );
 };
 

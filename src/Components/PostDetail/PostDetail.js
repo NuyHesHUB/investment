@@ -15,6 +15,9 @@ import { HiUser } from 'react-icons/hi';
 import { MdOutlineComment } from 'react-icons/md';
 import { BsList } from 'react-icons/bs';
 import { FiEye } from 'react-icons/fi';
+import { VscThumbsup, VscThumbsdown } from 'react-icons/vsc';
+import { LuReply } from 'react-icons/lu';
+
 
 /* Js-cookie */
 import Cookies from 'js-cookie';
@@ -27,6 +30,7 @@ import CommentInput from '../InputGroup/CommentInput';
 /* Styled-Components */
 import {  
     PostMain, 
+
     PostDetailFrame, 
     PostDetailContainer, 
     PostDetailTitleBox, 
@@ -53,64 +57,105 @@ import {
     PostDetailContentsBox,
     TabMenu,
     TabMenuItem,
+
+    CommentWrap,
+    CommentFrame,
+    CommentBox,
+    CommentTopBox,
+    CommentTopLeftBox,
+    CommentTopRightBox,
+
+    CommentLikeBox,
+
+    CommentCenterBox,
+
+    CommentBottomBox,
+
+    ReplyBox,
+
+    ReplyLeftWrap,
+
+    ReplyRightWrap,
+
 } from './StyledPostDetail';
 
 /* React-Scroll */
 import { Link, scroller } from 'react-scroll';
 
 const PostDetail = () => {
+
+    /* Basic */
+    const baseURL = process.env.REACT_APP_BASEURL;
+    const userUid = sessionStorage.getItem('userUid');
+    const accessToken = sessionStorage.getItem('accessToken');
+    const headers = {
+        Authorization: `${accessToken}`
+    };
+
+    /* 좋아요 & 싫어요 */
     const [isLiked, setIsLiked] = useState(false);
     const [isDisliked, setIsDisliked] = useState(false);
 
     /* useParams */
     const { condition, id } = useParams();
 
-    const baseURL = process.env.REACT_APP_BASEURL;
-    const userUid = sessionStorage.getItem('userUid');
-    const accessToken = sessionStorage.getItem('accessToken');
-    const headers = {
-        Authorization: `${accessToken}`
-    }
-    
+    /* 게시글 데이터 */
     const [postData, setPostData] = useState([]);
-    const [comments, setComments] = useState([]);
+    const postList = postData?.[0];
 
+    /* 댓글 데이터 */
+    const [comments, setComments] = useState([]);
+    /* 답글 데이터 */
+    const [replyData, setReplyData] = useState(null);
+    /* 댓글 위치 ID추적 Index */
+    const [activeCommentIndex, setActiveCommentIndex] = useState(null);
+
+    /* TabMenu */
     const [currentTab, setCurrentTab] = useState(0);
     const [showCommentTab, setShowCommentTab] = useState(false);
-    const [activeCommentIndex, setActiveCommentIndex] = useState(null);
-    /* const [isVerified, setIsVerified] = useState(false); */
+
+    /* React-Scroll 헤더높이값 */
     const headerHeight = 120;
 
-    const [replyData, setReplyData] = useState(null);
     
+    
+    /*-----------------------------------------------------*\
+                            일반 댓글 
+    \*-----------------------------------------------------*/
     const handleCommentBtnClick = (index, commentId) => {
         setActiveCommentIndex(index);
         setShowCommentTab(!showCommentTab)
         setReplyData(commentId);
-        console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다.`);
-    }
+        /* console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다.`); */
+    };
 
-    console.log('replyData',replyData);
-
+    /*-----------------------------------------------------*\
+            로그인 & 비로그인에 따라 게시글 정보 GET API
+    \*-----------------------------------------------------*/
     useEffect(() => {
+
+        /* 로그인 & 비로그인 게시글 정보 GET */
         if( userUid ) {
             axios.get(`${baseURL}/v1/board/investment/post/${id}` , { headers })
             .then(response => {
-                const test = response.data?.query;
-                setPostData(test);
-                console.log('로그인 테스트', test);
+                const data = response.data?.query;
+                setPostData(data);
             })
             .catch(error => {
-                console.error('res 테스트 실패', error);
+                console.error('게시글 정보 가져오기 실패', error);
             });
         } else {
             axios.get(`${baseURL}/v1/board/investment/post/${id}/unlogin`)
             .then(response => {
-                const test = response.data?.query;
-                setPostData(test);
-                console.log('비로그인 테스트');
+                const data = response.data?.query;
+                setPostData(data);
             })
+            .catch(error => {
+                console.error('unlogin 게시글 정보 가져오기 실패', error);
+            });
         }
+
+        /* 댓글 GET */
         axios.get(`${baseURL}/v1/board/investment/post/${id}/comments`, { headers })
         .then(response => {
             const commentData = response.data.query; 
@@ -120,8 +165,19 @@ const PostDetail = () => {
         .catch(error => {
             console.error('댓글 목록 가져오기 실패', error);
         });
-
+        
     }, []);
+
+    const formatDate = (isoDateString) => {
+        const date = new Date(isoDateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+        return `${year}.${month}.${day} ${hours}:${minutes}`;
+    };
 
     /* const handleResponse = (response) => {
         const setCookieHeader = response.headers['Set-Cookie'];
@@ -147,13 +203,9 @@ const PostDetail = () => {
         });
       }; */
 
-    /*-----------------------------------------------*\
-                    Console.log 테스트
-    \*-----------------------------------------------*/
-    console.log('condition',condition);
-    console.log('id',id);
-
-    /* 일반 댓글 */
+    /*-----------------------------------------------------*\
+                            일반 댓글 
+    \*-----------------------------------------------------*/
     const handlePostComment = (comment) => {
         axios.post(`${baseURL}/v1/board/investment/post/${id}/comments`,{
             status: 'Y',
@@ -175,7 +227,7 @@ const PostDetail = () => {
             })
             .catch(error => {
                 console.error('댓글 목록 가져오기 실패', error);
-            },[]);
+            });
         })
         .catch(error => {
             if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
@@ -183,9 +235,12 @@ const PostDetail = () => {
             } else {
                 console.error('댓글게시 실패', error);
             }
-        },[])
+        })
     };
-    /* 답글 */
+
+    /*-----------------------------------------------------*\
+                        댓글의 답글 기능
+    \*-----------------------------------------------------*/
     const handlePostReply = (comment) => {
         axios.post(`${baseURL}/v1/board/investment/post/${id}/comments`, {
             status: 'Y',
@@ -207,7 +262,7 @@ const PostDetail = () => {
             })
             .catch(error => {
                 console.error('댓글 목록 가져오기 실패', error);
-            },[]);
+            });
         })
         .catch(error => {
             if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
@@ -215,7 +270,15 @@ const PostDetail = () => {
             } else {
                 console.error('댓글게시 실패', error);
             }
-        },[])
+        })
+    };
+
+    /*-----------------------------------------------------*\
+                      상새 내용 & 문의 TabMenu
+    \*-----------------------------------------------------*/
+    const selectMenuHandler = (index) => {
+        setCurrentTab(index);
+        console.log('currentTab',currentTab);
     };
 
     const menuArr = [
@@ -239,7 +302,7 @@ const PostDetail = () => {
                             <p>thumbnail : {item.thumbnail}</p>
                             <p>nickname : {item.nickname}</p>
                         </div>
-                    ))}
+                ))}
                     
                     {/* {postData.map((item, index) => (
                         <PostMain key={index.id}>
@@ -281,74 +344,113 @@ const PostDetail = () => {
             </div>
         ) },
         { name: '문의', content: (
-            <div>
-               <div style={{display:'flex',alignItems:'center'}}>
-                        <div style={{display:'flex',alignItems:'center'}}>
-                            <MdOutlineComment style={{marginLeft:'5px'}}/>
-                            <span>댓글 작성</span>
-                        </div> 
-                        <CommentInput onPostComment={handlePostComment} />
-                    </div>
-                    <br/>
-                    <div style={{borderTop:'1px solid #000'}}></div>
-                    <br/>
-                    <div style={{marginBottom:'20px',display:'flex',alignItems:'center'}}>
-                        <BsList/>
-                        <span>댓글 목록</span>
-                    </div>
-                    <div>
-                        {
-                            comments.map((item, index) => {
-                                if(item.parentId === 0) {
-                                    return (
-                                        <div key={index} style={{border:'1px solid #000',marginTop:'15px',padding:'5px'}}>
-                                    <p>{item.nickname}</p>
-                                    <p>{item.content}</p>
-                                    <div
-                                        onClick={() => handleCommentBtnClick(index, item.id)}
-                                    >
-                                        답글달기
-                                    </div>
-                                    {showCommentTab && activeCommentIndex === index ? (
-                                            <div>
-                                                <CommentInput onPostComment={handlePostReply} />
-                                            </div>
+            <CommentWrap>
+                <div>
+                    <CommentInput
+                        onPostComment={handlePostComment} 
+                        frameHeight="143px"
+                        holder="문의 내용을 입력해 주세요."
+                        btnText="문의 등록"
+                    />
+                </div>
+                <CommentFrame>
+                    {
+                        comments.map((item, index) => {
+                            if(item.parentId === 0) {
+                                return (
+                                    <div key={index}>
+                                        <CommentBox>
+                                            <CommentTopBox>
+                                                <CommentTopLeftBox>
+                                                    <p>{item.nickname}</p>
+                                                    <p>{formatDate(item.regDt)}</p>
+                                                </CommentTopLeftBox>
+                                                <CommentTopRightBox>
+                                                    <CommentLikeBox>
+                                                        <VscThumbsup/>
+                                                        <span>{item.like}</span>
+                                                    </CommentLikeBox>
+                                                    <CommentLikeBox>
+                                                        <VscThumbsdown/>
+                                                        <span>{item.dislike}</span>
+                                                    </CommentLikeBox>
+                                                </CommentTopRightBox>
+                                            </CommentTopBox>
+                                            <CommentCenterBox>
+                                                <p>{item.content}</p>
+                                            </CommentCenterBox>
+                                            <CommentBottomBox
+                                                onClick={() => handleCommentBtnClick(index, item.id)}
+                                            >
+                                                답글달기
+                                            </CommentBottomBox>
+                                        </CommentBox>
+
+                                        {showCommentTab && activeCommentIndex === index ? (
+                                                <div style={{marginTop:'10px', marginBottom:'10px'}}>
+                                                    <CommentInput 
+                                                        onPostComment={handlePostReply} 
+                                                        frameHeight="100px"
+                                                        holder="답글을 입력해 주세요."
+                                                        btnText="답글 등록"
+                                                    />
+                                                </div>
                                         ) : (null)}
-                                    {
-                                        comments.map((reply, replyIndex) => {
-                                            if ( reply.parentId === item.id) {
-                                                return (
-                                                    <div key={replyIndex}>
-                                                        <div style={{border:'1px solid #000', marginLeft:'50px'}}>
-                                                            <p>{reply.nickname}</p>
-                                                            <p>{reply.content}</p>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            }
-                                            return null;
-                                        })
-                                    }
-                                </div>
-                                    )
-                                }
-                                
-                            })
-                        }
-                    </div>
-            </div>
-        ) },
+
+                                        {
+                                            comments.map((reply, replyIndex) => {
+                                                if ( reply.parentId === item.id) {
+                                                    return (
+                                                        <ReplyBox key={replyIndex}>
+                                                            <ReplyLeftWrap>
+                                                                <LuReply/>
+                                                            </ReplyLeftWrap>
+                                                            <ReplyRightWrap>
+                                                                <CommentTopBox>
+                                                                    <CommentTopLeftBox>
+                                                                        <p>{reply.nickname}</p>
+                                                                        <p>{formatDate(reply.regDt)}</p>
+                                                                    </CommentTopLeftBox>
+                                                                    <CommentTopRightBox>
+                                                                        <CommentLikeBox>
+                                                                            <VscThumbsup/>
+                                                                            <span>{reply.like}</span>
+                                                                        </CommentLikeBox>
+                                                                        <CommentLikeBox>
+                                                                            <VscThumbsdown/>
+                                                                            <span>{reply.dislike}</span>
+                                                                        </CommentLikeBox>
+                                                                    </CommentTopRightBox>
+                                                                </CommentTopBox>
+                                                                <CommentCenterBox>
+                                                                    <p>{reply.content}</p>
+                                                                </CommentCenterBox>
+                                                            </ReplyRightWrap>
+                                                            {/* <CommentBottomBox
+                                                                onClick={() => handleCommentBtnClick(index, item.id)}
+                                                            >
+                                                                답글달기
+                                                            </CommentBottomBox> */}
+                                                        </ReplyBox>
+                                                    );
+                                                }
+                                                return null;
+                                            })
+                                        }
+                                    </div>
+                                )
+                            }
+                            
+                        })
+                    }
+                </CommentFrame>
+            </CommentWrap>
+        )},
     ];
 
-
-
-
-
-    const selectMenuHandler = (index) => {
-        setCurrentTab(index);
-        console.log('currentTab',currentTab);
-    }
-
+    /*-----------------------------------------------------*\
+                          React-Scroll 기능
+    \*-----------------------------------------------------*/
     const scrollToSection = (e) => {
         e.preventDefault();
         selectMenuHandler(1); 
@@ -357,27 +459,33 @@ const PostDetail = () => {
             duration: 500,
             offset: -headerHeight
         }); 
-    }
-
-    const handleLike = () => {
-            axios.post(`http://39.117.244.34:3385/v1/board/like`, {
-                boardPostId: id,
-                type: 'like',
-                userUid: userUid
-            }, { headers })
-                .then(response => {
-                    console.log('좋아요 추가 성공:', response.data);
-                    /* setIsLiked(true);
-                    setPost({
-                        ...post,
-                        like: post.like + 1,
-                    }); */
-                })
-                .catch(error => {
-                    console.error('좋아요 추가 실패', error);
-                });
     };
 
+    /*-----------------------------------------------------*\
+                              좋아요
+    \*-----------------------------------------------------*/
+    const handleLike = () => {
+        axios.post(`http://39.117.244.34:3385/v1/board/like`, {
+            boardPostId: id,
+            type: 'like',
+            userUid: userUid
+        }, { headers })
+            .then(response => {
+                console.log('좋아요 추가 성공:', response.data);
+                /* setIsLiked(true);
+                setPost({
+                    ...post,
+                    like: post.like + 1,
+                }); */
+            })
+            .catch(error => {
+                console.error('좋아요 추가 실패', error);
+            });
+    };
+
+    /*-----------------------------------------------------*\
+                              싫어요
+    \*-----------------------------------------------------*/
     const handleDislike = () => {
         if (!isLiked && !isDisliked) {
             // 싫어요 추가 요청 보내기
@@ -401,6 +509,13 @@ const PostDetail = () => {
                 });
         }
     };
+    
+    /*-----------------------------------------------*\
+                    Console.log 테스트
+    \*-----------------------------------------------*/
+    console.log('condition',condition);
+    console.log('id',id);
+    console.log('postData',postData);
 
     return (
         <div>
@@ -416,18 +531,20 @@ const PostDetail = () => {
                                 <LeftTitleBox>ICON</LeftTitleBox>
                                 <RightTitleBox>
                                     <RightTitleTopBox>
-                                        <div className='category'>IT</div>
+                                        <div className='category'>{postList?.category}</div>
                                     </RightTitleTopBox>
                                     <RightTitleCenterBox>
-                                        <h2>회사이름</h2>
+                                        <h2>{postList?.companyName}</h2>
                                     </RightTitleCenterBox>
                                     <RightTitleBottomBox>
                                         <RightTitleBottomLeftBox>
                                             회사설명
+                                            <img src="https://qevxdf1345375451.s3.ap-northeast-2.amazonaws.com/companyLogoImg/1697097484_82af7909-d581-4c59-864b-4fb7abf9270c_%C3%AC%C2%9E%C2%84%C3%AC%C2%8B%C2%9C%C3%AC%C2%95%C2%B1%C3%AC%C2%95%C2%84%C3%AC%C2%9D%C2%B4%C3%AC%C2%BD%C2%98.png" alt="img"/>
                                         </RightTitleBottomLeftBox>
                                         <RightTitleBottomRightBox>
                                             <AiOutlineHeart/>
-                                            좋아요 0명
+                                            {/* 좋아요 {postData?.[0]?.like}명 */}
+                                            좋아요 {postList?.like}명
                                         </RightTitleBottomRightBox>
                                     </RightTitleBottomBox>
                                 </RightTitleBox>
