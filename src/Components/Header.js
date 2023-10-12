@@ -172,7 +172,7 @@ const Header = ({parsedCommunityCategoryData}) => {
     
     const checkCompanyRegistration = () => {
         // console.log(["업체", "관리자"].includes(userGroup))
-        if (["업체", "관리자"].includes(userGroup))/* 나중에 false일때로 바꾸기!!! */ {
+        if (!["업체", "관리자"].includes(userGroup))/* 나중에 false일때로 바꾸기!!! */ {
             if(window.confirm("업체가 등록되어있지 않습니다. 등록하시겠습니까?")) {
                 // navigate('/company_upload') // 진위여부 확인하는 곳으로 바꾸기
                 navigate('/business_number_check') 

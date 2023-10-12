@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 
-import { Wrap, Container } from './StyledBusinessNumberCheck'
+import Header from '../Header'
+
+import { Wrap, Container, Inner } from './StyledBusinessNumberCheck'
 
 const BusinessNumberCheck = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -59,23 +61,26 @@ const BusinessNumberCheck = () => {
 
   return (
     <Wrap>
+      <Header />
       <Container>
-        <div>
-          <p>사업자 등록번호 확인</p>
-          <p>사업자 등록번호 10자리를 입력해주세요.</p>
-        </div>
-        <input 
-          type="text" 
-          name='b_no'
-          maxLength={10}
-          placeholder='000-00-00000'
-          value={numberCheck}
-          // onInput={(e) => hypen(e)}
-          onChange={(e) => onChange(e, 'b_no')}
-        />
-        <button
-          onClick={() => checkBtn()}
-        >확인</button>
+        <Inner>
+          <div>
+            <h2>사업자 등록번호 확인</h2>
+            <p className='txt'>사업자 등록번호 10자리를 입력해주세요.</p>
+          </div>
+          <input 
+            type="text" 
+            name='b_no'
+            maxLength={10}
+            placeholder='000-00-00000'
+            value={numberCheck}
+            // onInput={(e) => hypen(e)}
+            onChange={(e) => onChange(e, 'b_no')}
+          />
+          <button
+            onClick={() => checkBtn()}
+          >확인</button>
+        </Inner>
       </Container>
     </Wrap>
 

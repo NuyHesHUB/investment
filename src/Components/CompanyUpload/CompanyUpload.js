@@ -33,7 +33,6 @@ const CompanyUpload = () => {
       logoImg: "",
       introduction: ""
   });
-
  
   // 로고 이미지 미리보기
   const inputFileChange = async (e) => {
@@ -41,7 +40,6 @@ const CompanyUpload = () => {
       const file = e.target.files[0]
       const encodedFilename = encodeURIComponent(file.name);
     
-
       const imgUrl = URL.createObjectURL(file)
       // console.log(file, imgUrl, "input file test")
       // console.dir(e.target)
