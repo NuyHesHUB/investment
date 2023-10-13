@@ -36,6 +36,7 @@ import {
     PostDetailTitleBox, 
     PostDetailTitleWrap, 
     LeftTitleBox, 
+    CompanyLogo,
     RightTitleBox, 
     RightTitleTopBox, 
     RightTitleCenterBox, 
@@ -82,6 +83,9 @@ import {
 /* React-Scroll */
 import { Link, scroller } from 'react-scroll';
 
+/* image */
+import defaultLogo from '../../assets/default-image/company-default-img.png';
+
 const PostDetail = () => {
 
     /* Basic */
@@ -101,12 +105,30 @@ const PostDetail = () => {
 
     /* 게시글 데이터 */
     const [postData, setPostData] = useState([]);
+
     const postList = postData?.[0];
+
+    const likeList = postData?.[0]?.like;
+
+    const [likeData, setLikeData] = useState(likeList);
+
+
+    /* console.log('likeList',likeList);
+    console.log('likeData',likeData); */
 
     /* 댓글 데이터 */
     const [comments, setComments] = useState([]);
+    const commentLike = comments.filter(comment => comment.parentId === 0).map(comment => comment.like);
+    const [commentLikeData, setCommentLikeData] = useState(commentLike);
+
+    
+
+    console.log('commentLike',commentLike);
+    console.log('commentLikeData',commentLikeData);
+
     /* 답글 데이터 */
     const [replyData, setReplyData] = useState(null);
+
     /* 댓글 위치 ID추적 Index */
     const [activeCommentIndex, setActiveCommentIndex] = useState(null);
 
@@ -118,7 +140,37 @@ const PostDetail = () => {
     const headerHeight = 120;
 
     
-    
+    /*-----------------------------------------------------*\
+                              좋아요
+    \*-----------------------------------------------------*/
+    const handleLike = () => {
+        axios.post(`http://39.117.244.34:3385/v1/board/like`, {
+            boardPostId: id,
+            type: 'like',
+            userUid: userUid
+        }, { headers })
+            .then(response => {
+                const updatedLikeCount = response?.data.query[0].like;
+                    /* setLikeData(prevData => ({
+                ...prevData,
+                like: updatedLikeCount */
+                setLikeData(
+                     updatedLikeCount
+                );
+            })
+            .catch(error => {
+                console.error('좋아요 추가 실패', error);
+            });
+    };
+
+    useEffect(() => {
+        setLikeData(likeList);
+        setCommentLikeData(commentLike);
+      }, [likeList]);
+
+
+      /* console.log('likeData', likeData.like); */
+    /* console.log('post 테스트', postData?.[0].like); */
     /*-----------------------------------------------------*\
                             일반 댓글 
     \*-----------------------------------------------------*/
@@ -129,6 +181,29 @@ const PostDetail = () => {
         /* console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다.`); */
     };
 
+
+    const handleCommentLikeBtnClick = (index, commentId) => {
+        setActiveCommentIndex(index);
+        console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다.`);
+        axios.post(`${baseURL}/v1/board/like`, {
+            boardPostId: commentId,
+            type: 'like',
+            userUid: userUid
+        }, { headers })
+        .then(response => {
+            console.log('댓글 좋아요 추가 성공', response);
+            const updatedLikeCount = response?.data.query[0].like;
+            /* setCommentLikeData(updatedLikeCount); */
+            setCommentLikeData(prevState => {
+                const newState = [...prevState]; // 이전 상태 복사
+                newState[index] = updatedLikeCount; // 해당 인덱스 값 업데이트
+                return newState; // 새로운 상태 반환
+            });
+        })
+        .catch(error => {
+            console.error('댓글 좋아요 추가 실패', error);
+        });;
+    }
     /*-----------------------------------------------------*\
             로그인 & 비로그인에 따라 게시글 정보 GET API
     \*-----------------------------------------------------*/
@@ -140,6 +215,8 @@ const PostDetail = () => {
             .then(response => {
                 const data = response.data?.query;
                 setPostData(data);
+                /* const cookie = document.cookie;
+                console.log('cookie', cookie); */
             })
             .catch(error => {
                 console.error('게시글 정보 가져오기 실패', error);
@@ -284,7 +361,7 @@ const PostDetail = () => {
     const menuArr = [
         { name: '상세 내용', content: (
             <div>
-                {postData.map((item, index) => (
+               {/*  {postData.map((item, index) => (
                         <div key={index}>
                             <p>id : {item.id}</p>
                             <p>num : {item.num}</p>
@@ -302,7 +379,7 @@ const PostDetail = () => {
                             <p>thumbnail : {item.thumbnail}</p>
                             <p>nickname : {item.nickname}</p>
                         </div>
-                ))}
+                ))} */}
                     
                     {/* {postData.map((item, index) => (
                         <PostMain key={index.id}>
@@ -366,9 +443,13 @@ const PostDetail = () => {
                                                     <p>{formatDate(item.regDt)}</p>
                                                 </CommentTopLeftBox>
                                                 <CommentTopRightBox>
-                                                    <CommentLikeBox>
+                                                    <CommentLikeBox
+                                                        onClick={() => handleCommentLikeBtnClick(index, item.id)}
+                                                    >
                                                         <VscThumbsup/>
-                                                        <span>{item.like}</span>
+                                                        {commentLikeData && commentLikeData.length > 0 && commentLikeData.map((likeItem, likeIndex) => (
+                                                            <span key={likeIndex}>{likeItem}</span>
+                                                            ))}
                                                     </CommentLikeBox>
                                                     <CommentLikeBox>
                                                         <VscThumbsdown/>
@@ -412,7 +493,9 @@ const PostDetail = () => {
                                                                         <p>{formatDate(reply.regDt)}</p>
                                                                     </CommentTopLeftBox>
                                                                     <CommentTopRightBox>
-                                                                        <CommentLikeBox>
+                                                                        <CommentLikeBox
+                                                                            onClick={() => handleCommentLikeBtnClick(index, reply.id)}
+                                                                        >
                                                                             <VscThumbsup/>
                                                                             <span>{reply.like}</span>
                                                                         </CommentLikeBox>
@@ -447,8 +530,10 @@ const PostDetail = () => {
             </CommentWrap>
         )},
     ];
-    const cookieValue = 'j%3A%5B%2210%22%5D; Path=/';
-    document.cookie = `board_post=${cookieValue}`;
+    
+   /*  const cookieValue = 'j%3A%5B%2210%22%5D; Path=/';
+    document.cookie = `board_post=${cookieValue}`; */
+
     /*-----------------------------------------------------*\
                           React-Scroll 기능
     \*-----------------------------------------------------*/
@@ -462,27 +547,7 @@ const PostDetail = () => {
         }); 
     };
 
-    /*-----------------------------------------------------*\
-                              좋아요
-    \*-----------------------------------------------------*/
-    const handleLike = () => {
-        axios.post(`http://39.117.244.34:3385/v1/board/like`, {
-            boardPostId: id,
-            type: 'like',
-            userUid: userUid
-        }, { headers })
-            .then(response => {
-                console.log('좋아요 추가 성공:', response.data);
-                /* setIsLiked(true);
-                setPost({
-                    ...post,
-                    like: post.like + 1,
-                }); */
-            })
-            .catch(error => {
-                console.error('좋아요 추가 실패', error);
-            });
-    };
+    
 
     /*-----------------------------------------------------*\
                               싫어요
@@ -515,7 +580,7 @@ const PostDetail = () => {
     /*-----------------------------------------------*\
                     Console.log 테스트
     \*-----------------------------------------------*/
-    console.log('condition',condition);
+    /* console.log('condition',condition); */
     console.log('id',id);
     console.log('postData',postData);
 
@@ -530,13 +595,23 @@ const PostDetail = () => {
                     <PostDetailContainer>
                         <PostDetailTitleBox>
                             <PostDetailTitleWrap>
-                                <LeftTitleBox>ICON</LeftTitleBox>
+                                <LeftTitleBox>
+                                    {
+                                        postList?.logoImg !== null && postList?.logoImg !== "" ?
+                                            <CompanyLogo src={postList?.logoImg} alt={`${postList?.companyName}로고 이미지`}/> :
+                                            <CompanyLogo src={defaultLogo} alt="Default Company Image"/>
+                                    }
+                                </LeftTitleBox>
                                 <RightTitleBox>
                                     <RightTitleTopBox>
                                         <div className='category'>{postList?.category}</div>
                                     </RightTitleTopBox>
                                     <RightTitleCenterBox>
-                                        <h2>{postList?.companyName}</h2>
+                                            {
+                                                postList?.companyName !== null && postList?.companyName !== "" ?
+                                                    <h2>{postList?.companyName}</h2> : 
+                                                    <h2>...</h2>
+                                            }
                                     </RightTitleCenterBox>
                                     <RightTitleBottomBox>
                                         <RightTitleBottomLeftBox>
@@ -545,8 +620,8 @@ const PostDetail = () => {
                                         </RightTitleBottomLeftBox>
                                         <RightTitleBottomRightBox>
                                             <AiOutlineHeart/>
-                                            {/* 좋아요 {postData?.[0]?.like}명 */}
-                                            좋아요 {postList?.like}명
+                                            {/* 좋아요 {postList?.like}명 */}
+                                            좋아요 {likeData}명
                                         </RightTitleBottomRightBox>
                                     </RightTitleBottomBox>
                                 </RightTitleBox>
@@ -594,7 +669,9 @@ const PostDetail = () => {
                                             <p>D-10</p>
                                         </RightInfoTopBox>
                                         <RightInfoBottomBox>
-                                            <LikeBox>
+                                            <LikeBox
+                                                onClick={handleLike}
+                                            >
                                                 <div>
                                                     <AiOutlineHeart/>
                                                     <span>좋아요</span>

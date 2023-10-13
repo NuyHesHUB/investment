@@ -28,15 +28,21 @@ export const PostDetailTitleWrap=styled.div`
 export const LeftTitleBox=styled.div`
     width: 180px;
     height: 180px;
-    background: rgb(153, 153, 153);
+    /* background: rgb(153, 153, 153); */
     border-radius: 10px;
-    font-size: 36px;
+    /* font-size: 36px;
     font-weight: 300;
     color: #fff;
-    display: flex;
+    display: flex; */
+    border: 2px solid #e5e6e9;
     justify-content: center;
     align-items: center;
     margin-left: 50px;
+    overflow: hidden;
+`
+export const CompanyLogo=styled.img`
+    width: 100%;
+    height: 100%;
 `
 export const RightTitleBox=styled.div`
     display: flex;
@@ -286,6 +292,10 @@ export const CommentLikeBox=styled.div`
     }
     svg{
         font-size: 21px;
+    }
+    cursor: pointer;
+    &:hover{
+        color: red;
     }
 `
 
