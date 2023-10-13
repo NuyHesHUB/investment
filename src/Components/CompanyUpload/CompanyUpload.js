@@ -29,7 +29,7 @@ const CompanyUpload = () => {
   const [companyData, setCompanyData] = useState({
       companyName: "",
       representativeName: "",
-      businessNum: "7597100000",
+      businessNum: b_no,
       logoImg: "",
       introduction: ""
   });
@@ -39,13 +39,9 @@ const CompanyUpload = () => {
     try {
       const file = e.target.files[0]
       const encodedFilename = encodeURIComponent(file.name);
-    
       const imgUrl = URL.createObjectURL(file)
-      // console.log(file, imgUrl, "input file test")
-      // console.dir(e.target)
       setPlaceholderActive(false) // 플레이스홀더없애기
       setLogoImage(imgUrl) //미리보기 이미지 링크
-
       const formData = new FormData();
       formData.append('file', file);
       formData.append('brdKey', "companyLogoImg");
@@ -62,14 +58,10 @@ const CompanyUpload = () => {
       }).catch((error) => {
         console.error(error)
       })
-
     } catch {
       console.error("error")
     }
   }
-
-  console.log("확인!!!!!!!!!!!")
-
 
   //input 값 입력(onchange)
   const companyValueWrite = (e, name) => {
@@ -78,37 +70,48 @@ const CompanyUpload = () => {
       ...companyData,
       [name]: value
     })
-    console.log("테슽스스ㅡ틋", companyData)
   }
 
+  console.log(companyData)
+  console.log("업체등록 test", companyData.companyName.length)
+
+  const companyNameLen = companyData.companyName.length
+  const representativeNameLen = companyData.representativeName.length
 
   const uploadBtnClick = async () => {
-    console.log("업체등록 test", companyData)
-    if(window.confirm("업체를 등록하시겠습니까?")) {
-      await axios.post(`${baseURL}/v1/company/form`, companyData, { headers }).then((res) => {
-        console.log("추가test")
-        sessionStorage.removeItem('b_no');
-        alert("추가하였습니다")
-      }).catch((error) => {
-        console.error(error)
-        alert("error")
-      })
-      // navigate(``) 글쓰기 페이지로
+    if (companyNameLen === 0 || representativeNameLen.length === 0) {
+      alert("사업자 등록번호가 없습니다.")
+    } else if (!b_no){
+      alert("회사명과 대표자 이름은 필수 입력값입니다.")
+    } else {
+      if(window.confirm("업체를 등록하시겠습니까?")) {
+        await axios.post(`${baseURL}/v1/company/form`, companyData, { headers }).then((res) => {
+          console.log("추가test")
+          sessionStorage.removeItem('b_no');
+          alert("추가하였습니다")
+          navigate('/company_introduction_write')
+        }).catch((error) => {
+          console.error(error)
+          alert("error")
+        })
+        // navigate(``) 글쓰기 페이지로
+        }
       }
     }
-    console.log(companyData)
   return(
     <StyledFrame>
       <Header />
       <Wrap>
         <Container>
           <h2>업체 등록하기</h2>
+          <p className='txt'>내용은 추후에 수정 가능합니다.</p>
           <Inner>
             <ul>
               <li>
                 <input 
                   type="text" 
-                  value={b_no}
+                  value={b_no &&`${b_no.slice(0,3)}-${b_no.slice(3,5)}-${b_no.slice(5,10)}`}
+                  disabled
                 />
               </li>
               <li>
@@ -125,10 +128,11 @@ const CompanyUpload = () => {
                   id='logo-upload' 
                   type="file" 
                   accept='image/*' 
+                  required
                   onChange={(e) => inputFileChange(e)}
                 />
               </li>
-              <li>
+              <li className={companyNameLen ? '' : 'required'}>
                 <input 
                   type="text" 
                   name="companyName"
@@ -136,7 +140,7 @@ const CompanyUpload = () => {
                   onChange={(e) => companyValueWrite(e, "companyName")}
                 />
               </li>
-              <li>
+              <li className={representativeNameLen ? '' : 'required'}>
                 <input 
                   type="text" 
                   name="representativeName"

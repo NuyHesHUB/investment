@@ -168,20 +168,36 @@ const Header = ({parsedCommunityCategoryData}) => {
 
     // 관리자, 일반, 업체 확인하기
     const userGroup = sessionStorage.getItem('userGroup');
-    // console.log(userGroup)
+    console.log(userUid, "userUid")
     
-    const checkCompanyRegistration = () => {
-        // console.log(["업체", "관리자"].includes(userGroup))
-        if (!["업체", "관리자"].includes(userGroup))/* 나중에 false일때로 바꾸기!!! */ {
-            if(window.confirm("업체가 등록되어있지 않습니다. 등록하시겠습니까?")) {
-                // navigate('/company_upload') // 진위여부 확인하는 곳으로 바꾸기
-                navigate('/business_number_check') 
-            }
-        } else {
-            //userGroup이 업체 or 관리자일 경우, 글쓰기 페이지 이동
-            navigate('/company_introduction_write')
+    const navigateLogin = () => {
+        if (window.confirm("로그인이 되어 있지 않습니다. 로그인하시겠습니까?")) {
+            navigate('/login')
         }
     }
+    const checkCompanyRegistration = () => {
+        // console.log(["업체", "관리자"].includes(userGroup))
+        if (!["업체", "관리자"].includes(userGroup)) { /* 나중에 false일때로 바꾸기!!! */ 
+            window.confirm("업체가 등록되어있지 않습니다. 등록하시겠습니까?") 
+            ? navigate('/business_number_check') 
+            : navigate('#')
+        } else {
+            //userGroup이 업체 or 관리자일 경우, 글쓰기 페이지 이동
+            navigate('/company_write')
+        }
+    }
+    // const checkCompanyRegistration = () => {
+    //     // console.log(["업체", "관리자"].includes(userGroup))
+    //     if (!["업체", "관리자"].includes(userGroup))/* 나중에 false일때로 바꾸기!!! */ {
+    //         if(window.confirm("업체가 등록되어있지 않습니다. 등록하시겠습니까?")) {
+    //             // navigate('/company_upload') // 진위여부 확인하는 곳으로 바꾸기
+    //             navigate('/business_number_check') 
+    //         }
+    //     } else {
+    //         //userGroup이 업체 or 관리자일 경우, 글쓰기 페이지 이동
+    //         navigate('/company_introduction_write')
+    //     }
+    // }
     
     return (
         <StyledFrame  className={`${scrolled ? 'header-scrolled' : ''}`}>
@@ -235,7 +251,7 @@ const Header = ({parsedCommunityCategoryData}) => {
                                 </ul>
                             </MenuItem>
                             <MenuItem>
-                                <p to="#" onClick={checkCompanyRegistration}>글쓰기</p>
+                                <p to="#" onClick={userUid ? checkCompanyRegistration : navigateLogin}>글쓰기</p>
                             </MenuItem>
                         </MenuList>
                     </HeaderMenu>

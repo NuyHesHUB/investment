@@ -3,9 +3,9 @@ import styled from 'styled-components';
 export const Wrap = styled.div`
   /* background: pink; */
   width: 100%;
-  *{box-sizing: border-box; padding: 0; margin: 0; color: #555;}
-`
+  `
 export const Container = styled.section`
+  *{box-sizing: border-box; padding: 0; margin: 0; color: #555;}
   /* background: green; */
   width: 500px; 
   height: 100vh;
@@ -37,7 +37,7 @@ export const Inner = styled.div`
     font-size: 16px;
   }
   input {
-    background: #f3f5f8;
+    background: #edeff2;
     margin-bottom: 10px;
   }
 

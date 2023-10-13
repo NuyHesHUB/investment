@@ -48,7 +48,7 @@ const BusinessNumberCheck = () => {
  
   const [numberCheck, setNumberCheck] = useState();
   const onChange = (e, name) => {
-    const value = e.target.value.replace(/[^0-9]/g, '')
+    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10)
     setNumberCheck(value)
     console.log(value,numberCheck)
     setBusinessNum({
@@ -73,7 +73,7 @@ const BusinessNumberCheck = () => {
           <input 
             type="text" 
             name='b_no'
-            maxLength={10}
+            maxLength={13}
             placeholder='000-00-00000'
             value={numberCheck || ""}
             // onInput={(e) => hypen(e)}
