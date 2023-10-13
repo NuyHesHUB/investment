@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 export const Wrap = styled.div`
-  background: pink;
+  /* background: pink; */
   width: 100%;
-  *{box-sizing: border-box; padding: 0; margin: 0;}
+  *{box-sizing: border-box; padding: 0; margin: 0; color: #555;}
 `
 export const Container = styled.section`
-  background: green;
+  /* background: green; */
   width: 500px; 
   height: 100vh;
   margin: 0 auto;
@@ -17,19 +17,33 @@ export const Container = styled.section`
   text-align: center;
 `
 export const Inner = styled.div`
-  background: skyblue;
+  /* background: skyblue; */
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 100px;
-  h2 {margin-bottom: 80px;}
+  padding-top: 150px;
+  h2 {
+    margin-bottom: 80px;
+    font-size: 36px;
+  }
   p.txt {margin-bottom: 20px;}
-  input {
+
+  input, button {
     width: 300px;
-    padding: 10px 20px;
+    padding: 12px 5px;
     text-align: center;
     border-radius: 10px;
     border: none;
+    font-size: 16px;
+  }
+  input {
     background: #f3f5f8;
+    margin-bottom: 10px;
+  }
+
+  button {
+    background: #3fa9f5;
+    color: #fff;
+    cursor: pointer;
   }
 `

@@ -23,7 +23,8 @@ const BusinessNumberCheck = () => {
   
 
   const checkBtn = async () =>  {
-    console.log("businessNum.length", businessNum.b_no.length,businessNum.b_no)
+    console.log("businessNum.length", businessNum.b_no)
+
     if (businessNum.b_no.length < 10) {
       alert("사업자 등록번호는 10자리 입니다.")
     } else {
@@ -39,6 +40,7 @@ const BusinessNumberCheck = () => {
           alert('가입된 사업자 입니다.');
         } else {
           console.error('error', error);
+          alert('입력하신 사업자 번호의 사업자 등록 상태 확인이 필요합니다.')
         }
       })
     }
@@ -73,7 +75,7 @@ const BusinessNumberCheck = () => {
             name='b_no'
             maxLength={10}
             placeholder='000-00-00000'
-            value={numberCheck}
+            value={numberCheck || ""}
             // onInput={(e) => hypen(e)}
             onChange={(e) => onChange(e, 'b_no')}
           />
