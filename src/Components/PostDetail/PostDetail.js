@@ -136,7 +136,7 @@ const PostDetail = () => {
 
         /* 로그인 & 비로그인 게시글 정보 GET */
         if( userUid ) {
-            axios.get(`${baseURL}/v1/board/investment/post/${id}` , { headers })
+            axios.get(`${baseURL}/v1/board/investment/post/${id}` , { headers }, { withCredentials: true })
             .then(response => {
                 const data = response.data?.query;
                 setPostData(data);
@@ -145,7 +145,7 @@ const PostDetail = () => {
                 console.error('게시글 정보 가져오기 실패', error);
             });
         } else {
-            axios.get(`${baseURL}/v1/board/investment/post/${id}/unlogin`)
+            axios.get(`${baseURL}/v1/board/investment/post/${id}/unlogin`, { withCredentials: true })
             .then(response => {
                 const data = response.data?.query;
                 setPostData(data);
@@ -447,7 +447,8 @@ const PostDetail = () => {
             </CommentWrap>
         )},
     ];
-
+    const cookieValue = 'j%3A%5B%2210%22%5D; Path=/';
+    document.cookie = `board_post=${cookieValue}`;
     /*-----------------------------------------------------*\
                           React-Scroll 기능
     \*-----------------------------------------------------*/
@@ -509,6 +510,7 @@ const PostDetail = () => {
                 });
         }
     };
+
     
     /*-----------------------------------------------*\
                     Console.log 테스트

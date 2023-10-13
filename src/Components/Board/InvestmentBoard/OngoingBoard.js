@@ -17,9 +17,6 @@ const InvestOngoingBoard = () => {
     };
     const [investOngoingPostData, setInvestOngoingPostData] = useState(null);
 
-    // logoUrls 상태와 그 상태를 업데이트하는 setLogoUrls 함수
-    const [logoUrls, setLogoUrls] = useState([]);
-
 /* const [investOngoingPostData, setInvestOngoingPostData] = useState([]); */
     /*-----------------------------------------------*\
                   investment post 데이터 API
@@ -29,48 +26,13 @@ const InvestOngoingBoard = () => {
             try {
                 const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
                 const data = PostResponse.data?.query;
-                /* setInvestOngoingPostData(data); */
                 console.log('investPostResponse',data);
-                /* const BusinessResponse = await axios.get(`${baseURL}/v1/company/{businessNum}?userUid=`, { headers }); */
-
-                const businessNums = data
-                .filter(item => item.condition === 'ongoing')
-                .map(item => item.businessNum);
-
-                console.log('businessNums',businessNums);
-
-                /* 여기까지ok */
-
-
-
-
-
-                const logoUrls = await Promise.all(businessNums.map(async businessNum => {
-                    try {
-                        const BusinessResponse = await axios.get(`${baseURL}/v1/company/${businessNum}?userUid=`, { headers });
-                        console.log('성공');
-                        return BusinessResponse.data?.query?.logoImg;
-
-                    } catch (error) {
-                        console.error('BusinessNumber 오류', error);
-                        return null;
-                    }
-                }));
-                
-                const logoUrlMap = businessNums.reduce((acc, businessNum, index) => {
-                    acc[businessNum] = logoUrls[index];
-                    return acc;
-                }, {})
-                
-                setLogoUrls(logoUrlMap);
-
                 setInvestOngoingPostData(data.filter(item => item.condition === 'ongoing'));
             } catch (error) {
                 console.error('investOngoingBoardData 데이터 가져오기 실패', error);
             }
         }
         fetchData();
-
     },[])
 
     
@@ -102,7 +64,6 @@ const InvestOngoingBoard = () => {
     /* console.log('formattedDates',formattedDates); */
     /* console.log('investOngoingPostData',investOngoingPostData); */
     /* console.log('koreanCategory',koreanCategory); */
-    /* console.log('logoUrls',logoUrls); */
     return (
         <StyledFrame>
             <Header/>
@@ -150,7 +111,9 @@ const InvestOngoingBoard = () => {
                                 <Link key={index} to={`/investment/ongoing/${item.id}`}>
                                     <OngoingPostCard 
                                         key={index} 
-                                        name={item.title} 
+                                        logoimg={item.logoImg}
+                                        name={item.companyName} 
+                                        title={item.title}
                                         content={item.content} 
                                         category={item.category} 
                                         date={formattedDates[index]}
