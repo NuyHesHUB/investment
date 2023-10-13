@@ -42,6 +42,7 @@ const CompanyUpload = () => {
       const imgUrl = URL.createObjectURL(file)
       setPlaceholderActive(false) // 플레이스홀더없애기
       setLogoImage(imgUrl) //미리보기 이미지 링크
+      
       const formData = new FormData();
       formData.append('file', file);
       formData.append('brdKey', "companyLogoImg");
@@ -128,7 +129,6 @@ const CompanyUpload = () => {
                   id='logo-upload' 
                   type="file" 
                   accept='image/*' 
-                  required
                   onChange={(e) => inputFileChange(e)}
                 />
               </li>

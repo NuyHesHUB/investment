@@ -1,37 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useRef  } from 'react';
 import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
-import ReactQuill from 'react-quill';
+import ReactQuill , { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
 //import component
 import Header from "../Header"
-
 // styled
 import { StyleFrame, Container } from "./StyledCompanyWrite"
 
-const modules =  {
-  toolbar: [
-    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-    [{ 'color': [] }, { 'background': [] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    ['link', 'image']
-     // Added color and background color buttons
-  ],
-};
-const formats = [
-  'header',
-  'font',
-  'list',
-  'color', 'background', // Added color and background formats
-  'bold', 'italic', 'underline', 'strike',
-  'link', 'image'
-];
+// const modules =  {
+//     toolbar: [
+//       [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+//       [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+//       [{ 'color': [] }, { 'background': [] }],
+//       ['bold', 'italic', 'underline', 'strike'],
+//       ['link', 'image'],
+//        // Added color and background color buttons
+//     ]
+//   }
+
 
 const CompanyWrite = () => {
+  const baseURL = process.env.REACT_APP_BASEURL;
+  ///// JWT /////
+  const accessToken = sessionStorage.getItem('accessToken'); 
+  const userUid = sessionStorage.getItem('userUid');
+  const headers = {
+    Authorization: `${accessToken}`
+  }
+
+  const quillRef = useRef(null);
   const navigate = useNavigate();
 
+  
   const [content, setContent] = useState('');
   const [investmentAmount, setInvestmentAmount] = useState(0);
   const [postData, setPostData] = useState({
@@ -49,8 +50,94 @@ const CompanyWrite = () => {
     attaches: ""
   });
 
+
+
+
+  
+
+
+
+
+  const imageHandler = () => {
+      
+      console.log("이미지핸들러")
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.addEventListener('change', async () => {
+        const file = input.files[0];
+        const encodedFilename = encodeURIComponent(file.name);
+        const imgUrl = URL.createObjectURL(file)
+
+        const formData = new FormData();
+        formData.append('file', file); 
+        formData.append('brdKey', "companyLogoImg");
+        formData.append('filename', encodedFilename);
+
+        console.log('온체인지',imgUrl);
+        
+        /*
+        try {
+          const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })
+          const IMG_URL = result.data.imageUrl;
+          const editor = quillRef.current.getEditor();
+          
+          const range = editor.getSelection();
+          editor.insertEmbed(range.index, 'image', IMG_URL);
+          console.log(range.index, 'range.index')
+          console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl, editor);
+        } catch (error) {
+          console.log(error, 'e실패했어요ㅠrr')
+        }*/
+
+        try {
+          const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })
+          const IMG_URL = result.data.imageUrl;
+          const editor = quillRef.current.getEditor();
+          const range = editor.getSelection(true);
+          editor.insertEmbed(range.index, "image", IMG_URL);
+
+          // console.log(range.index, 'range.index')
+          // console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl);
+        } catch (error) {
+          console.log(error, 'e실패했어요ㅠrr')
+        }
+      });
+    }
+
+
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [
+          ['image'],
+          [{ header: [1, 2, 3, false] }],
+          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        ],
+        handlers: {
+          // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
+          image: imageHandler,
+        },
+      },
+    };
+  }, []);
+  // 위에서 설정한 모듈들 foramts을 설정한다
+  const formats = [
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'image',
+  ];
+
+
+  
   const handleContentChange = (value) => {
-    // setContent(value);
+    setContent(value);
     setPostData({
       ...postData,
       content: value
@@ -85,7 +172,8 @@ const CompanyWrite = () => {
       navigate(-1)
     }  
   }
-  console.log(postData, content)
+
+  console.log(content, postData.content, "값확인값확인값확인")
 
   return (
     <StyleFrame>
@@ -152,10 +240,8 @@ const CompanyWrite = () => {
 
             <div className="mb-3">
               <label htmlFor="content" className="form-label">내용</label>
-              <ReactQuill value={postData.content} onChange={(e) => handleContentChange(e)} modules={modules} formats={formats} />
+              <ReactQuill ref={quillRef} value={content} onChange={(e) => handleContentChange(e)} modules={modules} formats={formats} />
             </div>
-
-            
             <button onClick={() => prevPage()}>취소</button>
             <button type="submit" className="btn btn-primary">등록</button>
           </form> 
