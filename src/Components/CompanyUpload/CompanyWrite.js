@@ -31,7 +31,44 @@ const CompanyWrite = () => {
   
   const navigate = useNavigate();
 
+  const quillRef = useRef(false);
+  //FIXME: 또 안됨^^ 코드 문제가 아닐 수도
+    const imageHandler =  /* useEffect( */() => { 
+      if (!quillRef.current) { 
+        quillRef.current = true;
+      } else {
+        console.log("이미지핸들러")
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+    
+        input.addEventListener('change', async () => {
+          const file = input.files[0];
+          const encodedFilename = encodeURIComponent(file.name);
+          const imgUrl = URL.createObjectURL(file)
+    
+          const formData = new FormData();
+          formData.append('file', file); 
+          formData.append('brdKey', "companyLogoImg");
+          formData.append('filename', encodedFilename);
+          try {
+            const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })
+            const IMG_URL = result.data.imageUrl;
+            const editor = quillRef.current.getEditor();
+            const range = editor.getSelection();
+            editor.insertEmbed(range.index, "image", IMG_URL);
+            console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl);
+          } catch (error) {
+            console.log(error, '실패')
+          }
+        }
+      )
+      }
+    }/* , []) */
+
   const [content, setContent] = useState(''); // 내용부분
+  const [asdf , setasdf] = useState()
   const [investmentAmount, setInvestmentAmount] = useState(0); //투자희망금액 (아직 코드 안짬)
   const [postData, setPostData] = useState({
     category: "",
@@ -48,46 +85,53 @@ const CompanyWrite = () => {
     attaches: ""
   });
 
-  const quillRef = useRef(false);
-  const imageHandler =  useEffect(() => { //useEffect 써야지 사진 엑박 안 뜸.
-    if (!quillRef.current) {
-      quillRef.current = true;
-    } else {
-      console.log("이미지핸들러")
-      const input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.setAttribute('accept', 'image/*');
-      input.click();
-  
-      input.addEventListener('change', async () => {
-        const file = input.files[0];
-        const encodedFilename = encodeURIComponent(file.name);
-        const imgUrl = URL.createObjectURL(file)
-  
-        const formData = new FormData();
-        formData.append('file', file); 
-        formData.append('brdKey', "companyLogoImg");
-        formData.append('filename', encodedFilename);
-  
-        console.log('온체인지',imgUrl);
-        
-        try {
-          const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })
-          const IMG_URL = result.data.imageUrl;
-          const editor = quillRef.current.getEditor();
-          const range = editor.getSelection(true);
-          editor.insertEmbed(range.index, "image", IMG_URL);
-  
-          // console.log(range.index, 'range.index')
-          console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl);
-        } catch (error) {
-          console.log(error, '실패')
-        }
-      }
-    )
-    }
+  const handleContentChange = (value) => {
+    setContent(value);
+    setPostData({
+      ...postData,
+      content: value
+    });
+  };
 
-  }, [])
+  
+
+  
+  // const imageHandler =  useEffect(() => { //useEffect 써야지 사진 엑박 안 뜸.
+  //   quillRef.current = false
+  //   //맨처음 렌더링시에 useEffect실행 막기 위해 조건문 사용(근데안됨..머임..)
+  //   if (!quillRef.current) { 
+  //     quillRef.current = true;
+  //   } else {
+  //     const input = document.createElement('input');
+  //     input.setAttribute('type', 'file');
+  //     input.setAttribute('accept', 'image/*');
+  //     input.click();
+  
+  //     input.addEventListener('change', async () => {
+  //       const file = input.files[0];
+  //       const encodedFilename = encodeURIComponent(file.name);
+  //       const imgUrl = URL.createObjectURL(file)
+  
+  //       const formData = new FormData();
+  //       formData.append('file', file); 
+  //       formData.append('brdKey', "companyLogoImg");
+  //       formData.append('filename', encodedFilename);
+  //       try {
+  //         const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })
+  //         if (result) {
+  //           const IMG_URL = result.data.imageUrl;
+  //           const editor = quillRef.current.getEditor();
+  //           const range = editor.getSelection(true);
+  //           editor.insertEmbed(range.index, "image", IMG_URL);
+  //           console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl);
+  //         }
+  //       } catch (error) {
+  //         console.log(error, '실패')
+  //       }
+  //     }
+  //   )
+  //   }
+  // }, [content,postData])
 
   const modules = useMemo(() => {
     return {
@@ -114,13 +158,7 @@ const CompanyWrite = () => {
     'image',
   ];
 
-  const handleContentChange = (value) => {
-    setContent(value);
-    setPostData({
-      ...postData,
-      content: value
-    });
-  };
+  
 
   //투자희망금액
   const investmentAmountChange = (e) => {
@@ -152,7 +190,7 @@ const CompanyWrite = () => {
     }  
   }
 
-  console.log(content, postData.content, "값확인값확인값확인")
+  console.log(content,"값확인값확인값확인")
 
   return (
     <StyleFrame>
