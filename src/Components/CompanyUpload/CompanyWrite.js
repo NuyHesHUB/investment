@@ -48,7 +48,7 @@ const CompanyWrite = () => {
     attaches: ""
   });
 
-  const imageHandler =  useEffect(() => {
+  const imageHandler =  useEffect(() => { //useEffect 써야지 사진 엑박 안 뜸.
       
       console.log("이미지핸들러")
       const input = document.createElement('input');
@@ -68,20 +68,6 @@ const CompanyWrite = () => {
 
         console.log('온체인지',imgUrl);
         
-        /*
-        try {
-          const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })
-          const IMG_URL = result.data.imageUrl;
-          const editor = quillRef.current.getEditor();
-          
-          const range = editor.getSelection();
-          editor.insertEmbed(range.index, 'image', IMG_URL);
-          console.log(range.index, 'range.index')
-          console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl, editor);
-        } catch (error) {
-          console.log(error, 'e실패했어요ㅠrr')
-        }*/
-
         try {
           const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })
           const IMG_URL = result.data.imageUrl;
@@ -92,7 +78,7 @@ const CompanyWrite = () => {
           // console.log(range.index, 'range.index')
           console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl);
         } catch (error) {
-          console.log(error, 'e실패했어요ㅠrr')
+          console.log(error, '실패')
         }
       });
     }, [])
@@ -106,13 +92,12 @@ const CompanyWrite = () => {
           ['bold', 'italic', 'underline', 'strike', 'blockquote'],
         ],
         handlers: {
-          // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
           image: imageHandler,
         },
       },
     };
   }, []);
-  // 위에서 설정한 모듈들 foramts을 설정한다
+  
   const formats = [
     'header',
     'bold',

@@ -89,6 +89,7 @@ const CreateBoardList = ({open, setOpen, test}) => {
         // visible={visible}
         // onClick={cancel}
       ></div>
+      
       <div className="popup">
         <div className="btn-box">
           <button

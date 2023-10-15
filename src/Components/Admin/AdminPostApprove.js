@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 ///// style /////
 import {Wrap, PageNation} from "./AdminStyledComponents/StyledAdminPostApprove"
+import { CommonStyleFrame, TableFrame } from "./AdminStyledComponents/StyledCommon"
 ///// import component /////
 import Admin from "./Admin"
 import Pagenation from "./Pagenation"
@@ -78,87 +79,105 @@ const AdminPostApprove = () => {
   return (
     <>
       <Admin /> {/* 헤더랑 메뉴 */}
-      <Wrap>
-        <p>승인목록</p>
-        <div className="top">
-          <select
-            className='page-size'
-            onChange={(e) => changePageSize(e)}
-          >
-            <option value={2}>2개씩</option>
-            <option value={4}>4개씩</option>
-            <option value={6}>6개씩</option>
-            <option value={10}>10개씩</option>
-          </select>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              {/* <th>
-                key:
-                <select onChange={(e) => keyChange(e)}>
-                {boardData.map((item) => {
-                  return(
-                    <>
-                    <option value={item.key} onChange={(e) => keyChange(e)}>{item.key}</option>
-                    </>
-                  )
-                })}
-                </select>
-              </th> */}
-              <th>num</th>
-              <th>status</th>
-              <th>condition</th>
-              <th>category</th>
-              <th>title</th>
-              <th>content</th>
-              <th>regDt</th>
-              <th>상세보기</th>
-            </tr>
-          </thead>
-          {postData.map((item,i) => {
-            return(
-              <tbody key={item.brdKey}>
+      <CommonStyleFrame>
+        <Wrap>
+          <p>승인목록</p>
+          <ul className="top">
+            <li className="left-box">
+              <input 
+                type="search" 
+                placeholder='검색' 
+                className='search-input' 
+              />
+              <input 
+                type="submit" 
+                value='검색' 
+                className='search-btn' 
+              />
+            </li>
+            <li className="right-box">
+              <select
+                className='page-size'
+                onChange={(e) => changePageSize(e)}
+              >
+                <option value={2}>2개씩</option>
+                <option value={4}>4개씩</option>
+                <option value={6}>6개씩</option>
+                <option value={10}>10개씩</option>
+              </select>
+            </li>
+          </ul>
+          <TableFrame>
+            <table>
+              <thead>
                 <tr>
-                  {/* <td>
-                    {v.brdKey}
-                  </td> */}
-                  <td>
-                    {item.num}
-                  </td>
-                  <td>
-                    {item.status}
-                  </td>
-                  <td>
-                    {item.condition}
-                    {/* <select 
-                      name="condition" 
-                      onChange={(e) => conditionChange(e, i)}
-                    >
-                    </select> */}
-                  </td>
-                  <td>
-                    {item.category}
-                  </td>
-                  <td>
-                    {item.title}
-                  </td>
-                  <td>
-                    {item.content}
-                  </td>
-                  <td>
-                    {item.regDt}
-                  </td>
-                  <td>
-                    <button>상세보기</button>
-                  </td>
+                  {/* <th>
+                    key:
+                    <select onChange={(e) => keyChange(e)}>
+                    {boardData.map((item) => {
+                      return(
+                        <>
+                        <option value={item.key} onChange={(e) => keyChange(e)}>{item.key}</option>
+                        </>
+                      )
+                    })}
+                    </select>
+                  </th> */}
+                  <th>num</th>
+                  <th>status</th>
+                  <th>condition</th>
+                  <th>category</th>
+                  <th>title</th>
+                  <th>content</th>
+                  <th>regDt</th>
+                  <th>상세보기</th>
                 </tr>
+              </thead>
+              <tbody>
+              {postData.map((item,i) => {
+                return(
+                    <tr key={item.brdKey}>
+                      {/* <td>
+                        {v.brdKey}
+                      </td> */}
+                      <td>
+                        {item.num}
+                      </td>
+                      <td>
+                        {item.status}
+                      </td>
+                      <td>
+                        {item.condition}
+                        {/* <select 
+                          name="condition" 
+                          onChange={(e) => conditionChange(e, i)}
+                        >
+                        </select> */}
+                      </td>
+                      <td>
+                        {item.category}
+                      </td>
+                      <td>
+                        {item.title}
+                      </td>
+                      <td>
+                        {item.content}
+                      </td>
+                      <td>
+                        {item.regDt}
+                      </td>
+                      <td>
+                        <button>상세보기</button>
+                      </td>
+                    </tr>
+                )
+              })}
               </tbody>
-            )
-          })}
-        </table>
-        <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} />
-      </Wrap>
+            </table>
+          </TableFrame>
+          <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} />
+        </Wrap>
+      </CommonStyleFrame>
     </>
 
 

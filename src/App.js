@@ -31,8 +31,7 @@ import Gallery01 from './Components/Page/Gallery01';
 
 /* Admin Components */
 import Admin from './Components/Admin/Admin';
-import AdminBoardList3 from './Components/Admin/AdminBoardList3';
-// import AdminBoardList from './Components/Admin/AdminBoardList';
+import AdminBoardList from './Components/Admin/AdminBoardList';
 import AdminPostApprove from './Components/Admin/AdminPostApprove';
 import AdminMemberList from './Components/Admin/AdminMemberList';
 import AdminCompanyList from './Components/Admin/AdminCompanyList';
@@ -357,7 +356,7 @@ const App = () => {
                 {/* Admin */}
                 <Route exact path="/admin" element={<Admin />}></Route>
                 {/* <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route> */}
-                <Route exact path="/admin/board_list" element={<AdminBoardList3 />}></Route>
+                <Route exact path="/admin/board_list" element={<AdminBoardList />}></Route>
                 <Route exact path="/admin/post_approve" element={<AdminPostApprove/>}></Route>
                 <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route>
                 <Route exact path="/admin/company_list" element={<AdminCompanyList/>}></Route>
