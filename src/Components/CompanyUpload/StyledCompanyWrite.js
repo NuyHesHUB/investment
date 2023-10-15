@@ -25,6 +25,7 @@ export const Container = styled.div`
     margin-bottom: 20px;
   }
   input {width: 400px;}
+  input.investment-amount {text-align: right;}
   select {width: 200px;}
   input.title {width: 100%;}
 `

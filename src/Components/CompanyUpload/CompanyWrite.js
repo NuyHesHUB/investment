@@ -19,7 +19,6 @@ import { StyleFrame, Container } from "./StyledCompanyWrite"
 //     ]
 //   }
 
-
 const CompanyWrite = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
   ///// JWT /////
@@ -32,9 +31,8 @@ const CompanyWrite = () => {
   const quillRef = useRef(null);
   const navigate = useNavigate();
 
-  
-  const [content, setContent] = useState('');
-  const [investmentAmount, setInvestmentAmount] = useState(0);
+  const [content, setContent] = useState(''); // 내용부분
+  const [investmentAmount, setInvestmentAmount] = useState(0); //투자희망금액 (아직 코드 안짬)
   const [postData, setPostData] = useState({
     category: "",
     condition: "pending",
@@ -50,15 +48,7 @@ const CompanyWrite = () => {
     attaches: ""
   });
 
-
-
-
-  
-
-
-
-
-  const imageHandler = () => {
+  const imageHandler =  useEffect(() => {
       
       console.log("이미지핸들러")
       const input = document.createElement('input');
@@ -100,13 +90,12 @@ const CompanyWrite = () => {
           editor.insertEmbed(range.index, "image", IMG_URL);
 
           // console.log(range.index, 'range.index')
-          // console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl);
+          console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl);
         } catch (error) {
           console.log(error, 'e실패했어요ㅠrr')
         }
       });
-    }
-
+    }, [])
 
   const modules = useMemo(() => {
     return {
@@ -134,8 +123,6 @@ const CompanyWrite = () => {
     'image',
   ];
 
-
-  
   const handleContentChange = (value) => {
     setContent(value);
     setPostData({
@@ -144,6 +131,7 @@ const CompanyWrite = () => {
     });
   };
 
+  //투자희망금액
   const investmentAmountChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10)
     setInvestmentAmount(value)
@@ -223,8 +211,9 @@ const CompanyWrite = () => {
               <label htmlFor="title" className="form-label">투자희망금액</label>
               <input 
                 type="text" 
-                className="form-control" 
-                value={investmentAmount}
+                className="form-control investment-amount" 
+                value={investmentAmount || ""}
+                placeholder='0'
                 onChange={(e) => investmentAmountChange(e)} 
               />
               <span> 원</span>
