@@ -28,7 +28,7 @@ const CompanyWrite = () => {
     Authorization: `${accessToken}`
   }
 
-  const quillRef = useRef(null);
+  
   const navigate = useNavigate();
 
   const [content, setContent] = useState(''); // 내용부분
@@ -48,24 +48,27 @@ const CompanyWrite = () => {
     attaches: ""
   });
 
+  const quillRef = useRef(false);
   const imageHandler =  useEffect(() => { //useEffect 써야지 사진 엑박 안 뜸.
-      
+    if (!quillRef.current) {
+      quillRef.current = true;
+    } else {
       console.log("이미지핸들러")
       const input = document.createElement('input');
       input.setAttribute('type', 'file');
       input.setAttribute('accept', 'image/*');
       input.click();
-
+  
       input.addEventListener('change', async () => {
         const file = input.files[0];
         const encodedFilename = encodeURIComponent(file.name);
         const imgUrl = URL.createObjectURL(file)
-
+  
         const formData = new FormData();
         formData.append('file', file); 
         formData.append('brdKey', "companyLogoImg");
         formData.append('filename', encodedFilename);
-
+  
         console.log('온체인지',imgUrl);
         
         try {
@@ -74,14 +77,17 @@ const CompanyWrite = () => {
           const editor = quillRef.current.getEditor();
           const range = editor.getSelection(true);
           editor.insertEmbed(range.index, "image", IMG_URL);
-
+  
           // console.log(range.index, 'range.index')
           console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl);
         } catch (error) {
           console.log(error, '실패')
         }
-      });
-    }, [])
+      }
+    )
+    }
+
+  }, [])
 
   const modules = useMemo(() => {
     return {
