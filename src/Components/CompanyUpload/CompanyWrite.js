@@ -155,23 +155,21 @@ const CompanyWrite = () => {
   ///// 첨부파일 /////
   // const [selectedFiles, setSelectedFiles] = useState([]); //test, 좀이따 위로 올리기
   const [selectedFilesName, setSelectedFilesName] = useState([]); //test, 좀이따 위로 올리기
+  const filesName = [] // 파일명 미리보기 리스트
   const handleFileChange  = async (e) => {
-    const filesName = [] // 파일 이름 미리보기 리스트
     const files = e.target.files;
-    // 최대 3개의 파일만 허용
-    if (files.length > 3) {
-      alert('최대 3개의 파일만 선택할 수 있습니다.');
-      console.log(files, e.target.value, "asdasdasddassadasdd")
+    
+    if (files.length > 5 || postData.attaches.length >= 5 || postData.attaches.length + files.length > 5) {
+      alert('최대 5개의 파일만 선택할 수 있습니다.');
       e.target.value = ''
       // setSelectedFiles()
-      setSelectedFilesName([])
+      // setSelectedFilesName([])
       return;
     } else {
       // setSelectedFiles(files)
-      setSelectedFilesName(filesName)
       const formData = new FormData();
-      
       for (let i = 0; i < files.length; i++) {
+        //파일명 미리보기 리스트에 push
         filesName.push(files[i].name)
         //폼데이터
         const file = files[i];
@@ -180,10 +178,12 @@ const CompanyWrite = () => {
         formData.append('filename', encodedFilename);
       }
       formData.append('brdKey', "companyLogoImg");
-
+      setSelectedFilesName(filesName)
+      console.log("filesNamefilesName", filesName, selectedFilesName)
+      
+      let ATTACH_URL_LIST = [] //파일링크 담을 리스트
       try {
         const result = await axios.post(`${baseURL}/v1/attachment/upload`, formData , { headers })        
-        let ATTACH_URL_LIST = []
         for (let i = 0; i < files.length; i++) {
           let ATTACH_URL = '';
           if(result.data.length === undefined) {
@@ -193,21 +193,21 @@ const CompanyWrite = () => {
             ATTACH_URL = result.data[i].attachesUrl;
             ATTACH_URL_LIST.push(ATTACH_URL)
           }
-          setPostData({
-            ...postData,
-            attaches: ATTACH_URL_LIST
-          })
         }
         console.log('성공', result);
       } catch (error) {
         console.log(error, '실패')
       }
 
+      // postData에 저장
+      setPostData({
+        ...postData,
+        attaches: [...postData.attaches, ATTACH_URL_LIST].flat(1)
+      })
     } // if문 끝
   }
-  console.log(postData, "테스테트ㅔ슽셑슽세")
 
-  // 등록/취소 Btn //
+  ///// 등록/취소 Btn /////
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (window.confirm("등록하시겠습니까?")) {
@@ -285,7 +285,7 @@ const CompanyWrite = () => {
                 accept=".gif, .jpg, .jpeg, .png, .pdf, .ppt, .doc, .hwp, .txt, .xls, .xlsx"
                 className="form-control" 
                 // value={selectedFiles}
-                onChange={(e) => handleFileChange (e)} 
+                onChange={(e) => handleFileChange(e)} 
                 multiple
               />
               {/* 첨부파일 이미지 미리보기 */}
