@@ -1,15 +1,11 @@
 import styled from 'styled-components';
 
-
 export const StyledFrame = styled.div`
   /* background: palegreen; */
   overflow: hidden;
-  
 `
 export const Wrap = styled.div`
   /* background: pink; */
-  color: #000;
-  *{box-sizing: border-box; padding: 0; margin: 0;}
 `
 export const Container = styled.div`
   /* background: skyblue; */
@@ -18,11 +14,10 @@ export const Container = styled.div`
   width: 500px;
   margin: 0 auto;
   text-align: center;
-  p,h2 {color: #555;}
+  p,h2 {color: #333;}
   h2 {
     margin-bottom: 30px;
     font-size: 36px;
-    
   }
   p.txt {color: #ff4848; margin-bottom: 15px; font-size: 14px;}
 `

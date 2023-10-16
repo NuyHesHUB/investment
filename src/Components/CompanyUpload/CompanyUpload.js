@@ -6,8 +6,8 @@ import axios from 'axios';
 import Header from "../Header"
 
 // styled
-import { StyledFrame, Wrap, Container, Inner } from "./StyledCompanyUpload"
-
+import { Wrap, Container, Inner } from "./StyledCompanyUpload"
+import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
 // icon
 import { AiOutlineCamera } from "react-icons/ai";
 
@@ -104,64 +104,66 @@ const CompanyUpload = () => {
       <Header />
       <Wrap>
         <Container>
-          <h2>업체 등록하기</h2>
-          <p className='txt'>내용은 추후에 수정 가능합니다.</p>
-          <Inner>
-            <ul>
-              <li>
-                <input 
-                  type="text" 
-                  value={b_no &&`${b_no.slice(0,3)}-${b_no.slice(3,5)}-${b_no.slice(5,10)}`}
-                  disabled
-                />
-              </li>
-              <li>
-                <label htmlFor="logo-upload">
-                  <div className={placeholderActive ? 'placeholder-active' : 'placeholder-none'}>
-                    <AiOutlineCamera size="100" color="#c5c6c9" />
-                    <p>로고 이미지 업로드</p>
-                  </div>
-                  <p className='imgBox'>
-                    <img src={logoImage} id="preview" />
-                  </p>
-                </label>
-                <input 
-                  id='logo-upload' 
-                  type="file" 
-                  accept='image/*' 
-                  onChange={(e) => inputFileChange(e)}
-                />
-              </li>
-              <li className={companyNameLen ? '' : 'required'}>
-                <input 
-                  type="text" 
-                  name="companyName"
-                  placeholder='회사명'
-                  onChange={(e) => companyValueWrite(e, "companyName")}
-                />
-              </li>
-              <li className={representativeNameLen ? '' : 'required'}>
-                <input 
-                  type="text" 
-                  name="representativeName"
-                  placeholder='대표자 이름' 
-                  onChange={(e) => companyValueWrite(e, "representativeName")}
-                />
-              </li>
-              <li>
-                <textarea 
-                  name="introduction" 
-                  rows="10" 
-                  placeholder='회사 소개글 입력 (최대 300자)' 
-                  maxLength={300}
-                  onChange={(e) => companyValueWrite(e, "introduction")}
-                />
-              </li>
-              <li>
-                <button onClick={() => uploadBtnClick()}>등록</button>
-              </li>
-            </ul>
-          </Inner>
+          <CommonStyleFrame>
+            <h2>업체 등록하기</h2>
+            <p className='txt'>내용은 추후에 수정 가능합니다.</p>
+            <Inner>
+              <ul>
+                <li>
+                  <input 
+                    type="text" 
+                    value={b_no &&`${b_no.slice(0,3)}-${b_no.slice(3,5)}-${b_no.slice(5,10)}`}
+                    disabled
+                  />
+                </li>
+                <li>
+                  <label htmlFor="logo-upload">
+                    <div className={placeholderActive ? 'placeholder-active' : 'placeholder-none'}>
+                      <AiOutlineCamera size="100" color="#c5c6c9" />
+                      <p>로고 이미지 업로드</p>
+                    </div>
+                    <p className='imgBox'>
+                      <img src={logoImage} id="preview" />
+                    </p>
+                  </label>
+                  <input 
+                    id='logo-upload' 
+                    type="file" 
+                    accept='image/*' 
+                    onChange={(e) => inputFileChange(e)}
+                  />
+                </li>
+                <li className={companyNameLen ? '' : 'required'}>
+                  <input 
+                    type="text" 
+                    name="companyName"
+                    placeholder='회사명'
+                    onChange={(e) => companyValueWrite(e, "companyName")}
+                  />
+                </li>
+                <li className={representativeNameLen ? '' : 'required'}>
+                  <input 
+                    type="text" 
+                    name="representativeName"
+                    placeholder='대표자 이름' 
+                    onChange={(e) => companyValueWrite(e, "representativeName")}
+                  />
+                </li>
+                <li>
+                  <textarea 
+                    name="introduction" 
+                    rows="10" 
+                    placeholder='회사 소개글 입력 (최대 300자)' 
+                    maxLength={300}
+                    onChange={(e) => companyValueWrite(e, "introduction")}
+                  />
+                </li>
+                <li>
+                  <button onClick={() => uploadBtnClick()}>등록</button>
+                </li>
+              </ul>
+            </Inner>
+          </CommonStyleFrame>
         </Container>
       </Wrap>
     </StyledFrame>

@@ -4,13 +4,12 @@ export const StyleFrame = styled.div`
 
 `
 export const Container = styled.div`
-*{box-sizing: border-box;}
-  background: #b2bfd4;
+  /* background: #b2bfd4; */
   padding-top: 80px;
   width: 100%; height: 1000px;
   h2.title {text-align: center;}
   form {
-    background: #a3c7bd;
+    /* background: #a3c7bd; */
     width: 700px;
     margin: 0 auto;
   }
@@ -28,4 +27,5 @@ export const Container = styled.div`
   input.investment-amount {text-align: right;}
   select {width: 200px;}
   input.title {width: 100%;}
+  .ql-container {min-height: 50px; padding: 10px; cursor: text;}
 `
