@@ -576,6 +576,7 @@ const PostDetail = () => {
                             <p>thumbnail : {item.thumbnail}</p>
                             <p>nickname : {item.nickname}</p>
                             <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                            {/* 뭐야 */}
                         </div>
                 ))}
                     
