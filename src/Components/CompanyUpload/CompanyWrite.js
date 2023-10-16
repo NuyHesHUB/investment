@@ -52,9 +52,8 @@ const CompanyWrite = () => {
     attaches: ""
   });
 
-  
   const quillRef = useRef(true);
-
+  ///// 이미지 핸들러 /////
   const imageHandler = () => { 
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -63,24 +62,30 @@ const CompanyWrite = () => {
     input.click();
     
     input.onchange = async () => {
-      const file = input.files[0];
-      const encodedFilename = encodeURIComponent(file.name);
-      console.log(file, "fileㅌㅌㅇㅌㅌㅇㅌㅇㅌㅌ")
-      // const imgUrl = URL.createObjectURL(file)
-
+      const files = input.files;
+      const editor = quillRef.current.getEditor();
       const formData = new FormData();
-      formData.append('file', file); 
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const encodedFilename = encodeURIComponent(file.name);
+        formData.append('files', file);  // Append each file to the FormData
+        formData.append('filename', encodedFilename);
+      }
       formData.append('brdKey', "companyLogoImg");
-      formData.append('filename', encodedFilename);
       try {
-        const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })
-        
-        const IMG_URL = result.data.imageUrl;
-        const editor = quillRef.current.getEditor();
-        const range = editor.getSelection();
-        setTimeout(() => editor.insertEmbed(range.index, "image", IMG_URL), 500)
-        
-        console.log('성공', IMG_URL);
+        const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })        
+        for (let i = 0; i < files.length; i++) {
+          let IMG_URL = '';
+          if(result.data.length === undefined) {
+            IMG_URL = result.data.imageUrl;
+          } else {
+            IMG_URL = result.data[i].imageUrl;
+          }
+          const range = editor.getSelection();
+          setTimeout(() => editor.insertEmbed(range.index, "image", IMG_URL), 500);
+        }
+        // console.log('성공', IMG_URL);
       } catch (error) {
         console.log(error, '실패')
       }
@@ -94,7 +99,7 @@ const CompanyWrite = () => {
       content: value
     });
   };
-
+  ///// 에디터 모듈 설정 /////
   const modules = useMemo(() => {
     return {
       toolbar: {
@@ -125,7 +130,7 @@ const CompanyWrite = () => {
 
   ///// 투자희망금액 /////
   const investmentAmountChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10)
+    const value = e.target.value.replace(/[^0-9]/g, '')
     setInvestmentAmount(value.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1'))
     setPostData({
       ...postData,
@@ -144,13 +149,16 @@ const CompanyWrite = () => {
   ///// 첨부파일 /////
   const [selectedFiles, setSelectedFiles] = useState([]); //test, 좀이따 위로 올리기
   const [selectedFilesName, setSelectedFilesName] = useState([]); //test, 좀이따 위로 올리기
-  const handleFileChange  = (e) => {
+  const handleFileChange  = async (e) => {
     const filesName = [] // 파일 이름 미리보기 리스트
     const files = e.target.files;
-    console.log(files, "asdasdasddassadasdd")
     // 최대 3개의 파일만 허용
     if (files.length > 3) {
       alert('최대 3개의 파일만 선택할 수 있습니다.');
+      console.log(files, e.target.value, "asdasdasddassadasdd")
+      e.target.value = ''
+      setSelectedFiles()
+      setSelectedFilesName([])
       return;
     } else {
       setSelectedFiles(files)
@@ -158,22 +166,38 @@ const CompanyWrite = () => {
         ...postData,
         attaches: selectedFiles
       })
+      setSelectedFilesName(filesName)
 
+      const formData = new FormData();
+      
       for (let i = 0; i < files.length; i++) {
         filesName.push(files[i].name)
-
         //폼데이터
         const file = files[i];
         const encodedFilename = encodeURIComponent(file.name);
-        const formData = new FormData();
         formData.append('file', file); 
-        formData.append('brdKey', "companyLogoImg");
         formData.append('filename', encodedFilename);
       }
-      setSelectedFilesName(filesName)
+      formData.append('brdKey', "companyLogoImg");
+
+      try {
+        const result = await axios.post(`${baseURL}/v1/attachment/upload`, formData , { headers })        
+        for (let i = 0; i < files.length; i++) {
+          let IMG_URL = '';
+          // if(result.data.length === undefined) {
+          //   IMG_URL = result.data.imageUrl;
+          // } else {
+          //   IMG_URL = result.data[i].imageUrl;
+          // }
+        }
+        console.log('성공', result);
+      } catch (error) {
+        console.log(error, '실패')
+      }
+
     } // if문 끝
   }
-  console.log(selectedFiles,selectedFilesName, "selectedFiles")
+  // console.log(selectedFiles,selectedFilesName, "selectedFiles")
 
   // 등록/취소 Btn //
   const handleSubmit = async (e) => {
@@ -205,73 +229,78 @@ const CompanyWrite = () => {
         <CommonStyleFrame>
           <div className="container mt-5">
             <h2 className='title'>투자 등록하기</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="title" className="form-label">업종</label> {/* select로 변경 */}
-                <select 
-                  name="category"
-                  onChange={(e) => handleValueChange(e, "category")}
-                >
-                  <option value="제조">제조</option>
-                  <option value="IT">IT</option>
-                  <option value="외식">외식</option>
-                  <option value="서비스">서비스</option>
-                  <option value="의료">의료</option>
-                  <option value="유통/물류">유통/물류</option>
-                  <option value="운송">운송</option>
-                  <option value="대여">대여</option>
-                  <option value="기타">기타</option>
-                  <option value="엔터테이먼트">엔터테이먼트</option>
-                  <option value="교육">교육</option>
-                  <option value="부동산">부동산</option>
-                </select>
-              </div>
-              <div className="mb-3">
-                <label htmlFor="title" className="form-label">제목</label>
-                <input 
-                  type="text" 
-                  className="form-control title" 
-                  name="title" 
-                  placeholder='제목을 입력해주세요'
-                  onChange={(e) => handleValueChange(e, "title")} 
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="title" className="form-label">투자희망금액</label>
-                <input 
-                  type="text" 
-                  className="form-control investment-amount" 
-                  value={investmentAmount || ""}
-                  placeholder='0'
-                  onChange={(e) => investmentAmountChange(e)} 
-                />
-                <span> 원</span>
-              </div>
-              <div className="mb-3">
-                <label htmlFor="title" className="form-label">첨부파일</label>
-                <input 
-                  type="file" 
-                  className="form-control" 
-                  // value={selectedFiles}
-                  onChange={(e) => handleFileChange (e)} 
-                  multiple
-                />
+            <div className="mb-3">
+              <label htmlFor="title" className="form-label">업종</label> {/* select로 변경 */}
+              <select 
+                name="category"
+                onChange={(e) => handleValueChange(e, "category")}
+              >
+                <option value="제조">제조</option>
+                <option value="IT">IT</option>
+                <option value="외식">외식</option>
+                <option value="서비스">서비스</option>
+                <option value="의료">의료</option>
+                <option value="유통/물류">유통/물류</option>
+                <option value="운송">운송</option>
+                <option value="대여">대여</option>
+                <option value="기타">기타</option>
+                <option value="엔터테이먼트">엔터테이먼트</option>
+                <option value="교육">교육</option>
+                <option value="부동산">부동산</option>
+              </select>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="title" className="form-label">제목</label>
+              <input 
+                type="text" 
+                className="form-control title" 
+                name="title" 
+                placeholder='제목을 입력해주세요'
+                onChange={(e) => handleValueChange(e, "title")} 
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="title" className="form-label">투자희망금액</label>
+              <input 
+                type="text" 
+                className="form-control investment-amount" 
+                value={investmentAmount || ""}
+                placeholder='0'
+                onChange={(e) => investmentAmountChange(e)} 
+              />
+              <span> 원</span>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="title" className="form-label">첨부파일</label>
+              <input 
+                type="file" 
+                accept=".gif, .jpg, .jpeg, .png, .pdf, .ppt, .doc, .hwp, .txt, .xls, .xlsx"
+                className="form-control" 
+                // value={selectedFiles}
+                onChange={(e) => handleFileChange (e)} 
+                multiple
+              />
+              {/* 첨부파일 이미지 미리보기 */}
+              <ul className={selectedFilesName.length > 0 ? "attachPreviewBox" : ""}>
                 {selectedFilesName && selectedFilesName.map((item,index) => {
                   return(
-                    <p>{item}</p>
+                    <li className='attachPreview' key={index}>
+                      <span>{item}</span>
+                      <button className='attach_del_btn'>X</button> {/* //FIXME: 아이콘 고치기, 기능 구현 */}
+                    </li> 
                   )
                 })}
-              </div>
+              </ul>
+            </div>
 
-              <div className="mb-3">
-                <label htmlFor="content" className="form-label">내용</label>
-                <ReactQuill ref={quillRef} value={content} onChange={(e) => handleContentChange(e)} modules={modules} formats={formats} />
-              </div>
-              <div className="btnBox">
-                <button onClick={() => prevPage()} className='cancelBtn'>취소</button>
-                <button type="submit" className="btn btn-primary">등록</button>
-              </div>
-            </form> 
+            <div className="mb-3">
+              <label htmlFor="content" className="form-label">내용</label>
+              <ReactQuill ref={quillRef} value={content} onChange={(e) => handleContentChange(e)} modules={modules} formats={formats} />
+            </div>
+            <div className="btnBox">
+              <button onClick={() => prevPage()} className='cancelBtn'>취소</button>
+              <button type="submit" className="btn btn-primary" onClick={handleSubmit}>등록</button>
+            </div>
           </div>
         </CommonStyleFrame>
       </Container>

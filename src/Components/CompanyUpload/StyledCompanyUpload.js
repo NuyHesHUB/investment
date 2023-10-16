@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-export const StyledFrame = styled.div`
-  /* background: palegreen; */
-  overflow: hidden;
-`
 export const Wrap = styled.div`
   /* background: pink; */
 `
