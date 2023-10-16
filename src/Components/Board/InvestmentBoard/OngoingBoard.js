@@ -24,10 +24,11 @@ const InvestOngoingBoard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
+                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post?query&pageRows=&page=&category=&status=&condition=ongoing`, { headers });
                 const data = PostResponse.data?.query;
                 console.log('investPostResponse',data);
-                setInvestOngoingPostData(data.filter(item => item.condition === 'ongoing'));
+                /* setInvestOngoingPostData(data.filter(item => item.condition === 'ongoing')); */
+                setInvestOngoingPostData(data);
             } catch (error) {
                 console.error('investOngoingBoardData 데이터 가져오기 실패', error);
             }
@@ -46,7 +47,7 @@ const InvestOngoingBoard = () => {
     \*-----------------------------------------------*/
     const formattedDates = Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
     investOngoingPostData
-    .filter(item => item && item.condition === 'ongoing')
+    /* .filter(item => item && item.condition === 'ongoing') */
     .map((item, index) => {
         const endDt = new Date(item.endDt);
         /* const startDt = new Date(item.startDt); */

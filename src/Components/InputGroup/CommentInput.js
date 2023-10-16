@@ -40,9 +40,10 @@ const CommentBtn=styled.button`
     text-align: center;
 `
 
-const CommentInput = ({ frameHeight, onPostComment, btnText, holder }) => {
+const CommentInput = ({ frameHeight, onPostComment, btnText, holder, initialValue }) => {
 
-  const [comment, setComment] = useState('');
+  /* const [comment, setComment] = useState(''); */
+  const [comment, setComment] = useState(initialValue || '');
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -56,11 +57,6 @@ const CommentInput = ({ frameHeight, onPostComment, btnText, holder }) => {
     }
     onPostComment(comment);
     setComment('');
-
-    /* onPostComment(comment, () => {
-      setComment('');
-  }); */
-    
   };
 
   return (
@@ -68,9 +64,9 @@ const CommentInput = ({ frameHeight, onPostComment, btnText, holder }) => {
         style={{height: frameHeight}}
     >
         <TextArea
-        placeholder={holder}
-        value={comment}
-        onChange={handleCommentChange}
+          placeholder={holder}
+          value={comment}
+          onChange={handleCommentChange}
         />
         <CommentBtn 
         onClick={handlePostComment}

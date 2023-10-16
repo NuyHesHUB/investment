@@ -194,7 +194,7 @@ const App = () => {
     /* console.log('communityCategoryData',communityCategoryData); */
     /* console.log('parsedCommunityCategoryData',parsedCommunityCategoryData); */
     /* console.log('englishCategories',englishCategories); */
-    console.log('boardData',boardData);
+    /* console.log('boardData',boardData); */
     /* console.log('investmentEnglishCategories',investmentEnglishCategories); */
     useEffect(() => {
         const fetchData = async () => {

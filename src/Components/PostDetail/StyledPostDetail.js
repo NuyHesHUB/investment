@@ -247,13 +247,11 @@ export const CommentFrame=styled.div`
 `
 export const CommentBox=styled.div`
     position: relative;
-    /* width: 893px; */
     width: 100%;
     padding-top: 25px;
     padding-bottom: 25px;
     box-sizing: border-box;
     background: rgb(255, 255, 255);
-    /* border-top: 1px solid rgb(221, 221, 221); */
     border-bottom: 1px solid rgb(221, 221, 221);
 `
 export const CommentTopBox=styled.div`
@@ -294,9 +292,9 @@ export const CommentLikeBox=styled.div`
         font-size: 21px;
     }
     cursor: pointer;
-    &:hover{
+    /* &:hover{
         color: red;
-    }
+    } */
 `
 
 export const CommentCenterBox=styled.div`
@@ -313,13 +311,15 @@ export const CommentBottomBox=styled.div`
     color: rgb(85, 85, 85);
     font-size: 14px;
     font-weight: 300;
+    display: flex;
     cursor: pointer;
-    &:hover{
+    >div:hover{
         text-decoration: underline;
     }
 `
 export const ReplyBox=styled.div`
     width: 100%;
+    position: relative;
     background: rgb(246, 247, 247);
     border-bottom: 1px solid rgb(221, 221, 221);
     display: flex;

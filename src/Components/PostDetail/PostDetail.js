@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 /* React-Router-Dom */
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 /* Redux */
 import { useSelector } from 'react-redux';
@@ -10,11 +10,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 /* React-Icons */
-import { AiOutlineLike, AiOutlineDislike, AiOutlineHeart } from 'react-icons/ai';
-import { HiUser } from 'react-icons/hi';
-import { MdOutlineComment } from 'react-icons/md';
-import { BsList } from 'react-icons/bs';
-import { FiEye } from 'react-icons/fi';
+import { AiOutlineHeart } from 'react-icons/ai';
 import { VscThumbsup, VscThumbsdown } from 'react-icons/vsc';
 import { LuReply } from 'react-icons/lu';
 
@@ -88,6 +84,12 @@ import defaultLogo from '../../assets/default-image/company-default-img.png';
 
 const PostDetail = () => {
 
+    /* useNavigate */
+    const navigate = useNavigate();
+
+    /* React-Scroll 헤더높이값 */
+    const headerHeight = 120;
+
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
@@ -95,10 +97,6 @@ const PostDetail = () => {
     const headers = {
         Authorization: `${accessToken}`
     };
-
-    /* 좋아요 & 싫어요 */
-    const [isLiked, setIsLiked] = useState(false);
-    const [isDisliked, setIsDisliked] = useState(false);
 
     /* useParams */
     const { condition, id } = useParams();
@@ -112,20 +110,9 @@ const PostDetail = () => {
 
     const [likeData, setLikeData] = useState(likeList);
 
-
-    /* console.log('likeList',likeList);
-    console.log('likeData',likeData); */
-
     /* 댓글 데이터 */
     const [comments, setComments] = useState([]);
-    const [updatedComments, setUpdatedComments] = useState([]);
-    /* const commentLike = comments.filter(comment => comment.parentId === 0).map(comment => comment.like); */
-    /* const [commentLikeData, setCommentLikeData] = useState(commentLike); */
-
-    
-
-    /* console.log('commentLike',commentLike); */
-    /* console.log('commentLikeData',commentLikeData); */
+    /* const [updatedComments, setUpdatedComments] = useState([]); */
 
     /* 답글 데이터 */
     const [replyData, setReplyData] = useState(null);
@@ -138,142 +125,232 @@ const PostDetail = () => {
     const [currentTab, setCurrentTab] = useState(0);
     const [showCommentTab, setShowCommentTab] = useState(false);
 
-    /* React-Scroll 헤더높이값 */
-    const headerHeight = 120;
-
+    /* 댓글 수정 TabMenu */
+    const [showCommentEditTab, setShowCommentEditTab] = useState(false);
     
+
+
     /*-----------------------------------------------------*\
                             게시물 좋아요
     \*-----------------------------------------------------*/
     const handleLike = () => {
-        axios.post(`http://39.117.244.34:3385/v1/board/like`, {
+        axios.post(`${baseURL}/v1/board/like`, {
             boardPostId: id,
             type: 'like',
             userUid: userUid
         }, { headers })
             .then(response => {
                 const updatedLikeCount = response?.data.query[0].like;
-                    /* setLikeData(prevData => ({
-                ...prevData,
-                like: updatedLikeCount */
                 setLikeData(
                      updatedLikeCount
                 );
             })
             .catch(error => {
-                console.error('좋아요 추가 실패', error);
+                if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
+                    alert('로그인이 필요합니다.');
+                    navigate('/login');
+                } else {
+                    console.error(`게시물 좋아요 실패`, error);
+                }
             });
     };
-    /* useEffect(() => {
+
+    useEffect(() => {
         setLikeData(likeList);
-      }, [likeList]); */
+      }, [likeList]);
 
-
-    /* console.log('likeData', likeData.like); */
-    /* console.log('post 테스트', postData?.[0].like); */
 
     /*-----------------------------------------------------*\
-                            일반 댓글 
+                  일반 댓글의 답글입력 아코디언기능
     \*-----------------------------------------------------*/
     const handleCommentBtnClick = (index, commentId) => {
         setActiveCommentIndex(index);
         setShowCommentTab(!showCommentTab)
         setReplyData(commentId);
+        setShowCommentEditTab(false); 
+        console.log('showCommentTab',showCommentTab);
         /* console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다.`); */
     };
 
-
-    const handleCommentLikeBtnClick = (index, commentId, type) => {
+    const handleCommentEditBtnClick = (index, commentId) => {
         setActiveCommentIndex(index);
-        console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다.`);
-        axios.post(`${baseURL}/v1/board/like`, {
-            boardPostId: commentId,
-            /* type: 'like', */
-            type: type,
-            userUid: userUid
-        }, { headers })
-        .then(response => {
-            console.log(`댓글 ${type} 추가 성공`, response);
-            setComments(prevComments => {
-                const updatedComments = [...prevComments];
-                /* updatedComments[index].like = response?.data.query[0].like;  */
-                if ( type === "like" ) {
-                    console.log('like 테스트');
-                    updatedComments[index].like = response?.data.query[0].like;
-                    updatedComments[index].dislike = response?.data.query[0].dislike;
-                } else {
-                    updatedComments[index].dislike = response?.data.query[0].dislike;
-                    updatedComments[index].like = response?.data.query[0].like;
-                }
-                return updatedComments;
-            });
-        })
-        .catch(error => {
-            console.error(`댓글 ${type} 추가 실패`, error);
-        });
+        setShowCommentEditTab(!showCommentEditTab)
+        setShowCommentTab(false);
+        console.log('showCommentEditTab',showCommentEditTab);
+        /* console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다.`); */
     }
 
-
-    /* 답글을 누르면 해당 부모의 댓글이 올라감 */
-    /* const handleReplyLikeBtnClick = (replyIndex, replyId, parentCommentIndex) => {
-        setActiveReplyIndex(replyIndex);
-        console.log(`답글 ID: ${replyId}가 클릭되었습니다. 해당 댓글의 index는 ${replyIndex}입니다. + ${parentCommentIndex}`);
-        axios.post(`${baseURL}/v1/board/like`, {
-            boardPostId: replyId,
-            type: 'like',
-            userUid: userUid
+    const handlePostEditComment = (editedComment, commentId, commentIndex) => {
+        console.log('editedComment',editedComment);
+        console.log('commentId',commentId);
+        console.log('commentIndex',commentIndex);
+        axios.patch(`${baseURL}/v1/board/investment/post/${id}/comments/${commentId}`, {
+            status: "Y",
+            content: editedComment,
+            isSecret : "N"
         }, { headers })
         .then(response => {
-            console.log('답글 좋아요 추가 성공', response);
+            console.log('댓글 업데이트 성공', response);
+            fetchComments();
+            setShowCommentEditTab(!showCommentEditTab)
+        })
+        .catch (error => {
+            console.error('댓글 업데이트 실패', error);
+        })
+    };
+
+    const handleDeleteComment = (commentIndex, commentId) => {
+        const confirmDelete = window.confirm(`${commentId} 이 댓글을 삭제하시겠습니까?`);
+        /* console.log('commentId',commentId); */
+        /* console.log('commentIndex',commentIndex); */
+        if (confirmDelete) {
+            /* console.log('예!!!'); */
+            axios.delete(`${baseURL}/v1/board/investment/post/${id}/comments/${commentId}`, { headers })
+            .then(response => {
+                console.log('댓글 삭제 성공', response);
+                fetchComments();
+            })
+            .catch (error => {
+                console.error('댓글 삭제 실패', error);
+            })
+        } /* else {
+            console.log('아니오!!!');
+        } */
+    }
+    /*-----------------------------------------------------*\
+                      댓글 좋아요 & 싫어요 기능
+    \*-----------------------------------------------------*/
+    const handleCommentLikeBtnClick = async (index, commentId, type) => {
+        setActiveCommentIndex(index);
+        console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다. 타입은 ${type}`);
+    
+        try {
+            const response = await axios.post(`${baseURL}/v1/board/like`, {
+                boardPostId: commentId,
+                type: type === comments[index].type ? "D" : type,
+                userUid: userUid
+            }, { headers });
+    
             setComments(prevComments => {
                 const updatedComments = [...prevComments];
-                if (updatedComments[parentCommentIndex]) {
-                    updatedComments[parentCommentIndex].like = response?.data.query[0].like;
-                }
+                updatedComments[index].like = response?.data.query[0].like;
+                updatedComments[index].dislike = response?.data.query[0].dislike;
                 return updatedComments;
             });
-        })
-        .catch(error => {
-            console.error('답글 좋아요 추가 실패', error);
-        });
-    } */
+    
+            await fetchComments(); // fetchComments가 상태를 올바르게 업데이트한다고 가정합니다.
+        } catch (error) {
+            console.error('좋아요 기능 실패', error);
+        }
+    };
+    
+    const fetchComments = () => {
+        axios.get(`${baseURL}/v1/board/investment/post/${id}/comments?status=Y&query&pageRows=&page=1&userUid=${userUid}`, { headers })
+          .then(response => {
+            const commentData = response.data.query;
+            setComments(commentData);
+          })
+          .catch(error => {
+            console.error('댓글 목록 가져오기 실패', error);
+          });
+    };
 
-    const handleReplyLikeBtnClick = (replyIndex, replyId, index, type) => {
+    /*-----------------------------------------------------*\
+                  댓글의 답글 좋아요 & 싫어요 기능
+    \*-----------------------------------------------------*/
+    /* const handleReplyLikeBtnClick = (replyIndex, replyId, index, type) => {
         setActiveReplyIndex(replyIndex);
         console.log('type', type);
         console.log(`답글 ID: ${replyId}가 클릭되었습니다. 해당 댓글의 index는 ${replyIndex}입니다.`);
         axios.post(`${baseURL}/v1/board/like`, {
             boardPostId: replyId,
-            /* type: 'like', */
             type: type,
             userUid: userUid
         }, { headers })
-        .then(response => {
-            console.log(`답글 ${type} 추가 성공`, response);
+            .then(response => {
+                console.log(`답글 ${type} 추가 성공`, response);
+                setComments(prevComments => {
+                    const updatedComments = [...prevComments];
+                    const parentCommentIndex = updatedComments.findIndex(comment => comment.id === replyId);
+                    if (parentCommentIndex !== -1) {
+                        updatedComments[parentCommentIndex].like = response?.data.query[0].like;
+                        updatedComments[parentCommentIndex].dislike = response?.data.query[0].dislike;
+                    }
+                    return updatedComments;
+                });
+            })
+            .catch(error => {
+                if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
+                    alert('로그인이 필요합니다.');
+                    navigate('/login');
+                } else {
+                    console.error(`답글 ${type} 추가 실패`, error);
+                }
+            });
+    }; */
+
+    const handleReplyLikeBtnClick = async (replyIndex, replyId, index, type) => {
+        setActiveReplyIndex(replyIndex);
+        console.log(`댓글 ID: ${replyId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다. 타입은 ${type}`);
+        try {
+            const response = await axios.post(`${baseURL}/v1/board/like`, {
+                boardPostId: replyId,
+                type: type === comments[replyIndex].type ? "D" : type,
+                userUid: userUid
+            },{ headers });
+
             setComments(prevComments => {
                 const updatedComments = [...prevComments];
                 const parentCommentIndex = updatedComments.findIndex(comment => comment.id === replyId);
                 if (parentCommentIndex !== -1) {
                     updatedComments[parentCommentIndex].like = response?.data.query[0].like;
-                    updatedComments[parentCommentIndex].dislike = response?.data.query[0].dislike;
+                    updatedComments[parentCommentIndex].dislike = response?.data.query[0].like;
                 }
                 return updatedComments;
             });
-        })
-        .catch(error => {
-            console.error(`답글 ${type} 추가 실패`, error);
-        });
+
+            await fetchComments();
+
+        } catch (error) {
+            console.error('좋아요 기능 실패', error);
+        }
     };
 
-    const [editedCommentContent, setEditedCommentContent] = useState('');
-    const [editedComment, setEditedComment] = useState(null);
 
-    const handleEditClick = (comment, index, commentId) => {
-        setEditedComment(comment);
-        setActiveCommentIndex(index);
-        console.log('index', index);
-        console.log('commentId', commentId);
-    }
+    /* const handleReplyLikeBtnClick = async (replyIndex, replyId, index, type) => {
+        setActiveReplyIndex(replyIndex);
+        console.log('type', type);
+        console.log(`답글 ID: ${replyId}가 클릭되었습니다. 해당 댓글의 index는 ${replyIndex}입니다.`);
+    
+        try {
+            const response = await axios.post(`${baseURL}/v1/board/like`, {
+                boardPostId: replyId,
+                type: type === comments[index].type ? "D" : type,
+                userUid: userUid
+            }, { headers });
+    
+            setComments(prevComments => {
+                const updatedComments = [...prevComments];
+                const parentCommentIndex = updatedComments.findIndex(comment => comment.id === index);
+                if (parentCommentIndex !== -1) {
+                    updatedComments[parentCommentIndex].reply[replyIndex].like = response?.data.query[0].like;
+                    updatedComments[parentCommentIndex].reply[replyIndex].dislike = response?.data.query[0].dislike;
+                }
+                return updatedComments;
+            });
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
+                alert('로그인이 필요합니다.');
+                navigate('/login');
+            } else {
+                console.error(`답글 ${type} 추가 실패`, error);
+            }
+        }
+    }; */
+
+    /* const [editedCommentContent, setEditedCommentContent] = useState(''); */
+    
+
 
 
     /* const handleCommentEditClick = (index, commentId) => {
@@ -281,39 +358,37 @@ const PostDetail = () => {
          const commentToEdit = comments[index];
         setEditedCommentContent(commentToEdit.content);
     } */
+    
+    
 
+
+    /* const [editedComment, setEditedComment] = useState(null);
     const handleEditSubmit = (index, commentId) => {
         console.log('test', index, commentId);
         if (editedComment) {
             axios.patch(`${baseURL}/v1/board/investment/post/${id}/comments/${editedComment.id}`, {
                 content: editedComment.content,
-                // 기타 필요한 데이터 추가
             }, { headers })
             .then(response => {
                 console.log('댓글 수정 성공', response);
-                // 서버로부터 수정된 댓글 데이터를 받아와서 화면에 업데이트할 수 있습니다.
-                // 예: setComments(updatedComments);
             })
             .catch(error => {
                 console.error('댓글 수정 실패', error);
             });
         }
-    }
+    } */
 
 
     /*-----------------------------------------------------*\
             로그인 & 비로그인에 따라 게시글 정보 GET API
     \*-----------------------------------------------------*/
-    useEffect(() => {
+    /* useEffect(() => {
 
-        /* 로그인 & 비로그인 게시글 정보 GET */
         if( userUid ) {
             axios.get(`${baseURL}/v1/board/investment/post/${id}` , { headers }, { withCredentials: true })
             .then(response => {
                 const data = response.data?.query;
                 setPostData(data);
-                /* const cookie = document.cookie;
-                console.log('cookie', cookie); */
             })
             .catch(error => {
                 console.error('게시글 정보 가져오기 실패', error);
@@ -329,19 +404,44 @@ const PostDetail = () => {
             });
         }
 
-        /* 댓글 GET */
-        axios.get(`${baseURL}/v1/board/investment/post/${id}/comments`, { headers })
+        axios.get(`${baseURL}/v1/board/investment/post/${id}/comments?status=Y&query&pageRows=&page=1&userUid=${userUid}`, { headers })
         .then(response => {
             const commentData = response.data.query; 
             setComments(commentData);
-            console.log('댓글 목록:', commentData);
         })
         .catch(error => {
             console.error('댓글 목록 가져오기 실패', error);
         });
         
-    }, []);
+    }, []); */
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (userUid) {
+                    const response1 = await axios.get(`${baseURL}/v1/board/investment/post/${id}`, { headers, withCredentials: true });
+                    const data1 = response1.data?.query;
+                    setPostData(data1);
+                } else {
+                    const response2 = await axios.get(`${baseURL}/v1/board/investment/post/${id}/unlogin`, { withCredentials: true });
+                    const data2 = response2.data?.query;
+                    setPostData(data2);
+                }
+    
+                const response3 = await axios.get(`${baseURL}/v1/board/investment/post/${id}/comments?status=Y&query&pageRows=&page=1&userUid=${userUid}`, { headers });
+                const commentData = response3.data.query;
+                setComments(commentData);
+            } catch (error) {
+                console.error('데이터 가져오기 실패', error);
+            }
+        };
+        fetchData();
+    }, []);
+    
+    console.log('기본 comment', comments);
+    /*-----------------------------------------------------*\
+                        댓글 시간데이터 변환
+    \*-----------------------------------------------------*/
     const formatDate = (isoDateString) => {
         const date = new Date(isoDateString);
         const year = date.getFullYear();
@@ -378,7 +478,7 @@ const PostDetail = () => {
       }; */
 
     /*-----------------------------------------------------*\
-                            일반 댓글 
+                            댓글 작성
     \*-----------------------------------------------------*/
     const handlePostComment = (comment) => {
         axios.post(`${baseURL}/v1/board/investment/post/${id}/comments`,{
@@ -413,7 +513,7 @@ const PostDetail = () => {
     };
 
     /*-----------------------------------------------------*\
-                        댓글의 답글 기능
+                        댓글의 답글 작성
     \*-----------------------------------------------------*/
     const handlePostReply = (comment) => {
         axios.post(`${baseURL}/v1/board/investment/post/${id}/comments`, {
@@ -452,13 +552,13 @@ const PostDetail = () => {
     \*-----------------------------------------------------*/
     const selectMenuHandler = (index) => {
         setCurrentTab(index);
-        console.log('currentTab',currentTab);
+        /* console.log('currentTab',currentTab); */
     };
 
     const menuArr = [
         { name: '상세 내용', content: (
             <div>
-               {/*  {postData.map((item, index) => (
+                {postData.map((item, index) => (
                         <div key={index}>
                             <p>id : {item.id}</p>
                             <p>num : {item.num}</p>
@@ -475,8 +575,9 @@ const PostDetail = () => {
                             <p>isSecret : {item.isSecret}</p>
                             <p>thumbnail : {item.thumbnail}</p>
                             <p>nickname : {item.nickname}</p>
+                            <div dangerouslySetInnerHTML={{ __html: item.content }} />
                         </div>
-                ))} */}
+                ))}
                     
                     {/* {postData.map((item, index) => (
                         <PostMain key={index.id}>
@@ -543,6 +644,7 @@ const PostDetail = () => {
                                                     <CommentLikeBox
                                                         type="like"
                                                         onClick={() => handleCommentLikeBtnClick(index, item.id, 'like')}
+                                                        style={{ color: item.type === "like" ? "blue" : "rgb(85, 85, 85)" }}
                                                     >
                                                         <VscThumbsup/>
                                                         {item.like}
@@ -550,6 +652,7 @@ const PostDetail = () => {
                                                     <CommentLikeBox
                                                         type="dislike"
                                                         onClick={() => handleCommentLikeBtnClick(index, item.id, 'dislike')}
+                                                        style={{ color: item.type === "dislike" ? "red" : "rgb(85, 85, 85)" }}
                                                     >
                                                         <VscThumbsdown/>
                                                         {item.dislike}
@@ -559,28 +662,24 @@ const PostDetail = () => {
                                             <CommentCenterBox>
                                                 <p>{item.content}</p>
                                             </CommentCenterBox>
-                                            {/* {editedComment === item ? ( */}
-                                                <>
-                                                    <textarea
-                                                        value={item.content}
-                                                        onChange={(e) => setEditedComment({ ...item, content: e.target.value })}
-                                                    />
-                                                    {/* <textarea
-                                                        value={editedComment.content}
-                                                        onChange={(e) => setEditedComment({ ...editedComment, content: e.target.value })}
-                                                    /> */}
-                                                    <button onClick={() => handleEditSubmit(index, item.id)}>수정 완료</button>
-                                                </>
-                                            {/* ) : ( */}
-                                                <>
-                                                    <div onClick={() => handleEditClick(item, index, item.id)}>수정</div>
-                                                    <div>삭제</div>
-                                                </>
-                                            {/* )} */}
-                                            <CommentBottomBox
-                                                onClick={() => handleCommentBtnClick(index, item.id)}
-                                            >
-                                                답글달기
+                                            <CommentBottomBox>
+                                                <div
+                                                    onClick={() => handleCommentEditBtnClick(index, item.id)}
+                                                    style={{marginRight:'10px'}}
+                                                >
+                                                    수정
+                                                </div>
+                                                <div
+                                                    onClick={() => handleDeleteComment(index, item.id)}
+                                                    style={{marginRight:'10px'}}
+                                                >
+                                                    삭제
+                                                </div>
+                                                <div
+                                                    onClick={() => handleCommentBtnClick(index, item.id)}
+                                                >
+                                                    답글달기
+                                                </div>
                                             </CommentBottomBox>
                                         </CommentBox>
 
@@ -595,47 +694,88 @@ const PostDetail = () => {
                                                 </div>
                                         ) : (null)}
 
+                                        {showCommentEditTab && activeCommentIndex === index ? (
+                                            <div style={{marginTop:'10px', marginBottom:'10px'}}>
+                                                <CommentInput 
+                                                    onPostComment={(newComment) => handlePostEditComment(newComment, item.id, index)} 
+                                                    initialValue={comments[index].content} 
+                                                    frameHeight="100px"
+                                                    btnText="답글 수정"
+                                                />
+                                            </div>
+                                        ) : (null)}
+
                                         {
                                             comments.map((reply, replyIndex) => {
                                                 if ( reply.parentId === item.id) {
                                                     return (
-                                                        <ReplyBox key={replyIndex}>
-                                                            <ReplyLeftWrap>
-                                                                <LuReply/>
-                                                            </ReplyLeftWrap>
-                                                            <ReplyRightWrap>
-                                                                <CommentTopBox>
-                                                                    <CommentTopLeftBox>
-                                                                        <p>{reply.nickname}</p>
-                                                                        <p>{formatDate(reply.regDt)}</p>
-                                                                    </CommentTopLeftBox>
-                                                                    <CommentTopRightBox>
-                                                                        <CommentLikeBox
-                                                                            type="like"
-                                                                            onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "like")}
-                                                                        >
-                                                                            <VscThumbsup/>
-                                                                            {reply.like}
-                                                                        </CommentLikeBox>
-                                                                        <CommentLikeBox>
-                                                                            <VscThumbsdown
+                                                        <div key={replyIndex}>
+                                                            <ReplyBox>
+                                                                <ReplyLeftWrap>
+                                                                    <LuReply/>
+                                                                </ReplyLeftWrap>
+                                                                <ReplyRightWrap>
+                                                                    <CommentTopBox>
+                                                                        <CommentTopLeftBox>
+                                                                            <p>{reply.nickname}</p>
+                                                                            <p>{formatDate(reply.regDt)}</p>
+                                                                        </CommentTopLeftBox>
+                                                                        <CommentTopRightBox>
+                                                                            <CommentLikeBox
+                                                                                type="like"
+                                                                                onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "like")}
+                                                                                style={{ color: reply.type === "like" ? "blue" : "rgb(85, 85, 85)" }}
+                                                                            >
+                                                                                <VscThumbsup/>
+                                                                                {reply.like}
+                                                                            </CommentLikeBox>
+                                                                            <CommentLikeBox
                                                                                 type="dislike"
                                                                                 onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "dislike")}
-                                                                            />
-                                                                            {reply.dislike}
-                                                                        </CommentLikeBox>
-                                                                    </CommentTopRightBox>
-                                                                </CommentTopBox>
-                                                                <CommentCenterBox>
-                                                                    <p>{reply.content}</p>
-                                                                </CommentCenterBox>
-                                                                <div>수정</div>
-                                                                <div>삭제</div>
-                                                            </ReplyRightWrap>
-                                                            <CommentBottomBox>
-                                                                
-                                                            </CommentBottomBox>
-                                                        </ReplyBox>
+                                                                                style={{ color: reply.type === "dislike" ? "red" : "rgb(85, 85, 85)" }}
+                                                                            >
+                                                                                <VscThumbsdown/>
+                                                                                {reply.dislike}
+                                                                            </CommentLikeBox>
+                                                                        </CommentTopRightBox>
+                                                                    </CommentTopBox>
+                                                                    <CommentCenterBox>
+                                                                        <p>{reply.content}</p>
+                                                                    </CommentCenterBox>
+                                                                </ReplyRightWrap>
+                                                                <CommentBottomBox>
+                                                                    <div
+                                                                        onClick={() => handleCommentEditBtnClick(replyIndex, reply.id)}
+                                                                        style={{marginRight:'10px'}}
+                                                                    >
+                                                                        수정
+                                                                    </div>
+                                                                    <div
+                                                                        onClick={() => handleDeleteComment(replyIndex, reply.id)}
+                                                                        style={{marginRight:'10px'}}
+                                                                    >
+                                                                        삭제
+                                                                    </div>
+                                                                    {/* <div
+                                                                        onClick={() => handleCommentBtnClick(index, item.id)}
+                                                                    >
+                                                                        답글달기
+                                                                    </div> */}
+                                                                </CommentBottomBox>
+                                                            </ReplyBox>
+
+                                                            {showCommentEditTab && activeCommentIndex === replyIndex ? (
+                                                                <div style={{marginTop:'10px', marginBottom:'10px'}}>
+                                                                    <CommentInput 
+                                                                        onPostComment={(newComment) => handlePostEditComment(newComment, reply.id, index)} 
+                                                                        initialValue={comments[replyIndex].content} 
+                                                                        frameHeight="100px"
+                                                                        btnText="답글 수정"
+                                                                    />
+                                                                </div>
+                                                            ) : (null)}
+
+                                                        </div>
                                                     );
                                                 }
                                                 return null;
@@ -667,50 +807,16 @@ const PostDetail = () => {
             offset: -headerHeight
         }); 
     };
-
-    
-
-    /*-----------------------------------------------------*\
-                              싫어요
-    \*-----------------------------------------------------*/
-    const handleDislike = () => {
-        if (!isLiked && !isDisliked) {
-            // 싫어요 추가 요청 보내기
-            axios.post(`http://39.117.244.34:3385/v1/board/like`, {
-                boardPostId: id,
-                type: 'dislike',
-                userUid: userUid,
-            },{
-                headers
-            })
-                .then(response => {
-                    console.log('싫어요 추가 성공:', response.data);
-                    /* setIsDisliked(true);
-                    setPost({
-                        ...post,
-                        dislike: post.dislike + 1,
-                    }); */
-                })
-                .catch(error => {
-                    console.error('싫어요 추가 실패', error);
-                });
-        }
-    };
-
     
     /*-----------------------------------------------*\
                     Console.log 테스트
     \*-----------------------------------------------*/
     /* console.log('condition',condition); */
-    console.log('id',id);
-    console.log('postData',postData);
+    /* console.log('id',id); */
+    /* console.log('postData',postData); */
 
     return (
         <div>
-            {/* <div>
-                <button onClick={handleLike} disabled={isLiked || isDisliked}>좋아요</button>
-                <button onClick={handleDislike} disabled={isLiked || isDisliked}>싫어요</button>
-            </div> */}
             <Header/>
                 <PostDetailFrame>
                     <PostDetailContainer>
