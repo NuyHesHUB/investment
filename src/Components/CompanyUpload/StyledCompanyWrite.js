@@ -20,8 +20,9 @@ export const Container = styled.div`
     border: none;
     background: #edeff2;
     border-radius: 10px;
-    padding: 10px 10px;
+    padding: 13px 10px;
     margin-bottom: 40px;
+    font-size: 16px;
   }
   input {width: 400px;}
   input.investment-amount {text-align: right;}
@@ -39,16 +40,20 @@ export const Container = styled.div`
   }
   .cancelBtn {border: 1px solid #ccc;}
   .btn {background: #3FA9F5; color: #fff; margin-left: 5px;}
-
+  .btn:disabled {
+    cursor: auto;
+    opacity: 0.7;
+  }
   // 첨부파일명 미리보기
   .attachPreviewBox {
-    background: #ffdfc6;
+    background: #edeff2;
     padding: 10px;
     border-radius: 5px;
     margin: -30px 0 40px 0;
   }
   .attachPreview {
-    background: #eee;
+    background: #fff;
+    border: 1px solid #ddd;
     padding: 6px 6px;
     border-radius: 5px;
     font-size: 14px;

@@ -3,6 +3,7 @@ import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
 import ReactQuill , { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+
 //import component
 import Header from "../Header"
 // styled
@@ -28,21 +29,19 @@ const CompanyWrite = () => {
   const headers = {
     Authorization: `${accessToken}`
   }
-
   
   const navigate = useNavigate();
-
-
 
   const [content, setContent] = useState(''); // 내용부분
   const [asdf , setasdf] = useState()
   const [investmentAmount, setInvestmentAmount] = useState(0); //투자희망금액 (아직 코드 안짬)
   const [postData, setPostData] = useState({
-    category: "",
+    category: "제조",
     condition: "pending",
     isNotice: "N",
     title: "",
-    content: content,
+    content: "",
+    extraField: {investmentAmount: investmentAmount},
     section1: "section1",
     section2: "section2",
     section3: "section3",
@@ -106,6 +105,7 @@ const CompanyWrite = () => {
         container: [
           ['image', 'link'],
           [{ header: [1, 2, 3, false] }],
+          [{ 'align': [] }, { 'color': [] }, { 'background': [] }],
           ['bold', 'italic', 'underline', 'strike', 'blockquote'],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }],
           ['attachment']
@@ -125,16 +125,22 @@ const CompanyWrite = () => {
     'strike',
     'blockquote',
     'image',
-    'attachment'
+    'attachment',
+    'align', 
+    'color', 
+    'background', 
   ];
 
+  const [formattedValue, setFormattedValue] = useState();
   ///// 투자희망금액 /////
   const investmentAmountChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, '')
-    setInvestmentAmount(value.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1'))
+    setFormattedValue(value.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1,'))
+    console.log(formattedValue, 'formattedValue')
+    setInvestmentAmount(value)
     setPostData({
       ...postData,
-      investmentAmount: value
+      extraField: {investmentAmount: value}
     })
   }
 
@@ -147,7 +153,7 @@ const CompanyWrite = () => {
   };
 
   ///// 첨부파일 /////
-  const [selectedFiles, setSelectedFiles] = useState([]); //test, 좀이따 위로 올리기
+  // const [selectedFiles, setSelectedFiles] = useState([]); //test, 좀이따 위로 올리기
   const [selectedFilesName, setSelectedFilesName] = useState([]); //test, 좀이따 위로 올리기
   const handleFileChange  = async (e) => {
     const filesName = [] // 파일 이름 미리보기 리스트
@@ -157,17 +163,12 @@ const CompanyWrite = () => {
       alert('최대 3개의 파일만 선택할 수 있습니다.');
       console.log(files, e.target.value, "asdasdasddassadasdd")
       e.target.value = ''
-      setSelectedFiles()
+      // setSelectedFiles()
       setSelectedFilesName([])
       return;
     } else {
-      setSelectedFiles(files)
-      setPostData({
-        ...postData,
-        attaches: selectedFiles
-      })
+      // setSelectedFiles(files)
       setSelectedFilesName(filesName)
-
       const formData = new FormData();
       
       for (let i = 0; i < files.length; i++) {
@@ -182,13 +183,20 @@ const CompanyWrite = () => {
 
       try {
         const result = await axios.post(`${baseURL}/v1/attachment/upload`, formData , { headers })        
+        let ATTACH_URL_LIST = []
         for (let i = 0; i < files.length; i++) {
-          let IMG_URL = '';
-          // if(result.data.length === undefined) {
-          //   IMG_URL = result.data.imageUrl;
-          // } else {
-          //   IMG_URL = result.data[i].imageUrl;
-          // }
+          let ATTACH_URL = '';
+          if(result.data.length === undefined) {
+            ATTACH_URL = result.data.attachesUrl;
+            ATTACH_URL_LIST.push(ATTACH_URL)
+          } else {
+            ATTACH_URL = result.data[i].attachesUrl;
+            ATTACH_URL_LIST.push(ATTACH_URL)
+          }
+          setPostData({
+            ...postData,
+            attaches: ATTACH_URL_LIST
+          })
         }
         console.log('성공', result);
       } catch (error) {
@@ -197,7 +205,7 @@ const CompanyWrite = () => {
 
     } // if문 끝
   }
-  // console.log(selectedFiles,selectedFilesName, "selectedFiles")
+  console.log(postData, "테스테트ㅔ슽셑슽세")
 
   // 등록/취소 Btn //
   const handleSubmit = async (e) => {
@@ -264,7 +272,7 @@ const CompanyWrite = () => {
               <input 
                 type="text" 
                 className="form-control investment-amount" 
-                value={investmentAmount || ""}
+                value={formattedValue || ""}
                 placeholder='0'
                 onChange={(e) => investmentAmountChange(e)} 
               />
@@ -299,7 +307,17 @@ const CompanyWrite = () => {
             </div>
             <div className="btnBox">
               <button onClick={() => prevPage()} className='cancelBtn'>취소</button>
-              <button type="submit" className="btn btn-primary" onClick={handleSubmit}>등록</button>
+              <button 
+                type="submit" 
+                className="btn btn-primary" 
+                onClick={handleSubmit} 
+                disabled={
+                  postData.title.length === 0 || 
+                  postData.content.length === 0 || 
+                  postData.extraField.length === 0 ? 
+                  true : 
+                  false
+                }>등록</button>
             </div>
           </div>
         </CommonStyleFrame>

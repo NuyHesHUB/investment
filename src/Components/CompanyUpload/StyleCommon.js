@@ -5,7 +5,7 @@ export const StyledFrame = styled.div`
 `
 export const CommonStyleFrame = styled.div`
   padding: 150px 0;
-  color: #333;
+  /* color: #333; */
   * {box-sizing: border-box; padding: 0; margin: 0;}
   h2 {
     margin-bottom: 30px;
