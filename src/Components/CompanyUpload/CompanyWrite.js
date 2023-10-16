@@ -179,8 +179,8 @@ const CompanyWrite = () => {
       }
       formData.append('brdKey', "companyLogoImg");
       setSelectedFilesName(filesName)
-      console.log("filesNamefilesName", filesName, selectedFilesName)
-      
+      console.log("gittest")
+
       let ATTACH_URL_LIST = [] //파일링크 담을 리스트
       try {
         const result = await axios.post(`${baseURL}/v1/attachment/upload`, formData , { headers })        
