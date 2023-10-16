@@ -84,6 +84,7 @@ const CompanyWrite = () => {
           const range = editor.getSelection();
           setTimeout(() => editor.insertEmbed(range.index, "image", IMG_URL), 500);
         }
+        console.log("성공")
         // console.log('성공', IMG_URL);
       } catch (error) {
         console.log(error, '실패')
