@@ -351,3 +351,26 @@ export const PostMain=styled.div`
         width: 100%;
     }
 `
+
+export const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+export const PaginationButton = styled.button`
+  margin: 0 5px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+`;

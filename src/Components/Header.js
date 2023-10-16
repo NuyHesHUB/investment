@@ -168,7 +168,7 @@ const Header = ({parsedCommunityCategoryData}) => {
 
     // 관리자, 일반, 업체 확인하기
     const userGroup = sessionStorage.getItem('userGroup');
-    console.log(userUid, "userUid")
+    /* console.log(userUid, "userUid") */
     
     const navigateLogin = () => {
         if (window.confirm("로그인이 되어 있지 않습니다. 로그인하시겠습니까?")) {
