@@ -17,16 +17,18 @@ const InvestOngoingBoard = () => {
     };
     const [investOngoingPostData, setInvestOngoingPostData] = useState(null);
 
+/* const [investOngoingPostData, setInvestOngoingPostData] = useState([]); */
     /*-----------------------------------------------*\
                   investment post 데이터 API
     \*-----------------------------------------------*/
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
+                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post?query&pageRows=&page=&category=&status=&condition=ongoing`, { headers });
                 const data = PostResponse.data?.query;
-                setInvestOngoingPostData(data);
                 console.log('investPostResponse',data);
+                /* setInvestOngoingPostData(data.filter(item => item.condition === 'ongoing')); */
+                setInvestOngoingPostData(data);
             } catch (error) {
                 console.error('investOngoingBoardData 데이터 가져오기 실패', error);
             }
@@ -35,13 +37,17 @@ const InvestOngoingBoard = () => {
     },[])
 
     
+    /* const businessNums = investOngoingPostData?.map(item => item.businessNum);
+
+    console.log('businessNums',businessNums); */
+
 
     /*-----------------------------------------------*\
                         End Date
     \*-----------------------------------------------*/
     const formattedDates = Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
     investOngoingPostData
-    .filter(item => item && item.condition === 'ongoing')
+    /* .filter(item => item && item.condition === 'ongoing') */
     .map((item, index) => {
         const endDt = new Date(item.endDt);
         /* const startDt = new Date(item.startDt); */
@@ -59,7 +65,6 @@ const InvestOngoingBoard = () => {
     /* console.log('formattedDates',formattedDates); */
     /* console.log('investOngoingPostData',investOngoingPostData); */
     /* console.log('koreanCategory',koreanCategory); */
-
     return (
         <StyledFrame>
             <Header/>
@@ -83,14 +88,38 @@ const InvestOngoingBoard = () => {
                         <h3>진행 중인 투자</h3>
                     </PostCardTitleWrap>
                     <PostCardWrap>
-                        {/* <OngoingPostCard/> */}
-                        {
+                        {/* {
                             Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
                             investOngoingPostData
                             .filter(item => item && item.condition === 'ongoing')
                             .map((item, index) => (
                                 <Link key={index} to={`/investment/ongoing/${item.id}`}>
-                                    <OngoingPostCard key={index} name={item.title} content={item.content} category={item.category} date={formattedDates[index]}/>
+                                    <OngoingPostCard 
+                                        key={index} 
+                                        name={item.title} 
+                                        content={item.content} 
+                                        category={item.category} 
+                                        date={formattedDates[index]}
+
+                                    />
+                                </Link>
+                            ))
+                        } */}
+                        {
+                            investOngoingPostData && investOngoingPostData.length > 0 &&
+                            investOngoingPostData
+                            .map((item, index) => (
+                                <Link key={index} to={`/investment/ongoing/${item.id}`}>
+                                    <OngoingPostCard 
+                                        key={index} 
+                                        logoimg={item.logoImg}
+                                        name={item.companyName} 
+                                        title={item.title}
+                                        content={item.content} 
+                                        category={item.category} 
+                                        date={formattedDates[index]}
+
+                                    />
                                 </Link>
                             ))
                         }

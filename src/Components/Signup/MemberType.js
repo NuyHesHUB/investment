@@ -133,11 +133,9 @@ const MemberType = () => {
                                 </div>
                             </form>
                         </div>
-                        
                         <button onClick={handleBuisnessSignUp}>인증하기</button>
                     </div>
                 )}
-                
             </Contents>
         ) },
     ];

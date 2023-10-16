@@ -165,7 +165,7 @@ const App = () => {
     if (typeof investmentCategoryData === 'string' && investmentCategoryData.length > 0) {
         try {
             parsedInvestmentCategoryData = JSON.parse(investmentCategoryData);
-            console.log('성공', parsedInvestmentCategoryData);
+            /* console.log('성공', parsedInvestmentCategoryData); */
         } catch (error) {
             console.error('투자 게시판 JSON 파싱 오류', error);
         }
@@ -198,8 +198,8 @@ const App = () => {
     /* console.log('communityCategoryData',communityCategoryData); */
     /* console.log('parsedCommunityCategoryData',parsedCommunityCategoryData); */
     /* console.log('englishCategories',englishCategories); */
-    console.log('boardData',boardData);
-    console.log('investmentEnglishCategories',investmentEnglishCategories);
+    /* console.log('boardData',boardData); */
+    /* console.log('investmentEnglishCategories',investmentEnglishCategories); */
     useEffect(() => {
         const fetchData = async () => {
             try {
