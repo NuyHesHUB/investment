@@ -90,7 +90,7 @@ const CompanyUpload = () => {
           console.log("추가test")
           sessionStorage.removeItem('b_no');
           alert("추가하였습니다")
-          navigate('/company_introduction_write')
+          navigate('/company_write')
         }).catch((error) => {
           console.error(error)
           alert("error")

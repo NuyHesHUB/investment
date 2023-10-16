@@ -136,7 +136,6 @@ const CompanyWrite = () => {
   const investmentAmountChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, '')
     setFormattedValue(value.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1,'))
-    console.log(formattedValue, 'formattedValue')
     setInvestmentAmount(value)
     setPostData({
       ...postData,
@@ -179,7 +178,6 @@ const CompanyWrite = () => {
       }
       formData.append('brdKey', "companyLogoImg");
       setSelectedFilesName(filesName)
-      console.log("gittest")
 
       let ATTACH_URL_LIST = [] //파일링크 담을 리스트
       try {
@@ -211,7 +209,6 @@ const CompanyWrite = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (window.confirm("등록하시겠습니까?")) {
-      console.log('제목:', postData);
       await axios.post(`${baseURL}/v1/board/investment/post`, postData, { headers }).then((res) => {
         console.log("추가test")
         sessionStorage.removeItem('b_no');
@@ -229,7 +226,7 @@ const CompanyWrite = () => {
       navigate(-1)
     }  
   }
-  console.log(postData)
+
   return (
     <StyledFrame>
       <Header />
