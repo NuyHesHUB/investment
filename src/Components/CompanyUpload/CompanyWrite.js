@@ -56,7 +56,6 @@ const CompanyWrite = () => {
   const quillRef = useRef(true);
 
   const imageHandler = () => { 
-    console.log("이미지핸들러")
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
@@ -64,12 +63,10 @@ const CompanyWrite = () => {
     input.click();
     
     input.onchange = async () => {
-      const reader = new FileReader();
-      console.log(reader, "reader")
-
       const file = input.files[0];
       const encodedFilename = encodeURIComponent(file.name);
-      const imgUrl = URL.createObjectURL(file)
+      console.log(file, "fileㅌㅌㅇㅌㅌㅇㅌㅇㅌㅌ")
+      // const imgUrl = URL.createObjectURL(file)
 
       const formData = new FormData();
       formData.append('file', file); 
@@ -97,43 +94,6 @@ const CompanyWrite = () => {
       content: value
     });
   };
-  
-  // const imageHandler =  useEffect(() => { //useEffect 써야지 사진 엑박 안 뜸.
-  //   quillRef.current = false
-  //   //맨처음 렌더링시에 useEffect실행 막기 위해 조건문 사용(근데안됨..머임..)
-  //   if (!quillRef.current) { 
-  //     quillRef.current = true;
-  //   } else {
-  //     const input = document.createElement('input');
-  //     input.setAttribute('type', 'file');
-  //     input.setAttribute('accept', 'image/*');
-  //     input.click();
-  
-  //     input.addEventListener('change', async () => {
-  //       const file = input.files[0];
-  //       const encodedFilename = encodeURIComponent(file.name);
-  //       const imgUrl = URL.createObjectURL(file)
-  
-  //       const formData = new FormData();
-  //       formData.append('file', file); 
-  //       formData.append('brdKey', "companyLogoImg");
-  //       formData.append('filename', encodedFilename);
-  //       try {
-  //         const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })
-  //         if (result) {
-  //           const IMG_URL = result.data.imageUrl;
-  //           const editor = quillRef.current.getEditor();
-  //           const range = editor.getSelection(true);
-  //           editor.insertEmbed(range.index, "image", IMG_URL);
-  //           console.log('성공 시, 백엔드가 보내주는 데이터', result.data.imageUrl);
-  //         }
-  //       } catch (error) {
-  //         console.log(error, '실패')
-  //       }
-  //     }
-  //   )
-  //   }
-  // }, [content,postData])
 
   const modules = useMemo(() => {
     return {
@@ -166,7 +126,7 @@ const CompanyWrite = () => {
   ///// 투자희망금액 /////
   const investmentAmountChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10)
-    setInvestmentAmount(value)
+    setInvestmentAmount(value.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1'))
     setPostData({
       ...postData,
       investmentAmount: value
@@ -184,9 +144,8 @@ const CompanyWrite = () => {
   ///// 첨부파일 /////
   const [selectedFiles, setSelectedFiles] = useState([]); //test, 좀이따 위로 올리기
   const [selectedFilesName, setSelectedFilesName] = useState([]); //test, 좀이따 위로 올리기
-  
   const handleFileChange  = (e) => {
-    const filesName = []
+    const filesName = [] // 파일 이름 미리보기 리스트
     const files = e.target.files;
     console.log(files, "asdasdasddassadasdd")
     // 최대 3개의 파일만 허용
@@ -199,11 +158,20 @@ const CompanyWrite = () => {
         ...postData,
         attaches: selectedFiles
       })
+
       for (let i = 0; i < files.length; i++) {
         filesName.push(files[i].name)
+
+        //폼데이터
+        const file = files[i];
+        const encodedFilename = encodeURIComponent(file.name);
+        const formData = new FormData();
+        formData.append('file', file); 
+        formData.append('brdKey', "companyLogoImg");
+        formData.append('filename', encodedFilename);
       }
       setSelectedFilesName(filesName)
-    }
+    } // if문 끝
   }
   console.log(selectedFiles,selectedFilesName, "selectedFiles")
 
@@ -240,12 +208,6 @@ const CompanyWrite = () => {
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="title" className="form-label">업종</label> {/* select로 변경 */}
-                {/* <input 
-                  type="text" 
-                  className="form-control" 
-                  id="title" value={title} 
-                  onChange={} 
-                /> */}
                 <select 
                   name="category"
                   onChange={(e) => handleValueChange(e, "category")}
@@ -305,8 +267,10 @@ const CompanyWrite = () => {
                 <label htmlFor="content" className="form-label">내용</label>
                 <ReactQuill ref={quillRef} value={content} onChange={(e) => handleContentChange(e)} modules={modules} formats={formats} />
               </div>
-              <button onClick={() => prevPage()}>취소</button>
-              <button type="submit" className="btn btn-primary">등록</button>
+              <div className="btnBox">
+                <button onClick={() => prevPage()} className='cancelBtn'>취소</button>
+                <button type="submit" className="btn btn-primary">등록</button>
+              </div>
             </form> 
           </div>
         </CommonStyleFrame>

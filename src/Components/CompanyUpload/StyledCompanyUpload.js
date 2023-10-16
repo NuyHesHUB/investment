@@ -9,8 +9,6 @@ export const Wrap = styled.div`
 `
 export const Container = styled.div`
   /* background: skyblue; */
-  padding-top: 150px;
-  padding-bottom: 150px;
   width: 500px;
   margin: 0 auto;
   text-align: center;
