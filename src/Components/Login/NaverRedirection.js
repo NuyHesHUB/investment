@@ -20,13 +20,17 @@ const NaverRedirection = () => {
                 const userIsAdmin = response.data.userData.isAdmin;
                 const accessToken = response.data.accessToken;
                 const refreshToken = response.data.refreshToken;
-
+                const b_no = response.data.userData.b_no;
+                
                 sessionStorage.setItem('userUid', userUid);
                 sessionStorage.setItem('accessToken', accessToken);
                 sessionStorage.setItem('refreshToken', refreshToken);
                 sessionStorage.setItem('userGroup', userGroup);
                 sessionStorage.setItem('userIsAdmin', userIsAdmin);
-
+                if(b_no){
+                    sessionStorage.setItem('b_no', b_no);
+                }
+                
                 if (userData.group === '관리자' && userData.isAdmin === 'Y') {
                     navigate("/admin");
                 } else {
