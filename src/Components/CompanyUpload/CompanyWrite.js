@@ -10,6 +10,10 @@ import Header from "../Header"
 import { Container } from "./StyledCompanyWrite"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
 
+//icon
+import { BsFileEarmarkPlus } from "react-icons/bs";
+import { PiFilePlusThin } from "react-icons/pi";
+
 // const modules =  {
 //     toolbar: [
 //       [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
@@ -153,9 +157,8 @@ const CompanyWrite = () => {
   };
 
   ///// 첨부파일 /////
-  // const [selectedFiles, setSelectedFiles] = useState([]); //test, 좀이따 위로 올리기
   const [selectedFilesName, setSelectedFilesName] = useState([]); //test, 좀이따 위로 올리기
-  const filesName = [] // 파일명 미리보기 리스트
+  // const filesName = [] // 파일명 미리보기 리스트
   const handleFileChange  = async (e) => {
     const files = e.target.files;
     
@@ -170,7 +173,8 @@ const CompanyWrite = () => {
       const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
         //파일명 미리보기 리스트에 push
-        filesName.push(files[i].name)
+        // filesName.push(files[i].name)
+        setSelectedFilesName(selectedFilesName => [...selectedFilesName, files[i].name])
         //폼데이터
         const file = files[i];
         const encodedFilename = encodeURIComponent(file.name);
@@ -178,7 +182,7 @@ const CompanyWrite = () => {
         formData.append('filename', encodedFilename);
       }
       formData.append('brdKey', "companyLogoImg");
-      setSelectedFilesName(filesName)
+      // setSelectedFilesName(filesName)
 
       let ATTACH_URL_LIST = [] //파일링크 담을 리스트
       try {
@@ -197,7 +201,6 @@ const CompanyWrite = () => {
       } catch (error) {
         console.log(error, '실패')
       }
-
       // postData에 저장
       setPostData({
         ...postData,
@@ -205,6 +208,14 @@ const CompanyWrite = () => {
       })
     } // if문 끝
   }
+
+  const attachDelete = (e, index) => {
+    
+  }
+
+
+
+
 
   ///// 등록/취소 Btn /////
   const handleSubmit = async (e) => {
@@ -236,9 +247,10 @@ const CompanyWrite = () => {
           <div className="container mt-5">
             <h2 className='title'>투자 등록하기</h2>
             <div className="mb-3">
-              <label htmlFor="title" className="form-label">업종</label> {/* select로 변경 */}
+              <label htmlFor="category" className="form-label">업종</label> {/* select로 변경 */}
               <select 
                 name="category"
+                id="category"
                 onChange={(e) => handleValueChange(e, "category")}
               >
                 <option value="제조">제조</option>
@@ -258,7 +270,8 @@ const CompanyWrite = () => {
             <div className="mb-3">
               <label htmlFor="title" className="form-label">제목</label>
               <input 
-                type="text" 
+                type="text"
+                id="title"
                 className="form-control title" 
                 name="title" 
                 placeholder='제목을 입력해주세요'
@@ -266,9 +279,10 @@ const CompanyWrite = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="title" className="form-label">투자희망금액</label>
+              <label htmlFor="investment-amount" className="form-label">투자희망금액</label>
               <input 
                 type="text" 
+                id="investment-amount"
                 className="form-control investment-amount" 
                 value={formattedValue || ""}
                 placeholder='0'
@@ -277,10 +291,19 @@ const CompanyWrite = () => {
               <span> 원</span>
             </div>
             <div className="mb-3">
-              <label htmlFor="title" className="form-label">첨부파일</label>
+              <label htmlFor="attaches" className="form-label">
+                첨부파일
+                <div className='attaches-btn'>
+                  {/* <BsFileEarmarkPlus size={70} color='#aaa' />  */}
+                  <PiFilePlusThin size={70} color='#aaa' /> 
+                  <p>첨부파일 업로드하기</p>
+                  <p className='attach-amount'>{selectedFilesName.length}개</p>
+                </div>
+              </label>
               <input 
-                type="file" 
+                type="file"
                 accept=".gif, .jpg, .jpeg, .png, .pdf, .ppt, .doc, .hwp, .txt, .xls, .xlsx"
+                id="attaches" 
                 className="form-control" 
                 // value={selectedFiles}
                 onChange={(e) => handleFileChange(e)} 
@@ -288,11 +311,14 @@ const CompanyWrite = () => {
               />
               {/* 첨부파일 이미지 미리보기 */}
               <ul className={selectedFilesName.length > 0 ? "attachPreviewBox" : ""}>
-                {selectedFilesName && selectedFilesName.map((item,index) => {
+                {selectedFilesName && selectedFilesName.map((item, index) => {
                   return(
                     <li className='attachPreview' key={index}>
                       <span>{item}</span>
-                      <button className='attach_del_btn'>X</button> {/* //FIXME: 아이콘 고치기, 기능 구현 */}
+                      <button 
+                        className='attach_del_btn' 
+                        onClick={(e) => attachDelete(e, index)}
+                      >X</button> {/* //FIXME: 아이콘 고치기, 기능 구현 */}
                     </li> 
                   )
                 })}

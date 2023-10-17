@@ -95,7 +95,6 @@ const CompanyUpload = () => {
           console.error(error)
           alert("error")
         })
-        // navigate(``) 글쓰기 페이지로
         }
       }
     }
