@@ -238,7 +238,7 @@ const Header = ({parsedCommunityCategoryData}) => {
                                     ))}
                                 </ul> */}
                             </MenuItem>
-                            <MenuItem 
+                            {/* <MenuItem 
                                 onMouseEnter={() => handleMouseEnter('community')}
                                 onMouseLeave={() => handleMouseLeave('community')}
                             >
@@ -250,7 +250,7 @@ const Header = ({parsedCommunityCategoryData}) => {
                                         </li>
                                     ))}         
                                 </ul>
-                            </MenuItem>
+                            </MenuItem> */}
                             <MenuItem>
                                 <p to="#" onClick={userUid ? checkCompanyRegistration : navigateLogin}>글쓰기</p>
                             </MenuItem>

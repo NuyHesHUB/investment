@@ -150,7 +150,8 @@ export const RightInfoTopBox=styled.div`
     align-items: center;
     justify-content: space-between;
     >p{
-        color: rgb(255, 0, 0);
+        /* color: rgb(255, 0, 0); */
+        color: rgb(153, 153, 153);
         font-size: 24px;
         font-weight: 600;
     }
@@ -158,13 +159,14 @@ export const RightInfoTopBox=styled.div`
 export const RightInfoTopLeftBox=styled.div`
     display: flex;
     p:nth-child(2){
-        color: rgb(153, 153, 153);
+        color: rgb(85, 85, 85);
         font-size: 18px;
         font-weight: 400;
     }
     p:first-child{
         margin-right: 10px;
-        color: rgb(34, 34, 34);
+        /* color: rgb(34, 34, 34); */
+        color: rgb(153, 153, 153);
         font-size: 18px;
         font-weight: 600;
     }
@@ -368,9 +370,9 @@ export const PaginationButton = styled.button`
   color: #fff;
   font-size: 16px;
   outline: none;
-  
   &:disabled {
     background-color: #ccc;
     cursor: not-allowed;
   }
 `;
+
