@@ -132,7 +132,7 @@ const InvestOngoingBoard = () => {
                                 title={item.title}
                                 /* content={item.content} */
                                 content={removeTags(item.content)}
-                                category={item.category}
+                                /* category={item.category} */
                                 date={formattedDates[index]}
                             />
                         </Link>
