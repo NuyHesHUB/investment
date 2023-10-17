@@ -83,11 +83,11 @@ const MemberEditPage = () => {
                 }).catch(error => {
                     console.error('회원 정보 가져오기 실패', error);
                 });
-        } else{
+        } /* else{
             dispatch(logout());
-        }
+        } */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[dispatch])
+    },[])
     
     /*------------------------------------------------*\
                         유효성 검사

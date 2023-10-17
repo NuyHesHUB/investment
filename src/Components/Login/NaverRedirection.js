@@ -6,7 +6,7 @@ const NaverRedirection = () => {
     const navigate = useNavigate();
     const baseURL = process.env.REACT_APP_BASEURL;
     const code = new URL(document.location.toString()).searchParams.get('code');
-    console.log('code',code);
+    /* console.log('code',code); */
 
     useEffect(() => {
         const fetchData = async () => {

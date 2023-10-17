@@ -41,7 +41,7 @@ const Login = () => {
     useEffect(() => {
         const accessToken = sessionStorage.getItem('accessToken');
         if (accessToken) {
-            dispatch(login());
+            /* dispatch(login()); */
             /* const url = `http://211.198.44.123:3385/v1/users/${userUid}?${key}=${accessToken}`;
             axios.get(url, { headers })
             .then(response => {
@@ -51,11 +51,11 @@ const Login = () => {
             console.error('회원 정보 가져오기 실패', error);
             }); */
             
-        }else{
+        }/* else{
             dispatch(logout());
-        }
+        } */
         
-    }, [dispatch]);
+    }, []);
 
     /* console.log(userData); */
 
@@ -101,9 +101,6 @@ const Login = () => {
             sessionStorage.setItem('refreshToken', refreshToken);
         
             console.log('로그인 유저 정보',userUid);
-        
-            dispatch(login(userUid));
-            dispatch(setUserUid(userUid));
 
             /* 관리자 권한으로 로그인을 하게되면 "/admin" 페이지로 이동 */
             console.log('Updated userUid:', userUid);
