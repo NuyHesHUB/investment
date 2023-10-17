@@ -10,6 +10,10 @@ import Header from "../Header"
 import { Container } from "./StyledCompanyWrite"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
 
+//icon
+import { PiFilePlusThin } from "react-icons/pi";
+import { BsTrash3 } from "react-icons/bs";
+
 // const modules =  {
 //     toolbar: [
 //       [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
@@ -84,6 +88,7 @@ const CompanyWrite = () => {
           const range = editor.getSelection();
           setTimeout(() => editor.insertEmbed(range.index, "image", IMG_URL), 500);
         }
+        console.log("성공")
         // console.log('성공', IMG_URL);
       } catch (error) {
         console.log(error, '실패')
@@ -136,7 +141,6 @@ const CompanyWrite = () => {
   const investmentAmountChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, '')
     setFormattedValue(value.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1,'))
-    console.log(formattedValue, 'formattedValue')
     setInvestmentAmount(value)
     setPostData({
       ...postData,
@@ -153,34 +157,29 @@ const CompanyWrite = () => {
   };
 
   ///// 첨부파일 /////
-  // const [selectedFiles, setSelectedFiles] = useState([]); //test, 좀이따 위로 올리기
-  const [selectedFilesName, setSelectedFilesName] = useState([]); //test, 좀이따 위로 올리기
-  const filesName = [] // 파일명 미리보기 리스트
+  const [selectedFilesName, setSelectedFilesName] = useState([]); //파일명 미리보기 / 좀이따 위로 올리기
   const handleFileChange  = async (e) => {
     const files = e.target.files;
-    
-    if (files.length > 5 || postData.attaches.length >= 5 || postData.attaches.length + files.length > 5) {
+    console.log("파일첨부테스트", files)
+    if (
+      files.length > 5 
+      || postData.attaches.length >= 5 
+      || postData.attaches.length + files.length > 5
+    ) {
       alert('최대 5개의 파일만 선택할 수 있습니다.');
-      e.target.value = ''
-      // setSelectedFiles()
-      // setSelectedFilesName([])
       return;
     } else {
-      // setSelectedFiles(files)
       const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
-        //파일명 미리보기 리스트에 push
-        filesName.push(files[i].name)
-        //폼데이터
+        // 파일명 미리보기 데이터
+        setSelectedFilesName(selectedFilesName => [...selectedFilesName, files[i].name])
+        //폼데이터 넣기
         const file = files[i];
         const encodedFilename = encodeURIComponent(file.name);
         formData.append('file', file); 
         formData.append('filename', encodedFilename);
       }
-      formData.append('brdKey', "companyLogoImg");
-      setSelectedFilesName(filesName)
-      console.log("gittest")
-
+      formData.append('brdKey', "investment");
       let ATTACH_URL_LIST = [] //파일링크 담을 리스트
       try {
         const result = await axios.post(`${baseURL}/v1/attachment/upload`, formData , { headers })        
@@ -198,20 +197,35 @@ const CompanyWrite = () => {
       } catch (error) {
         console.log(error, '실패')
       }
-
       // postData에 저장
       setPostData({
         ...postData,
         attaches: [...postData.attaches, ATTACH_URL_LIST].flat(1)
       })
     } // if문 끝
+    e.target.value = ''
   }
+  ///// 첨부파일 삭제 /////
+  const attachDelete = async (e, index) => {
+    await axios.delete(`${baseURL}/v1/attachment/delete`, { data : {url: postData.attaches[index]}, headers} ).then((res) => {
+      let newSelectedFilesName = selectedFilesName.filter((item, idx) => idx !== index)
+      setSelectedFilesName(newSelectedFilesName)
+      let newAttaches = postData.attaches.filter((item, idx) => idx !== index)
+      setPostData({
+        ...postData,
+        attaches: newAttaches
+      })
+    }).catch((error) => {
+      console.error(error)
+      alert("error")
+    })
+  }
+  console.log(selectedFilesName, postData.attaches, postData, "파일명삭제테스트")
 
   ///// 등록/취소 Btn /////
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (window.confirm("등록하시겠습니까?")) {
-      console.log('제목:', postData);
       await axios.post(`${baseURL}/v1/board/investment/post`, postData, { headers }).then((res) => {
         console.log("추가test")
         sessionStorage.removeItem('b_no');
@@ -229,7 +243,7 @@ const CompanyWrite = () => {
       navigate(-1)
     }  
   }
-  console.log(postData)
+
   return (
     <StyledFrame>
       <Header />
@@ -237,10 +251,13 @@ const CompanyWrite = () => {
         <CommonStyleFrame>
           <div className="container mt-5">
             <h2 className='title'>투자 등록하기</h2>
+
+            {/********* 업종 input *********/}
             <div className="mb-3">
-              <label htmlFor="title" className="form-label">업종</label> {/* select로 변경 */}
+              <label htmlFor="category" className="form-label">업종</label> {/* select로 변경 */}
               <select 
                 name="category"
+                id="category"
                 onChange={(e) => handleValueChange(e, "category")}
               >
                 <option value="제조">제조</option>
@@ -257,20 +274,26 @@ const CompanyWrite = () => {
                 <option value="부동산">부동산</option>
               </select>
             </div>
+
+            {/********* 제목 input *********/}
             <div className="mb-3">
               <label htmlFor="title" className="form-label">제목</label>
               <input 
-                type="text" 
+                type="text"
+                id="title"
                 className="form-control title" 
                 name="title" 
                 placeholder='제목을 입력해주세요'
                 onChange={(e) => handleValueChange(e, "title")} 
               />
             </div>
+
+            {/********* 투자희망금액 input *********/}
             <div className="mb-3">
-              <label htmlFor="title" className="form-label">투자희망금액</label>
+              <label htmlFor="investment-amount" className="form-label">투자희망금액</label>
               <input 
                 type="text" 
+                id="investment-amount"
                 className="form-control investment-amount" 
                 value={formattedValue || ""}
                 placeholder='0'
@@ -278,11 +301,22 @@ const CompanyWrite = () => {
               />
               <span> 원</span>
             </div>
+
+            {/********* 첨부파일 input *********/}
             <div className="mb-3">
-              <label htmlFor="title" className="form-label">첨부파일</label>
+              <label htmlFor="attaches" className="form-label attaches">
+                첨부파일
+                <div className='attaches-btn'>
+                  {/* <BsFileEarmarkPlus size={70} color='#aaa' />  */}
+                  <PiFilePlusThin size={70} color='#aaa' /> 
+                  <p>첨부파일 업로드하기</p>
+                  <p className='attach-amount'>최대 5개 / <span>{selectedFilesName.length}</span>개</p>
+                </div>
+              </label>
               <input 
-                type="file" 
+                type="file"
                 accept=".gif, .jpg, .jpeg, .png, .pdf, .ppt, .doc, .hwp, .txt, .xls, .xlsx"
+                id="attaches" 
                 className="form-control" 
                 // value={selectedFiles}
                 onChange={(e) => handleFileChange(e)} 
@@ -290,17 +324,21 @@ const CompanyWrite = () => {
               />
               {/* 첨부파일 이미지 미리보기 */}
               <ul className={selectedFilesName.length > 0 ? "attachPreviewBox" : ""}>
-                {selectedFilesName && selectedFilesName.map((item,index) => {
+                {selectedFilesName && selectedFilesName.map((item, index) => {
                   return(
                     <li className='attachPreview' key={index}>
-                      <span>{item}</span>
-                      <button className='attach_del_btn'>X</button> {/* //FIXME: 아이콘 고치기, 기능 구현 */}
+                      <span>{item} ///인덱스:{index}</span>
+                      <button 
+                        className='attach_del_btn' 
+                        onClick={(e) => attachDelete(e, index)}
+                      ><BsTrash3 size={15} /></button> {/* //FIXME: 아이콘 고치기, 기능 구현 */}
                     </li> 
                   )
                 })}
               </ul>
             </div>
 
+            {/********* 내용입력 input *********/}
             <div className="mb-3">
               <label htmlFor="content" className="form-label">내용</label>
               <ReactQuill ref={quillRef} value={content} onChange={(e) => handleContentChange(e)} modules={modules} formats={formats} />

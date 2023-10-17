@@ -16,22 +16,25 @@ const CompanyUpload = () => {
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
   const userGroup = sessionStorage.getItem('userGroup');
-  const b_no = sessionStorage.getItem('b_no')
   const headers = {
     Authorization: `${accessToken}`
   }
 
   const [placeholderActive, setPlaceholderActive] = useState(true);
   const [logoImage, setLogoImage] = useState('');
-  const [companyData, setCompanyData] = useState({
-      companyName: "",
-      representativeName: "",
-      businessNum: b_no,
-      logoImg: "",
-      introduction: ""
-  });
+  const [companyData, setCompanyData] = useState({});
  
-  // 로고 이미지 미리보기
+  ///// 업체 정보 불러오기 /////
+  useEffect(() => {
+    axios.get(`${baseURL}/v1/company/${5348100064}?userUid=${userUid}`, { headers }).then((res) => {
+      setCompanyData(res.data.query[0]);
+      console.log(res.data.query, companyData, "업체정보수정테스트")
+    }).catch(() => {
+      console.error("error");
+    })
+  }, []);
+
+  ///// 로고 이미지 미리보기 /////
   const inputFileChange = async (e) => {
     try {
       const file = e.target.files[0]
@@ -61,8 +64,8 @@ const CompanyUpload = () => {
     }
   }
 
-  //input 값 입력(onchange)
-  const companyValueWrite = (e, name) => {
+  ///// input 값 입력(onchange) /////
+  const companyValueModify = (e, name) => {
     const value = e.target.value
     setCompanyData({
       ...companyData,
@@ -70,22 +73,18 @@ const CompanyUpload = () => {
     })
   }
 
-  console.log(companyData)
-  console.log("업체등록 test", companyData.companyName.length)
-
-  const companyNameLen = companyData.companyName.length
-  const representativeNameLen = companyData.representativeName.length
+  ///// 수정 버튼 클릭 /////
+  // const companyNameLen = companyData.companyName.length
+  // const representativeNameLen = companyData.representativeName.length
 
   const uploadBtnClick = async () => {
-    if (!b_no) {
-      alert("사업자 등록번호가 없습니다.")
-    } else if (companyNameLen === 0 || representativeNameLen.length === 0){
-      alert("회사명과 대표자 이름은 필수 입력값입니다.")
-    } else {
-      if(window.confirm("업체를 등록하시겠습니까?")) {
-        await axios.post(`${baseURL}/v1/company/form`, companyData, { headers }).then((res) => {
+    // if (companyNameLen === 0 || representativeNameLen.length === 0){
+    //   alert("회사명과 대표자 이름은 필수 입력값입니다.")
+    // } else {
+      if(window.confirm("업체 정보를 수정하시겠습니까?")) {
+        await axios.patch(`${baseURL}/v1/company/modify/${companyData.businessNum}`, companyData, { headers }).then((res) => {
           console.log("추가test")
-          sessionStorage.removeItem('b_no');
+          
           if (userGroup === "일반") {
             sessionStorage.setItem('userGroup', '업체')
           }
@@ -95,7 +94,7 @@ const CompanyUpload = () => {
           console.error(error)
           alert("error")
         })
-        }
+        // }
       }
     }
   return(
@@ -104,14 +103,13 @@ const CompanyUpload = () => {
       <Wrap>
         <Container>
           <CommonStyleFrame>
-            <h2>업체 등록하기</h2>
-            <p className='txt'>내용은 추후에 수정 가능합니다.</p>
+            <h2>업체 정보 수정</h2>
             <Inner>
               <ul>
                 <li>
                   <input 
                     type="text" 
-                    value={b_no &&`${b_no.slice(0,3)}-${b_no.slice(3,5)}-${b_no.slice(5,10)}`}
+                    value={companyData.businessNum}
                     disabled
                   />
                 </li>
@@ -122,43 +120,46 @@ const CompanyUpload = () => {
                       <p>로고 이미지 업로드</p>
                     </div>
                     <p className='imgBox'>
-                      <img src={logoImage} id="preview" />
+                      <img src={companyData.logoImg} id="preview" />
                     </p>
                   </label>
                   <input 
                     id='logo-upload' 
                     type="file" 
                     accept='image/*' 
-                    onChange={(e) => inputFileChange(e)}
+                    // onChange={(e) => inputFileChange(e)}
                   />
                 </li>
-                <li className={companyNameLen ? '' : 'required'}>
+                <li /* className={companyNameLen ? '' : 'required'} */>
                   <input 
                     type="text" 
                     name="companyName"
                     placeholder='회사명'
-                    onChange={(e) => companyValueWrite(e, "companyName")}
+                    value={companyData.companyName}
+                    onChange={(e) => companyValueModify(e, "companyName")}
                   />
                 </li>
-                <li className={representativeNameLen ? '' : 'required'}>
+                <li /* className={representativeNameLen ? '' : 'required'} */>
                   <input 
                     type="text" 
                     name="representativeName"
+                    value={companyData.representativeName}
                     placeholder='대표자 이름' 
-                    onChange={(e) => companyValueWrite(e, "representativeName")}
+                    onChange={(e) => companyValueModify(e, "representativeName")}
                   />
                 </li>
                 <li>
                   <textarea 
                     name="introduction" 
-                    rows="10" 
+                    rows="10"
+                    value={companyData.introduction}
                     placeholder='회사 소개글 입력 (최대 300자)' 
                     maxLength={300}
-                    onChange={(e) => companyValueWrite(e, "introduction")}
+                    onChange={(e) => companyValueModify(e, "introduction")}
                   />
                 </li>
                 <li>
-                  <button onClick={() => uploadBtnClick()}>등록</button>
+                  <button onClick={() => uploadBtnClick()}>수정</button>
                 </li>
               </ul>
             </Inner>

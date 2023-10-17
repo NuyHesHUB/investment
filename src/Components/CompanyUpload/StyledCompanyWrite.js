@@ -16,7 +16,7 @@ export const Container = styled.div`
     display: block;
     margin-bottom: 3px;
   }
-  input, select {
+  input, select, .attaches-btn {
     border: none;
     background: #edeff2;
     border-radius: 10px;
@@ -44,6 +44,19 @@ export const Container = styled.div`
     cursor: auto;
     opacity: 0.7;
   }
+  label.attaches {width: 200px;}
+  #attaches {display: none;}
+  .attaches-btn {
+    width: 200px;
+    text-align: center; 
+    color: #666;
+    cursor: pointer;
+  }
+  .attach-amount {
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  .attach-amount span {color: #1f93ff}
   // 첨부파일명 미리보기
   .attachPreviewBox {
     background: #edeff2;

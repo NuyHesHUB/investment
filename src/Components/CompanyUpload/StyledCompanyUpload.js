@@ -53,6 +53,9 @@ export const Inner = styled.div`
     left: 5px;
     font-size: 12px;
   }
+  ul li textarea {
+  resize: none;
+}
   ul li textarea::placeholder {
     font-size: 16px;
   }
