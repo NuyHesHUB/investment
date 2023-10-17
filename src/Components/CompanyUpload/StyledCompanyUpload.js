@@ -41,6 +41,7 @@ export const Inner = styled.div`
     padding: 17px 10px;
   }
   input::placeholder, textarea::placeholder {color: #c5c6c9;}
+  input:disabled {opacity: 0.5;}
   ul li input {
     font-size: 16px;
   }
@@ -67,6 +68,17 @@ export const Inner = styled.div`
     font-size: 20px;
     cursor: pointer;
   }
+  button:disabled {
+    cursor: auto;
+    opacity: 0.7;
+  }
+  .cancel-btn {
+    background: #f0f0f0; 
+    border: 1px solid #ccc; 
+    color: #000; 
+    margin-top: 10px;
+  }
+
   ul li label {
     width: 140px; height: 140px;
     display: block;

@@ -277,7 +277,7 @@ const Header = ({parsedCommunityCategoryData}) => {
                                 ) : userGroup === '업체' ? (
                                     <>
                                         <li style={{ margin: '0 10px' }}>
-                                            <Link to="/myinfo">
+                                            <Link to="/company_modify">
                                                 <HeaderBtn>업체정보수정</HeaderBtn>
                                             </Link>
                                         </li>

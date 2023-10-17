@@ -79,13 +79,12 @@ const CompanyUpload = () => {
   const uploadBtnClick = async () => {
     if (!b_no) {
       alert("사업자 등록번호가 없습니다.")
-    } else if (companyNameLen === 0 || representativeNameLen.length === 0){
+    } else if (companyNameLen === 0 || representativeNameLen === 0){
       alert("회사명과 대표자 이름은 필수 입력값입니다.")
     } else {
       if(window.confirm("업체를 등록하시겠습니까?")) {
         await axios.post(`${baseURL}/v1/company/form`, companyData, { headers }).then((res) => {
           console.log("추가test")
-          sessionStorage.removeItem('b_no');
           if (userGroup === "일반") {
             sessionStorage.setItem('userGroup', '업체')
           }
@@ -96,6 +95,13 @@ const CompanyUpload = () => {
           alert("error")
         })
         }
+      }
+    }
+
+    const cancelBtnClick = () => {
+      if (window.confirm("취소하시겠습니까?")) {
+        sessionStorage.removeItem('b_no');
+        navigate(`/`)
       }
     }
   return(
@@ -159,6 +165,7 @@ const CompanyUpload = () => {
                 </li>
                 <li>
                   <button onClick={() => uploadBtnClick()}>등록</button>
+                  <button onClick={() => cancelBtnClick()} className='cancel-btn'>취소</button>
                 </li>
               </ul>
             </Inner>
