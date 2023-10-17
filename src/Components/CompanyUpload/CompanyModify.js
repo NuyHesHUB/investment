@@ -8,6 +8,7 @@ import { Wrap, Container, Inner } from "./StyledCompanyUpload"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
 // icon
 import { AiOutlineCamera } from "react-icons/ai";
+import { async } from 'q';
 
 const CompanyUpload = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -43,7 +44,6 @@ const CompanyUpload = () => {
       const file = e.target.files[0]
       const encodedFilename = encodeURIComponent(file.name);
       const imgUrl = URL.createObjectURL(file)
-      setPlaceholderActive(false) // 플레이스홀더없애기
       setLogoImage(imgUrl) //미리보기 이미지 링크
       
       const formData = new FormData();
@@ -56,6 +56,7 @@ const CompanyUpload = () => {
         const imageUrl = res.data.imageUrl
         console.log("이미지의 링크:", imageUrl);
         //업체 데이터 로고 이미지부분 수정//
+        setPlaceholderActive(false) // 플레이스홀더없애기
         const updatedData = {
           ...companyData,
           logoImg: imageUrl,
@@ -74,6 +75,22 @@ const CompanyUpload = () => {
       console.error("error")
     }
   }
+  // 로고 이미지 삭제 //
+  const logoImgDelete = async () => {
+    console.log(companyData.logoImg,"companyData.logoImg")
+    await axios.delete(`${baseURL}/v1/attachment/delete`, { data : {url: companyData.logoImg}, headers} ).then((res) => {
+      setLogoImage('')
+      setCompanyData({
+        ...companyData,
+        logoImg: ''
+      })
+      setPlaceholderActive(true)
+    }).catch((error) => {
+      console.error(error)
+      alert("error")
+    })
+  }
+
   ///////////////////////////////////
   ///// input 값 입력(onchange) /////
   ///////////////////////////////////
@@ -144,9 +161,14 @@ const CompanyUpload = () => {
                     </div>
                     <p className={logoImage ? 'imgBox active' : 'imgBox'}>
                       <img src={logoImage} id="preview" />
-                      <div>
-                        <button className='logo-change-btn'>변경</button>
-                        <button className='logo-delete-btn'>삭제</button>
+                      <div className='logo-btnBox'>
+                        <label htmlFor="logo-upload" className='logo-change-btn'>
+                          변경
+                        </label>
+                        <button 
+                          className='logo-delete-btn'
+                          onClick={logoImgDelete}
+                        >삭제</button>
                       </div>
                     </p>
                   </label>

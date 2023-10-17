@@ -83,6 +83,7 @@ export const Inner = styled.div`
   ul li label {
     width: 140px; height: 140px;
     display: block;
+    position: relative;
     background: #f3f5f8;
     border-radius: 10px;
     display: flex;
@@ -94,12 +95,39 @@ export const Inner = styled.div`
     .imgBox {display: none;}
     .imgBox.active {display: block; width: 100%;}
     img {object-fit: cover; width: 100%;}
+    overflow: hidden;
   }
   ul li label.logo-upload {box-shadow: 0px 0px 10px #ddd;}
+  .logo-btnBox {display: none;}
+  label:hover .logo-btnBox {
+    display: block;
+    background: rgba(0,0,0,.3);
+    width: 100%; 
+    height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    transition: all .3s;
+    cursor: auto;
+  }
   .logo-change-btn, .logo-delete-btn {
     all:unset;
-    background: blue;
-    
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
   }
+  
+  .logo-change-btn {background: #ccc;}
+  .logo-delete-btn {background: #e74646;}
+  .logo-delete-btn {}
   input#logo-upload {display: none;}
+  
 `
