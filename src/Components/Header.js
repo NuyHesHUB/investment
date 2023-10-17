@@ -55,6 +55,9 @@ const Header = ({parsedCommunityCategoryData}) => {
          sessionStorage.removeItem('accessToken');
          sessionStorage.removeItem('refreshToken');
          sessionStorage.removeItem('userUid');
+         sessionStorage.removeItem('b_no');
+         sessionStorage.removeItem('userGroup');
+         sessionStorage.removeItem('userIsAdmin');
          /* dispatch(logout()); */
          navigate("/login");
      };

@@ -35,8 +35,9 @@ const CompanyUpload = () => {
   }, []);
 
   
-
+  ////////////////////////////////
   ///// 로고 이미지 미리보기 /////
+  ////////////////////////////////
   const inputFileChange = async (e) => {
     try {
       const file = e.target.files[0]
@@ -51,13 +52,21 @@ const CompanyUpload = () => {
       formData.append('filename', encodedFilename);
       
       await axios.post(`${baseURL}/v1/img/upload`, formData , { headers }).then((res) => {
-        console.log(res, "res")
+        console.log(res, "로고이미지res")
         const imageUrl = res.data.imageUrl
         console.log("이미지의 링크:", imageUrl);
-        setCompanyData({
+        //업체 데이터 로고 이미지부분 수정//
+        const updatedData = {
           ...companyData,
-          logoImg: imageUrl
-        }) //업체 데이터 로고 이미지부분 수정
+          logoImg: imageUrl,
+          userUid: userUid,
+        };
+        setCompanyData(updatedData); 
+
+        // setCompanyData({
+        //   ...companyData,
+        //   logoImg: imageUrl
+        // })
       }).catch((error) => {
         console.error(error)
       })
@@ -65,8 +74,9 @@ const CompanyUpload = () => {
       console.error("error")
     }
   }
-
+  ///////////////////////////////////
   ///// input 값 입력(onchange) /////
+  ///////////////////////////////////
   const companyValueModify = (e, name) => {
     const value = e.target.value
     /* setCompanyData({
@@ -80,12 +90,13 @@ const CompanyUpload = () => {
     };
     setCompanyData(updatedData);
   }
-  console.log("Asd", "disabled테스트당")
+  // console.log(b_no, "disabled테스트당")
 
+  //////////////////////////
   ///// 수정 버튼 클릭 /////
+  //////////////////////////
   const companyNameLen = companyData?.companyName
   const representativeNameLen = companyData?.representativeName
-  
   const uploadBtnClick = async () => {
     if (!companyNameLen || !representativeNameLen){
       alert("회사명과 대표자 이름은 필수 입력값입니다.")
@@ -101,17 +112,20 @@ const CompanyUpload = () => {
         }).catch((error) => {
           console.error(error)
           console.log("companyData 테스트",companyData)
-          alert("error, 변경된 값이 없음")
+          alert("error")
         })
-        }
       }
     }
-    const cancelBtnClick = () => {
-      if (window.confirm("취소하시겠습니까?")) {
-        sessionStorage.removeItem('b_no');
-        navigate(`/`)
-      }
+  }
+  //////////////////////////
+  ///// 수정 버튼 클릭 /////
+  //////////////////////////
+  const cancelBtnClick = () => {
+    if (window.confirm("취소하시겠습니까?")) {
+      sessionStorage.removeItem('b_no');
+      navigate(`/`)
     }
+  }
   return(
     <StyledFrame>
       <Header />
@@ -121,24 +135,19 @@ const CompanyUpload = () => {
             <h2>업체 정보 수정</h2>
             <Inner>
               <ul>
-                {/******* 사업자등록번호 *******/}
-                <li>
-                  <input 
-                    type="text" 
-                    value={companyData?.businessNum || ""}
-                    disabled
-                  />
-                </li>
-
                 {/******* 로고 이미지 업로드 *******/}
                 <li>
-                  <label htmlFor="logo-upload">
+                  <label htmlFor="logo-upload" className='logo-upload'>
                     <div className={placeholderActive ? 'placeholder-active' : 'placeholder-none'}>
                       <AiOutlineCamera size="100" color="#c5c6c9" />
                       <p>로고 이미지 업로드</p>
                     </div>
-                    <p className='imgBox'>
-                      <img src={companyData?.logoImg} id="preview" />
+                    <p className={logoImage ? 'imgBox active' : 'imgBox'}>
+                      <img src={logoImage} id="preview" />
+                      <div>
+                        <button className='logo-change-btn'>변경</button>
+                        <button className='logo-delete-btn'>삭제</button>
+                      </div>
                     </p>
                   </label>
                   <input 
@@ -146,6 +155,15 @@ const CompanyUpload = () => {
                     type="file" 
                     accept='image/*' 
                     onChange={(e) => inputFileChange(e)}
+                  />
+                </li>
+
+                {/******* 사업자등록번호 *******/}
+                <li>
+                  <input 
+                    type="text" 
+                    value={companyData?.businessNum || ""}
+                    disabled
                   />
                 </li>
 
@@ -187,7 +205,7 @@ const CompanyUpload = () => {
                 <li>
                   <button 
                     onClick={() => uploadBtnClick()} 
-                    disabled={companyData.userUid === undefined ? true : false}
+                    disabled={companyData?.userUid === undefined ? true : false}
                   >수정</button>
                   <button onClick={() => cancelBtnClick()} className='cancel-btn'>취소</button>
                 </li>

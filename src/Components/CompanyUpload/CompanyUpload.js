@@ -73,13 +73,13 @@ const CompanyUpload = () => {
   console.log(companyData)
   console.log("업체등록 test", companyData.companyName.length)
 
-  const companyNameLen = companyData.companyName.length
-  const representativeNameLen = companyData.representativeName.length
+  const companyNameLen = companyData.companyName
+  const representativeNameLen = companyData.representativeName
 
   const uploadBtnClick = async () => {
     if (!b_no) {
       alert("사업자 등록번호가 없습니다.")
-    } else if (companyNameLen === 0 || representativeNameLen === 0){
+    } else if (!companyNameLen || !representativeNameLen){
       alert("회사명과 대표자 이름은 필수 입력값입니다.")
     } else {
       if(window.confirm("업체를 등록하시겠습니까?")) {
@@ -114,13 +114,8 @@ const CompanyUpload = () => {
             <p className='txt'>내용은 추후에 수정 가능합니다.</p>
             <Inner>
               <ul>
-                <li>
-                  <input 
-                    type="text" 
-                    value={b_no &&`${b_no.slice(0,3)}-${b_no.slice(3,5)}-${b_no.slice(5,10)}`}
-                    disabled
-                  />
-                </li>
+
+                {/******* 로고 이미지 업로드 *******/}
                 <li>
                   <label htmlFor="logo-upload">
                     <div className={placeholderActive ? 'placeholder-active' : 'placeholder-none'}>
@@ -138,6 +133,17 @@ const CompanyUpload = () => {
                     onChange={(e) => inputFileChange(e)}
                   />
                 </li>
+
+                {/******* 사업자등록번호 *******/}
+                <li>
+                  <input 
+                    type="text" 
+                    value={b_no &&`${b_no.slice(0,3)}-${b_no.slice(3,5)}-${b_no.slice(5,10)}`}
+                    disabled
+                  />
+                </li>
+                
+                {/******* 업체명 *******/}
                 <li className={companyNameLen ? '' : 'required'}>
                   <input 
                     type="text" 
@@ -146,6 +152,8 @@ const CompanyUpload = () => {
                     onChange={(e) => companyValueWrite(e, "companyName")}
                   />
                 </li>
+
+                {/******* 대표자 이름 *******/}
                 <li className={representativeNameLen ? '' : 'required'}>
                   <input 
                     type="text" 
@@ -154,6 +162,8 @@ const CompanyUpload = () => {
                     onChange={(e) => companyValueWrite(e, "representativeName")}
                   />
                 </li>
+
+                {/******* 회사 소개글 *******/}
                 <li>
                   <textarea 
                     name="introduction" 
@@ -163,6 +173,8 @@ const CompanyUpload = () => {
                     onChange={(e) => companyValueWrite(e, "introduction")}
                   />
                 </li>
+
+                {/******* 등록/취소 버튼 *******/}
                 <li>
                   <button onClick={() => uploadBtnClick()}>등록</button>
                   <button onClick={() => cancelBtnClick()} className='cancel-btn'>취소</button>

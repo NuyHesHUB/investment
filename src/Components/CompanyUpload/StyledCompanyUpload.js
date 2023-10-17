@@ -27,6 +27,7 @@ export const Inner = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    margin-top: 50px;
   }
   ul li {
     margin-bottom: 30px;
@@ -90,9 +91,15 @@ export const Inner = styled.div`
     div p {color: #c5c6c9; text-align: center;}
     div.placeholder-none {display: none;}
     div.placeholder-active {display: block; width: 100%;}
-    .imgBox {}
+    .imgBox {display: none;}
+    .imgBox.active {display: block; width: 100%;}
     img {object-fit: cover; width: 100%;}
   }
-
+  ul li label.logo-upload {box-shadow: 0px 0px 10px #ddd;}
+  .logo-change-btn, .logo-delete-btn {
+    all:unset;
+    background: blue;
+    
+  }
   input#logo-upload {display: none;}
 `
