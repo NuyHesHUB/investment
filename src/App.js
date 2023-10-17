@@ -54,6 +54,7 @@ import DeadlineBoard from './Components/Board/InvestmentBoard/DaedlineBoard';
 
 /* 업체등록, 글쓰기 페이지 */
 import CompanyUpload from './Components/CompanyUpload/CompanyUpload';
+import CompanyModify from './Components/CompanyUpload/CompanyModify';
 import CompanyWrite from './Components/CompanyUpload/CompanyWrite';
 import BusinessNumberCheck from './Components/CompanyUpload/BusinessNumberCheck';
 
@@ -350,6 +351,7 @@ const App = () => {
                 {/* 글쓰기 & 업체등록 */}
                 <Route exact path="/company_upload" element={<CompanyUpload />}></Route>
                 <Route exact path="/company_write" element={<CompanyWrite />}></Route>
+                <Route exact path="/company_modify" element={<CompanyModify />}></Route>
                 <Route exact path="/business_number_check" element={<BusinessNumberCheck />}></Route>
 
                 {/* 게시판 */}
