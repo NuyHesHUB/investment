@@ -99,6 +99,8 @@ const App = () => {
     const postDataString = localStorage.getItem('adminPostData');
     const postData = JSON.parse(postDataString); */
     const boardData = useSelector((state) => state.reducer.adminBoardData);
+    const testData = useSelector((state) => state.reducer);
+    console.log('testData', testData);
     /* console.log('App.js > boardData',boardData); */
     /* console.log('App.js > postData',postData); */
 

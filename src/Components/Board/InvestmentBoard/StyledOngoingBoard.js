@@ -13,8 +13,9 @@ export const DummyBanner=styled.div`
 
 export const BoardWrap=styled.div`
     width: 100%;
-    height: 2000px;
+    height: auto;
     padding-top: 80px;
+    margin-bottom: 124px;
 `
 export const PostCardTitleWrap=styled.div`
     width: 100%;
@@ -40,4 +41,23 @@ export const PostCardWrap=styled.div`
     grid-template-columns: repeat(3, minmax(386px, 1fr));
     gap: 37px;
     padding: 0 250px;
+`
+
+export const MoreWrap=styled.div`
+    text-align: center;
+`
+export const MoreBtn=styled.button`
+    width: 100px;
+    height: 50px;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    background: rgb(63, 169, 245);
+    position: relative;
+    line-height: 50px;
+    span{
+        color: #fff;
+        font-weight: 600;
+        font-size: 18px;
+    }
 `

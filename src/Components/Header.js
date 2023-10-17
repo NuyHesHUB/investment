@@ -46,9 +46,7 @@ const Header = ({parsedCommunityCategoryData}) => {
                 }).catch(error => {
                     console.error('회원 이름 가져오기 실패', error);
                 });
-         } else{
-             dispatch(logout());
-         }
+         } 
      },[accessToken])
  
      /* 로그아웃 하면 상태관리 로그아웃 & 토큰 삭제 */
@@ -57,7 +55,7 @@ const Header = ({parsedCommunityCategoryData}) => {
          sessionStorage.removeItem('accessToken');
          sessionStorage.removeItem('refreshToken');
          sessionStorage.removeItem('userUid');
-         dispatch(logout());
+         /* dispatch(logout()); */
          navigate("/login");
      };
 
@@ -168,7 +166,7 @@ const Header = ({parsedCommunityCategoryData}) => {
 
     // 관리자, 일반, 업체 확인하기
     const userGroup = sessionStorage.getItem('userGroup');
-    console.log(userUid, "userUid")
+    /* console.log(userUid, "userUid") */
     
     const navigateLogin = () => {
         if (window.confirm("로그인이 되어 있지 않습니다. 로그인하시겠습니까?")) {
@@ -264,28 +262,54 @@ const Header = ({parsedCommunityCategoryData}) => {
                                 ) : (
                                     <><div style={{fontWeight:'bold',fontSize:'16px'}}>Loading...</div></>
                                 )}
-                            {accessToken ? 
-                                (
-                                <>  
-                                    <li style={{margin:'0 10px'}}>
-                                        <Link to="/myinfo">
-                                            <HeaderBtn>회원정보수정</HeaderBtn>
+                            {accessToken ? (
+                                userGroup === '관리자' ? (
+                                    <>
+                                        <li style={{ margin: '0 10px' }}>
+                                            <Link to="/admin">
+                                                <HeaderBtn>관리자 페이지</HeaderBtn>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
+                                        </li>
+                                    </>
+                                ) : userGroup === '업체' ? (
+                                    <>
+                                        <li style={{ margin: '0 10px' }}>
+                                            <Link to="/myinfo">
+                                                <HeaderBtn>업체정보수정</HeaderBtn>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
+                                        </li>
+                                    </>
+                                ) : (
+                                    <>
+                                        {/* <li style={{ margin: '0 10px' }}>
+                                            <Link to="/myinfo">
+                                                <HeaderBtn>회원정보수정</HeaderBtn>
+                                            </Link>
+                                        </li> */}
+                                        <li>
+                                            <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
+                                        </li>
+                                    </>
+                                )
+                            ) : (
+                                <ul style={{display:'flex',alignItems:'center'}}>
+                                    <li>
+                                        <Link to="/login">로그인</Link>
+                                    </li>
+                                    <li style={{ margin:'0 5px'}}>|</li>
+                                    <li>
+                                        <Link to="/member_type" style={{color:'#454afc',fontWeight:'bold'}}>
+                                            회원가입
                                         </Link>
                                     </li>
-                                    <li>
-                                        <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
-                                    </li>
-                                </>
-                                ) : 
-                                (
-                                    <ul style={{display:'flex',alignItems:'center'}}>
-                                        <li><Link to="/login">로그인</Link></li>
-                                        <li style={{margin:'0 5px'}}>|</li>
-                                        {/* <li><Link to="/sign_up" style={{color:'#454afc',fontWeight:'bold'}}>회원가입</Link></li> */}
-                                        <li><Link to="/member_type" style={{color:'#454afc',fontWeight:'bold'}}>회원가입</Link></li>
-                                    </ul>
-                                )}
-                            
+                                </ul>
+                            )}
                         </ul>
                     </div>
                 </div>

@@ -1,30 +1,73 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../../Header';
-import Footer from '../../Footer';
-import { StyledFrame } from '../../StyledComponents/StyledHome';
+
+/* React-Router-Dom */
+import { Link, useNavigate } from 'react-router-dom';
+
+/* Axios */
 import axios from 'axios';
 
+/* Redux */
+import { useDispatch, useSelector } from 'react-redux';
+import { setOngoingPostCardCount } from '../../../store/actions/actions';
+
+/* Components */
+import Header from '../../Header';
+import Footer from '../../Footer';
 import OngoingPostCard from './OngoingPostCard';
-import { BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap } from './StyledOngoingBoard';
-import { Link } from 'react-router-dom';
+
+/* Styled-Components */
+import { StyledFrame } from '../../StyledComponents/StyledHome';
+import { BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap, MoreWrap, MoreBtn } from './StyledOngoingBoard';
 
 const InvestOngoingBoard = () => {
+    /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
-    const userUid = sessionStorage.getItem('userUid');
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {
         Authorization: `${accessToken}`
     };
-    const [investOngoingPostData, setInvestOngoingPostData] = useState(null);
+    const params = {
+        pageRows : '',
+        page : '',
+        category : '',
+        status : '',
+        condition :'ongoing',
+    };
+    const dispatch = useDispatch();
+    const PostCardCount = useSelector((state) => state.reducer.ongoingPostcardCount
+    );
 
-/* const [investOngoingPostData, setInvestOngoingPostData] = useState([]); */
+    const [investOngoingPostData, setInvestOngoingPostData] = useState(null);
+    
+    useEffect(() => {
+        const handlePopState = () => {
+            const state = window.history.state;
+            if (state) {
+                const updatedNumPostsToShow = state.PostCardCount || PostCardCount;
+                dispatch(setOngoingPostCardCount(updatedNumPostsToShow));
+            }
+    };
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+
+    }, [PostCardCount]);
+
+    const handleLoadMore = () => {
+        const updatedNumPostsToShow = PostCardCount + 6;
+        dispatch(setOngoingPostCardCount(updatedNumPostsToShow));
+    };
+
     /*-----------------------------------------------*\
                   investment post 데이터 API
     \*-----------------------------------------------*/
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post?query&pageRows=&page=&category=&status=&condition=ongoing`, { headers });
+                /* const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post?query&pageRows=&page=&category=&status=&condition=`, { headers }); */
+                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params });
                 const data = PostResponse.data?.query;
                 console.log('investPostResponse',data);
                 /* setInvestOngoingPostData(data.filter(item => item.condition === 'ongoing')); */
@@ -37,9 +80,9 @@ const InvestOngoingBoard = () => {
     },[])
 
     
-    /* const businessNums = investOngoingPostData?.map(item => item.businessNum);
+    /* const businessNums = investOngoingPostData?.map(item => item.businessNum); */
 
-    console.log('businessNums',businessNums); */
+    /* console.log('businessNums',businessNums); */
 
 
     /*-----------------------------------------------*\
@@ -57,8 +100,12 @@ const InvestOngoingBoard = () => {
         const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
         return `D-${daysDiff}`
-    })
+    });
 
+    const removeTags = (html) => {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.textContent || "";
+    };
     /*-----------------------------------------------*\
                     Console.log 테스트
     \*-----------------------------------------------*/
@@ -70,60 +117,36 @@ const InvestOngoingBoard = () => {
             <Header/>
                 <BoardWrap>
                     <DummyBanner>visual</DummyBanner>
-                    {/* {
-                        Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
-                        investOngoingPostData
-                        .filter(item => item && item.condition === 'ongoing')
-                        .map((item, index) => (
-                            <tr key={index}>
-                                <td>{item.brdKey}</td>
-                                <td>{item.category}</td>
-                                <td>{item.comment_count}</td>
-                                <td>{item.condition}</td>
-                                <td>{item.content}</td>
-                            </tr>
-                        ))
-                    } */}
                     <PostCardTitleWrap>
                         <h3>진행 중인 투자</h3>
                     </PostCardTitleWrap>
                     <PostCardWrap>
-                        {/* {
-                            Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
-                            investOngoingPostData
-                            .filter(item => item && item.condition === 'ongoing')
-                            .map((item, index) => (
-                                <Link key={index} to={`/investment/ongoing/${item.id}`}>
-                                    <OngoingPostCard 
-                                        key={index} 
-                                        name={item.title} 
-                                        content={item.content} 
-                                        category={item.category} 
-                                        date={formattedDates[index]}
-
-                                    />
-                                </Link>
-                            ))
-                        } */}
-                        {
-                            investOngoingPostData && investOngoingPostData.length > 0 &&
-                            investOngoingPostData
-                            .map((item, index) => (
-                                <Link key={index} to={`/investment/ongoing/${item.id}`}>
-                                    <OngoingPostCard 
-                                        key={index} 
-                                        logoimg={item.logoImg}
-                                        name={item.companyName} 
-                                        title={item.title}
-                                        content={item.content} 
-                                        category={item.category} 
-                                        date={formattedDates[index]}
-
-                                    />
-                                </Link>
-                            ))
-                        }
+                    {investOngoingPostData &&
+                        investOngoingPostData?.length > 0 &&
+                        investOngoingPostData?.slice(0, PostCardCount).map((item, index) => (
+                        <Link key={index} to={`/investment/ongoing/${item.id}`}>
+                            <OngoingPostCard
+                                key={index}
+                                logoimg={item.logoImg}
+                                name={item.companyName}
+                                title={item.title}
+                                /* content={item.content} */
+                                content={removeTags(item.content)}
+                                /* category={item.category} */
+                                date={formattedDates[index]}
+                            />
+                        </Link>
+                    ))}
                     </PostCardWrap>
+                    <MoreWrap>
+                        {investOngoingPostData?.length > PostCardCount && (
+                            <div style={{marginTop:'80px'}}>
+                                <MoreBtn onClick={handleLoadMore}>
+                                    <span>더보기</span>
+                                </MoreBtn>
+                            </div>
+                        )}
+                    </MoreWrap>
                 </BoardWrap>
             <Footer/>
         </StyledFrame>

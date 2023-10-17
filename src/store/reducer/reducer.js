@@ -1,54 +1,67 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    authenticated: false,
-    userUid: '',
-    boardData: [],
-    postData: [],
+    /* authenticated: false, */
+    /* userUid: '', */
+    /* boardData: [], */
+    /* postData: [], */
     adminUserData: [],
     adminBoardData: [],
     adminPostData: [],
+    ongoingPostcardCount: 6,
+    deadlinePostcardCount: '',
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.LOG_IN:
+        case actionTypes.ONGOING_POSTCARD:
+            return {
+                ...state,
+                ongoingPostcardCount: action.payload
+            }
+            
+        case actionTypes.DEADLINE_POSTCARD:
+            return {
+                ...state,
+                deadlinePostcardCount: ''
+            }
+        /* case actionTypes.LOG_IN:
             return {
                 ...state,
                 authenticated: true,
                 userUid: action.userUid,
-            }
+            } */
             
-        case actionTypes.LOG_OUT:
+        /* case actionTypes.LOG_OUT:
             return {
                 ...state,
                 authenticated: false,
                 userUid: '',
-            }
+            } */
 
-        case actionTypes.SET_USER_UID:
+        /* case actionTypes.SET_USER_UID:
             return {
                 ...state,
                 userUid: action.userUid, 
-            };
+            }; */
         
-        case actionTypes.SET_BOARD_DATA: // 새로운 액션 추가
+        /* case actionTypes.SET_BOARD_DATA:
             return {
                 ...state,
-                boardData: action.boardData, // boardData 상태 업데이트
-            };
+                boardData: action.boardData,
+            }; */
         
-        case actionTypes.SET_POST_DATA:
+        /* case actionTypes.SET_POST_DATA:
             return {
                 ...state,
                 postData: action.postData
-            };
+            }; */
             
-        case actionTypes.SET_CATEGORY_DATA:
+        /* case actionTypes.SET_CATEGORY_DATA:
             return {
                 ...state,
                 galleryListData: action.galleryListData
-            };
+            }; */
 
         case actionTypes.ADMIN_USER_DATA:
             return {

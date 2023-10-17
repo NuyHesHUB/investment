@@ -74,6 +74,9 @@ import {
 
     ReplyRightWrap,
 
+    Pagination,
+    PaginationButton,
+
 } from './StyledPostDetail';
 
 /* React-Scroll */
@@ -128,6 +131,7 @@ const PostDetail = () => {
     /* 댓글 수정 TabMenu */
     const [showCommentEditTab, setShowCommentEditTab] = useState(false);
     
+    /* 댓글 페이지네이션 */
 
 
     /*-----------------------------------------------------*\
@@ -439,6 +443,7 @@ const PostDetail = () => {
     }, []);
     
     console.log('기본 comment', comments);
+    console.log('기본 post', postData);
     /*-----------------------------------------------------*\
                         댓글 시간데이터 변환
     \*-----------------------------------------------------*/
@@ -576,7 +581,7 @@ const PostDetail = () => {
                             <p>thumbnail : {item.thumbnail}</p>
                             <p>nickname : {item.nickname}</p>
                             <div dangerouslySetInnerHTML={{ __html: item.content }} />
-                            {/* 뭐야 */}
+                            
                         </div>
                 ))}
                     
@@ -619,7 +624,7 @@ const PostDetail = () => {
                         ))} */}
             </div>
         ) },
-        { name: '문의', content: (
+        { name: `문의 (${postData?.[0]?.comment_count})`, content: (
             <CommentWrap>
                 <div>
                     <CommentInput
@@ -630,164 +635,166 @@ const PostDetail = () => {
                     />
                 </div>
                 <CommentFrame>
-                    {
-                        comments.map((item, index) => {
-                            if(item.parentId === 0) {
-                                return (
-                                    <div key={index}>
-                                        <CommentBox>
-                                            <CommentTopBox>
-                                                <CommentTopLeftBox>
-                                                    <p>{item.nickname}</p>
-                                                    <p>{formatDate(item.regDt)}</p>
-                                                </CommentTopLeftBox>
-                                                <CommentTopRightBox>
-                                                    <CommentLikeBox
-                                                        type="like"
-                                                        onClick={() => handleCommentLikeBtnClick(index, item.id, 'like')}
-                                                        style={{ color: item.type === "like" ? "blue" : "rgb(85, 85, 85)" }}
-                                                    >
-                                                        <VscThumbsup/>
-                                                        {item.like}
-                                                    </CommentLikeBox>
-                                                    <CommentLikeBox
-                                                        type="dislike"
-                                                        onClick={() => handleCommentLikeBtnClick(index, item.id, 'dislike')}
-                                                        style={{ color: item.type === "dislike" ? "red" : "rgb(85, 85, 85)" }}
-                                                    >
-                                                        <VscThumbsdown/>
-                                                        {item.dislike}
-                                                    </CommentLikeBox>
-                                                </CommentTopRightBox>
-                                            </CommentTopBox>
-                                            <CommentCenterBox>
-                                                <p>{item.content}</p>
-                                            </CommentCenterBox>
-                                            <CommentBottomBox>
-                                                <div
-                                                    onClick={() => handleCommentEditBtnClick(index, item.id)}
-                                                    style={{marginRight:'10px'}}
-                                                >
-                                                    수정
-                                                </div>
-                                                <div
-                                                    onClick={() => handleDeleteComment(index, item.id)}
-                                                    style={{marginRight:'10px'}}
-                                                >
-                                                    삭제
-                                                </div>
-                                                <div
-                                                    onClick={() => handleCommentBtnClick(index, item.id)}
-                                                >
-                                                    답글달기
-                                                </div>
-                                            </CommentBottomBox>
-                                        </CommentBox>
-
-                                        {showCommentTab && activeCommentIndex === index ? (
-                                                <div style={{marginTop:'10px', marginBottom:'10px'}}>
-                                                    <CommentInput 
-                                                        onPostComment={handlePostReply} 
-                                                        frameHeight="100px"
-                                                        holder="답글을 입력해 주세요."
-                                                        btnText="답글 등록"
-                                                    />
-                                                </div>
-                                        ) : (null)}
-
-                                        {showCommentEditTab && activeCommentIndex === index ? (
-                                            <div style={{marginTop:'10px', marginBottom:'10px'}}>
-                                                <CommentInput 
-                                                    onPostComment={(newComment) => handlePostEditComment(newComment, item.id, index)} 
-                                                    initialValue={comments[index].content} 
-                                                    frameHeight="100px"
-                                                    btnText="답글 수정"
-                                                />
-                                            </div>
-                                        ) : (null)}
-
-                                        {
-                                            comments.map((reply, replyIndex) => {
-                                                if ( reply.parentId === item.id) {
-                                                    return (
-                                                        <div key={replyIndex}>
-                                                            <ReplyBox>
-                                                                <ReplyLeftWrap>
-                                                                    <LuReply/>
-                                                                </ReplyLeftWrap>
-                                                                <ReplyRightWrap>
-                                                                    <CommentTopBox>
-                                                                        <CommentTopLeftBox>
-                                                                            <p>{reply.nickname}</p>
-                                                                            <p>{formatDate(reply.regDt)}</p>
-                                                                        </CommentTopLeftBox>
-                                                                        <CommentTopRightBox>
-                                                                            <CommentLikeBox
-                                                                                type="like"
-                                                                                onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "like")}
-                                                                                style={{ color: reply.type === "like" ? "blue" : "rgb(85, 85, 85)" }}
-                                                                            >
-                                                                                <VscThumbsup/>
-                                                                                {reply.like}
-                                                                            </CommentLikeBox>
-                                                                            <CommentLikeBox
-                                                                                type="dislike"
-                                                                                onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "dislike")}
-                                                                                style={{ color: reply.type === "dislike" ? "red" : "rgb(85, 85, 85)" }}
-                                                                            >
-                                                                                <VscThumbsdown/>
-                                                                                {reply.dislike}
-                                                                            </CommentLikeBox>
-                                                                        </CommentTopRightBox>
-                                                                    </CommentTopBox>
-                                                                    <CommentCenterBox>
-                                                                        <p>{reply.content}</p>
-                                                                    </CommentCenterBox>
-                                                                </ReplyRightWrap>
-                                                                <CommentBottomBox>
-                                                                    <div
-                                                                        onClick={() => handleCommentEditBtnClick(replyIndex, reply.id)}
-                                                                        style={{marginRight:'10px'}}
-                                                                    >
-                                                                        수정
-                                                                    </div>
-                                                                    <div
-                                                                        onClick={() => handleDeleteComment(replyIndex, reply.id)}
-                                                                        style={{marginRight:'10px'}}
-                                                                    >
-                                                                        삭제
-                                                                    </div>
-                                                                    {/* <div
-                                                                        onClick={() => handleCommentBtnClick(index, item.id)}
-                                                                    >
-                                                                        답글달기
-                                                                    </div> */}
-                                                                </CommentBottomBox>
-                                                            </ReplyBox>
-
-                                                            {showCommentEditTab && activeCommentIndex === replyIndex ? (
-                                                                <div style={{marginTop:'10px', marginBottom:'10px'}}>
-                                                                    <CommentInput 
-                                                                        onPostComment={(newComment) => handlePostEditComment(newComment, reply.id, index)} 
-                                                                        initialValue={comments[replyIndex].content} 
-                                                                        frameHeight="100px"
-                                                                        btnText="답글 수정"
-                                                                    />
-                                                                </div>
-                                                            ) : (null)}
-
+                    { comments?.length <= 0 ? <div style={{textAlign:'center',color:'rgb(85,85,85)',marginBottom:'80px'}}>아직 댓글이 없습니다.</div> 
+                    : 
+                        <div style={{marginBottom:'124px'}}>
+                            {
+                                comments.map((item, index) => {
+                                
+                                    if(item.parentId === 0) {
+                                        return (
+                                            <div key={index}>
+                                                <CommentBox>
+                                                    <CommentTopBox>
+                                                        <CommentTopLeftBox>
+                                                            <p>{item.nickname}</p>
+                                                            <p>{formatDate(item.regDt)}</p>
+                                                        </CommentTopLeftBox>
+                                                        <CommentTopRightBox>
+                                                            <CommentLikeBox
+                                                                type="like"
+                                                                onClick={() => handleCommentLikeBtnClick(index, item.id, 'like')}
+                                                                style={{ color: item.type === "like" ? "blue" : "rgb(85, 85, 85)" }}
+                                                            >
+                                                                <VscThumbsup/>
+                                                                {item.like}
+                                                            </CommentLikeBox>
+                                                            <CommentLikeBox
+                                                                type="dislike"
+                                                                onClick={() => handleCommentLikeBtnClick(index, item.id, 'dislike')}
+                                                                style={{ color: item.type === "dislike" ? "red" : "rgb(85, 85, 85)" }}
+                                                            >
+                                                                <VscThumbsdown/>
+                                                                {item.dislike}
+                                                            </CommentLikeBox>
+                                                        </CommentTopRightBox>
+                                                    </CommentTopBox>
+                                                    <CommentCenterBox>
+                                                        <p>{item.content}</p>
+                                                    </CommentCenterBox>
+                                                    <CommentBottomBox>
+                                                        <div
+                                                            onClick={() => handleCommentEditBtnClick(index, item.id)}
+                                                            style={{marginRight:'10px'}}
+                                                        >
+                                                            수정
                                                         </div>
-                                                    );
+                                                        <div
+                                                            onClick={() => handleDeleteComment(index, item.id)}
+                                                            style={{marginRight:'10px'}}
+                                                        >
+                                                            삭제
+                                                        </div>
+                                                        <div
+                                                            onClick={() => handleCommentBtnClick(index, item.id)}
+                                                        >
+                                                            답글달기
+                                                        </div>
+                                                    </CommentBottomBox>
+                                                </CommentBox>
+
+                                                {showCommentTab && activeCommentIndex === index ? (
+                                                        <div style={{marginTop:'10px', marginBottom:'10px'}}>
+                                                            <CommentInput 
+                                                                onPostComment={handlePostReply} 
+                                                                frameHeight="100px"
+                                                                holder="답글을 입력해 주세요."
+                                                                btnText="답글 등록"
+                                                            />
+                                                        </div>
+                                                ) : (null)}
+
+                                                {showCommentEditTab && activeCommentIndex === index ? (
+                                                    <div style={{marginTop:'10px', marginBottom:'10px'}}>
+                                                        <CommentInput 
+                                                            onPostComment={(newComment) => handlePostEditComment(newComment, item.id, index)} 
+                                                            initialValue={comments[index].content} 
+                                                            frameHeight="100px"
+                                                            btnText="답글 수정"
+                                                        />
+                                                    </div>
+                                                ) : (null)}
+
+                                                {
+                                                    comments.map((reply, replyIndex) => {
+                                                        if ( reply.parentId === item.id) {
+                                                            return (
+                                                                <div key={replyIndex}>
+                                                                    <ReplyBox>
+                                                                        <ReplyLeftWrap>
+                                                                            <LuReply/>
+                                                                        </ReplyLeftWrap>
+                                                                        <ReplyRightWrap>
+                                                                            <CommentTopBox>
+                                                                                <CommentTopLeftBox>
+                                                                                    <p>{reply.nickname}</p>
+                                                                                    <p>{formatDate(reply.regDt)}</p>
+                                                                                </CommentTopLeftBox>
+                                                                                <CommentTopRightBox>
+                                                                                    <CommentLikeBox
+                                                                                        type="like"
+                                                                                        onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "like")}
+                                                                                        style={{ color: reply.type === "like" ? "blue" : "rgb(85, 85, 85)" }}
+                                                                                    >
+                                                                                        <VscThumbsup/>
+                                                                                        {reply.like}
+                                                                                    </CommentLikeBox>
+                                                                                    <CommentLikeBox
+                                                                                        type="dislike"
+                                                                                        onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "dislike")}
+                                                                                        style={{ color: reply.type === "dislike" ? "red" : "rgb(85, 85, 85)" }}
+                                                                                    >
+                                                                                        <VscThumbsdown/>
+                                                                                        {reply.dislike}
+                                                                                    </CommentLikeBox>
+                                                                                </CommentTopRightBox>
+                                                                            </CommentTopBox>
+                                                                            <CommentCenterBox>
+                                                                                <p>{reply.content}</p>
+                                                                            </CommentCenterBox>
+                                                                        </ReplyRightWrap>
+                                                                        <CommentBottomBox>
+                                                                            <div
+                                                                                onClick={() => handleCommentEditBtnClick(replyIndex, reply.id)}
+                                                                                style={{marginRight:'10px'}}
+                                                                            >
+                                                                                수정
+                                                                            </div>
+                                                                            <div
+                                                                                onClick={() => handleDeleteComment(replyIndex, reply.id)}
+                                                                                style={{marginRight:'10px'}}
+                                                                            >
+                                                                                삭제
+                                                                            </div>
+                                                                        </CommentBottomBox>
+                                                                    </ReplyBox>
+
+                                                                    {showCommentEditTab && activeCommentIndex === replyIndex ? (
+                                                                        <div style={{marginTop:'10px', marginBottom:'10px'}}>
+                                                                            <CommentInput 
+                                                                                onPostComment={(newComment) => handlePostEditComment(newComment, reply.id, index)} 
+                                                                                initialValue={comments[replyIndex].content} 
+                                                                                frameHeight="100px"
+                                                                                btnText="답글 수정"
+                                                                            />
+                                                                        </div>
+                                                                    ) : (null)}
+
+                                                                </div>
+                                                            );
+                                                        }
+                                                        return null;
+                                                    })
                                                 }
-                                                return null;
-                                            })
-                                        }
-                                    </div>
-                                )
+                                            </div>
+                                        )
+                                    }
+                                    
+                                })
                             }
-                            
-                        })
-                    }
+                        </div>
+                }
+                
                 </CommentFrame>
             </CommentWrap>
         )},
