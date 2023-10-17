@@ -11,8 +11,8 @@ import { Container } from "./StyledCompanyWrite"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
 
 //icon
-import { BsFileEarmarkPlus } from "react-icons/bs";
 import { PiFilePlusThin } from "react-icons/pi";
+import { BsTrash3 } from "react-icons/bs";
 
 // const modules =  {
 //     toolbar: [
@@ -160,23 +160,26 @@ const CompanyWrite = () => {
   const [selectedFilesName, setSelectedFilesName] = useState([]); //파일명 미리보기 / 좀이따 위로 올리기
   const handleFileChange  = async (e) => {
     const files = e.target.files;
-    if (files.length > 5 || postData.attaches.length >= 5 || postData.attaches.length + files.length > 5) {
+    console.log("파일첨부테스트", files)
+    if (
+      files.length > 5 
+      || postData.attaches.length >= 5 
+      || postData.attaches.length + files.length > 5
+    ) {
       alert('최대 5개의 파일만 선택할 수 있습니다.');
-      e.target.value = ''
       return;
     } else {
-      // setSelectedFiles(files)
       const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
         // 파일명 미리보기 데이터
         setSelectedFilesName(selectedFilesName => [...selectedFilesName, files[i].name])
-        //폼데이터
+        //폼데이터 넣기
         const file = files[i];
         const encodedFilename = encodeURIComponent(file.name);
         formData.append('file', file); 
         formData.append('filename', encodedFilename);
       }
-      formData.append('brdKey', "companyLogoImg");
+      formData.append('brdKey', "investment");
       let ATTACH_URL_LIST = [] //파일링크 담을 리스트
       try {
         const result = await axios.post(`${baseURL}/v1/attachment/upload`, formData , { headers })        
@@ -200,6 +203,7 @@ const CompanyWrite = () => {
         attaches: [...postData.attaches, ATTACH_URL_LIST].flat(1)
       })
     } // if문 끝
+    e.target.value = ''
   }
   ///// 첨부파일 삭제 /////
   const attachDelete = async (e, index) => {
@@ -215,14 +219,8 @@ const CompanyWrite = () => {
       console.error(error)
       alert("error")
     })
-    
-    console.log(selectedFilesName, postData.attaches, "파일명삭제테스트")
   }
-
-  // console.log(postData.attaches[1], "아아아아아아아아캉남안ㅁㅇ")
-
-
-
+  console.log(selectedFilesName, postData.attaches, postData, "파일명삭제테스트")
 
   ///// 등록/취소 Btn /////
   const handleSubmit = async (e) => {
@@ -306,13 +304,13 @@ const CompanyWrite = () => {
 
             {/********* 첨부파일 input *********/}
             <div className="mb-3">
-              <label htmlFor="attaches" className="form-label">
+              <label htmlFor="attaches" className="form-label attaches">
                 첨부파일
                 <div className='attaches-btn'>
                   {/* <BsFileEarmarkPlus size={70} color='#aaa' />  */}
                   <PiFilePlusThin size={70} color='#aaa' /> 
                   <p>첨부파일 업로드하기</p>
-                  <p className='attach-amount'>{selectedFilesName.length}개</p>
+                  <p className='attach-amount'>최대 5개 / <span>{selectedFilesName.length}</span>개</p>
                 </div>
               </label>
               <input 
@@ -333,7 +331,7 @@ const CompanyWrite = () => {
                       <button 
                         className='attach_del_btn' 
                         onClick={(e) => attachDelete(e, index)}
-                      >X</button> {/* //FIXME: 아이콘 고치기, 기능 구현 */}
+                      ><BsTrash3 size={15} /></button> {/* //FIXME: 아이콘 고치기, 기능 구현 */}
                     </li> 
                   )
                 })}

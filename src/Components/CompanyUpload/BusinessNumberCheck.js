@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
-
+// import component
 import Header from '../Header'
-
+// styled
 import { Wrap, Container, Inner } from './StyledBusinessNumberCheck'
 
 const BusinessNumberCheck = () => {
@@ -21,10 +21,8 @@ const BusinessNumberCheck = () => {
     b_no: ""
   });
   
-
   const checkBtn = async () =>  {
     console.log("businessNum.length", businessNum.b_no)
-
     if (businessNum.b_no.length < 10) {
       alert("사업자 등록번호는 10자리 입니다.")
     } else {

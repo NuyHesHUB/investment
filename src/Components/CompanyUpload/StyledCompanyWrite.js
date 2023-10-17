@@ -44,6 +44,7 @@ export const Container = styled.div`
     cursor: auto;
     opacity: 0.7;
   }
+  label.attaches {width: 200px;}
   #attaches {display: none;}
   .attaches-btn {
     width: 200px;
@@ -55,6 +56,7 @@ export const Container = styled.div`
     font-size: 14px;
     margin-top: 5px;
   }
+  .attach-amount span {color: #1f93ff}
   // 첨부파일명 미리보기
   .attachPreviewBox {
     background: #edeff2;
