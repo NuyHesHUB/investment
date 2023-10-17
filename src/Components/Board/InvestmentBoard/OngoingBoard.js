@@ -102,10 +102,20 @@ const InvestOngoingBoard = () => {
         return `D-${daysDiff}`
     });
 
-    const removeTags = (html) => {
+    /* const removeTags = (html) => {
         const doc = new DOMParser().parseFromString(html, 'text/html');
         return doc.body.textContent || "";
-    };
+    }; */
+
+    const removeTags = (html) => {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const decodedString = doc.body.textContent || "";
+        return decodedString
+      };
+    
+    /* const removeTags = (html) => {
+        return html.replace(/<\/?[^>]+(>|$)/g, "");
+      }; */
     /*-----------------------------------------------*\
                     Console.log 테스트
     \*-----------------------------------------------*/
@@ -117,36 +127,43 @@ const InvestOngoingBoard = () => {
             <Header/>
                 <BoardWrap>
                     <DummyBanner>visual</DummyBanner>
-                    <PostCardTitleWrap>
+                    {investOngoingPostData !== null && investOngoingPostData !== "" ? 
+                    <div>
+                        <PostCardTitleWrap>
                         <h3>진행 중인 투자</h3>
-                    </PostCardTitleWrap>
-                    <PostCardWrap>
-                    {investOngoingPostData &&
-                        investOngoingPostData?.length > 0 &&
-                        investOngoingPostData?.slice(0, PostCardCount).map((item, index) => (
-                        <Link key={index} to={`/investment/ongoing/${item.id}`}>
-                            <OngoingPostCard
-                                key={index}
-                                logoimg={item.logoImg}
-                                name={item.companyName}
-                                title={item.title}
-                                /* content={item.content} */
-                                content={removeTags(item.content)}
-                                category={item.category}
-                                date={formattedDates[index]}
-                            />
-                        </Link>
-                    ))}
-                    </PostCardWrap>
-                    <MoreWrap>
-                        {investOngoingPostData?.length > PostCardCount && (
-                            <div style={{marginTop:'80px'}}>
-                                <MoreBtn onClick={handleLoadMore}>
-                                    <span>더보기</span>
-                                </MoreBtn>
-                            </div>
-                        )}
-                    </MoreWrap>
+                        </PostCardTitleWrap>
+                        <PostCardWrap>
+                        {investOngoingPostData &&
+                            investOngoingPostData?.length > 0 &&
+                            investOngoingPostData?.slice(0, PostCardCount).map((item, index) => (
+                            <Link key={index} to={{
+                                pathname: `/investment/ongoing/${item.id}`,
+    state: { endDt: formattedDates[index] }
+                            }}>
+                                <OngoingPostCard
+                                    key={index}
+                                    logoimg={item.logoImg}
+                                    name={item.companyName}
+                                    title={item.title}
+                                    /* content={item.content} */
+                                    content={removeTags(item.content)}
+                                    category={item.category}
+                                    date={formattedDates[index]}
+                                    /* endDt={formattedDates[index]} */
+                                />
+                            </Link>
+                        ))}
+                        </PostCardWrap>
+                        <MoreWrap>
+                            {investOngoingPostData?.length > PostCardCount && (
+                                <div style={{marginTop:'80px'}}>
+                                    <MoreBtn onClick={handleLoadMore}>
+                                        <span>더보기</span>
+                                    </MoreBtn>
+                                </div>
+                            )}
+                        </MoreWrap>
+                    </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>오류가 발생했습니다.</div>}
                 </BoardWrap>
             <Footer/>
         </StyledFrame>

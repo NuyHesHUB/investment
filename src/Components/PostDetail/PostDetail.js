@@ -85,8 +85,10 @@ import { Link, scroller } from 'react-scroll';
 /* image */
 import defaultLogo from '../../assets/default-image/company-default-img.png';
 
-const PostDetail = () => {
-
+const PostDetail = (props) => {
+    /* const endDt = props.location.state.endDt; */
+    /* console.log('endDt',endDt); */
+    
     /* useNavigate */
     const navigate = useNavigate();
 
@@ -104,6 +106,9 @@ const PostDetail = () => {
     /* useParams */
     const { condition, id } = useParams();
 
+    
+    
+
     /* 게시글 데이터 */
     const [postData, setPostData] = useState([]);
 
@@ -112,6 +117,10 @@ const PostDetail = () => {
     const likeList = postData?.[0]?.like;
 
     const [likeData, setLikeData] = useState(likeList);
+    
+    /* 해당게시글 업체 데이터 */
+    
+    const [companyData, setCompanyData] = useState(null);
 
     /* 댓글 데이터 */
     const [comments, setComments] = useState([]);
@@ -131,9 +140,6 @@ const PostDetail = () => {
     /* 댓글 수정 TabMenu */
     const [showCommentEditTab, setShowCommentEditTab] = useState(false);
     
-    /* 댓글 페이지네이션 */
-
-
     /*-----------------------------------------------------*\
                             게시물 좋아요
     \*-----------------------------------------------------*/
@@ -148,6 +154,7 @@ const PostDetail = () => {
                 setLikeData(
                      updatedLikeCount
                 );
+                /* console.log('게시물좋아요 테스트' , response); */
             })
             .catch(error => {
                 if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
@@ -423,9 +430,20 @@ const PostDetail = () => {
         const fetchData = async () => {
             try {
                 if (userUid) {
-                    const response1 = await axios.get(`${baseURL}/v1/board/investment/post/${id}`, { headers, withCredentials: true });
-                    const data1 = response1.data?.query;
-                    setPostData(data1);
+                    const postRes = await axios.get(`${baseURL}/v1/board/investment/post/${id}`, { headers, withCredentials: true });
+                    const postResdata = postRes.data?.query;
+                    setPostData(postResdata);
+                    console.log('postResdata',postResdata);
+
+                    /* if(postResdata && postResdata[0].businessNum) {
+                        const response4 = axios.get(`${baseURL}/v1/company/${postResdata[0].businessNum}?userUid=${userUid}`, { headers, withCredentials: true });
+
+                        const companyInfoData = response4.data.query;
+                        setCompanyData(companyInfoData);
+                        
+                        console.log('companyInfoData',companyInfoData);
+                    } */
+
                 } else {
                     const response2 = await axios.get(`${baseURL}/v1/board/investment/post/${id}/unlogin`, { withCredentials: true });
                     const data2 = response2.data?.query;
@@ -435,6 +453,9 @@ const PostDetail = () => {
                 const response3 = await axios.get(`${baseURL}/v1/board/investment/post/${id}/comments?status=Y&query&pageRows=&page=1&userUid=${userUid}`, { headers });
                 const commentData = response3.data.query;
                 setComments(commentData);
+
+               
+                
             } catch (error) {
                 console.error('데이터 가져오기 실패', error);
             }
@@ -444,6 +465,11 @@ const PostDetail = () => {
     
     console.log('기본 comment', comments);
     console.log('기본 post', postData);
+    console.log('companyData', companyData);
+    /* console.log('postList.businessNum', postList?.businessNum); */
+    
+    /* console.log('companyPostData',companyPostData); */
+    /* console.log('companyData',companyData); */
     /*-----------------------------------------------------*\
                         댓글 시간데이터 변환
     \*-----------------------------------------------------*/
@@ -822,7 +848,7 @@ const PostDetail = () => {
     /* console.log('condition',condition); */
     /* console.log('id',id); */
     /* console.log('postData',postData); */
-
+    /* console.log('likeList',postList); */
     return (
         <div>
             <Header/>
@@ -850,10 +876,14 @@ const PostDetail = () => {
                                     </RightTitleCenterBox>
                                     <RightTitleBottomBox>
                                         <RightTitleBottomLeftBox>
-                                            회사설명
-                                            {/* <img src="https://qevxdf1345375451.s3.ap-northeast-2.amazonaws.com/companyLogoImg/1697097484_82af7909-d581-4c59-864b-4fb7abf9270c_%C3%AC%C2%9E%C2%84%C3%AC%C2%8B%C2%9C%C3%AC%C2%95%C2%B1%C3%AC%C2%95%C2%84%C3%AC%C2%9D%C2%B4%C3%AC%C2%BD%C2%98.png" alt="img"/> */}
+                                            {
+                                                postList?.introduction !== null && postList?.introduction !== ""?
+                                                <>{postList?.introduction}</> :
+                                                <>회사소개가 없습니다.</>
+                                            }
                                         </RightTitleBottomLeftBox>
-                                        <RightTitleBottomRightBox>
+                                        <RightTitleBottomRightBox
+                                        >
                                             <AiOutlineHeart/>
                                             {/* 좋아요 {postList?.like}명 */}
                                             좋아요 {likeData}명
