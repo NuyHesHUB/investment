@@ -16,7 +16,7 @@ const CompanyUpload = () => {
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
-  const userGroup = sessionStorage.getItem('userGroup');
+  const uid = userUid === null ? '' : userUid
   const b_no = sessionStorage.getItem('b_no');
   const headers = {
     Authorization: `${accessToken}`
@@ -24,7 +24,7 @@ const CompanyUpload = () => {
 
   ///// page log /////
   useEffect(() => {
-    axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"업체정보수정" }).then((res) => {
+    axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"업체정보수정" }).then((res) => {
   }).catch((error) => {
     console.error(error)
   })

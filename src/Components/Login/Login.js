@@ -28,6 +28,7 @@ const Login = () => {
 
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
+    const uid = userUid === null ? '' : userUid
     const navigate = useNavigate();
     const [loginId, setLoginId] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -126,7 +127,7 @@ const Login = () => {
                         page log
     \*-----------------------------------------------*/
     useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"로그인" }).then((res) => {
+        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"로그인" }).then((res) => {
     }).catch((error) => {
         console.error(error)
     })

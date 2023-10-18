@@ -48,10 +48,6 @@ const AdminCompanyList = () => {
   ////////// 삭제 //////////
   //////////////////////////
   //FIXME:삭제삭제 비즈니스넘버
-  //FIXME:삭제삭제 비즈니스넘버
-  //FIXME:삭제삭제 비즈니스넘버
-  //FIXME:삭제삭제 비즈니스넘버
-  //FIXME:삭제삭제 비즈니스넘버
   const deleteBoardList = (key) => {
     console.log("삭제 테스트", key, userUid, headers)
     if (window.confirm("삭제하시겠습니까?")) {

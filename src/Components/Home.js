@@ -50,6 +50,7 @@ const Home = ({parsedCommunityCategoryData}) => {
         ServicesIcon,
     ];
     const userUid = sessionStorage.getItem('userUid');
+    const uid = userUid === null ? '' : userUid
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {
         Authorization: `${accessToken}`
@@ -57,7 +58,7 @@ const Home = ({parsedCommunityCategoryData}) => {
 
     ///// page log /////
     useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"메인" }).then((res) => {
+        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"메인" }).then((res) => {
     }).catch((error) => {
         console.error(error)
     })
