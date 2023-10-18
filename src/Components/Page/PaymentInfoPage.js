@@ -13,8 +13,8 @@ const PaymentInfoPage = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
-  useEffect(async () => {
-    await axios.post(`${baseURL}/v1/log/movement/form`, userUid).then((res) => {
+  useEffect(() => {
+     axios.post(`${baseURL}/v1/log/movement/form`, userUid).then((res) => {
     }).catch((error) => {
       console.error(error)
     })
