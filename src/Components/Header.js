@@ -276,6 +276,9 @@ const Header = ({parsedCommunityCategoryData}) => {
                             <MenuItem>
                                 <Link to="#" onClick={userUid ? checkCompanyRegistration : navigateLogin}>글쓰기</Link>
                             </MenuItem>
+                            <MenuItem>
+                                <Link to="/payment_info_page">커뮤니티</Link>
+                            </MenuItem>
                         </MenuList>
                     </HeaderMenu>
                 </WrapBox>

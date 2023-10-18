@@ -31,13 +31,14 @@ const CompanyUpload = () => {
       introduction: ""
   });
  
-  // 로고 이미지 미리보기
+  ////////////////////////////////
+  ///// 로고 이미지 미리보기 /////
+  ////////////////////////////////
   const inputFileChange = async (e) => {
     try {
       const file = e.target.files[0]
       const encodedFilename = encodeURIComponent(file.name);
       const imgUrl = URL.createObjectURL(file)
-      setPlaceholderActive(false) // 플레이스홀더없애기
       setLogoImage(imgUrl) //미리보기 이미지 링크
       
       const formData = new FormData();
@@ -46,13 +47,22 @@ const CompanyUpload = () => {
       formData.append('filename', encodedFilename);
       
       await axios.post(`${baseURL}/v1/img/upload`, formData , { headers }).then((res) => {
-        console.log(res, "res")
+        console.log(res, "로고이미지res")
         const imageUrl = res.data.imageUrl
         console.log("이미지의 링크:", imageUrl);
-        setCompanyData({
+        //업체 데이터 로고 이미지부분 수정//
+        setPlaceholderActive(false) // 플레이스홀더없애기
+        const updatedData = {
           ...companyData,
-          logoImg: imageUrl
-        }) //업체 데이터 로고 이미지부분 수정
+          logoImg: imageUrl,
+          userUid: userUid,
+        };
+        setCompanyData(updatedData); 
+        e.target.value = ''
+        // setCompanyData({
+        //   ...companyData,
+        //   logoImg: imageUrl
+        // })
       }).catch((error) => {
         console.error(error)
       })
@@ -60,8 +70,25 @@ const CompanyUpload = () => {
       console.error("error")
     }
   }
+  // 로고 이미지 삭제 //
+  const logoImgDelete = async () => {
+    console.log(companyData.logoImg,"companyData.logoImg")
+    await axios.delete(`${baseURL}/v1/attachment/delete`, { data : {url: companyData.logoImg}, headers} ).then((res) => {
+      setLogoImage('')
+      setCompanyData({
+        ...companyData,
+        logoImg: ''
+      })
+      setPlaceholderActive(true)
+    }).catch((error) => {
+      console.error(error)
+      alert("error")
+    })
+  }
 
-  //input 값 입력(onchange)
+  ///////////////////////////////////
+  ///// input 값 입력(onchange) /////
+  ///////////////////////////////////
   const companyValueWrite = (e, name) => {
     const value = e.target.value
     setCompanyData({
@@ -70,12 +97,11 @@ const CompanyUpload = () => {
     })
   }
 
-  console.log(companyData)
-  console.log("업체등록 test", companyData.companyName.length)
-
+  //////////////////////////
+  ///// 수정 버튼 클릭 /////
+  //////////////////////////
   const companyNameLen = companyData.companyName
   const representativeNameLen = companyData.representativeName
-
   const uploadBtnClick = async () => {
     if (!b_no) {
       alert("사업자 등록번호가 없습니다.")
@@ -84,7 +110,6 @@ const CompanyUpload = () => {
     } else {
       if(window.confirm("업체를 등록하시겠습니까?")) {
         await axios.post(`${baseURL}/v1/company/form`, companyData, { headers }).then((res) => {
-          console.log("추가test")
           if (userGroup === "일반") {
             sessionStorage.setItem('userGroup', '업체')
           }
@@ -94,16 +119,16 @@ const CompanyUpload = () => {
           console.error(error)
           alert("error")
         })
-        }
       }
     }
-
-    const cancelBtnClick = () => {
-      if (window.confirm("취소하시겠습니까?")) {
-        sessionStorage.removeItem('b_no');
-        navigate(`/`)
-      }
+  }
+  ///// 취소버튼 /////
+  const cancelBtnClick = () => {
+    if (window.confirm("취소하시겠습니까?")) {
+      sessionStorage.removeItem('b_no');
+      navigate(`/`)
     }
+  }
   return(
     <StyledFrame>
       <Header />
@@ -122,8 +147,17 @@ const CompanyUpload = () => {
                       <AiOutlineCamera size="100" color="#c5c6c9" />
                       <p>로고 이미지 업로드</p>
                     </div>
-                    <p className='imgBox'>
+                    <p className={logoImage ? 'imgBox active' : 'imgBox'}>
                       <img src={logoImage} id="preview" />
+                      <div className='logo-btnBox'>
+                        <label htmlFor="logo-upload" className='logo-change-btn'>
+                          변경
+                        </label>
+                        <button 
+                          className='logo-delete-btn'
+                          onClick={logoImgDelete}
+                        >삭제</button>
+                      </div>
                     </p>
                   </label>
                   <input 

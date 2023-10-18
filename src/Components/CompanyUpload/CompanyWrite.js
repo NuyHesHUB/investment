@@ -220,7 +220,7 @@ const CompanyWrite = () => {
       alert("error")
     })
   }
-  console.log(selectedFilesName, postData.attaches, postData, "파일명삭제테스트")
+  // console.log(selectedFilesName, postData.attaches, postData, "파일명삭제테스트")
 
   ///// 등록/취소 Btn /////
   const handleSubmit = async (e) => {

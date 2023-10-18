@@ -43,7 +43,6 @@ const CompanyUpload = () => {
       const file = e.target.files[0]
       const encodedFilename = encodeURIComponent(file.name);
       const imgUrl = URL.createObjectURL(file)
-      setPlaceholderActive(false) // 플레이스홀더없애기
       setLogoImage(imgUrl) //미리보기 이미지 링크
       
       const formData = new FormData();
@@ -56,13 +55,14 @@ const CompanyUpload = () => {
         const imageUrl = res.data.imageUrl
         console.log("이미지의 링크:", imageUrl);
         //업체 데이터 로고 이미지부분 수정//
+        setPlaceholderActive(false) // 플레이스홀더없애기
         const updatedData = {
           ...companyData,
           logoImg: imageUrl,
           userUid: userUid,
         };
         setCompanyData(updatedData); 
-
+        e.target.value = ''
         // setCompanyData({
         //   ...companyData,
         //   logoImg: imageUrl
@@ -74,6 +74,22 @@ const CompanyUpload = () => {
       console.error("error")
     }
   }
+  // 로고 이미지 삭제 //
+  const logoImgDelete = async () => {
+    console.log(companyData.logoImg,"companyData.logoImg")
+    await axios.delete(`${baseURL}/v1/attachment/delete`, { data : {url: companyData.logoImg}, headers} ).then((res) => {
+      setLogoImage('')
+      setCompanyData({
+        ...companyData,
+        logoImg: ''
+      })
+      setPlaceholderActive(true)
+    }).catch((error) => {
+      console.error(error)
+      alert("error")
+    })
+  }
+
   ///////////////////////////////////
   ///// input 값 입력(onchange) /////
   ///////////////////////////////////
@@ -101,25 +117,18 @@ const CompanyUpload = () => {
     if (!companyNameLen || !representativeNameLen){
       alert("회사명과 대표자 이름은 필수 입력값입니다.")
     } else {
-      console.log("수정test", companyData)
       if(window.confirm("업체 정보를 수정하시겠습니까?")) {
         await axios.patch(`${baseURL}/v1/company/modify/${companyData?.businessNum}`, companyData, { headers }).then((res) => {
-          console.log("수정test",res)
-          console.log("companyData 테스트",companyData)
-          console.log("비즈니스넘버 테스트",companyData?.businessNum)
           alert("수정하였습니다")
           navigate('/')
         }).catch((error) => {
           console.error(error)
-          console.log("companyData 테스트",companyData)
           alert("error")
         })
       }
     }
   }
-  //////////////////////////
-  ///// 수정 버튼 클릭 /////
-  //////////////////////////
+  ///// 취소버튼 /////
   const cancelBtnClick = () => {
     if (window.confirm("취소하시겠습니까?")) {
       sessionStorage.removeItem('b_no');
@@ -144,9 +153,14 @@ const CompanyUpload = () => {
                     </div>
                     <p className={logoImage ? 'imgBox active' : 'imgBox'}>
                       <img src={logoImage} id="preview" />
-                      <div>
-                        <button className='logo-change-btn'>변경</button>
-                        <button className='logo-delete-btn'>삭제</button>
+                      <div className='logo-btnBox'>
+                        <label htmlFor="logo-upload" className='logo-change-btn'>
+                          변경
+                        </label>
+                        <button 
+                          className='logo-delete-btn'
+                          onClick={logoImgDelete}
+                        >삭제</button>
                       </div>
                     </p>
                   </label>
