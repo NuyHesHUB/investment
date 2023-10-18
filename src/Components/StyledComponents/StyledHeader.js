@@ -96,10 +96,17 @@ export const MenuItem=styled.li`
         }
         a{
             display: block;
+            width: 100%;
             height: 100%;
             line-height: 80px;
+            text-align: center;
         }
-        p {height: 100%; line-height: 80px;}
+        p {
+            width: 100%;
+            height: 100%; 
+            line-height: 80px;
+            text-align: center;
+        }
 `
 export const HeaderBtn=styled.button`
     border: none;

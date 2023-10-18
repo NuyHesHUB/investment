@@ -128,6 +128,10 @@ const PostDetail = () => {
     const postLikeType = postList?.boardLikeType;
 
     const likeList = postData?.[0]?.like;
+
+    /* 보류 */
+    const viewsList = postData?.[0]?.extraField;
+    
     const [likeData, setLikeData] = useState(likeList);
 
     /* 댓글 데이터 */
@@ -148,7 +152,7 @@ const PostDetail = () => {
     /* 댓글 수정 TabMenu */
     const [showCommentEditTab, setShowCommentEditTab] = useState(false);
 
-    console.log('postLikeType',postLikeType);
+
 
     /*-----------------------------------------------------*\
                             게시물 좋아요
