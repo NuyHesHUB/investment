@@ -68,10 +68,11 @@ const App = () => {
                       .env console.log
     \*------------------------------------------------*/
     /* console.log('process.env.NODE_ENV :',process.env.NODE_ENV); */
-    console.log('process.env.REACT_APP_BASEURL :',process.env.REACT_APP_BASEURL);
+    /* console.log('process.env.REACT_APP_BASEURL :',process.env.REACT_APP_BASEURL);
     console.log('process.env.REACT_APP_KAKAOURI :',process.env.REACT_APP_KAKAOURI);
     console.log('process.env.REACT_APP_NAVERURI :',process.env.REACT_APP_NAVERURI);
     console.log('process.env.REACT_APP_TEST :',process.env.REACT_APP_TEST);
+    console.log('process.env.REACT_APP_KAKAOKEY :',process.env.REACT_APP_KAKAOKEY); */
 
     const dispatch = useDispatch();
     const baseURL = process.env.REACT_APP_BASEURL;

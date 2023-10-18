@@ -7,25 +7,19 @@ import KakaoIcon from '../../assets/Login-Image/kakao.png';
 
 const SocialKakaoLogin = ({ contents }) => {
     
-    /* const Rest_api_key='66000f2f2a2d8b9680ad9166fcdb83dc' */
-    /* const redirect_uri = 'http://localhost:3000/login/kakao_login' */ 
+    /* const redirect_uri = 'http://localhost:3000/auth/kakao/callback' */
+    /* const Rest_api_key = "b8441dff52370984a58af5e6b5b1527e"; */
+
+    const Rest_api_key = process.env.REACT_APP_KAKAOKEY;
+    const redirect_uri = process.env.REACT_APP_KAKAOURI;
     
-    //영석씨
-    const Rest_api_key=process.env.REACT_APP_KAKAOKEY;
-    const redirect_uri =process.env.REACT_APP_KAKAOURI;
 
-    //REACT_APP_KAKAO_KEY
-    //REACT_APP_KAKAO_URI
-    //const Rest_api_key=process.env.REACT_APP_KAKAO_KEY
-    //const redirect_uri =process.env.REACT_APP_KAKAO_URI
-
-    console.log('Rest_api_key',Rest_api_key);
-    console.log('redirect_uri',redirect_uri);
+    console.log('REACT_APP_KAKAOKEY',Rest_api_key);
+    console.log('REACT_APP_KAKAOURI',redirect_uri);
     // oauth 요청 URL
     const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
     const handleLogin = ()=>{
-        /* window.open(kakaoURL, '_blank'); */
-        window.location.href = kakaoURL
+        window.location.href = kakaoURL;
     }
 
     return(
