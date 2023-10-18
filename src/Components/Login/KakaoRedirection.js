@@ -11,7 +11,7 @@ const KakaoRedirection = () => {
     useEffect(() => {
         const fetchData = async () => {
             try{
-                const response = await axios.post(`${baseURL}/v1/authorize/social_login`, { code: code, socialType: "kakao"/* , group: "일반" */} , { withCredentials : true})
+                const response = await axios.post(`${baseURL}/v1/authorize/social_login`, { code: code, socialType: "kakao"} , { withCredentials : true})
                 const userData = response.data.userData;
                 const userUid = response.data.userData.id;
                 const userGroup = response.data.userData.group;
