@@ -21,10 +21,11 @@ import GoogleLogin from './SocialGoogleLogin';
 import { StyledFrame, LoginWrap, LoginBox, LoginTitle, LoginSignUpBox,LoginFormBox, LoginContentsBox, ForgetDivideBox, Divider, SocialLoginBox, SocialIconBox, SocialIcon } from './StyledLoginFrame';
 
 /* Imgage */
-import NaverBtn from '../../assets/Login-Image/naver_bar.png';
-import KakaoBtn from '../../assets/Login-Image/kakao_bar.png';
+/* import NaverBtn from '../../assets/Login-Image/naver_bar.png'; */
+/* import KakaoBtn from '../../assets/Login-Image/kakao_bar.png'; */
 
 const Login = () => {
+
     const baseURL = process.env.REACT_APP_BASEURL;
     const navigate = useNavigate();
     const [loginId, setLoginId] = useState('');
@@ -151,13 +152,12 @@ const Login = () => {
                         <NaverLogin contents="네이버 로그인"/>
                         <KakaoLogin contents="카카오 로그인"/>
                     <LoginSignUpBox>
-                        <p>아직 계정이 없으신가요?</p><Link>가입하기</Link>
+                        <p>아직 계정이 없으신가요?</p><Link to="/member_type">가입하기</Link>
                     </LoginSignUpBox>
                 </LoginBox>
             </LoginWrap>
             <Footer/>
         </StyledFrame>
-        
     );
 };
 
