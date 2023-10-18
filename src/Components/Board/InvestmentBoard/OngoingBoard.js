@@ -70,10 +70,13 @@ const InvestOngoingBoard = () => {
                         page log
     \*-----------------------------------------------*/
     useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"진행중" }).then((res) => {
-    }).catch((error) => {
-        console.error(error)
-    })
+            axios.post(`${baseURL}/v1/log/movement/form`, { userUid: userUid, "page":"진행중" }).then((res) => {
+                console.log('resresresresres',res);
+            }).catch((error) => {
+                console.error(error)
+            })
+        
+        
     }, []);
 
   
