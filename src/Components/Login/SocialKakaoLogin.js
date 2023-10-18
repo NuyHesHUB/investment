@@ -11,8 +11,8 @@ const SocialKakaoLogin = ({ contents }) => {
     /* const redirect_uri = 'http://localhost:3000/login/kakao_login' */ 
     
     //영석씨
-    const Rest_api_key='b8441dff52370984a58af5e6b5b1527e'
-    const redirect_uri = 'http://localhost:3000/auth/kakao/callback'
+    const Rest_api_key=process.env.REACT_APP_KAKAOKEY;
+    const redirect_uri =process.env.REACT_APP_KAKAOURI;
 
     //REACT_APP_KAKAO_KEY
     //REACT_APP_KAKAO_URI
