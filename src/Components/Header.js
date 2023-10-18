@@ -2,23 +2,42 @@ import React, { useEffect, useState } from 'react';
 
 /* Redux */
 import { useSelector, useDispatch } from 'react-redux';
-import { logout, setGalleryCategoryData } from '../store/actions/actions';
+/* import { logout, setGalleryCategoryData } from '../store/actions/actions'; */
 
 /* React-Router-Dom */
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 /* Axios */
 import axios from 'axios';
 
 /* StyledComponents */
-import { StyledFrame, Container, WrapBox, HeaderLogo, HeaderMenu, HeaderBtn, MenuList, MenuItem } from './StyledComponents/StyledHeader';
+import { 
+    StyledFrame, 
+    Container, 
+    WrapBox, 
+    HeaderLogo, 
+    HeaderMenu, 
+    HeaderBtn, 
+    MenuList, 
+    MenuItem,
+    RightHeaderMenu,
+    RightHeaderMenuWrap,
+    RightHeaderMenuList,
+    UserNameWrap,
+    UserNameBox,
+    HelloBox,
+    UserGroupBox,
+    UserGroupItem,
+    Divider,
+    SignUpItem,
+} from './StyledComponents/StyledHeader';
 
 /* Image */
 import Logo from '../assets/image/logo.png';
 
 const Header = ({parsedCommunityCategoryData}) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    /* const dispatch = useDispatch(); */
 
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
@@ -202,7 +221,6 @@ const Header = ({parsedCommunityCategoryData}) => {
     
     return (
         <StyledFrame  className={`${scrolled ? 'header-scrolled' : ''}`}>
-            
             <Container>
                 <WrapBox>
                     <HeaderLogo>
@@ -238,6 +256,9 @@ const Header = ({parsedCommunityCategoryData}) => {
                                     ))}
                                 </ul> */}
                             </MenuItem>
+
+                            {/* 추후 커뮤니티 구축해야함 23.10.18 */}
+
                             {/* <MenuItem 
                                 onMouseEnter={() => handleMouseEnter('community')}
                                 onMouseLeave={() => handleMouseLeave('community')}
@@ -251,71 +272,73 @@ const Header = ({parsedCommunityCategoryData}) => {
                                     ))}         
                                 </ul>
                             </MenuItem> */}
+
                             <MenuItem>
-                                <p to="#" onClick={userUid ? checkCompanyRegistration : navigateLogin}>글쓰기</p>
+                                <Link to="#" onClick={userUid ? checkCompanyRegistration : navigateLogin}>글쓰기</Link>
                             </MenuItem>
                         </MenuList>
                     </HeaderMenu>
                 </WrapBox>
-                <div style={{display:'flex'}}>
-                    <div style={{display:'flex', marginLeft:'50px'}}>
-                        <ul style={{display:'flex', alignItems:'center'}}>
+                <RightHeaderMenu>
+                    <RightHeaderMenuWrap>
+                        <RightHeaderMenuList>
                             {userName &&  userName.length > 0 ? (
-                                    <><div style={{fontWeight:'bold',fontSize:'16px'}}>{userName}</div><span>님 반갑습니다</span></>
-                                ) : (
-                                    <><div style={{fontWeight:'bold',fontSize:'16px'}}>Loading...</div></>
-                                )}
+                                    <UserNameWrap>
+                                        <UserNameBox>{userName}</UserNameBox>
+                                        <HelloBox>님 반갑습니다</HelloBox>
+                                    </UserNameWrap>
+                                ) : (null)
+                            }
                             {accessToken ? (
                                 userGroup === '관리자' ? (
-                                    <>
-                                        <li style={{ margin: '0 10px' }}>
+                                    <UserGroupBox>
+                                        <UserGroupItem style={{marginRight:'10px'}}>
                                             <Link to="/admin">
                                                 <HeaderBtn>관리자 페이지</HeaderBtn>
                                             </Link>
-                                        </li>
-                                        <li>
+                                        </UserGroupItem>
+                                        <UserGroupItem>
                                             <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
-                                        </li>
-                                    </>
+                                        </UserGroupItem>
+                                    </UserGroupBox>
                                 ) : userGroup === '업체' ? (
-                                    <>
-                                        <li style={{ margin: '0 10px' }}>
+                                    <UserGroupBox>
+                                        <UserGroupItem style={{marginRight:'10px'}}>
                                             <Link to="/company_modify">
                                                 <HeaderBtn>업체정보수정</HeaderBtn>
                                             </Link>
-                                        </li>
-                                        <li>
+                                        </UserGroupItem>
+                                        <UserGroupItem>
                                             <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
-                                        </li>
-                                    </>
+                                        </UserGroupItem>
+                                    </UserGroupBox>
                                 ) : (
-                                    <>
-                                        {/* <li style={{ margin: '0 10px' }}>
-                                            <Link to="/myinfo">
-                                                <HeaderBtn>회원정보수정</HeaderBtn>
-                                            </Link>
-                                        </li> */}
-                                        <li>
+                                    <React.Fragment>
+                                        <UserGroupItem>
                                             <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
-                                        </li>
-                                    </>
+                                        </UserGroupItem>
+                                    </React.Fragment>
                                 )
                             ) : (
-                                <ul style={{display:'flex',alignItems:'center'}}>
-                                    <li>
-                                        <Link to="/login">로그인</Link>
-                                    </li>
-                                    <li style={{ margin:'0 5px'}}>|</li>
-                                    <li>
-                                        <Link to="/member_type" style={{color:'#454afc',fontWeight:'bold'}}>
-                                            회원가입
-                                        </Link>
-                                    </li>
-                                </ul>
+                                <RightHeaderMenuList>
+                                    <RightHeaderMenuList>
+                                        <UserGroupBox>
+                                            <UserGroupItem>
+                                                <Link to="/login">로그인</Link>
+                                            </UserGroupItem>
+                                            <Divider>|</Divider>
+                                            <SignUpItem>
+                                                <Link to="/member_type" >
+                                                    회원가입
+                                                </Link>
+                                            </SignUpItem>
+                                        </UserGroupBox>
+                                    </RightHeaderMenuList>
+                                </RightHeaderMenuList>
                             )}
-                        </ul>
-                    </div>
-                </div>
+                        </RightHeaderMenuList>
+                    </RightHeaderMenuWrap>
+                </RightHeaderMenu>
             </Container>
         </StyledFrame>
     );
