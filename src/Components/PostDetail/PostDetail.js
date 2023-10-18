@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 
 /* React-Router-Dom */
@@ -22,6 +23,7 @@ import Cookies from 'js-cookie';
 import Header from '../Header';
 import Footer from '../Footer';
 import CommentInput from '../InputGroup/CommentInput';
+
 
 /* Styled-Components */
 import {  
@@ -85,9 +87,7 @@ import { Link, scroller } from 'react-scroll';
 /* image */
 import defaultLogo from '../../assets/default-image/company-default-img.png';
 
-const PostDetail = (props) => {
-    /* const endDt = props.location.state.endDt; */
-    /* console.log('endDt',endDt); */
+const PostDetail = () => {
     
     /* useNavigate */
     const navigate = useNavigate();
@@ -104,7 +104,7 @@ const PostDetail = (props) => {
     };
 
     /* useParams */
-    const { condition, id } = useParams();
+    const { id } = useParams();
 
     
     
@@ -114,13 +114,12 @@ const PostDetail = (props) => {
 
     const postList = postData?.[0];
 
-    const likeList = postData?.[0]?.like;
+    const postEndDt = postList?.endDt;
 
+    const postLikeType = postList?.boardLikeType;
+
+    const likeList = postData?.[0]?.like;
     const [likeData, setLikeData] = useState(likeList);
-    
-    /* 해당게시글 업체 데이터 */
-    
-    const [companyData, setCompanyData] = useState(null);
 
     /* 댓글 데이터 */
     const [comments, setComments] = useState([]);
@@ -139,31 +138,33 @@ const PostDetail = (props) => {
 
     /* 댓글 수정 TabMenu */
     const [showCommentEditTab, setShowCommentEditTab] = useState(false);
-    
+
+    console.log('postLikeType',postLikeType);
+
     /*-----------------------------------------------------*\
                             게시물 좋아요
     \*-----------------------------------------------------*/
-    const handleLike = () => {
-        axios.post(`${baseURL}/v1/board/like`, {
-            boardPostId: id,
-            type: 'like',
-            userUid: userUid
-        }, { headers })
-            .then(response => {
-                const updatedLikeCount = response?.data.query[0].like;
-                setLikeData(
-                     updatedLikeCount
-                );
-                /* console.log('게시물좋아요 테스트' , response); */
-            })
-            .catch(error => {
-                if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
+    const handleLike = async (liketype) => {
+        console.log('liketype',liketype);
+        try {
+            const response =await axios.post(`${baseURL}/v1/board/like`, {
+                boardPostId: id,
+                type: liketype === postLikeType  ? "D" : liketype,
+                userUid: userUid
+            }, { headers });
+            const updatedLikeCount = response?.data.query[0].like;
+            setLikeData(updatedLikeCount);
+
+            await fetchPost();
+
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
                     alert('로그인이 필요합니다.');
                     navigate('/login');
-                } else {
-                    console.error(`게시물 좋아요 실패`, error);
-                }
-            });
+            } else {
+                console.error(`게시물 좋아요 실패`, error);
+            }
+        }
     };
 
     useEffect(() => {
@@ -183,7 +184,7 @@ const PostDetail = (props) => {
         /* console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다.`); */
     };
 
-    const handleCommentEditBtnClick = (index, commentId) => {
+    const handleCommentEditBtnClick = (index) => {
         setActiveCommentIndex(index);
         setShowCommentEditTab(!showCommentEditTab)
         setShowCommentTab(false);
@@ -215,7 +216,6 @@ const PostDetail = (props) => {
         /* console.log('commentId',commentId); */
         /* console.log('commentIndex',commentIndex); */
         if (confirmDelete) {
-            /* console.log('예!!!'); */
             axios.delete(`${baseURL}/v1/board/investment/post/${id}/comments/${commentId}`, { headers })
             .then(response => {
                 console.log('댓글 삭제 성공', response);
@@ -224,10 +224,8 @@ const PostDetail = (props) => {
             .catch (error => {
                 console.error('댓글 삭제 실패', error);
             })
-        } /* else {
-            console.log('아니오!!!');
-        } */
-    }
+        };
+    };
     /*-----------------------------------------------------*\
                       댓글 좋아요 & 싫어요 기능
     \*-----------------------------------------------------*/
@@ -249,7 +247,8 @@ const PostDetail = (props) => {
                 return updatedComments;
             });
     
-            await fetchComments(); // fetchComments가 상태를 올바르게 업데이트한다고 가정합니다.
+            await fetchComments();
+
         } catch (error) {
             console.error('좋아요 기능 실패', error);
         }
@@ -266,40 +265,21 @@ const PostDetail = (props) => {
           });
     };
 
+    const fetchPost = () => {
+        axios.get(`${baseURL}/v1/board/investment/post/${id}`,{
+                headers, withCredentials: true })
+                .then(response => {
+                    const loginPostResdata = response?.data?.query;
+                    setPostData(loginPostResdata);
+                })
+                .catch(error => {
+                    console.error('포스트 정보 가져오기 실패', error);
+                });
+    };
+
     /*-----------------------------------------------------*\
                   댓글의 답글 좋아요 & 싫어요 기능
     \*-----------------------------------------------------*/
-    /* const handleReplyLikeBtnClick = (replyIndex, replyId, index, type) => {
-        setActiveReplyIndex(replyIndex);
-        console.log('type', type);
-        console.log(`답글 ID: ${replyId}가 클릭되었습니다. 해당 댓글의 index는 ${replyIndex}입니다.`);
-        axios.post(`${baseURL}/v1/board/like`, {
-            boardPostId: replyId,
-            type: type,
-            userUid: userUid
-        }, { headers })
-            .then(response => {
-                console.log(`답글 ${type} 추가 성공`, response);
-                setComments(prevComments => {
-                    const updatedComments = [...prevComments];
-                    const parentCommentIndex = updatedComments.findIndex(comment => comment.id === replyId);
-                    if (parentCommentIndex !== -1) {
-                        updatedComments[parentCommentIndex].like = response?.data.query[0].like;
-                        updatedComments[parentCommentIndex].dislike = response?.data.query[0].dislike;
-                    }
-                    return updatedComments;
-                });
-            })
-            .catch(error => {
-                if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
-                    alert('로그인이 필요합니다.');
-                    navigate('/login');
-                } else {
-                    console.error(`답글 ${type} 추가 실패`, error);
-                }
-            });
-    }; */
-
     const handleReplyLikeBtnClick = async (replyIndex, replyId, index, type) => {
         setActiveReplyIndex(replyIndex);
         console.log(`댓글 ID: ${replyId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다. 타입은 ${type}`);
@@ -327,149 +307,38 @@ const PostDetail = (props) => {
         }
     };
 
-
-    /* const handleReplyLikeBtnClick = async (replyIndex, replyId, index, type) => {
-        setActiveReplyIndex(replyIndex);
-        console.log('type', type);
-        console.log(`답글 ID: ${replyId}가 클릭되었습니다. 해당 댓글의 index는 ${replyIndex}입니다.`);
-    
-        try {
-            const response = await axios.post(`${baseURL}/v1/board/like`, {
-                boardPostId: replyId,
-                type: type === comments[index].type ? "D" : type,
-                userUid: userUid
-            }, { headers });
-    
-            setComments(prevComments => {
-                const updatedComments = [...prevComments];
-                const parentCommentIndex = updatedComments.findIndex(comment => comment.id === index);
-                if (parentCommentIndex !== -1) {
-                    updatedComments[parentCommentIndex].reply[replyIndex].like = response?.data.query[0].like;
-                    updatedComments[parentCommentIndex].reply[replyIndex].dislike = response?.data.query[0].dislike;
-                }
-                return updatedComments;
-            });
-        } catch (error) {
-            if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
-                alert('로그인이 필요합니다.');
-                navigate('/login');
-            } else {
-                console.error(`답글 ${type} 추가 실패`, error);
-            }
-        }
-    }; */
-
-    /* const [editedCommentContent, setEditedCommentContent] = useState(''); */
-    
-
-
-
-    /* const handleCommentEditClick = (index, commentId) => {
-        setActiveCommentIndex(index);
-         const commentToEdit = comments[index];
-        setEditedCommentContent(commentToEdit.content);
-    } */
-    
-    
-
-
-    /* const [editedComment, setEditedComment] = useState(null);
-    const handleEditSubmit = (index, commentId) => {
-        console.log('test', index, commentId);
-        if (editedComment) {
-            axios.patch(`${baseURL}/v1/board/investment/post/${id}/comments/${editedComment.id}`, {
-                content: editedComment.content,
-            }, { headers })
-            .then(response => {
-                console.log('댓글 수정 성공', response);
-            })
-            .catch(error => {
-                console.error('댓글 수정 실패', error);
-            });
-        }
-    } */
-
-
     /*-----------------------------------------------------*\
             로그인 & 비로그인에 따라 게시글 정보 GET API
     \*-----------------------------------------------------*/
-    /* useEffect(() => {
-
-        if( userUid ) {
-            axios.get(`${baseURL}/v1/board/investment/post/${id}` , { headers }, { withCredentials: true })
-            .then(response => {
-                const data = response.data?.query;
-                setPostData(data);
-            })
-            .catch(error => {
-                console.error('게시글 정보 가져오기 실패', error);
-            });
-        } else {
-            axios.get(`${baseURL}/v1/board/investment/post/${id}/unlogin`, { withCredentials: true })
-            .then(response => {
-                const data = response.data?.query;
-                setPostData(data);
-            })
-            .catch(error => {
-                console.error('unlogin 게시글 정보 가져오기 실패', error);
-            });
-        }
-
-        axios.get(`${baseURL}/v1/board/investment/post/${id}/comments?status=Y&query&pageRows=&page=1&userUid=${userUid}`, { headers })
-        .then(response => {
-            const commentData = response.data.query; 
-            setComments(commentData);
-        })
-        .catch(error => {
-            console.error('댓글 목록 가져오기 실패', error);
-        });
-        
-    }, []); */
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (userUid) {
-                    const postRes = await axios.get(`${baseURL}/v1/board/investment/post/${id}`, { headers, withCredentials: true });
-                    const postResdata = postRes.data?.query;
-                    setPostData(postResdata);
-                    console.log('postResdata',postResdata);
-
-                    /* if(postResdata && postResdata[0].businessNum) {
-                        const response4 = axios.get(`${baseURL}/v1/company/${postResdata[0].businessNum}?userUid=${userUid}`, { headers, withCredentials: true });
-
-                        const companyInfoData = response4.data.query;
-                        setCompanyData(companyInfoData);
-                        
-                        console.log('companyInfoData',companyInfoData);
-                    } */
+                    const postDataResponse = await axios.get(`${baseURL}/v1/board/investment/post/${id}`, { headers, withCredentials: true });
+                    const loginPostResdata = postDataResponse.data?.query;
+                    setPostData(loginPostResdata);
 
                 } else {
-                    const response2 = await axios.get(`${baseURL}/v1/board/investment/post/${id}/unlogin`, { withCredentials: true });
-                    const data2 = response2.data?.query;
-                    setPostData(data2);
+                    const postDataResponse = await axios.get(`${baseURL}/v1/board/investment/post/${id}/unlogin`, { withCredentials: true });
+                    const unLoginPostResdata = postDataResponse.data?.query;
+                    setPostData(unLoginPostResdata);
                 }
     
-                const response3 = await axios.get(`${baseURL}/v1/board/investment/post/${id}/comments?status=Y&query&pageRows=&page=1&userUid=${userUid}`, { headers });
-                const commentData = response3.data.query;
+                const commentDataResponse = await axios.get(`${baseURL}/v1/board/investment/post/${id}/comments?status=Y&query&pageRows=&page=1&userUid=${userUid}`, { headers });
+                const commentData = commentDataResponse.data.query;
                 setComments(commentData);
 
-               
-                
             } catch (error) {
                 console.error('데이터 가져오기 실패', error);
             }
         };
+
         fetchData();
+
     }, []);
     
     console.log('기본 comment', comments);
     console.log('기본 post', postData);
-    console.log('companyData', companyData);
-    /* console.log('postList.businessNum', postList?.businessNum); */
-    
-    /* console.log('companyPostData',companyPostData); */
-    /* console.log('companyData',companyData); */
     /*-----------------------------------------------------*\
                         댓글 시간데이터 변환
     \*-----------------------------------------------------*/
@@ -483,6 +352,36 @@ const PostDetail = (props) => {
       
         return `${year}.${month}.${day} ${hours}:${minutes}`;
     };
+
+    /*-----------------------------------------------------*\
+                      D-Day 시간데이터 변환
+    \*-----------------------------------------------------*/
+    const calculateEndDate = (postEndDt) => {
+        if (postEndDt?.length > 0) {
+            const endDt = new Date(postEndDt);
+            const currentDt = new Date();
+    
+            const timeDiff = endDt - currentDt;
+            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            return <p>D-{daysDiff}</p>
+
+        } else {
+            return <p style={{color:'rgb(85,85,85)', fontSize:'14px'}}>empty</p>;
+        }
+    }
+    console.log('postEndDt',postEndDt);
+
+    const PostformatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        return `${year}년 ${month}월 ${day}일`;
+    }
+    const formattedDate = PostformatDate(postEndDt);
+
+    /* console.log('calculateEndDate',calculateEndDate); */
 
     /* const handleResponse = (response) => {
         const setCookieHeader = response.headers['Set-Cookie'];
@@ -882,9 +781,12 @@ const PostDetail = (props) => {
                                                 <>회사소개가 없습니다.</>
                                             }
                                         </RightTitleBottomLeftBox>
-                                        <RightTitleBottomRightBox
-                                        >
-                                            <AiOutlineHeart/>
+                                        <RightTitleBottomRightBox>
+                                            <AiOutlineHeart
+                                                style={{
+                                                    color: postLikeType === "like" ? "red" : ""
+                                                }}
+                                            />
                                             {/* 좋아요 {postList?.like}명 */}
                                             좋아요 {likeData}명
                                         </RightTitleBottomRightBox>
@@ -929,16 +831,25 @@ const PostDetail = (props) => {
                                         <RightInfoTopBox>
                                             <RightInfoTopLeftBox>
                                                 <p>투자 마감일</p>
-                                                <p>2023년 09월 21일</p>
+                                                <p>{formattedDate}</p>
                                             </RightInfoTopLeftBox>
-                                            <p>D-10</p>
+                                            {calculateEndDate(postEndDt)}
                                         </RightInfoTopBox>
                                         <RightInfoBottomBox>
                                             <LikeBox
-                                                onClick={handleLike}
+                                                type="like"
+                                                onClick={() => handleLike("like")}
+                                                style={{
+                                                    border: postLikeType === "like" ? "1px solid red" : "",
+                                                    background: postLikeType === "like" ? "red" : ""
+                                                }}
                                             >
-                                                <div>
-                                                    <AiOutlineHeart/>
+                                                <div
+                                                    style={{ 
+                                                        color: postLikeType === "like" ? "white" : "rgb(85, 85, 85)",
+                                                    }}
+                                                >
+                                                    <AiOutlineHeart/> 
                                                     <span>좋아요</span>
                                                 </div>
                                             </LikeBox>

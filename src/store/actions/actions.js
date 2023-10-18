@@ -64,7 +64,7 @@ export const setOngoingPostCardCount = (num) => ({
     payload: num,
 })
 
-export const setDeadlinePostCardCount = (deadlinePostcardCount) => ({
+export const setDeadlinePostCardCount = (num) => ({
     type: actionTypes.DEADLINE_POSTCARD,
-    deadlinePostcardCount: deadlinePostcardCount
+    payload: num,
 })

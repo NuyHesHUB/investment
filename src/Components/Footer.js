@@ -20,10 +20,11 @@ const StyledFooterWrap=styled.div`
 `
 const StyledFooterContainer=styled.div`
     /* background: skyblue; */
-    max-width: 1920px;
+    width: 100%;
+    max-width: 1440px;
     height: 100%;
     margin: 0 auto;
-    padding: 60px 0 20px 50px;
+    /* padding: 60px 0 20px 50px; */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

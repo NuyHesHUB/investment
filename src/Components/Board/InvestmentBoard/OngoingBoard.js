@@ -92,14 +92,17 @@ const InvestOngoingBoard = () => {
     investOngoingPostData
     /* .filter(item => item && item.condition === 'ongoing') */
     .map((item, index) => {
-        const endDt = new Date(item.endDt);
-        /* const startDt = new Date(item.startDt); */
-        const currentDt = new Date();
+        if (investOngoingPostData?.[index].endDt?.length > 0 ) {
+            const endDt = new Date(item.endDt);
+            const currentDt = new Date();
+            const timeDiff = endDt - currentDt;
+            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-        const timeDiff = endDt - currentDt;
-        const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-        return `D-${daysDiff}`
+            return `D-${daysDiff}`
+        } else {
+            return `empty`
+        }
+        
     });
 
     /* const removeTags = (html) => {
@@ -136,20 +139,17 @@ const InvestOngoingBoard = () => {
                         {investOngoingPostData &&
                             investOngoingPostData?.length > 0 &&
                             investOngoingPostData?.slice(0, PostCardCount).map((item, index) => (
-                            <Link key={index} to={{
-                                pathname: `/investment/ongoing/${item.id}`,
-    state: { endDt: formattedDates[index] }
-                            }}>
+                            <Link key={index} to={
+                                `/investment/ongoing/${item.id}`
+                            }>
                                 <OngoingPostCard
                                     key={index}
                                     logoimg={item.logoImg}
                                     name={item.companyName}
                                     title={item.title}
-                                    /* content={item.content} */
                                     content={removeTags(item.content)}
                                     category={item.category}
                                     date={formattedDates[index]}
-                                    /* endDt={formattedDates[index]} */
                                 />
                             </Link>
                         ))}

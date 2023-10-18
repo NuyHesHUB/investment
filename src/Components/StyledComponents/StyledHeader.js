@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const StyledFrame=styled.div`
-    /* width: 1920px; */
     width: 100%;
     height: 80px;
     margin: 0 auto;
@@ -9,26 +8,26 @@ export const StyledFrame=styled.div`
     display: flex;
     align-items: center;
     background: #fff;
-    /* background: rgba(255,255,255,0.1); */
     color: #000;
     position: fixed;
     z-index: 999;
-    transition: background-color .1s;
+    /* transition: background-color .1s; */
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    -o-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     /* filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3)); */
     &.header-scrolled{
         background: #fff;
         color: #000;
-        border-bottom: 1px solid #000;
     }
 `
-
-
 export const Container=styled.div`
     width: 100%;
     height: 100%;
-    max-width: 1920px;
+    max-width: 1440px;
     margin: 0 auto;
-    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -40,9 +39,6 @@ export const WrapBox=styled.div`
     height: 100%;
 `
 export const HeaderLogo=styled.h1`
-    /* font-family: 'Paytone One', sans-serif; */
-    /* color: rgba(69,74,252,1); */
-    /* font-size: 38px; */
     width: 170px;
     img{
         width: 100%;
@@ -83,19 +79,76 @@ export const MenuItem=styled.li`
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        position: relative;
+        &::after{
+            content: "";
+            position: absolute;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: #3fa9f5;;
+            transition: .2s ease-in-out;
+        }
+        &:hover::after{
+            width: 70%;
+        }
+        a{
+            display: block;
+            height: 100%;
+            line-height: 80px;
+        }
 `
 export const HeaderBtn=styled.button`
     border: none;
     outline: none;
     padding: 10px 10px;
     background: #3FA9F5;
-    /* background: #0D1282; */
     cursor: pointer;
     color: #fff;
     font-weight: bold;
     border-radius: 5px;
-    transition: .3s;
+    transition: .2s ease-in-out;
     &:hover{
         background: #1A9CF9;
+    }
+`
+export const RightHeaderMenu=styled.div`
+    display: flex;
+`
+export const RightHeaderMenuWrap=styled.div`
+    display: flex;
+    margin-left: 50px;
+`
+export const RightHeaderMenuList=styled.ul`
+    display: flex;
+    align-items: center;
+`
+export const UserNameWrap=styled.div`
+    margin-right: 10px;
+    display: flex;
+`
+export const UserNameBox=styled.div`
+    font-weight: bold;
+    font-size: 16px;
+`
+export const HelloBox=styled.span`
+    margin-left: 3px;
+`
+export const UserGroupBox=styled.div`
+    display: flex;
+`
+export const UserGroupItem=styled.li`
+    
+`
+export const Divider=styled.div`
+    color: #000;
+    margin: 0 10px;
+`
+export const SignUpItem=styled.li`
+    a{
+        color: #3fa9f5;
+        font-weight: bold;
     }
 `
