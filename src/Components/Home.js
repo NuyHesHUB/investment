@@ -31,7 +31,14 @@ import { Link } from 'react-router-dom';
 import { setBoardData} from '../store/actions/actions';
 
 const Home = ({parsedCommunityCategoryData}) => {
+    /* console.log('process.env.REACT_APP_BASEURL :',process.env.REACT_APP_BASEURL); */
+    /* console.log('process.env.REACT_APP_KAKAOURI :',process.env.REACT_APP_KAKAOURI);
+    console.log('process.env.REACT_APP_NAVERURI :',process.env.REACT_APP_NAVERURI);
+    console.log('process.env.REACT_APP_TEST :',process.env.REACT_APP_TEST); */
     const baseURL = process.env.REACT_APP_BASEURL;
+    const test1 = process.env.REACT_APP_KAKAOURI;
+    const test2 = process.env.REACT_APP_NAVERURI;
+    const test3 = process.env.REACT_APP_TEST;
     const categoryImage = [
         AllIcon,
         FoodIcon,
@@ -249,8 +256,12 @@ const Home = ({parsedCommunityCategoryData}) => {
                                 ))} */}
                             </Swiper>
                             <div className='swiper-button-next'></div>
+                            
                     </SwiperCustomWrap>
-
+                    {/* <h1>baseURL: {baseURL} </h1>
+                    <h1>REACT_APP_KAKAOURI : {test1} </h1>
+                    <h1>REACT_APP_NAVERURI : {test2} </h1>
+                    <h1>현재 모드 : {test3} </h1> */}
                 <Footer/>
             </StyledFrame>
             
