@@ -58,6 +58,10 @@ import CompanyModify from './Components/CompanyUpload/CompanyModify';
 import CompanyWrite from './Components/CompanyUpload/CompanyWrite';
 import BusinessNumberCheck from './Components/CompanyUpload/BusinessNumberCheck';
 
+/* 결제안내 페이지 */
+
+import PaymentInfoPage from './Components/Page/PaymentInfoPage';
+
 const App = () => {
 
     /*------------------------------------------------*\
@@ -353,6 +357,7 @@ const App = () => {
                 <Route exact path="/company_write" element={<CompanyWrite />}></Route>
                 <Route exact path="/company_modify" element={<CompanyModify />}></Route>
                 <Route exact path="/business_number_check" element={<BusinessNumberCheck />}></Route>
+                <Route exact path="/payment_info_page" element={<PaymentInfoPage />}></Route>
 
                 {/* 게시판 */}
                 

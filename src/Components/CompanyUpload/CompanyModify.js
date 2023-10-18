@@ -8,7 +8,6 @@ import { Wrap, Container, Inner } from "./StyledCompanyUpload"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
 // icon
 import { AiOutlineCamera } from "react-icons/ai";
-import { async } from 'q';
 
 const CompanyUpload = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -63,7 +62,7 @@ const CompanyUpload = () => {
           userUid: userUid,
         };
         setCompanyData(updatedData); 
-
+        e.target.value = ''
         // setCompanyData({
         //   ...companyData,
         //   logoImg: imageUrl
@@ -118,25 +117,18 @@ const CompanyUpload = () => {
     if (!companyNameLen || !representativeNameLen){
       alert("회사명과 대표자 이름은 필수 입력값입니다.")
     } else {
-      console.log("수정test", companyData)
       if(window.confirm("업체 정보를 수정하시겠습니까?")) {
         await axios.patch(`${baseURL}/v1/company/modify/${companyData?.businessNum}`, companyData, { headers }).then((res) => {
-          console.log("수정test",res)
-          console.log("companyData 테스트",companyData)
-          console.log("비즈니스넘버 테스트",companyData?.businessNum)
           alert("수정하였습니다")
           navigate('/')
         }).catch((error) => {
           console.error(error)
-          console.log("companyData 테스트",companyData)
           alert("error")
         })
       }
     }
   }
-  //////////////////////////
-  ///// 수정 버튼 클릭 /////
-  //////////////////////////
+  ///// 취소버튼 /////
   const cancelBtnClick = () => {
     if (window.confirm("취소하시겠습니까?")) {
       sessionStorage.removeItem('b_no');
