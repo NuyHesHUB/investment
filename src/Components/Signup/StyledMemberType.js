@@ -7,8 +7,7 @@ export const StyledFrame=styled.div`
 `
 export const MemberTypeWrap=styled.div`
     width: 1920px;
-    /* height: 900px; */
-    height: 750px;
+    height: 100vh;
     overflow: hidden;
     margin: 0 auto;
     display: flex;
@@ -45,6 +44,7 @@ export const TabMenu=styled.ul`
 
   .submenu {
     transition: 0.3s;
+    width: 100%;
   }
   .focused {
     color: rgb(63,169,245);
@@ -61,7 +61,8 @@ export const TabMenuItem=styled.li`
     align-items: center;
     justify-content: center;
     border-right: 1px solid rgb(238,238,238);
-    font-size: 24px;
+    /* font-size: 24px; */
+    font-size: 20px;
     font-weight: 600;
     cursor: pointer;
 `

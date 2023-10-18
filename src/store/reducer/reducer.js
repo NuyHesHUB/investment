@@ -9,7 +9,7 @@ const initialState = {
     adminBoardData: [],
     adminPostData: [],
     ongoingPostcardCount: 6,
-    deadlinePostcardCount: '',
+    deadlinePostcardCount: 6,
 }
 
 const reducer = (state = initialState, action) => {
@@ -23,7 +23,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.DEADLINE_POSTCARD:
             return {
                 ...state,
-                deadlinePostcardCount: ''
+                deadlinePostcardCount: action.payload
             }
         /* case actionTypes.LOG_IN:
             return {

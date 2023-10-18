@@ -16,57 +16,50 @@ import NaverLogin from '../Login/SocialNaverLogin';
 import KakaoLogin from '../Login/SocialKakaoLogin';
 
 const MemberType = () => {
-    const navigate = useNavigate();
-    const baseURL = process.env.REACT_APP_BASEURL;
+    /* const navigate = useNavigate(); */
+    /* const baseURL = process.env.REACT_APP_BASEURL; */
     const [currentTab, setCurrentTab] = useState(0);
     /* const [BusinessNumber, setBusinessNumber] = useState(''); */
 
-    const [isVerified, setIsVerified] = useState(false);
+    /* const [isVerified, setIsVerified] = useState(false); */
 
-    const [BusinessFormData, setBusinessFormData] = useState({
+    /* const [BusinessFormData, setBusinessFormData] = useState({
         businessNum: '',
         businessName: '',
         representativeName:'',
-    })
+    }) */
 
     /*------------------------------------------------*\
                         Input Change
     \*------------------------------------------------*/
-    const handleBNChange = (e) => {
+    /* const handleBNChange = (e) => {
         const value = e.target.value;
-        /* if (/^[0-9]*$/.test(value)) {
-            setBusinessNumber(value);
-        } */
         if (/^[0-9]*$/.test(value)) {
             setBusinessFormData({
                 ...BusinessFormData,
                 businessNum: value
             });
         }
-    };
-    const handleInputChange = (e, field) => {
+    }; */
+    /* const handleInputChange = (e, field) => {
         const value = e.target.value;
         setBusinessFormData({
             ...BusinessFormData,
             [field]: value
         });
-    };
+    }; */
 
     /*------------------------------------------------*\
           사업자 가입 진행 버튼 / 사업자 번호 검증 API
     \*------------------------------------------------*/
-    const handleBuisnessSignUp = async (e) => {
+    /* const handleBuisnessSignUp = async (e) => {
         e.preventDefault();
-        //사업자 번호 샘플 : 7848801575 
         try { 
             const response = await axios.post(`${baseURL}/v1/users/validate` , { b_no : BusinessFormData.businessNum} , { withCredentials : true });
             const validBusinessData = response.data.data.b_stt; 
-            /* console.log('response', response); */
             if (validBusinessData === '계속사업자') {
-                /* navigate('/sign_up') */
                 sessionStorage.setItem('BusinessNumber', BusinessFormData.businessNum)
                 setIsVerified(true)
-                
             } else {
                 alert('오류가 발생하였습니다.')
             } 
@@ -77,14 +70,16 @@ const MemberType = () => {
                 console.error('사업자 번호 전송 실패');
             }
         }
-    };
-    console.log('테스트', isVerified);
-    console.log('사업자 폼 테스트', BusinessFormData);
+    }; */
+
+    /* console.log('테스트', isVerified); */
+    /* console.log('사업자 폼 테스트', BusinessFormData); */
+
     /*------------------------------------------------*\
                       Tab Menu Contents
     \*------------------------------------------------*/
     const menuArr = [
-        { name: '개인 회원', content: (
+        { name: '소셜 간편가입', content: (
             <Contents>
                 <div className='contents-wrap personal-contents'>
                     {/* <h6>후핀에 오신 것을 환영합니다.</h6> */}
@@ -94,7 +89,7 @@ const MemberType = () => {
                 </div>
             </Contents>
         ) },
-        { name: '사업자 회원', content: (
+        /* { name: '사업자 회원', content: (
             <Contents>
                 {isVerified ? (
                     <div className='contents-wrap buisness-contents'>
@@ -103,7 +98,6 @@ const MemberType = () => {
                     </div>
                 ):(
                     <div className='contents-wrap buisness-contents'>
-                        {/* <h6>사업자 등록 번호를 입력해 주세요.</h6> */}
                         <div>
                             <form>
                                 <div>
@@ -137,7 +131,7 @@ const MemberType = () => {
                     </div>
                 )}
             </Contents>
-        ) },
+        ) }, */
     ];
 
     const selectMenuHandler = (index) => {

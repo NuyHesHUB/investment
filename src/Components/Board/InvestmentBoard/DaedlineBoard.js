@@ -2,22 +2,59 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../Header';
 import Footer from '../../Footer';
 import { StyledFrame } from '../../StyledComponents/StyledHome';
+import { BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap, MoreWrap, MoreBtn } from './StyledOngoingBoard';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDeadlinePostCardCount } from '../../../store/actions/actions';
+import { Link } from 'react-router-dom';
+import OngoingPostCard from './OngoingPostCard';
 
 const InvestDeadlineBoard = () => {
+    /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
-    const userUid = sessionStorage.getItem('userUid');
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {
         Authorization: `${accessToken}`
     };
+    const params = {
+        pageRows : '',
+        page : '',
+        category : '',
+        status : '',
+        condition :'deadline',
+    };
+    const dispatch = useDispatch();
 
     const [investDeadlinePostData, setInvestDeadlinePostData] = useState(null);
+    const PostCardCount = useSelector((state) => state.reducer.deadlinePostcardCount);
 
+    useEffect(() => {
+        const handlePopState = () => {
+            const state = window.history.state;
+            if (state) {
+                const updatedNumPostsToShow = state.PostCardCount || PostCardCount;
+                dispatch(setDeadlinePostCardCount(updatedNumPostsToShow));
+            }
+    };
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+
+    }, [PostCardCount]);
+
+    const handleLoadMore = () => {
+        const updatedNumPostsToShow = PostCardCount + 6;
+        dispatch(setDeadlinePostCardCount(updatedNumPostsToShow));
+    };
+    /*-----------------------------------------------*\
+                  investment post 데이터 API
+    \*-----------------------------------------------*/
     useEffect(() => {
         const fetchData = async () => {
             try { 
-                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
+                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params });
                 const data = PostResponse.data?.query;
                 setInvestDeadlinePostData(data);
             } catch (error) {
@@ -32,22 +69,43 @@ const InvestDeadlineBoard = () => {
     return (
         <StyledFrame>
             <Header/>
-                <div style={{height:'1000px', paddingTop:'80px'}}>
-                    {
-                        Array.isArray(investDeadlinePostData) && investDeadlinePostData.length > 0 &&
-                        investDeadlinePostData
-                        .filter(item => item && item.condition === 'deadline' /* && item.category === '제조' */)
-                        .map((item, index) => (
-                            <tr key={index}>
-                                <td>{item.brdKey}</td>
-                                <td>{item.category}</td>
-                                <td>{item.comment_count}</td>
-                                <td>{item.condition}</td>
-                                <td>{item.content}</td>
-                            </tr>
-                        ))
-                    }
-                </div>
+                <BoardWrap>
+                    <DummyBanner>visual</DummyBanner>
+                    {investDeadlinePostData !== null && investDeadlinePostData !== "" ?
+                    <div>
+                        <PostCardTitleWrap>
+                        <h3>마감된 투자</h3>
+                        </PostCardTitleWrap>
+                        <PostCardWrap>
+                        {investDeadlinePostData && 
+                            investDeadlinePostData?.length > 0 &&
+                            investDeadlinePostData?.slice(0, PostCardCount).map((item, index) => (
+                            <Link key={index} to={
+                                `/investment/deadline/${item.id}`
+                            }>
+                                <OngoingPostCard
+                                        key={index}
+                                        logoimg={item.logoImg}
+                                        name={item.companyName}
+                                        title={item.title}
+                                        /* content={removeTags(item.content)} */
+                                        category={item.category}
+                                        /* date={formattedDates[index]} */
+                                />
+                            </Link>
+                        ))}
+                        </PostCardWrap>
+                        <MoreWrap>
+                            {investDeadlinePostData?.length > PostCardCount && (
+                                <div style={{marginTop:'80px'}}>
+                                    <MoreBtn onClick={handleLoadMore}>
+                                        <span>더보기</span>
+                                    </MoreBtn>
+                                </div>
+                            )}
+                        </MoreWrap>
+                    </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>오류가 발생했습니다.</div>}
+                </BoardWrap>
             <Footer/>
         </StyledFrame>
     );
