@@ -18,7 +18,6 @@ export const Container = styled.div`
   }
   input, select, .attaches-btn {
     border: none;
-    background: #edeff2;
     border-radius: 10px;
     padding: 13px 10px;
     margin-bottom: 40px;
@@ -50,6 +49,7 @@ export const Container = styled.div`
     width: 200px;
     text-align: center; 
     color: #666;
+    background: #F3F5F8;
     cursor: pointer;
   }
   .attach-amount {

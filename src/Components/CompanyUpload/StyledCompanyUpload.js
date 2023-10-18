@@ -37,7 +37,6 @@ export const Inner = styled.div`
   ul li input, ul li textarea, ul li button {
     width: 450px;
     border: none;
-    background: #edeff2;
     border-radius: 10px;
     padding: 17px 10px;
   }

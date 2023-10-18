@@ -37,7 +37,6 @@ export const Inner = styled.div`
     font-size: 16px;
   }
   input {
-    background: #edeff2;
     margin-bottom: 10px;
   }
 

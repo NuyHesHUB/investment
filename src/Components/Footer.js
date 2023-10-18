@@ -10,7 +10,7 @@ const StyledFrame=styled.div`
     /* background: #8e45fc; */
     /* background: rgba(69,74,252,1); */
     /* background: #0D1282; */
-    background: #EBEDF0;
+    background: #F5F6F8;
 `
 const StyledFooterWrap=styled.div`
     /* background: pink; */

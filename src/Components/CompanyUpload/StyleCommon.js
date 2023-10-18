@@ -11,4 +11,8 @@ export const CommonStyleFrame = styled.div`
     margin-bottom: 30px;
     font-size: 36px;
   }
+
+  input, select, textarea {
+    background: #F3F5F8;
+  }
 `

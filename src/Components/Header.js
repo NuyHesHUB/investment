@@ -255,7 +255,7 @@ const Header = ({parsedCommunityCategoryData}) => {
                                 <p to="#" onClick={userUid ? checkCompanyRegistration : navigateLogin}>글쓰기</p>
                             </MenuItem>
                             <MenuItem>
-                                <Link to="/payment_info_page">커뮤니티</Link>
+                                <Link to="/payment_info_page">결제안내</Link>
                             </MenuItem>
                         </MenuList>
                     </HeaderMenu>
