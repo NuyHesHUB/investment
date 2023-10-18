@@ -48,6 +48,14 @@ const Home = ({parsedCommunityCategoryData}) => {
         Authorization: `${accessToken}`
     }
 
+    ///// page log /////
+    useEffect(() => {
+        axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"메인" }).then((res) => {
+    }).catch((error) => {
+        console.error(error)
+    })
+    }, []);
+    
     /* console.log('home-test',parsedCategoryData); */
     /* const dispatch = useDispatch(); */
 

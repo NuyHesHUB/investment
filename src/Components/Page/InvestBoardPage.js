@@ -54,6 +54,7 @@ const InvestBoardPage = ({ categoryIndex, parsedCategoryData }) => {
     /* UseState */
     /* const [postData, setPostData] = useState([]); */
 
+    
     /*------------------------------------------------*\
                      API 게시글 목록 GET
     \*------------------------------------------------*/

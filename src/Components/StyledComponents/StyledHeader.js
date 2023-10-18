@@ -99,6 +99,7 @@ export const MenuItem=styled.li`
             height: 100%;
             line-height: 80px;
         }
+        p {height: 100%; line-height: 80px;}
 `
 export const HeaderBtn=styled.button`
     border: none;

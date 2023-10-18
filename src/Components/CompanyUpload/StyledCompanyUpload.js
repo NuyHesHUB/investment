@@ -33,6 +33,7 @@ export const Inner = styled.div`
     margin-bottom: 30px;
     text-align: center;
   }
+  ul li p.sub-title {text-align: left; margin-bottom: 10px;}
   ul li:last-child {margin-bottom: 0;}
   ul li input, ul li textarea, ul li button {
     width: 450px;
@@ -41,13 +42,13 @@ export const Inner = styled.div`
     padding: 17px 10px;
   }
   input::placeholder, textarea::placeholder {color: #c5c6c9;}
-  input:disabled {opacity: 0.5;}
+  input:disabled {opacity: 0.3;}
   ul li input {
     font-size: 16px;
   }
   li.required {position: relative;}
   li.required::after {
-    content:'*필수 입력값'; 
+    content:'*필수 입력 항목입니다.'; 
     color: #ff4848; 
     position: absolute; 
     bottom: -18px; 
@@ -70,7 +71,7 @@ export const Inner = styled.div`
   }
   button:disabled {
     cursor: auto;
-    opacity: 0.7;
+    opacity: 0.5;
   }
   .cancel-btn {
     background: #f0f0f0; 
@@ -91,6 +92,7 @@ export const Inner = styled.div`
     div p {color: #c5c6c9; text-align: center;}
     div.placeholder-none {display: none;}
     div.placeholder-active {display: block; width: 100%;}
+    // 로고 이미지 삭제
     .imgBox {display: none;}
     .imgBox.active {display: block; width: 100%;}
     img {object-fit: cover; width: 100%;}

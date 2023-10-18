@@ -106,7 +106,15 @@ const PostDetail = () => {
     /* useParams */
     const { id } = useParams();
 
-    
+    /*-----------------------------------------------*\
+                        page log
+    \*-----------------------------------------------*/
+    useEffect(() => {
+        axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":`진행중상세페이지 boardPostId:${id}` }).then((res) => {
+    }).catch((error) => {
+        console.error(error)
+    })
+    }, []);
     
 
     /* 게시글 데이터 */

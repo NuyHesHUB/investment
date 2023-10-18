@@ -16,11 +16,20 @@ const BusinessNumberCheck = () => {
     Authorization: `${accessToken}`
   }
 
-  // 진위 확인 버튼
+  ///// page log /////
+  useEffect(() => {
+    axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"사업자등록번호확인" }).then((res) => {
+  }).catch((error) => {
+    console.error(error)
+  })
+  }, []);
+  
   const [businessNum, setBusinessNum] = useState({
     b_no: ""
-  });
+  });// businessNum 진위확인 useState
+  const [numberCheck, setNumberCheck] = useState();
   
+  ///// 등록 버튼 click /////
   const checkBtn = async () =>  {
     console.log("businessNum.length", businessNum.b_no)
     if (businessNum.b_no.length < 10) {
@@ -43,8 +52,7 @@ const BusinessNumberCheck = () => {
       })
     }
   }
- 
-  const [numberCheck, setNumberCheck] = useState();
+
   const onChange = (e, name) => {
     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10)
     setNumberCheck(value)
@@ -83,7 +91,6 @@ const BusinessNumberCheck = () => {
         </Inner>
       </Container>
     </Wrap>
-
   )
 }
 export default BusinessNumberCheck;

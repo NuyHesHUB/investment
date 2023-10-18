@@ -27,9 +27,9 @@ export const Container = styled.div`
   input.investment-amount {text-align: right;}
   select {width: 200px; cursor: pointer;}
   input.title {width: 100%;}
-  .ql-container {min-height: 230px; padding: 10px; cursor: text;}
-  .ql-container .ql-blank {min-height: 200px;}
-  .btnBox {margin-top: 10px; display: flex; justify-content: end;}
+  .ql-container {min-height: 330px; padding: 10px; cursor: text;}
+  .ql-container .ql-blank {min-height: 300px;}
+  .btnBox {margin-top: 20px; display: flex; justify-content: end;}
   .cancelBtn, .btn {
     padding: 6px 12px;
     border-radius: 10px;
@@ -41,7 +41,7 @@ export const Container = styled.div`
   .btn {background: #3FA9F5; color: #fff; margin-left: 5px;}
   .btn:disabled {
     cursor: auto;
-    opacity: 0.7;
+    opacity: 0.5;
   }
   label.attaches {width: 200px;}
   #attaches {display: none;}

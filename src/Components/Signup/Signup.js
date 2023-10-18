@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 /* React-Router-Dom */
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,7 +17,7 @@ import { StyledFrame, StyledSigninFrame } from './StyledSignupFrame';
 const Signup = () => {
 
     const baseURL = process.env.REACT_APP_BASEURL;
-
+    const userUid = sessionStorage.getItem('userUid');
     /* React-Router-Dom */
     const navigate = useNavigate();
 
@@ -220,6 +220,16 @@ const Signup = () => {
         }
     };
     console.log(formData);
+
+    /*-----------------------------------------------*\
+                        page log
+    \*-----------------------------------------------*/
+    useEffect(() => {
+        axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"회원가입" }).then((res) => {
+    }).catch((error) => {
+        console.error(error)
+    })
+    }, []);
 
     return (
         <StyledFrame>

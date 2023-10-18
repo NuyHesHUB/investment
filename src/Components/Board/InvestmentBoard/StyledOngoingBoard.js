@@ -2,13 +2,20 @@ import styled from 'styled-components';
 
 export const DummyBanner=styled.div`
     width: 100%;
-    height: 500px;
-    background: rgb(51,51,51);
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 64px;
-    font-weight: 400;
-    text-align: center;
-    line-height: 500px;
+    height: 400px;
+    padding: 0 240px;
+    box-sizing: border-box;
+    background: rgb(71, 111, 241);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 26px;
+    font-weight: 500;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    div.leftBox {
+        width: 450px;
+    }
 `
 
 export const BoardWrap=styled.div`

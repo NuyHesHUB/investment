@@ -3,27 +3,15 @@ import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
 import ReactQuill , { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
 //import component
 import Header from "../Header"
+import Footer from "../Footer"
 // styled
 import { Container } from "./StyledCompanyWrite"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
-
 //icon
 import { PiFilePlusThin } from "react-icons/pi";
 import { BsTrash3 } from "react-icons/bs";
-
-// const modules =  {
-//     toolbar: [
-//       [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-//       [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-//       [{ 'color': [] }, { 'background': [] }],
-//       ['bold', 'italic', 'underline', 'strike'],
-//       ['link', 'image'],
-//        // Added color and background color buttons
-//     ]
-//   }
 
 const CompanyWrite = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -33,8 +21,16 @@ const CompanyWrite = () => {
   const headers = {
     Authorization: `${accessToken}`
   }
-  
   const navigate = useNavigate();
+
+  ///// page log /////
+  useEffect(() => {
+    axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"투자등록하기" }).then((res) => {
+  }).catch((error) => {
+    console.error(error)
+  })
+  }, []);
+
 
   const [content, setContent] = useState(''); // 내용부분
   const [asdf , setasdf] = useState()
@@ -360,6 +356,7 @@ const CompanyWrite = () => {
           </div>
         </CommonStyleFrame>
       </Container>
+      <Footer />
     </StyledFrame>
   );
 };

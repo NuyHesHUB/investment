@@ -13,6 +13,7 @@ const InvestDeadlineBoard = () => {
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
+    const userUid = sessionStorage.getItem('userUid');
     const headers = {
         Authorization: `${accessToken}`
     };
@@ -48,6 +49,17 @@ const InvestDeadlineBoard = () => {
         const updatedNumPostsToShow = PostCardCount + 6;
         dispatch(setDeadlinePostCardCount(updatedNumPostsToShow));
     };
+
+    /*-----------------------------------------------*\
+                        page log
+    \*-----------------------------------------------*/
+    useEffect(() => {
+        axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"마감" }).then((res) => {
+    }).catch((error) => {
+        console.error(error)
+    })
+    }, []);
+
     /*-----------------------------------------------*\
                   investment post 데이터 API
     \*-----------------------------------------------*/

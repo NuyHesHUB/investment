@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 //import component
 import Header from "../Header"
+import Footer from "../Footer"
 // styled
 import { Wrap, Container, Inner } from "./StyledCompanyUpload"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
@@ -20,6 +21,14 @@ const CompanyUpload = () => {
   const headers = {
     Authorization: `${accessToken}`
   }
+
+  ///// page log /////
+  useEffect(() => {
+    axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"업체등록" }).then((res) => {
+  }).catch((error) => {
+    console.error(error)
+  })
+  }, []);
 
   const [placeholderActive, setPlaceholderActive] = useState(true);
   const [logoImage, setLogoImage] = useState('');
@@ -147,7 +156,7 @@ const CompanyUpload = () => {
                       <AiOutlineCamera size="100" color="#c5c6c9" />
                       <p>로고 이미지 업로드</p>
                     </div>
-                    <p className={logoImage ? 'imgBox active' : 'imgBox'}>
+                    <div className={logoImage ? 'imgBox active' : 'imgBox'}>
                       <img src={logoImage} id="preview" />
                       <div className='logo-btnBox'>
                         <label htmlFor="logo-upload" className='logo-change-btn'>
@@ -158,7 +167,7 @@ const CompanyUpload = () => {
                           onClick={logoImgDelete}
                         >삭제</button>
                       </div>
-                    </p>
+                    </div>
                   </label>
                   <input 
                     id='logo-upload' 
@@ -170,6 +179,7 @@ const CompanyUpload = () => {
 
                 {/******* 사업자등록번호 *******/}
                 <li>
+                  <p className='sub-title'>사업자등록번호</p>
                   <input 
                     type="text" 
                     value={b_no &&`${b_no.slice(0,3)}-${b_no.slice(3,5)}-${b_no.slice(5,10)}`}
@@ -179,26 +189,29 @@ const CompanyUpload = () => {
                 
                 {/******* 업체명 *******/}
                 <li className={companyNameLen ? '' : 'required'}>
+                  <p className='sub-title'>업체명</p>
                   <input 
                     type="text" 
                     name="companyName"
-                    placeholder='회사명'
+                    placeholder='업체명'
                     onChange={(e) => companyValueWrite(e, "companyName")}
                   />
                 </li>
 
                 {/******* 대표자 이름 *******/}
                 <li className={representativeNameLen ? '' : 'required'}>
+                  <p className='sub-title'>대표자명</p>
                   <input 
                     type="text" 
                     name="representativeName"
-                    placeholder='대표자 이름' 
+                    placeholder='대표자명' 
                     onChange={(e) => companyValueWrite(e, "representativeName")}
                   />
                 </li>
 
                 {/******* 회사 소개글 *******/}
                 <li>
+                  <p className='sub-title'>회사 소개글</p>
                   <textarea 
                     name="introduction" 
                     rows="10" 
@@ -218,6 +231,7 @@ const CompanyUpload = () => {
           </CommonStyleFrame>
         </Container>
       </Wrap>
+      <Footer />
     </StyledFrame>
   )
 }
