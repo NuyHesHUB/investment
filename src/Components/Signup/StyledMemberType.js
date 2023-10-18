@@ -7,7 +7,6 @@ export const StyledFrame=styled.div`
 `
 export const MemberTypeWrap=styled.div`
     width: 1920px;
-    /* height: 750px; */
     height: 100vh;
     overflow: hidden;
     margin: 0 auto;
