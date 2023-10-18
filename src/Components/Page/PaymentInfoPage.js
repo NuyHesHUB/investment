@@ -12,10 +12,10 @@ import { BsCheck2 } from "react-icons/bs";
 const PaymentInfoPage = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
   const userUid = sessionStorage.getItem('userUid');
-
+  const uid = userUid === null ? '' : userUid
   ///// page log /////
   useEffect(() => {
-     axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"결제안내" }).then((res) => {
+     axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"결제안내" }).then((res) => {
     }).catch((error) => {
       console.error(error)
     })

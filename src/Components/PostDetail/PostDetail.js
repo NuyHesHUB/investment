@@ -98,6 +98,7 @@ const PostDetail = () => {
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
+    const uid = userUid === null ? '' : userUid
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {
         Authorization: `${accessToken}`
@@ -110,7 +111,7 @@ const PostDetail = () => {
                         page log
     \*-----------------------------------------------*/
     useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":`진행중상세페이지 boardPostId:${id}` }).then((res) => {
+        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":`진행중상세페이지 boardPostId:${id}` }).then((res) => {
     }).catch((error) => {
         console.error(error)
     })

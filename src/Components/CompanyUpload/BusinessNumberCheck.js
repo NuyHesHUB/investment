@@ -12,13 +12,14 @@ const BusinessNumberCheck = () => {
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
+  const uid = userUid === null ? '' : userUid
   const headers = {
     Authorization: `${accessToken}`
   }
 
   ///// page log /////
   useEffect(() => {
-    axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"사업자등록번호확인" }).then((res) => {
+    axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"사업자등록번호확인" }).then((res) => {
   }).catch((error) => {
     console.error(error)
   })

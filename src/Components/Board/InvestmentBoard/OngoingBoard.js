@@ -27,6 +27,7 @@ const InvestOngoingBoard = () => {
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
     const userUid = sessionStorage.getItem('userUid');
+    const uid = userUid === null ? '' : userUid
     const headers = {
         Authorization: `${accessToken}`
     };
@@ -70,15 +71,13 @@ const InvestOngoingBoard = () => {
                         page log
     \*-----------------------------------------------*/
     useEffect(() => {
-            axios.post(`${baseURL}/v1/log/movement/form`, { userUid: userUid, "page":"진행중" }).then((res) => {
-                console.log('resresresresres',res);
-            }).catch((error) => {
-                console.error(error)
-            })
-        
-        
+        axios.post(`${baseURL}/v1/log/movement/form`, {  userUid: uid, "page":"진행중" }).then((res) => {
+    }).catch((error) => {
+        console.error(error)
+    })
     }, []);
 
+    console.log(uid, "userUid")
   
     /*-----------------------------------------------*\
                   investment post 데이터 API

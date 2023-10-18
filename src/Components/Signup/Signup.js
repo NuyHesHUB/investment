@@ -18,6 +18,7 @@ const Signup = () => {
 
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
+    const uid = userUid === null ? '' : userUid
     /* React-Router-Dom */
     const navigate = useNavigate();
 
@@ -225,7 +226,7 @@ const Signup = () => {
                         page log
     \*-----------------------------------------------*/
     useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid:userUid, "page":"회원가입" }).then((res) => {
+        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"회원가입" }).then((res) => {
     }).catch((error) => {
         console.error(error)
     })
