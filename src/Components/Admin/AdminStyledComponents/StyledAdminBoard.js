@@ -3,8 +3,7 @@ import styled from 'styled-components';
 export const Wrap = styled.div`
   .createBtn {margin-right: 5px;}
   //modify & delete btn
-  .modifyBtn {margin-right: 5px; background: #73bbff;}
-  .deleteBtn {background: #ff7373;}
+  
 `
 
 export const PopUpWrap = styled.div`

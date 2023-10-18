@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setDeadlinePostCardCount } from '../../../store/actions/actions';
 import { Link } from 'react-router-dom';
 import OngoingPostCard from './OngoingPostCard';
+/* img */
+import { ReactComponent as VisualImg } from './VisualImg.svg';
 
 const InvestDeadlineBoard = () => {
     /* Basic */
@@ -82,7 +84,17 @@ const InvestDeadlineBoard = () => {
         <StyledFrame>
             <Header/>
                 <BoardWrap>
-                    <DummyBanner>visual</DummyBanner>
+                <DummyBanner>
+                        <div>
+                            당신의 돈, 당신의 선택.<br />
+                            WhoFin에서는 혁신적인 투자 경험을 제공합니다.<br />
+                            풍부한 지식과 투자 경험을 통해 우리는 함께 성장하고, 더 나은 미래를 향해 나아갑니다. <br />
+                            지금 당신의 투자 여정을 시작하세요.
+                        </div>
+                        <div className='leftBox'>
+                            <VisualImg />
+                        </div>
+                    </DummyBanner>
                     {investDeadlinePostData !== null && investDeadlinePostData !== "" ?
                     <div>
                         <PostCardTitleWrap>

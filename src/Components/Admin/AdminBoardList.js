@@ -17,33 +17,18 @@ const AdminBoardList = () => {
   const headers = {
     Authorization: `${accessToken}`
   }
-
   /////////////////////////////////////
   ///// boardList 데이터 가져오기 /////
   /////////////////////////////////////
   const [boardData, setBoardData] = useState([]);
-  //Pagenation data
-  const [page, setPage] = useState(1); // 현재 페이지
-  const [pageRows, setPageRows] = useState(2); // 한 페이지에 보여질 데이터 개수
-  const [totalRows, setTotalRows] = useState(0); //데이터 정보 개수
-  const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
-  const [count, setCount] = useState(0); 
 
   useEffect(() => {
-    axios.get(`${baseURL}/v1/board?query=&pageRows=${pageRows}&page=${page}`, { headers }).then((res) => {
-      console.log(res.data.totalRows, "게시판관리테스트")
+    axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers }).then((res) => {
       setBoardData(res.data.query);
-      setTotalRows(res.data.totalRows);
     }).catch(() => {
       console.error("error");
     })
-  }, [page,pageRows]);
-
-  const changePageSize = (e) => {
-    setPageRows(e.target.value)
-    setPage(1)
-    setCount(0)
-  }
+  }, []);
 
   //////////////////////////
   ////////// 수정 //////////
@@ -170,15 +155,6 @@ const AdminBoardList = () => {
                 className="createBtn"
                 onClick={createBtnClick}
               >추가</button>
-              <select
-                className='page-size'
-                onChange={(e) => changePageSize(e)}
-              >
-                <option value={2}>2개씩</option>
-                <option value={4}>4개씩</option>
-                <option value={6}>6개씩</option>
-                <option value={10}>10개씩</option>
-              </select>
             </li>
           </ul>
           <TableFrame>
@@ -246,7 +222,7 @@ const AdminBoardList = () => {
               })}
             </table>
           </TableFrame>
-          <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} />
+      
 
           {/* 게시판 리스트 추가 팝업창 */}
           <PopUpWrap className={open ? "active" : ''}>

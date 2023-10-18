@@ -31,7 +31,6 @@ const AdminCompanyList = () => {
 
   useEffect(() => {
     axios.get(`${baseURL}/v1/company?query&pageRows=${pageRows}&page=${page}&status`, { headers }).then((res) => {
-      console.log("GET START", res.data.totalRows);
       setCompanyData(res.data.query);
       setTotalRows(res.data.totalRows);
     }).catch(() => {
@@ -44,7 +43,29 @@ const AdminCompanyList = () => {
     setPage(1)
     setCount(0)
   }
-  
+
+  //////////////////////////
+  ////////// 삭제 //////////
+  //////////////////////////
+  //FIXME:삭제삭제 비즈니스넘버
+  const deleteBoardList = (key) => {
+    console.log("삭제 테스트", key, userUid, headers)
+    if (window.confirm("삭제하시겠습니까?")) {
+      axios.delete(`${baseURL}/v1/company/delete/{businessNum}`,  {
+        data: {
+          "key": key
+        },
+        headers}).then((res) => {
+        alert("삭제되었습니디");
+        window.location.reload()
+      }).catch((error) => {
+        console.error(error)
+        alert("권한이 없습니다.")
+      })
+    }
+  }
+
+
   //// 업체 수정
   const [idx, setIdx] = useState(0);
   const modifyBtnClick = (businessNum) => {
@@ -158,8 +179,11 @@ const AdminCompanyList = () => {
                     <td>
                       <button
                         onClick={() => modifyOpen(i)}
+                        className='modifyBtn' 
                       >수정</button>
-                      <button>삭제</button>
+                      <button 
+                        className='deleteBtn'
+                      >삭제</button>
                     </td>
                   </tr>
                 )

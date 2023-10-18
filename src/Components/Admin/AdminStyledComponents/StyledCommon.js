@@ -4,7 +4,8 @@ export const CommonStyleFrame = styled.div`
   *{padding: 0; margin: 0; box-sizing: border-box;}
   padding: 90px 0 0 300px ;
   position: relative;
-
+  .modifyBtn {margin-right: 5px; background: #73bbff;}
+  .deleteBtn {background: #ff7373;}
   // top //
   ul.top {
     width: 1000px; //임시 넓이
