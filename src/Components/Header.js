@@ -226,7 +226,6 @@ const Header = ({parsedCommunityCategoryData}) => {
                 <WrapBox>
                     <HeaderLogo>
                         <Link to="/">
-                            {/* <img src={Logo} alt="logo"/> */}
                             <LogoSvg />
                         </Link>
                     </HeaderLogo>

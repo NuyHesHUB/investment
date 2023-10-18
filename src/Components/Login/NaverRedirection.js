@@ -6,17 +6,15 @@ const NaverRedirection = () => {
     const navigate = useNavigate();
     const baseURL = process.env.REACT_APP_BASEURL;
     const code = new URL(document.location.toString()).searchParams.get('code');
-    /* console.log('code',code); */
+    console.log('code',code);
 
     useEffect(() => {
         const fetchData = async () => {
-            try{/* /v1/authorize/social_login */
+            try{
                 const response = await axios.post(`${baseURL}/v1/authorize/social_login`, { code: code, socialType: "naver" } , { withCredentials : true})
                 const userData = response.data.userData;
-                /* console.log('response', response); */
-                /* console.log('루트 테스트',userData); */
                 const userUid = response.data.userData.id;
-                const userGroup = response.data.userData.group; /* 관리자, 업체, 일반 */
+                const userGroup = response.data.userData.group; 
                 const userIsAdmin = response.data.userData.isAdmin;
                 const accessToken = response.data.accessToken;
                 const refreshToken = response.data.refreshToken;
