@@ -34,6 +34,7 @@ import {
 
 /* Image */
 import Logo from '../assets/image/logo.png';
+import { ReactComponent as LogoSvg } from '../assets/image/logo.svg';
 
 const Header = ({parsedCommunityCategoryData}) => {
     const navigate = useNavigate();
@@ -225,7 +226,8 @@ const Header = ({parsedCommunityCategoryData}) => {
                 <WrapBox>
                     <HeaderLogo>
                         <Link to="/">
-                            <img src={Logo} alt="logo"/>
+                            {/* <img src={Logo} alt="logo"/> */}
+                            <LogoSvg />
                         </Link>
                     </HeaderLogo>
                     <HeaderMenu>
