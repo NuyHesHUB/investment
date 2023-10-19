@@ -22,9 +22,16 @@ export const CategoryContainer=styled.div`
 export const CategoryContentsBox=styled.div`
     margin-bottom: 100px;
     h2{
-        color: #3FA9F5;
+        color: #242424;
         font-size: 45px;
         text-align: center;
+        i{
+            font-style: normal;
+            color: #3FA9F5;
+            font-weight: bold;
+            font-size: 50px;
+            margin: 0 5px;
+        }
     }
 `
 

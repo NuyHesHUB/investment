@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDeadlinePostCardCount } from '../../../store/actions/actions';
 import { Link } from 'react-router-dom';
-import OngoingPostCard from './OngoingPostCard';
+import DeadlinePostCard from './DeadlinePostCard';
 /* img */
 import { ReactComponent as VisualImg } from './VisualImg.svg';
 
@@ -82,57 +82,57 @@ const InvestDeadlineBoard = () => {
     console.log('investDeadlinePostData',investDeadlinePostData);
 
     return (
-        <StyledFrame>
+        <React.Fragment>
             <Header/>
-                <BoardWrap>
-                <DummyBanner>
+            <StyledFrame>
+                    <BoardWrap>
+                        <DummyBanner>
+                            <div>
+                                당신의 돈, 당신의 선택.<br />
+                                WhoFin에서는 혁신적인 투자 경험을 제공합니다.<br />
+                                풍부한 지식과 투자 경험을 통해 우리는 함께 성장하고, 더 나은 미래를 향해 나아갑니다. <br />
+                                지금 당신의 투자 여정을 시작하세요.
+                            </div>
+                            <div className='leftBox'>
+                                <VisualImg />
+                            </div>
+                        </DummyBanner>
+                        {investDeadlinePostData !== null && investDeadlinePostData !== "" ?
                         <div>
-                            당신의 돈, 당신의 선택.<br />
-                            WhoFin에서는 혁신적인 투자 경험을 제공합니다.<br />
-                            풍부한 지식과 투자 경험을 통해 우리는 함께 성장하고, 더 나은 미래를 향해 나아갑니다. <br />
-                            지금 당신의 투자 여정을 시작하세요.
-                        </div>
-                        <div className='leftBox'>
-                            <VisualImg />
-                        </div>
-                    </DummyBanner>
-                    {investDeadlinePostData !== null && investDeadlinePostData !== "" ?
-                    <div>
-                        <PostCardTitleWrap>
-                        <h3>마감된 투자</h3>
-                        </PostCardTitleWrap>
-                        <PostCardWrap>
-                        {investDeadlinePostData && 
-                            investDeadlinePostData?.length > 0 &&
-                            investDeadlinePostData?.slice(0, PostCardCount).map((item, index) => (
-                            <Link key={index} to={
-                                `/investment/deadline/${item.id}`
-                            }>
-                                <OngoingPostCard
-                                        key={index}
-                                        logoimg={item.logoImg}
-                                        name={item.companyName}
-                                        title={item.title}
-                                        /* content={removeTags(item.content)} */
-                                        category={item.category}
-                                        /* date={formattedDates[index]} */
-                                />
-                            </Link>
-                        ))}
-                        </PostCardWrap>
-                        <MoreWrap>
-                            {investDeadlinePostData?.length > PostCardCount && (
-                                <div style={{marginTop:'80px'}}>
-                                    <MoreBtn onClick={handleLoadMore}>
-                                        <span>더보기</span>
-                                    </MoreBtn>
+                            <PostCardTitleWrap>
+                            <h3>마감된 투자</h3>
+                            </PostCardTitleWrap>
+                            <PostCardWrap>
+                            {investDeadlinePostData && 
+                                investDeadlinePostData?.length > 0 &&
+                                investDeadlinePostData?.slice(0, PostCardCount).map((item, index) => (
+                                <div key={index}>
+                                    <DeadlinePostCard
+                                            key={index}
+                                            logoimg={item.logoImg}
+                                            name={item.companyName}
+                                            title={item.title}
+                                            /* content={removeTags(item.content)} */
+                                            category={item.category}
+                                            /* date={formattedDates[index]} */
+                                    />
                                 </div>
-                            )}
-                        </MoreWrap>
-                    </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>오류가 발생했습니다.</div>}
-                </BoardWrap>
+                            ))}
+                            </PostCardWrap>
+                            <MoreWrap>
+                                {investDeadlinePostData?.length > PostCardCount && (
+                                    <div style={{marginTop:'80px'}}>
+                                        <MoreBtn onClick={handleLoadMore}>
+                                            <span>더보기</span>
+                                        </MoreBtn>
+                                    </div>
+                                )}
+                            </MoreWrap>
+                        </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>오류가 발생했습니다.</div>}
+                    </BoardWrap>
+            </StyledFrame>
             <Footer/>
-        </StyledFrame>
+        </React.Fragment>
     );
 };
 

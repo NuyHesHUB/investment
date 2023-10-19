@@ -21,7 +21,6 @@ export const DummyBanner=styled.div`
 export const BoardWrap=styled.div`
     width: 100%;
     height: auto;
-    padding-top: 80px;
     margin-bottom: 124px;
 `
 export const PostCardTitleWrap=styled.div`

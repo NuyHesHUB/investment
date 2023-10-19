@@ -121,6 +121,8 @@ export const PostDetailInformationFrame=styled.div`
 export const PostDetailLeftInformationBox=styled.div`
     height: 100%;
     margin-left: 10px;
+    display: flex;
+    align-items: center;
 `
 export const InfoBox=styled.div`
     display: flex;

@@ -22,7 +22,14 @@ import { BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap, MoreWrap, More
 /* img */
 import { ReactComponent as VisualImg } from './VisualImg.svg';
 
+import useScrollFadeIn from '../../../Hook/useScrollFadeIn';
+
+
+
 const InvestOngoingBoard = () => {
+
+    const fadeIn1 = useScrollFadeIn('up', 1, 500);
+
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
@@ -102,7 +109,6 @@ const InvestOngoingBoard = () => {
     /* const businessNums = investOngoingPostData?.map(item => item.businessNum); */
 
     /* console.log('businessNums',businessNums); */
-
 
     /*-----------------------------------------------*\
                         End Date

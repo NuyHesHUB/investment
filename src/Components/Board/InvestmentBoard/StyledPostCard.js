@@ -24,7 +24,51 @@ export const OngoingPostCardWrap=styled.div`
         margin-right: 0;
     } */
 `
- export const OngoingIconBox=styled.div`
+export const DeadlinePostCardWrap=styled.div`
+    margin-bottom: 31px;
+    /* height: auto; */
+    width: 100%;
+    height: 332px;
+    background: rgba(0, 0, 0, .7);
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    h2{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        z-index: 900;
+        font-size: 30px;
+    }
+`
+export const DeadlineContainer=styled.div`
+    padding: 0 20px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    box-sizing: border-box;
+    filter: brightness(30%);
+    -webkit-filter:brightness(30%);
+    -moz-filter:brightness(30%);
+    -o-filter:brightness(30%);
+    -ms-filter:brightness(30%);
+    >div{
+        width: 100%;
+        height: 100%;
+        filter: blur(2px);
+        -webkit-filter: blur(2px);
+        -moz-filter: blur(2px);
+        -o-filter: blur(2px);
+        -ms-filter: blur(2px);
+    }
+`
+ export const IconBox=styled.div`
     width: 60px;
     height: 60px;
     border-radius: 5px;
@@ -42,21 +86,21 @@ export const IconImg=styled.img`
     width: 100%;
     height: 100%;
 `
-export const OngoingCompanyName=styled.h4`
+export const CompanyName=styled.h4`
     color: #000;
     font-size: 16px;
     font-weight: 400;
     margin-top: 7px;
     text-align: center;
 `
-export const OngoingTitle=styled.h3`
+export const Title=styled.h3`
     color: #000;
     font-size: 20px;
     font-weight: 600;
     margin-top: 20px;
     text-align: center;
 `
-export const OngoingContent=styled.p`
+export const Content=styled.p`
     height: 50px;
     color: rgb(85, 85, 85);
     font-size: 16px;
@@ -65,14 +109,14 @@ export const OngoingContent=styled.p`
     margin-top: 21px;
     padding: 0 20px;
 `
-export const OngoingBottomContentWrap=styled.div`
+export const BottomContentWrap=styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 47px;
     
 `
-export const OngoingCategory=styled.div`
+export const Category=styled.div`
     width: auto;
     height: 25px;
     padding: 0 5px;
@@ -86,7 +130,7 @@ export const OngoingCategory=styled.div`
     justify-content: center;
     align-items: center;
 `
-export const OngoingDeadlineDt=styled.div`
+export const DeadlineDt=styled.div`
     width: auto;
     height: 25px;
     padding: 0 5px;

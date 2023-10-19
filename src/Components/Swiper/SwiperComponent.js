@@ -241,6 +241,9 @@ const SwiperCustomWrap=styled.div`
         span::after{
             width: 80%;
         }
+        p{
+            opacity: 1;
+        }
     }
 `
 const SlideWrap2=styled.div`
@@ -273,6 +276,17 @@ const CategoryWrap=styled.div`
     }
     border-radius: 20px;
 `
+const NameBox=styled.div`
+    p{
+        margin-top: 5px;
+        margin-bottom: 10px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+        opacity: 0;
+        transition: .3s ease-in-out;
+    }
+`
 
 export const BannerSwiper = () => {
 
@@ -286,6 +300,7 @@ export const BannerSwiper = () => {
     const fadeIn7 = useScrollFadeIn('up', 1, 400);
     const fadeIn8 = useScrollFadeIn('up', 1, 0);
     
+    const fadeIn9 = useScrollFadeIn('up', 1, 0);
 
     return (
         <SlideFram>
@@ -379,17 +394,17 @@ export const CategorySwiper = () => {
         /* { name: "", icon: AllIcon}, */
         { name: "외식", icon: FoodIcon},
         { name: "제조", icon: ManuFacturingIcon},
-        { name: "기타", icon: OtherIcon},
         { name: "대여", icon: RentalIcon},
-        { name: "운송", icon: RetailIcon},
+        { name: "유통", icon: RetailIcon},
         { name: "서비스", icon: ServicesIcon},
+        { name: "기타", icon: OtherIcon},
         /* { name: "", icon: AllIcon}, */
         { name: "외식", icon: FoodIcon},
         { name: "제조", icon: ManuFacturingIcon},
-        { name: "기타", icon: OtherIcon},
         { name: "대여", icon: RentalIcon},
-        { name: "운송", icon: RetailIcon},
+        { name: "유통", icon: RetailIcon},
         { name: "서비스", icon: ServicesIcon},
+        { name: "기타", icon: OtherIcon},
     ];
     const [activeSlide, setActiveSlide] = useState(0);
     const handleSlideIndex = (swiper) => {
@@ -423,7 +438,9 @@ export const CategorySwiper = () => {
                                     <CategoryWrap className='effect-img'>
                                         <img src={item.icon} alt={`${item}아이콘`} />
                                     </CategoryWrap>
-                                    <div style={{marginTop:'5px',marginBottom:'10px', textAlign:'center'}}>{item.name}</div>
+                                    <NameBox className={Math.abs(activeSlide + 2) === index ? 'focused-slide' : ''}>
+                                        <p>{item.name}</p>
+                                    </NameBox>
                                     <span></span>
                                 </div>
                             </SlideWrap2>

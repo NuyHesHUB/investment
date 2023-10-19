@@ -21,6 +21,9 @@ import { BannerSwiper, CategorySwiper } from './Swiper/SwiperComponent';
 import { LuCheckCircle } from 'react-icons/lu';
 import { BsCheck2Square } from 'react-icons/bs';
 
+/* Hook */
+import useScrollFadeIn from '../Hook/useScrollFadeIn';
+
 /* Styled-Components */
 import { 
     StyledFrame, 
@@ -64,6 +67,13 @@ import ServiceImg02 from '../assets/image/service-02.png';
 
 const Home = ({parsedCommunityCategoryData}) => {
 
+    const fadeIn1 = useScrollFadeIn('up', 1, 500);
+    const fadeIn2 = useScrollFadeIn('right', 1, 100);
+    const fadeIn3 = useScrollFadeIn('up', 1, 200);
+    const fadeIn4 = useScrollFadeIn('none', 1, 300);
+    const fadeIn5 = useScrollFadeIn('none', 1, 300);
+    const fadeIn6 = useScrollFadeIn('img', 1, 200);
+
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
@@ -94,22 +104,20 @@ const Home = ({parsedCommunityCategoryData}) => {
     //console.log('process.env.REACT_APP_TEST :',process.env.REACT_APP_TEST);
     
     /* console.log('home-test',parsedCategoryData); */
-    const categoryImage = [
-        /* { name: "", icon: AllIcon}, */
+    /* const categoryImage = [
         { name: "외식" },
         { name: "제조" },
         { name: "기타" },
         { name: "대여" },
         { name: "운송" },
         { name: "서비스" },
-        /* { name: "", icon: AllIcon}, */
         { name: "외식" },
         { name: "제조" },
         { name: "기타" },
         { name: "대여" },
         { name: "운송" },
         { name: "서비스" },
-    ];
+    ]; */
 
 
     return (
@@ -121,8 +129,8 @@ const Home = ({parsedCommunityCategoryData}) => {
                             </section>
                             <CategorySection>
                                 <CategoryContainer>
-                                    <CategoryContentsBox>
-                                        <h2>투자 파트너를 다양한 업종에서 찾아보세요</h2>
+                                    <CategoryContentsBox ref={fadeIn1.ref} style={fadeIn1.style}>
+                                        <h2>투자 파트너를 다양한 <i>업종</i>에서 찾아보세요</h2>
                                     </CategoryContentsBox>
                                     <CategorySwiper/>
                                 </CategoryContainer>
@@ -132,13 +140,13 @@ const Home = ({parsedCommunityCategoryData}) => {
                                     <ServiceBox>
                                         <ServiceLeftBox>
                                             <LeftImgBox>
-                                                <ImgItem01><img src={ServiceImg01} alt="service-image01"/></ImgItem01>
-                                                <ImgItem02><img src={ServiceImg02} alt="service-image02"/></ImgItem02>
+                                                <ImgItem01 ref={fadeIn2.ref} style={fadeIn2.style}><img src={ServiceImg01} alt="service-image01"/></ImgItem01>
+                                                <ImgItem02 ref={fadeIn3.ref} style={fadeIn3.style}><img src={ServiceImg02} alt="service-image02"/></ImgItem02>
                                             </LeftImgBox>
                                         </ServiceLeftBox>
-                                        <ServiceRightBox>
+                                        <ServiceRightBox ref={fadeIn4.ref} style={fadeIn4.style}>
                                             <RightContentsBox>
-                                                <RightTitle>
+                                                <RightTitle >
                                                     <h2>투자에 고민이 있으신가요?</h2>
                                                 </RightTitle>
                                                 <RightTopContent>
@@ -163,7 +171,7 @@ const Home = ({parsedCommunityCategoryData}) => {
                             <section style={{marginBottom:'100px'}}>
                                 <HomeImgBanner>
                                     <BannerContainer>
-                                        <LeftBannerBox>
+                                        <LeftBannerBox ref={fadeIn5.ref} style={fadeIn5.style}>
                                             <TopContent>
                                                 <p><em>후핀</em>은 여러분의 사업을 위해 <i><span>최상의 도움</span></i>을 드립니다.</p> 
                                                 <p>함께 성공을 향해 나아가요!</p>
@@ -174,8 +182,8 @@ const Home = ({parsedCommunityCategoryData}) => {
                                                 <ItemBox><LuCheckCircle/>직접 투자</ItemBox>
                                             </BottomContent>
                                         </LeftBannerBox>
-                                        <RightBannerBox>
-                                            <ImgBox>
+                                        <RightBannerBox ref={fadeIn6.ref} style={fadeIn6.style}>
+                                            <ImgBox >
                                                 <img src={PhoneImg} alt="BannerImage"/>
                                             </ImgBox>
                                         </RightBannerBox>

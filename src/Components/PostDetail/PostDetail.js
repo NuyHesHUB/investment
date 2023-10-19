@@ -14,6 +14,7 @@ import axios from 'axios';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { VscThumbsup, VscThumbsdown } from 'react-icons/vsc';
 import { LuReply } from 'react-icons/lu';
+import { BsEye } from 'react-icons/bs';
 
 
 /* Js-cookie */
@@ -129,6 +130,10 @@ const PostDetail = () => {
 
     const likeList = postData?.[0]?.like;
 
+    const viewCountData = postList?.post_view_count;
+
+    const nameData = postList?.nickname;
+
     /* 보류 */
     const viewsList = postData?.[0]?.extraField;
     
@@ -153,7 +158,29 @@ const PostDetail = () => {
     const [showCommentEditTab, setShowCommentEditTab] = useState(false);
 
 
+   /*  const addCommasToNumber = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    const formattedAmount = addCommasToNumber(amountData); */
+    const [formattedAmount, setFormattedAmount] = useState(null);
 
+    const addCommasToNumber = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    useEffect(() => {
+        const extraFieldData = postData?.[0]?.extraField;
+        if (extraFieldData) {
+          try {
+            const amountData = JSON.parse(extraFieldData);
+            const formattedAmount = addCommasToNumber(amountData.investmentAmount);
+            setFormattedAmount(formattedAmount);
+            console.log('formattedAmount',formattedAmount);
+          } catch (error) {
+            console.error('Error parsing JSON:', error);
+          }
+        }
+      }, [postData]);
+    
     /*-----------------------------------------------------*\
                             게시물 좋아요
     \*-----------------------------------------------------*/
@@ -502,64 +529,13 @@ const PostDetail = () => {
         { name: '상세 내용', content: (
             <div>
                 {postData.map((item, index) => (
-                        <div key={index}>
-                            <p>id : {item.id}</p>
-                            <p>num : {item.num}</p>
-                            <p>status : {item.status}</p>
-                            <p>type : {item.type}</p>
-                            <p>brdKey : {item.brdKey}</p>
-                            <p>category : {item.category}</p>
-                            <p>title : {item.title}</p>
-                            <p>content : {item.content}</p>
-                            <p>post_view_count : {item.post_view_count}</p>
-                            <p>comment_count : {item.comment_count}</p>
-                            <p>like : {item.like}</p>
-                            <p>dislike : {item.dislike}</p>
-                            <p>isSecret : {item.isSecret}</p>
-                            <p>thumbnail : {item.thumbnail}</p>
-                            <p>nickname : {item.nickname}</p>
+                        <div key={index} style={{minHeight:'500px'}}>
+                            <div style={{marginBottom:'50px'}}>
+                                <h2>{item.title}</h2>
+                            </div>
                             <div dangerouslySetInnerHTML={{ __html: item.content }} />
-                            
                         </div>
                 ))}
-                    
-                    {/* {postData.map((item, index) => (
-                        <PostMain key={index.id}>
-                            <table>
-                                <tbody>
-                                    <tr style={{display:'flex',alignItems:'center'}}>
-                                        <td>{item.title}</td>
-                                        <td>
-                                            <MdOutlineComment style={{marginLeft:'5px'}}/>{item.comment_count}
-                                        </td>
-                                        <td>
-                                            <AiOutlineLike style={{marginLeft:'5px'}}/>
-                                        </td>
-                                        <td>{item.like}</td>
-                                        <td>
-                                            <FiEye style={{marginLeft:'5px'}}/>
-                                        </td>
-                                        <td>{item.post_view_count}</td>
-                                    </tr>
-                                    <tr style={{display:'flex',alignItems:'center',marginTop:'20px'}}>
-                                        <td style={{color:'rgba(69,74,252,1)',fontSize:'20px'}}><HiUser/></td>
-                                        <td style={{fontSize:'14px'}}>{item.nickname}</td>
-                                    </tr>
-                                    <tr style={{display:'flex',marginTop:'20px', height:'200px',border:'1px solid #999',padding:'20px'}}>
-                                        <td>
-                                            {item.content}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style={{display:'flex',alignItems:'center'}}>
-                                            <AiOutlineLike style={{margin:'0 5px'}}/> {item.like}
-                                            <AiOutlineDislike style={{margin:'0 5px'}}/> {item.dislike}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </PostMain>
-                        ))} */}
             </div>
         ) },
         { name: `문의 (${postData?.[0]?.comment_count})`, content: (
@@ -795,6 +771,10 @@ const PostDetail = () => {
                                             }
                                         </RightTitleBottomLeftBox>
                                         <RightTitleBottomRightBox>
+                                            <div style={{display:'flex',alignItems:'center',marginRight:'10px'}}>
+                                                <BsEye/>
+                                                조회수 {viewCountData}
+                                            </div>
                                             <AiOutlineHeart
                                                 style={{
                                                     color: postLikeType === "like" ? "red" : ""
@@ -814,29 +794,21 @@ const PostDetail = () => {
                                 <PostDetailInformationFrame>
 
                                     <PostDetailLeftInformationBox>
-                                        <div style={{display:'flex'}}>
-                                            <InfoBox style={{marginRight:'50px'}}>
-                                                <label>정보</label>
-                                                <div>정보정보정보정보정보정보정보정보정보정보정보정보</div>
-                                            </InfoBox>
-                                            <InfoBox>
-                                                <label style={{width:'120px'}}>투자 희망 금액</label>
-                                                <div>100,000,000 원</div>
-                                            </InfoBox>
-                                        </div>
                                         <div>
-                                            <InfoBox>
-                                                <label>연락처</label>
-                                                <div>
-                                                    010-1234-1234
-                                                </div>
-                                            </InfoBox>
-                                            <InfoBox style={{marginBottom:'0'}}>
-                                                <label>이메일</label>
-                                                <div>
-                                                    otz4193@naver.com
-                                                </div>
-                                            </InfoBox>
+                                            <div style={{display:'flex',flexDirection:'column'}}>
+                                                <InfoBox>
+                                                    <label style={{width:'120px'}}>대표자</label>
+                                                    <div>{nameData}</div>
+                                                </InfoBox>
+                                                {/* <InfoBox>
+                                                    <label style={{width:'120px'}}>조회수</label>
+                                                    <div>{viewCountData} 회</div>
+                                                </InfoBox> */}
+                                                <InfoBox>
+                                                    <label style={{width:'120px'}}>투자 희망 금액</label>
+                                                    <div>{formattedAmount} 원</div>
+                                                </InfoBox>
+                                            </div>
                                         </div>
                                     </PostDetailLeftInformationBox>
 
