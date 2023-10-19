@@ -108,6 +108,9 @@ const Home = ({parsedCommunityCategoryData}) => {
         { name: "운송" },
         { name: "서비스" },
     ];
+
+
+    /* ㅅㅂ.........ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ */
     return (
             <React.Fragment>
                 <Header parsedCommunityCategoryData={parsedCommunityCategoryData}/>
