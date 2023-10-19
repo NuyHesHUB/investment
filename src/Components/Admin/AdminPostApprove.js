@@ -12,6 +12,7 @@ const AdminPostApprove = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
   const navigate = useNavigate();
 
+
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
@@ -77,7 +78,7 @@ const AdminPostApprove = () => {
   }
   ///// 상세보기 btn /////
   const postToShow = (id) => {
-    navigate(`/${key}/pending/${id}`)
+    navigate(`/approve/${key}/pending/${id}`)
   }
  
   return (

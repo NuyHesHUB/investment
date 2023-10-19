@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 //import component
 import Header from "../Header";
 import Footer from "../Footer";
 // styled
-import { Wrap, PriceInfo, PriceCard, TitleBox, Container, Box, Line, TextBox } from "./StyledPaymentInfoPage";
+import { Wrap, PriceInfo, PriceCard, TitleBox, Container, Box, Line, TextBox, WriteBtn } from "./StyledPaymentInfoPage";
 // icon
 import { CiEdit, CiDollar, CiPhone } from "react-icons/ci";
 import { BsCheck2 } from "react-icons/bs";
-import { Link } from 'react-router-dom';
 
 const PaymentInfoPage = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -30,13 +29,11 @@ const PaymentInfoPage = () => {
     }
   }
   const checkCompanyRegistration = () => {
-      // console.log(["업체", "관리자"].includes(userGroup))
-      if (!["업체", "관리자"].includes(userGroup)) { /* 나중에 false일때로 바꾸기!!! */ 
+      if (!["업체", "관리자"].includes(userGroup)) { 
           window.confirm("업체가 등록되어있지 않습니다. 등록하시겠습니까?") 
           ? navigate('/business_number_check') 
           : navigate('#')
       } else {
-          //userGroup이 업체 or 관리자일 경우, 글쓰기 페이지 이동
           navigate('/company_write')
       }
   }
@@ -106,6 +103,11 @@ const PaymentInfoPage = () => {
             </TextBox>
           </Box>
         </Container>
+        <WriteBtn>
+          <Link>
+            등록하러가기
+          </Link>
+        </WriteBtn>
       </Wrap>
       <Footer />
     </>

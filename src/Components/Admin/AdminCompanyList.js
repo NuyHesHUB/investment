@@ -29,10 +29,10 @@ const AdminCompanyList = () => {
   const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
   
-  const [status, setStatus] = useState(''); //status filter
+  const [status, setStatus] = useState([]); //status filter
   
   useEffect(() => {
-    axios.get(`${baseURL}/v1/company?query&pageRows=${pageRows}&page=${page}&status=${status}`, { headers }).then((res) => {
+    axios.get(`${baseURL}/v1/company?query&pageRows=${pageRows}&page=${page}&${status}`, { headers }).then((res) => {
       setCompanyData(res.data.query);
       setTotalRows(res.data.totalRows);
     }).catch(() => {
@@ -49,9 +49,18 @@ const AdminCompanyList = () => {
   }
   ///// status change /////
   const statusChange = (e) => {
-    setStatus(e.target.value)
-    console.log(status)
+    const value = e.target.value
+    if (status.includes(value)) {
+      setStatus(
+        status.filter(i => i !== value)
+      )
+    } else {
+      setStatus(
+        status => [...status, e.target.value].sort()
+      )
+    }
   }
+  console.log(status)
 
   //////////////////////////
   ////////// 삭제 //////////
@@ -113,44 +122,45 @@ const AdminCompanyList = () => {
       <Admin /> {/* 헤더랑 메뉴 */}
       <CommonStyleFrame>
         <Wrap>
-          <p>업체관리</p>
+          <p className='title'>업체관리</p>
           <ul className="top">
             <li className="left-box">
-              <div>
-                <input 
-                  type="search" 
-                  placeholder='검색' 
-                  className='search-input' 
-                />
-                <input 
-                  type="submit" 
-                  value='검색' 
-                  className='search-btn' 
-                />
-              </div>
-              <div className='search-status-box'>
-                  상태값
-                <label htmlFor="statusY">
+              <form action="">
+
+                <div className='search-status-box'>
+                    상태값
+                  <label htmlFor="statusY">
+                    <input 
+                      id='statusY' 
+                      type="checkbox" 
+                      value={"N"} 
+                      onChange={(e) => statusChange(e)} 
+                    />
+                    N
+                  </label>
+                  <label htmlFor="statusN">
+                    <input 
+                      id='statusN' 
+                      type="checkbox" 
+                      value={"Y"} 
+                      onChange={(e) => statusChange(e)} 
+                    />
+                    Y
+                  </label>
+                </div>
+                <div>
                   <input 
-                    id='statusY' 
-                    type="radio" 
-                    value={"N"} 
-                    name='status' 
-                    onChange={(e) => statusChange(e)} 
+                    type="search" 
+                    placeholder='검색' 
+                    className='search-input' 
                   />
-                  N
-                </label>
-                <label htmlFor="statusN">
                   <input 
-                    id='statusN' 
-                    type="radio" 
-                    value={"Y"} 
-                    name='status' 
-                    onChange={(e) => statusChange(e)} 
+                    type="submit" 
+                    value='검색' 
+                    className='search-btn' 
                   />
-                  Y
-                </label>
-              </div>
+                </div>
+              </form>
             </li>
             <li className="right-box">
               <select

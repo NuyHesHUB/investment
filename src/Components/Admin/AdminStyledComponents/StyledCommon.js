@@ -6,24 +6,46 @@ export const CommonStyleFrame = styled.div`
   position: relative;
   .modifyBtn {margin-right: 5px; background: #73bbff;}
   .deleteBtn {background: #ff7373;}
+  .createBtn {
+    background: yellowgreen; //임시색
+    padding: 4px 5px;
+  }
+  .search-btn {
+    background: #cbcdd4; //임시색
+    color: #fff;
+    height: 20px;
+  }
+  p.title {
+    width: 130px;
+    padding-bottom: 5px;
+    display: inline-block;
+    border-bottom: 2px solid #555;
+    font-size: 26px;
+  }
   // top //
   ul.top {
     width: 1000px; //임시 넓이
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    align-items: center;
+    margin: 30px 0 10px;
   }
+  ///// 검색 박스 /////
   ul.top .left-box {
+    /* background: green; */
+    color: #555;
     width: 370px;
-    background: green;
     display: flex;
     justify-content: space-between;
   }
+  //상태값 검색
   ul.top .left-box .search-status-box {
-    background: pink;
+    /* background: pink; */
     display: flex;
     justify-content: space-between;
-    input {margin-left: 10px;}
+    padding-right: 120px;
+    align-items: center;
+    input {margin: 0 3px 0 8px;}
   }
   button, .search-btn {
     border: none; 
@@ -36,14 +58,6 @@ export const CommonStyleFrame = styled.div`
     border-radius: 3px;
     border: 1px solid #ccc;
     padding: 3px 5px;
-  }
-  .createBtn {
-    background: yellowgreen; //임시색
-    padding: 4px 5px;
-  }
-  .search-btn {
-    background: skyblue; //임시색
-    padding: 4px 5px;
   }
 `
 

@@ -22,6 +22,7 @@ import MemberEditPage from './Components/MemberEdit/MemberEditPage';
 
 /* Post Components */
 import PostDetail from './Components/PostDetail/PostDetail';
+import PendingPostDetail from './Components/PostDetail/PendingPostDetail';
 import PostRegist from './Components/PostRegist/PostRegist';
 
 /* Gallery */
@@ -355,6 +356,7 @@ const App = () => {
                 
                 {/* Investment Post 보류 */}
                 <Route exact path="/investment/:condition/:id" element={<PostDetail/>} />
+                <Route exact path="/approve/:key/pending/:id" element={<PendingPostDetail/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
 
                 {/* 글쓰기 & 업체등록 */}
