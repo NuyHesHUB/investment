@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 //import component
 import Header from "../Header";
@@ -8,11 +9,14 @@ import { Wrap, PriceInfo, PriceCard, TitleBox, Container, Box, Line, TextBox } f
 // icon
 import { CiEdit, CiDollar, CiPhone } from "react-icons/ci";
 import { BsCheck2 } from "react-icons/bs";
+import { Link } from 'react-router-dom';
 
 const PaymentInfoPage = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
   const userUid = sessionStorage.getItem('userUid');
+  const userGroup = sessionStorage.getItem('userGroup');
   const uid = userUid === null ? '' : userUid
+  const navigate = useNavigate();
   ///// page log /////
   useEffect(() => {
      axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"결제안내" }).then((res) => {
@@ -20,7 +24,22 @@ const PaymentInfoPage = () => {
       console.error(error)
     })
   }, []);
-
+  const navigateLogin = () => {
+    if (window.confirm("로그인이 되어 있지 않습니다. 로그인하시겠습니까?")) {
+        navigate('/login')
+    }
+  }
+  const checkCompanyRegistration = () => {
+      // console.log(["업체", "관리자"].includes(userGroup))
+      if (!["업체", "관리자"].includes(userGroup)) { /* 나중에 false일때로 바꾸기!!! */ 
+          window.confirm("업체가 등록되어있지 않습니다. 등록하시겠습니까?") 
+          ? navigate('/business_number_check') 
+          : navigate('#')
+      } else {
+          //userGroup이 업체 or 관리자일 경우, 글쓰기 페이지 이동
+          navigate('/company_write')
+      }
+  }
   return (
     <>
       <Header />
@@ -33,7 +52,7 @@ const PaymentInfoPage = () => {
             <p>투자 등록 1개</p> 
             <p className='price'>₩100,000원</p>
             <p className='surtax'>부가세포함..??</p>
-            <p className='while'>nn일 동안 등록</p>
+            <p className='while'><span>30</span>일 동안 등록</p>
             <p>
               어쩌구저쩌구어쩌구저쩌구<br />
               어쩌구저쩌구어쩌구저쩌구<br />
@@ -43,43 +62,45 @@ const PaymentInfoPage = () => {
           </PriceCard>
         </PriceInfo>
         <Container>
-          <Box height="150px">
-            <CiEdit size={130} color='#aaa' />
+          <p className='sub-title'>결제 방법</p>
+          <Box height="200px">
+            <CiEdit className="icon" size={130} />
             <Line />
             <TextBox>
               <span>
-                업체를 등록한 후, 게시물을 작성합니다<br />
-                1. 상단 메뉴바 <span>글쓰기</span> 버튼 클릭 <br />
+                <span className='bold'>업체를 등록한 후, 게시물을 작성합니다<br /></span>
+                {/* 1. 상단 메뉴바 <Link className='write' to='/company_write'>글쓰기</Link> 버튼 클릭 <br /> */}
+                1. 상단 메뉴바 <span className='write' onClick={userUid ? checkCompanyRegistration : navigateLogin}>글쓰기</span> 버튼 클릭 <br />
                 2. 내용 입력 후 등록하기
               </span>
             </TextBox>
           </Box>
-          <Box height="150px">
-            <CiDollar size={130} color='#aaa' />
+          <Box height="200px">
+            <CiDollar className="icon" size={130} />
             <Line />
             <TextBox>
               <span>
-                아래의 계좌로 입금합니다아아아아아아 <br />
-                입금계좌: 1234-12-123456 | 입금은행: 농협
+                <span className='bold'>아래의 계좌로 입금합니다아아아아아아 <br /></span>
+                농협 1234-12-123456 | 예금주: 화진로보틱스
               </span>
             </TextBox>
           </Box>
-          <Box height="150px">
-            <CiPhone size={130} color='#aaa' />
+          <Box height="200px">
+            <CiPhone className="icon" size={130} />
             <Line />
             <TextBox>
               <span>
-                전화합니다아아아아아아 입금 은행과 입금자명 확인<br />
+                <span className='bold'>전화합니다아아아아 입금 은행과 입금자명 확인합니당<br /></span>
                 전화번호: 010-1234-1234
               </span>
             </TextBox>
           </Box>
-          <Box height="150px">
-            <BsCheck2 size={130} color='#aaa' />
+          <Box height="200px">
+            <BsCheck2 className="icon" size={130} />
             <Line />
             <TextBox>
               <span>
-                입금 확인이 완료되면 게시물이 승인됩니다.?????????? <br />
+                <span className='bold'>입금 확인이 완료되면 게시물이 승인됩니다.??????? <br /></span>
                 어쩌구저쩌꾸
               </span>
             </TextBox>

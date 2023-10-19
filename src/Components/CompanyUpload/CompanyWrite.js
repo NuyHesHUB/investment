@@ -53,7 +53,9 @@ const CompanyWrite = () => {
   });
 
   const quillRef = useRef(true);
+  /////////////////////////
   ///// 이미지 핸들러 /////
+  /////////////////////////
   const imageHandler = () => { 
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -69,12 +71,12 @@ const CompanyWrite = () => {
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        // const encodedFilename = encodeURIComponent(file.name);
-        const encodedFilename = file.name;
+        const encodedFilename = encodeURIComponent(file.name);
+        // const encodedFilename = file.name;
         formData.append('files', file);  // Append each file to the FormData
         formData.append('filename', encodedFilename);
       }
-      formData.append('brdKey', "companyLogoImg");
+      formData.append('brdKey', "investment");
       // FormData의 key 확인
       for (let key of formData.keys()) {
         console.log(key,"키");
