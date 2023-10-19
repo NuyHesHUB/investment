@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
 ///// style /////
-import { Wrap, PageNation } from "./AdminStyledComponents/StyledAdminMemberList"
-import { CommonStyleFrame, TableFrame } from "./AdminStyledComponents/StyledCommon"
+import { CommonStyleFrame, TableFrame, Modify } from "./AdminStyledComponents/StyledCommon"
+import { Wrap, PageNation,  } from "./AdminStyledComponents/StyledAdminMemberList"
 ///// import component /////
 import Admin from "./Admin"
 import Pagenation from "./Pagenation"
@@ -43,6 +43,41 @@ const AdminMemberList = () => {
     setPageRows(e.target.value)
     setPage(1)
     setCount(0)
+  }
+  ///////////////////////
+  ///// 수정 팝업창 /////
+  ///////////////////////
+  //// 업체 수정
+  const [idx, setIdx] = useState(0);
+  const [open, setOpen] = useState(false);
+  // 수정 팝업창 열기
+  const modifyOpen = (i) => {
+    setOpen(true)
+    setIdx(i)
+  }
+  // 수정 btn Click
+  const modifyBtnClick = () => {
+    if (window.confirm("수정하시겠습니까?")) {
+      axios.patch(`${baseURL}/v1/users/modify/${userUid}`, memberData[idx], { headers }).then((res)=> {
+        navigate(`/admin/member_list`);
+        setOpen(false)
+      }).catch((error)=> {
+        console.log(error)
+      })
+    }
+  }
+  //수정 팝업창 닫기 버튼
+  const cancel = () => {
+    setOpen(!open)
+  }
+  const inputChange = (e, i) => {
+    const { value, name } = e.target
+    setMemberData(prevData => {
+      const newData = [...prevData]
+      newData[i][name] = value
+      return newData
+    })
+    console.log("inputChange", value, name)
   }
 
   return (
@@ -130,7 +165,7 @@ const AdminMemberList = () => {
                       <td>
                         <button 
                           className='modifyBtn' 
-                          // onClick={() => navigate(`/v1/board/${v.brdKey}/post/${v.id}`)}
+                          onClick={() => modifyOpen(i)}
                         >수정</button>
                       </td>
                     </tr>
@@ -140,6 +175,96 @@ const AdminMemberList = () => {
             </table>
           </TableFrame>
           <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} />
+
+           {/***** 수정 팝업 창  *****/}
+           {memberData.length&& 
+            <Modify className={open ? 'active' : ''}>
+              <div 
+                className="background"
+                onClick={cancel}
+              ></div>
+              <div className="popup">
+                <div className="popup-top">
+                  <button
+                    className="modify-btn"
+                    onClick={() => modifyBtnClick(memberData[idx].businessNum)}
+                  >수정</button>
+                  <button
+                    className="cancel-btn"
+                    onClick={cancel}
+                  >X</button>
+                </div>
+                <TableFrame>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <th>id</th>
+                        <td>{memberData[idx].group}</td>
+                      </tr>
+                      <tr>
+                        <th>isAdmin</th>
+                        <td>
+                          {memberData[idx].isAdmin}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>kakao</th>
+                        <td>
+                          {memberData[idx].kakao}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>naver</th>
+                        <td>
+                          {memberData[idx].naver}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>loginId</th>
+                        <td>
+                          {memberData[idx].loginId}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>email</th>
+                        <td>
+                          <input 
+                              type="text" 
+                              name="email"
+                              value={memberData[idx].email}
+                              onChange={(e) => inputChange(e, idx)}
+                            />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>nickname</th>
+                        <td>
+                          <input 
+                              type="text" 
+                              name="nickname"
+                              value={memberData[idx].nickname}
+                              onChange={(e) => inputChange(e, idx)}
+                            />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>phone</th>
+                        <td>
+                          {memberData[idx].phone}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>regDt</th>
+                        <td>
+                          {memberData[idx].regDt}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </TableFrame>
+              </div>
+            </Modify>
+            }
         </Wrap>
       </CommonStyleFrame>
     </>

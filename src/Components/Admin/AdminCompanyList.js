@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
 ///// style /////
-import { Wrap, Modify } from "./AdminStyledComponents/StyledAdminCompanyList";
-import { CommonStyleFrame, TableFrame } from "./AdminStyledComponents/StyledCommon"
+import { CommonStyleFrame, TableFrame, Modify } from "./AdminStyledComponents/StyledCommon"
+import { Wrap } from "./AdminStyledComponents/StyledAdminCompanyList";
 ///// import component /////
 import Admin from "./Admin"
 import Pagenation from "./Pagenation"
@@ -17,7 +17,7 @@ const AdminCompanyList = () => {
   const headers = {
     Authorization: `${accessToken}`
   }
-
+  
   ///////////////////////////
   ///// 데이터 가져오기 /////
   ///////////////////////////
@@ -28,35 +28,44 @@ const AdminCompanyList = () => {
   const [totalRows, setTotalRows] = useState(0); //데이터 정보 개수
   const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
-
+  
+  const [status, setStatus] = useState(''); //status filter
+  
   useEffect(() => {
-    axios.get(`${baseURL}/v1/company?query&pageRows=${pageRows}&page=${page}&status`, { headers }).then((res) => {
+    axios.get(`${baseURL}/v1/company?query&pageRows=${pageRows}&page=${page}&status=${status}`, { headers }).then((res) => {
       setCompanyData(res.data.query);
       setTotalRows(res.data.totalRows);
     }).catch(() => {
       console.error("error");
     })
-  }, [page, pageRows]); //FIXME: pageRow랑 Page 안 먹히는 거 고치기
-
+  }, [page, pageRows, status]);
+  // const newCompanyData = companyData.filter(i => !(i.status === status) ) 
+  
+  ///// PageSize change /////
   const changePageSize = (e) => {
     setPageRows(e.target.value)
     setPage(1)
     setCount(0)
+  }
+  ///// status change /////
+  const statusChange = (e) => {
+    setStatus(e.target.value)
+    console.log(status)
   }
 
   //////////////////////////
   ////////// 삭제 //////////
   //////////////////////////
   //FIXME:삭제삭제 비즈니스넘버
-  const deleteBoardList = (key) => {
-    console.log("삭제 테스트", key, userUid, headers)
+  const deleteBoardList = (businessNum) => {
+    console.log("삭제 테스트", userUid, headers)
     if (window.confirm("삭제하시겠습니까?")) {
-      axios.delete(`${baseURL}/v1/company/delete/{businessNum}`,  {
+      axios.delete(`${baseURL}/v1/company/delete/${businessNum}`,  {
         data: {
-          "key": key
+          "userUid": userUid
         },
         headers}).then((res) => {
-        alert("삭제되었습니디");
+        alert("삭제되었습니다.");
         window.location.reload()
       }).catch((error) => {
         console.error(error)
@@ -64,8 +73,6 @@ const AdminCompanyList = () => {
       })
     }
   }
-
-
   //// 업체 수정
   const [idx, setIdx] = useState(0);
   const modifyBtnClick = (businessNum) => {
@@ -78,7 +85,6 @@ const AdminCompanyList = () => {
       })
     }
   }
-
   ///////////////////////
   ///// 수정 팝업창 /////
   ///////////////////////
@@ -101,7 +107,7 @@ const AdminCompanyList = () => {
     })
     console.log("inputChange", value, name)
   }
-  
+
   return(
     <>
       <Admin /> {/* 헤더랑 메뉴 */}
@@ -120,6 +126,29 @@ const AdminCompanyList = () => {
                 value='검색' 
                 className='search-btn' 
               />
+              <div className='search-status-box'>
+                  상태값
+                <label htmlFor="statusY">
+                  <input 
+                    id='statusY' 
+                    type="radio" 
+                    value={"N"} 
+                    name='status' 
+                    onChange={(e) => statusChange(e)} 
+                  />
+                  N
+                </label>
+                <label htmlFor="statusN">
+                  <input 
+                    id='statusN' 
+                    type="radio" 
+                    value={"Y"} 
+                    name='status' 
+                    onChange={(e) => statusChange(e)} 
+                  />
+                  Y
+                </label>
+              </div>
             </li>
             <li className="right-box">
               <select
@@ -149,6 +178,46 @@ const AdminCompanyList = () => {
                 </tr>
               </thead>
               <tbody>
+              {/* {newCompanyData.map((item, i) => {
+                return(
+                  <tr key={item.id}>
+                    <td>
+                      {item.id}
+                    </td>
+                    <td>
+                      {item.status}
+                    </td>
+                    <td>
+                      {item.loginId}
+                    </td>
+                    <td>
+                      {item.nickname}
+                    </td>
+                    <td>
+                      {item.companyName}
+                    </td>
+                    <td>
+                      {item.businessNum}
+                    </td>
+                    <td>
+                      {item.representativeName}
+                    </td>
+                    <td>
+                      {item.regDt.split("T")[0]} {item.regDt.split("T")[1].slice(0,8)}
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => modifyOpen(i)}
+                        className='modifyBtn' 
+                      >수정</button>
+                      <button 
+                        className='deleteBtn'
+                        onClick={() => deleteBoardList(item.businessNum)}
+                      >삭제</button>
+                    </td>
+                  </tr>
+                )
+              })} */}
               {companyData.map((item, i) => {
                 return(
                   <tr key={item.id}>
@@ -174,7 +243,7 @@ const AdminCompanyList = () => {
                       {item.representativeName}
                     </td>
                     <td>
-                      {item.regDt}
+                      {item.regDt.split("T")[0]} {item.regDt.split("T")[1].slice(0,8)}
                     </td>
                     <td>
                       <button
@@ -183,6 +252,7 @@ const AdminCompanyList = () => {
                       >수정</button>
                       <button 
                         className='deleteBtn'
+                        onClick={() => deleteBoardList(item.businessNum)}
                       >삭제</button>
                     </td>
                   </tr>
