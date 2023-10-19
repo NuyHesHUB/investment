@@ -6,7 +6,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination'; 
 
-import Illust from '../../assets/image/illust_01.png';
+import Illust01 from '../../assets/image/illust_01.png';
+import Illust02 from '../../assets/image/illust_02.png';
 
 import AllIcon from '../../assets/category-image/all.png';
 import FoodIcon from '../../assets/category-image/food.png';
@@ -22,12 +23,23 @@ import { FcIdea } from 'react-icons/fc';
 import { BsCheck2Square } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
+import useScrollFadeIn from '../../Hook/useScrollFadeIn';
+
 const moveUp = keyframes`
   0%, 100% {
     top: 10px;
   }
   50% {
     top: -15px;
+  }
+`;
+
+const wideLine = keyframes`
+  0%{
+    width: 0;
+  }
+  100% {
+    width: calc(100% + 8px);
   }
 `;
 
@@ -63,20 +75,12 @@ const SlideWrap1=styled.div`
     width: 100%;
     height: 500px;
     position: relative;
-    /* position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; */
     span{
         display: block;
         text-align: center;
         font-size: 16px;
         font-weight: bold;
     }
-    /* .active-slide{
-        background: red;
-    } */
 `
 const Container=styled.div`
     max-width: 1440px;
@@ -92,7 +96,6 @@ const Container=styled.div`
 const SildeBg1=styled.div`
     width: 100%;
     height: 100%;
-    /* background: linear-gradient(331deg, rgba(255,255,255,1) 0%, rgba(69,74,252,1) 100%); */
     background: rgb(13,115,255);
     background: linear-gradient(49deg, rgba(13,115,255,1) 0%, rgba(187,227,255,1) 100%);
 `
@@ -151,9 +154,11 @@ const ContentsBox=styled.div`
                 position: absolute;
                 bottom: 1px;
                 left: -4px;
-                width: calc(100% + 8px);
-                height: 8px;
-                background: navy;
+                /* width: calc(100% + 8px); */
+                width: 0;
+                height: 10px;
+                background: #ffb600;
+                animation: ${wideLine} 1.3s ease-out forwards;
             }
     }
     span{
@@ -265,6 +270,18 @@ const CategoryWrap=styled.div`
 `
 
 export const BannerSwiper = () => {
+
+    const fadeIn1 = useScrollFadeIn('left', 1, 0);
+    const fadeIn2 = useScrollFadeIn('up', 1, 200);
+    const fadeIn3 = useScrollFadeIn('up', 1, 400);
+    const fadeIn4 = useScrollFadeIn('up', 1, 0);
+
+    const fadeIn5 = useScrollFadeIn('left', 1, 0);
+    const fadeIn6 = useScrollFadeIn('up', 1, 200);
+    const fadeIn7 = useScrollFadeIn('up', 1, 400);
+    const fadeIn8 = useScrollFadeIn('up', 1, 0);
+    
+
     return (
         <SlideFram>
                 <Swiper
@@ -292,7 +309,7 @@ export const BannerSwiper = () => {
                             <SildeBg1></SildeBg1>
                             <Container>
                             <SlideContentsWrap>
-                                <div>
+                                <div ref={fadeIn4.ref} style={fadeIn4.style}>
                                     <TitleBox>
                                         <h2>후핀 투자 파트너</h2>
                                         <IconBox><FcIdea/></IconBox>
@@ -302,12 +319,12 @@ export const BannerSwiper = () => {
                                         <p>기업의 고민을 해결해 드리는 전문가와 연결해 드립니다</p>
                                     </ContentsBox>
                                     <BtnBox>
-                                        <BtnItem><Link to="/investment/ongoing"><BsCheck2Square/>투자자 찾기</Link></BtnItem>
-                                        <BtnItem><Link to="/member_type"><BsCheck2Square/>간편회원가입</Link></BtnItem>
+                                        <BtnItem ref={fadeIn2.ref} style={fadeIn2.style}><Link to="/investment/ongoing"><BsCheck2Square/>투자자 찾기</Link></BtnItem>
+                                        <BtnItem ref={fadeIn3.ref} style={fadeIn3.style}><Link to="/member_type"><BsCheck2Square/>간편회원가입</Link></BtnItem>
                                     </BtnBox>
                                 </div>
-                                <div>
-                                    <img src={Illust} alt="illust"/>
+                                <div ref={fadeIn1.ref} style={fadeIn1.style}>
+                                    <img src={Illust01} alt="illust"/>
                                 </div>
                             </SlideContentsWrap>
                             </Container>
@@ -318,15 +335,22 @@ export const BannerSwiper = () => {
                             <SildeBg2></SildeBg2>
                             <Container>
                                 <SlideContentsWrap>
-                                    <div>
-                                        <h2>22222비즈니스 및 업무</h2>
-                                        <p>
-                                            원격 근무 및 스타트업의 이미지부터 작업 중인 엔지니어 및 아티스트의 <br/>
-                                            사진에 이르기까지 다양한 형태로 현대 작업 공간의 현실을 반영합니다.
-                                        </p>
+                                    <div ref={fadeIn8.ref} style={fadeIn8.style}>
+                                        <TitleBox>
+                                            <h2>후핀 투자 파트너</h2>
+                                            <IconBox><FcIdea/></IconBox>
+                                        </TitleBox>
+                                        <ContentsBox>
+                                            <p>다음 단계를 위한 협력 가능한 <i><span>투자 파트너</span></i>를 찾아보세요</p>
+                                            <p>기업의 고민을 해결해 드리는 전문가와 연결해 드립니다</p>
+                                        </ContentsBox>
+                                        <BtnBox>
+                                            <BtnItem ref={fadeIn6.ref} style={fadeIn6.style}><Link to="/investment/ongoing"><BsCheck2Square/>투자자 찾기</Link></BtnItem>
+                                            <BtnItem ref={fadeIn7.ref} style={fadeIn7.style}><Link to="/member_type"><BsCheck2Square/>간편회원가입</Link></BtnItem>
+                                        </BtnBox>
                                     </div>
-                                    <div>
-                                        <img src={Illust} alt="illust"/>
+                                    <div ref={fadeIn5.ref} style={fadeIn5.style}>
+                                        <img src={Illust02} alt="illust"/>
                                     </div>
                                 </SlideContentsWrap>
                             </Container>
@@ -344,20 +368,20 @@ export const BannerSwiper = () => {
 
 export const CategorySwiper = () => {
     const categoryImage = [
-        AllIcon,
-        FoodIcon,
-        ManuFacturingIcon,
-        OtherIcon,
-        RentalIcon,
-        RetailIcon,
-        ServicesIcon,
-        AllIcon,
-        FoodIcon,
-        ManuFacturingIcon,
-        OtherIcon,
-        RentalIcon,
-        RetailIcon,
-        ServicesIcon,
+        /* { name: "", icon: AllIcon}, */
+        { name: "외식", icon: FoodIcon},
+        { name: "제조", icon: ManuFacturingIcon},
+        { name: "기타", icon: OtherIcon},
+        { name: "대여", icon: RentalIcon},
+        { name: "운송", icon: RetailIcon},
+        { name: "서비스", icon: ServicesIcon},
+        /* { name: "", icon: AllIcon}, */
+        { name: "외식", icon: FoodIcon},
+        { name: "제조", icon: ManuFacturingIcon},
+        { name: "기타", icon: OtherIcon},
+        { name: "대여", icon: RentalIcon},
+        { name: "운송", icon: RetailIcon},
+        { name: "서비스", icon: ServicesIcon},
     ];
     const [activeSlide, setActiveSlide] = useState(0);
     const handleSlideIndex = (swiper) => {
@@ -384,16 +408,19 @@ export const CategorySwiper = () => {
                 allowTouchMove={false}
             >
                 {categoryImage.map((item, index) => (
-                    <SwiperSlide key={index} className={Math.abs(activeSlide + 2) === index ? 'focused-slide' : ''}>
-                        <SlideWrap2>
-                            <div>
-                                <CategoryWrap className='effect-img'>
-                                    <img src={categoryImage[index]} alt={`${item}아이콘`} />
-                                </CategoryWrap>
-                                <span></span>
-                            </div>
-                        </SlideWrap2>
-                    </SwiperSlide>
+                    <React.Fragment key={index}>
+                        <SwiperSlide className={Math.abs(activeSlide + 2) === index ? 'focused-slide' : ''}>
+                            <SlideWrap2>
+                                <div>
+                                    <CategoryWrap className='effect-img'>
+                                        <img src={item.icon} alt={`${item}아이콘`} />
+                                    </CategoryWrap>
+                                    <div style={{marginTop:'5px',marginBottom:'10px', textAlign:'center'}}>{item.name}</div>
+                                    <span></span>
+                                </div>
+                            </SlideWrap2>
+                        </SwiperSlide>
+                    </React.Fragment>
                 ))}
             </Swiper>
         </SwiperCustomWrap>
