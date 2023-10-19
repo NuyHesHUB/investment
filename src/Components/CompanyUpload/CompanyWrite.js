@@ -69,6 +69,7 @@ const CompanyWrite = () => {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const encodedFilename = encodeURIComponent(file.name);
+        // const encodedFilename = file.name;
         formData.append('files', file);  // Append each file to the FormData
         formData.append('filename', encodedFilename);
       }
