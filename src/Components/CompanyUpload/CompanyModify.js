@@ -55,7 +55,7 @@ const CompanyUpload = () => {
       setLogoImage(imgUrl) //미리보기 이미지 링크
       
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('files', file);
       formData.append('brdKey', "companyLogoImg");
       formData.append('filename', encodedFilename);
       

@@ -186,7 +186,7 @@ const CompanyWrite = () => {
         //폼데이터 넣기
         const file = files[i];
         const encodedFilename = encodeURIComponent(file.name);
-        formData.append('file', file); 
+        formData.append('files', file); 
         formData.append('filename', encodedFilename);
       }
       formData.append('brdKey', "investment");
@@ -240,7 +240,7 @@ const CompanyWrite = () => {
         console.log("추가test")
         sessionStorage.removeItem('b_no');
         alert("추가하였습니다")
-        navigate('/company_introduction_write')
+        navigate('/payment_info_page')
       }).catch((error) => {
         console.error(error)
         alert("error")

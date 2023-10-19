@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import { useNavigate  } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
 ///// style /////
 import {Wrap, PageNation} from "./AdminStyledComponents/StyledAdminPostApprove"
@@ -10,7 +10,7 @@ import Pagenation from "./Pagenation"
 
 const AdminPostApprove = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
@@ -23,6 +23,7 @@ const AdminPostApprove = () => {
   ///// 데이터 가져오기 /////
   ///////////////////////////
   const [postData, setPostData] = useState([]);
+  const [key, setKey] = useState("investment");
   // const [postKey, setPostKey] = useState('');
 
   //페이지네이션데이터
@@ -53,7 +54,6 @@ const AdminPostApprove = () => {
   //   console.log("conditionChange", value, name)
   // }
 
-
   // ///// key값 데이터 가져오기 /////
   // const [boardData, setBoardData] = useState([]);
 
@@ -75,7 +75,11 @@ const AdminPostApprove = () => {
     setPage(1)
     setCount(0)
   }
-  
+  ///// 상세보기 btn /////
+  const postToShow = (id) => {
+    navigate(`/${key}/pending/${id}`)
+  }
+ 
   return (
     <>
       <Admin /> {/* 헤더랑 메뉴 */}
@@ -167,7 +171,9 @@ const AdminPostApprove = () => {
                         {item.regDt}
                       </td>
                       <td>
-                        <button>상세보기</button>
+                        <button
+                          onClick={() => postToShow(item.id)}
+                        >상세보기</button>
                       </td>
                     </tr>
                 )
