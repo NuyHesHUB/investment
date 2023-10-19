@@ -145,57 +145,59 @@ const InvestOngoingBoard = () => {
     /* console.log('investOngoingPostData',investOngoingPostData); */
     /* console.log('koreanCategory',koreanCategory); */
     return (
-        <StyledFrame>
+        <React.Fragment>
             <Header/>
-                <BoardWrap>
-                    <DummyBanner>
+            <StyledFrame>
+                    <BoardWrap>
+                        <DummyBanner>
+                            <div>
+                                당신의 돈, 당신의 선택.<br />
+                                WhoFin에서는 혁신적인 투자 경험을 제공합니다.<br />
+                                풍부한 지식과 투자 경험을 통해 우리는 함께 성장하고, 더 나은 미래를 향해 나아갑니다. <br />
+                                지금 당신의 투자 여정을 시작하세요.
+                            </div>
+                            <div className='leftBox'>
+                                <VisualImg />
+                            </div>
+                        </DummyBanner>
+                        {investOngoingPostData !== null && investOngoingPostData !== "" ? 
                         <div>
-                            당신의 돈, 당신의 선택.<br />
-                            WhoFin에서는 혁신적인 투자 경험을 제공합니다.<br />
-                            풍부한 지식과 투자 경험을 통해 우리는 함께 성장하고, 더 나은 미래를 향해 나아갑니다. <br />
-                            지금 당신의 투자 여정을 시작하세요.
-                        </div>
-                        <div className='leftBox'>
-                            <VisualImg />
-                        </div>
-                    </DummyBanner>
-                    {investOngoingPostData !== null && investOngoingPostData !== "" ? 
-                    <div>
-                        <PostCardTitleWrap>
-                        <h3>진행 중인 투자</h3>
-                        </PostCardTitleWrap>
-                        <PostCardWrap>
-                        {investOngoingPostData &&
-                            investOngoingPostData?.length > 0 &&
-                            investOngoingPostData?.slice(0, PostCardCount).map((item, index) => (
-                            <Link key={index} to={
-                                `/investment/ongoing/${item.id}`
-                            }>
-                                <OngoingPostCard
-                                    key={index}
-                                    logoimg={item.logoImg}
-                                    name={item.companyName}
-                                    title={item.title}
-                                    content={removeTags(item.content)}
-                                    category={item.category}
-                                    date={formattedDates[index]}
-                                />
-                            </Link>
-                        ))}
-                        </PostCardWrap>
-                        <MoreWrap>
-                            {investOngoingPostData?.length > PostCardCount && (
-                                <div style={{marginTop:'80px'}}>
-                                    <MoreBtn onClick={handleLoadMore}>
-                                        <span>더보기</span>
-                                    </MoreBtn>
-                                </div>
-                            )}
-                        </MoreWrap>
-                    </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>오류가 발생했습니다.</div>}
-                </BoardWrap>
+                            <PostCardTitleWrap>
+                            <h3>진행 중인 투자</h3>
+                            </PostCardTitleWrap>
+                            <PostCardWrap>
+                            {investOngoingPostData &&
+                                investOngoingPostData?.length > 0 &&
+                                investOngoingPostData?.slice(0, PostCardCount).map((item, index) => (
+                                <Link key={index} to={
+                                    `/investment/ongoing/${item.id}`
+                                }>
+                                    <OngoingPostCard
+                                        key={index}
+                                        logoimg={item.logoImg}
+                                        name={item.companyName}
+                                        title={item.title}
+                                        content={removeTags(item.content)}
+                                        category={item.category}
+                                        date={formattedDates[index]}
+                                    />
+                                </Link>
+                            ))}
+                            </PostCardWrap>
+                            <MoreWrap>
+                                {investOngoingPostData?.length > PostCardCount && (
+                                    <div style={{marginTop:'80px'}}>
+                                        <MoreBtn onClick={handleLoadMore}>
+                                            <span>더보기</span>
+                                        </MoreBtn>
+                                    </div>
+                                )}
+                            </MoreWrap>
+                        </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>오류가 발생했습니다.</div>}
+                    </BoardWrap>
+            </StyledFrame>
             <Footer/>
-        </StyledFrame>
+        </React.Fragment>
     );
 };
 

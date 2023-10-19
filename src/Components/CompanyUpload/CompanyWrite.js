@@ -65,6 +65,7 @@ const CompanyWrite = () => {
       const files = input.files;
       const editor = quillRef.current.getEditor();
       const formData = new FormData();
+      console.log(files, "파일")
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
@@ -74,6 +75,15 @@ const CompanyWrite = () => {
         formData.append('filename', encodedFilename);
       }
       formData.append('brdKey', "companyLogoImg");
+      // FormData의 key 확인
+      for (let key of formData.keys()) {
+        console.log(key,"키");
+      }
+
+      // FormData의 value 확인
+      for (let value of formData.values()) {
+        console.log(value,"값");
+      }
       try {
         const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })        
         for (let i = 0; i < files.length; i++) {
