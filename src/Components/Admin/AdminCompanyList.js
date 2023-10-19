@@ -116,16 +116,18 @@ const AdminCompanyList = () => {
           <p>업체관리</p>
           <ul className="top">
             <li className="left-box">
-              <input 
-                type="search" 
-                placeholder='검색' 
-                className='search-input' 
-              />
-              <input 
-                type="submit" 
-                value='검색' 
-                className='search-btn' 
-              />
+              <div>
+                <input 
+                  type="search" 
+                  placeholder='검색' 
+                  className='search-input' 
+                />
+                <input 
+                  type="submit" 
+                  value='검색' 
+                  className='search-btn' 
+                />
+              </div>
               <div className='search-status-box'>
                   상태값
                 <label htmlFor="statusY">

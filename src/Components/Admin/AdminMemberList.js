@@ -160,7 +160,7 @@ const AdminMemberList = () => {
                         {v.phone}
                       </td>
                       <td>
-                        {v.regDt}
+                        {v.regDt.split("T")[0]} {v.regDt.split("T")[1].slice(0,8)}
                       </td>
                       <td>
                         <button 

@@ -13,10 +13,17 @@ export const CommonStyleFrame = styled.div`
     justify-content: space-between;
     margin-bottom: 10px;
   }
-  ul.top .search-status-box {
+  ul.top .left-box {
+    width: 370px;
+    background: green;
+    display: flex;
+    justify-content: space-between;
+  }
+  ul.top .left-box .search-status-box {
     background: pink;
     display: flex;
     justify-content: space-between;
+    input {margin-left: 10px;}
   }
   button, .search-btn {
     border: none; 
