@@ -112,7 +112,6 @@ const Home = ({parsedCommunityCategoryData}) => {
     ];
 
 
-    /* ㅅㅂ.........ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ */
     return (
             <React.Fragment>
                 <Header parsedCommunityCategoryData={parsedCommunityCategoryData}/>
