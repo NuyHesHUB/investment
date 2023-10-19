@@ -6,7 +6,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination'; 
 
-import Illust01 from '../../assets/image/illust_01.png';
+// import Illust01 from '../../assets/image/illust_01.png';
+// import Illust02 from '../../assets/image/illust_02.png';
+import { ReactComponent as Illust01 } from '../../assets/image/visualImage1.svg';
 import Illust02 from '../../assets/image/illust_02.png';
 
 import AllIcon from '../../assets/category-image/all.png';
@@ -115,6 +117,9 @@ const SlideContentsWrap=styled.div`
     justify-content: space-between;
     img{
         width: 400px;
+    }
+    .imgBox {
+        width: 450px;
     }
     
 `
@@ -324,7 +329,10 @@ export const BannerSwiper = () => {
                                     </BtnBox>
                                 </div>
                                 <div ref={fadeIn1.ref} style={fadeIn1.style}>
-                                    <img src={Illust01} alt="illust"/>
+                                    {/* <img src={Illust01} alt="illust"/> */}
+                                    <div className='imgBox'>
+                                        <Illust01 />
+                                    </div>
                                 </div>
                             </SlideContentsWrap>
                             </Container>

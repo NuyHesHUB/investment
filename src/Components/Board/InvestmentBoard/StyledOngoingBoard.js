@@ -14,7 +14,7 @@ export const DummyBanner=styled.div`
     justify-content: space-between;
     align-items: center;
     div.leftBox {
-        width: 450px;
+        width: 450px; //svg이미지
     }
 `
 
