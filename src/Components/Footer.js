@@ -32,7 +32,8 @@ const TopFooterLeft=styled.div`
             fill: #888;
             transition: .2s;
             &:hover{
-                fill: #1A9CF9;
+                /* fill: #1A9CF9; */
+                fill: #3FA9F5;
             }
         }
     }
@@ -65,7 +66,8 @@ const TopRightItemContent=styled.div`
         cursor: pointer;
         transition: .2s ease;
         &:hover{
-            color: #1A9CF9;
+            /* color: #1A9CF9; */
+            color: #3FA9F5;
         }
     }
     
