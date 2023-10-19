@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
 ///// style /////
-import { Wrap, PopUpWrap } from "./AdminStyledComponents/StyledAdminBoard"
 import { CommonStyleFrame, TableFrame } from "./AdminStyledComponents/StyledCommon"
+import { Wrap, PopUpWrap } from "./AdminStyledComponents/StyledAdminBoard"
 ///// import component /////
 import Admin from "./Admin"
 import Pagenation from "./Pagenation"
@@ -136,7 +136,7 @@ const AdminBoardList = () => {
       <Admin /> {/* 헤더랑 메뉴 */}
       <CommonStyleFrame>
         <Wrap>
-          <p>승인목록</p>
+          <p>게시판관리</p>
           <ul className="top">
             <li className="left-box">
               <input 
