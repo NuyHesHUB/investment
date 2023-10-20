@@ -27,6 +27,7 @@ const AdminPostList = () => {
   const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
 
+  const [status, setStatus] = useState([]); //status filter
   ///// 데이터 불러오기 /////
   useEffect(() => {
     axios.get(`${baseURL}/v1/board/${key}/post?query&pageRows=${pageRows}&page=${page}&category=&status=&condition=`, { headers }).then((res) => {
@@ -42,6 +43,19 @@ const AdminPostList = () => {
     setPageRows(e.target.value)
     setPage(1)
     setCount(0)
+  }
+  ///// status change /////
+  const statusChange = (e) => {
+    const value = e.target.value
+    if (status.includes(value)) {
+      setStatus(
+        status.filter(i => i !== value)
+      )
+    } else {
+      setStatus(
+        status => [...status, e.target.value].sort()
+      )
+    }
   }
 
   ///// key값 change /////
@@ -65,19 +79,44 @@ const AdminPostList = () => {
       <Admin /> {/* 헤더랑 메뉴 */}
       <CommonStyleFrame>
         <Wrap>
-          <p>승인목록</p>
+          <p className='title'>게시물관리</p>
           <ul className="top">
             <li className="left-box">
-              <input 
-                type="search" 
-                placeholder='검색' 
-                className='search-input' 
-              />
-              <input 
-                type="submit" 
-                value='검색' 
-                className='search-btn' 
-              />
+              <form action="">
+                <div className='search-status-box'>
+                    상태값
+                  <label htmlFor="statusY">
+                    <input 
+                      id='statusY' 
+                      type="checkbox" 
+                      value={"N"} 
+                      onChange={(e) => statusChange(e)} 
+                    />
+                    N
+                  </label>
+                  <label htmlFor="statusN">
+                    <input 
+                      id='statusN' 
+                      type="checkbox" 
+                      value={"Y"} 
+                      onChange={(e) => statusChange(e)} 
+                    />
+                    Y
+                  </label>
+                </div>
+                <div>
+                  <input 
+                    type="search" 
+                    placeholder='검색' 
+                    className='search-input' 
+                  />
+                  <input 
+                    type="submit" 
+                    value='검색' 
+                    className='search-btn' 
+                  />
+                </div>
+              </form>
 
               <select 
                 name="brdKey" 

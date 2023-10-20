@@ -126,7 +126,6 @@ const AdminCompanyList = () => {
           <ul className="top">
             <li className="left-box">
               <form action="">
-
                 <div className='search-status-box'>
                     상태값
                   <label htmlFor="statusY">

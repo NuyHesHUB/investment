@@ -86,19 +86,21 @@ const AdminPostApprove = () => {
       <Admin /> {/* 헤더랑 메뉴 */}
       <CommonStyleFrame>
         <Wrap>
-          <p>승인목록</p>
+          <p className='title'>승인목록</p>
           <ul className="top">
             <li className="left-box">
-              <input 
-                type="search" 
-                placeholder='검색' 
-                className='search-input' 
-              />
-              <input 
-                type="submit" 
-                value='검색' 
-                className='search-btn' 
-              />
+              <div>
+                <input 
+                  type="search" 
+                  placeholder='검색' 
+                  className='search-input' 
+                />
+                <input 
+                  type="submit" 
+                  value='검색' 
+                  className='search-btn' 
+                />
+              </div>
             </li>
             <li className="right-box">
               <select

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Wrap = styled.div`
   /* background: pink; */
-  padding: 190px 0 900px;
+  padding: 190px 0 800px;
   width: 100%;
   height: 1200px; //임시
   color: #888;
@@ -62,10 +62,13 @@ export const Box = styled.div`
   padding: 0 50px;
   /* border: 1px solid #ddd;
   border-radius: 50px; */
-  
-  .icon {color: #afdaf8; transition: color .3s;}
+  color: #333;
+  transition: opacity .2s;
+  .icon {color: #7fc8fc; }
+  opacity: .7;
   &:hover {
-    .icon {color: #87cafa;}
+    opacity: 1;
+    /* .icon {color: #87cafa;} */
   }
 `
 
@@ -87,18 +90,4 @@ export const TextBox = styled.div`
   span.bold {font-weight: 500; font-size: 22px; color: #555; margin-bottom: 10px; display: block;}
   .write {color: #75c1f7; font-weight: bold; transition: color .2s; cursor: pointer;}
   .write:hover {color: #3fa9f5;}
-`
-export const WriteBtn = styled.div`
-  background: yellowgreen;
-  text-align: center;
-  padding: 10px 0;
-  a {
-    display: inline-block;
-    background: #fff; 
-    border: none; 
-    font-size: 20px; 
-    padding: 15px 10px;
-    transition: all .2s;
-    }
-  a:hover {}
 `

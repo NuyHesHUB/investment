@@ -21,6 +21,7 @@ const AdminBoardList = () => {
   ///// boardList 데이터 가져오기 /////
   /////////////////////////////////////
   const [boardData, setBoardData] = useState([]);
+  const [status, setStatus] = useState([]); //status filter
 
   useEffect(() => {
     axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers }).then((res) => {
@@ -29,6 +30,20 @@ const AdminBoardList = () => {
       console.error("error");
     })
   }, []);
+
+  ///// status change /////
+  const statusChange = (e) => {
+    const value = e.target.value
+    if (status.includes(value)) {
+      setStatus(
+        status.filter(i => i !== value)
+      )
+    } else {
+      setStatus(
+        status => [...status, e.target.value].sort()
+      )
+    }
+  }
 
   //////////////////////////
   ////////// 수정 //////////
@@ -136,19 +151,44 @@ const AdminBoardList = () => {
       <Admin /> {/* 헤더랑 메뉴 */}
       <CommonStyleFrame>
         <Wrap>
-          <p>게시판관리</p>
+          <p className='title'>게시판관리</p>
           <ul className="top">
             <li className="left-box">
-              <input 
-                type="search" 
-                placeholder='검색' 
-                className='search-input' 
-              />
-              <input 
-                type="submit" 
-                value='검색' 
-                className='search-btn' 
-              />
+              <form action="">
+                <div className='search-status-box'>
+                    상태값
+                  <label htmlFor="statusY">
+                    <input 
+                      id='statusY' 
+                      type="checkbox" 
+                      value={"N"} 
+                      onChange={(e) => statusChange(e)} 
+                    />
+                    N
+                  </label>
+                  <label htmlFor="statusN">
+                    <input 
+                      id='statusN' 
+                      type="checkbox" 
+                      value={"Y"} 
+                      onChange={(e) => statusChange(e)} 
+                    />
+                    Y
+                  </label>
+                </div>
+                <div>
+                  <input 
+                    type="search" 
+                    placeholder='검색' 
+                    className='search-input' 
+                  />
+                  <input 
+                    type="submit" 
+                    value='검색' 
+                    className='search-btn' 
+                  />
+                </div>
+              </form>
             </li>
             <li className="right-box">
               <button 
