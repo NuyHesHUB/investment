@@ -5,7 +5,7 @@ import axios from 'axios';
 import Header from "../Header";
 import Footer from "../Footer";
 // styled
-import { Wrap, PriceInfo, PriceCard, TitleBox, Container, Box, Line, TextBox, WriteBtn } from "./StyledPaymentInfoPage";
+import { Wrap, PriceInfo, PriceCard, TitleBox, Container, Box, Line, TextBox } from "./StyledPaymentInfoPage";
 // icon
 import { CiEdit, CiDollar, CiPhone } from "react-icons/ci";
 import { BsCheck2 } from "react-icons/bs";
@@ -103,11 +103,7 @@ const PaymentInfoPage = () => {
             </TextBox>
           </Box>
         </Container>
-        <WriteBtn>
-          <Link>
-            등록하러가기
-          </Link>
-        </WriteBtn>
+      
       </Wrap>
       <Footer />
     </>

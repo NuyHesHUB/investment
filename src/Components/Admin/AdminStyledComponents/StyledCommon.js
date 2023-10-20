@@ -37,6 +37,7 @@ export const CommonStyleFrame = styled.div`
     width: 370px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
   //상태값 검색
   ul.top .left-box .search-status-box {

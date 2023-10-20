@@ -362,7 +362,7 @@ const CompanyWrite = () => {
                 disabled={
                   postData.title.length === 0 || 
                   postData.content.length === 0 || 
-                  postData.extraField.length === 0 ? 
+                  postData.extraField.investmentAmount.length === 0 ? 
                   true : 
                   false
                 }>등록</button>
