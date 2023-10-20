@@ -80,7 +80,7 @@ const InvestDeadlineBoard = () => {
     },[])
 
     console.log('investDeadlinePostData',investDeadlinePostData);
-
+    console.log('test');
     return (
         <React.Fragment>
             <Header/>

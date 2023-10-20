@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
 
 /* React-Router-Dom */
 import { Link, useNavigate } from 'react-router-dom';
-/* import { useForm } from 'react-hook-form'; */
 
 /* Axios */
 import axios from 'axios';
@@ -16,9 +16,11 @@ import { StyledFrame, StyledSigninFrame } from './StyledSignupFrame';
 
 const Signup = () => {
 
+    /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
     const uid = userUid === null ? '' : userUid
+    
     /* React-Router-Dom */
     const navigate = useNavigate();
 
@@ -135,6 +137,7 @@ const Signup = () => {
             }
         }
     };
+    
     /*------------------------------------------------*\
                     회원가입 onSubmit Btn
     \*------------------------------------------------*/
@@ -226,7 +229,7 @@ const Signup = () => {
                         page log
     \*-----------------------------------------------*/
     useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"회원가입" }).then((res) => {
+        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"회원가입" }).then(() => {
     }).catch((error) => {
         console.error(error)
     })

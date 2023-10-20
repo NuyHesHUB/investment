@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 /* Axios */
-import axios from 'axios';
+/* import axios from 'axios'; */
 
 /* React-Router-Dom */
-import { Link, useNavigate } from 'react-router-dom';
+/* import { Link, useNavigate } from 'react-router-dom'; */
 
 /* StyledComponents */
 import { StyledFrame, MemberTypeWrap, MemberTypeBox, SignUpTitle, TabBox, TabMenu, TabMenuItem, Desc, Contents } from './StyledMemberType';
@@ -20,9 +20,7 @@ const MemberType = () => {
     /* const baseURL = process.env.REACT_APP_BASEURL; */
     const [currentTab, setCurrentTab] = useState(0);
     /* const [BusinessNumber, setBusinessNumber] = useState(''); */
-
     /* const [isVerified, setIsVerified] = useState(false); */
-
     /* const [BusinessFormData, setBusinessFormData] = useState({
         businessNum: '',
         businessName: '',
@@ -141,7 +139,6 @@ const MemberType = () => {
     /*------------------------------------------------*\
                         console 테스트 
     \*------------------------------------------------*/
-    /* console.log('BusinessNumber',BusinessNumber); */
 
     return (
         <StyledFrame>

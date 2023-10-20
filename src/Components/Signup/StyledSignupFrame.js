@@ -3,13 +3,9 @@ import styled from 'styled-components';
 export const StyledFrame=styled.div`
     width: 100vw;
     height: 100vh;
-    /* background: rgba(0, 0, 0, .3); */
 `
 export const StyledSigninFrame=styled.div`
-    /* width: 384px; */
     width: 700px;
-    /* max-width: 384px; */
-    /* height: 100vh; */
     margin: 0 auto;
     margin-top: 50px;
     display: flex;
@@ -37,10 +33,6 @@ export const StyledSigninFrame=styled.div`
         justify-content: center;
         align-items: center;
         margin-bottom: 20px;
-        /* .error-box{
-            position: absolute;
-            left: 0;
-        } */
     }
     .form-input-wrap .id-check-btn a{
         display: block;
@@ -58,7 +50,6 @@ export const StyledSigninFrame=styled.div`
     .form-input-box{
         position: relative;
         width: 400px;
-        /* height: 48px; */
     }
     .form-input-radio-box{
         position: relative;

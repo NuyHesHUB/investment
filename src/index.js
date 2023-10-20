@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux'; // combineReducers와 createStore 임포트
+import { createStore, combineReducers } from 'redux';
 import reducer from './store/reducer/reducer';
 import './index.css';
 import App from './App';
@@ -13,7 +13,7 @@ import './fonts/pretendard/pretendard.css'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const rootReducer = combineReducers({
-  reducer: reducer, // 리듀서 추가
+  reducer: reducer,
 });
 
 const store = createStore(rootReducer);
