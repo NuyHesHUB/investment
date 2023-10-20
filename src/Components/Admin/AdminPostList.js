@@ -7,6 +7,7 @@ import { Wrap, PopUpWrap } from "./AdminStyledComponents/StyledAdminPostList"
 ///// import component /////
 import Admin from "./Admin"
 import Pagenation from "./Pagenation"
+import SearchForm from "./SearchForm"
 
 const AdminPostList = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -28,6 +29,10 @@ const AdminPostList = () => {
   const [count, setCount] = useState(0); 
 
   const [status, setStatus] = useState([]); //status filter
+  const statusChange = (statusValue) => {
+    setStatus(statusValue)
+  }
+  
   ///// 데이터 불러오기 /////
   useEffect(() => {
     axios.get(`${baseURL}/v1/board/${key}/post?query&pageRows=${pageRows}&page=${page}&category=&status=&condition=`, { headers }).then((res) => {
@@ -45,18 +50,18 @@ const AdminPostList = () => {
     setCount(0)
   }
   ///// status change /////
-  const statusChange = (e) => {
-    const value = e.target.value
-    if (status.includes(value)) {
-      setStatus(
-        status.filter(i => i !== value)
-      )
-    } else {
-      setStatus(
-        status => [...status, e.target.value].sort()
-      )
-    }
-  }
+  // const statusChange = (e) => {
+  //   const value = e.target.value
+  //   if (status.includes(value)) {
+  //     setStatus(
+  //       status.filter(i => i !== value)
+  //     )
+  //   } else {
+  //     setStatus(
+  //       status => [...status, e.target.value]
+  //     )
+  //   }
+  // }
 
   ///// key값 change /////
   const keyChange = (e) => {
@@ -68,12 +73,6 @@ const AdminPostList = () => {
     navigate(`/${key}/ongoing/${id}`)
   }
 
-  console.log(key,"key")
-
-  // console.log(postList[0], "postListpostListpostList")
-  
-
-
   return (
     <>
       <Admin /> {/* 헤더랑 메뉴 */}
@@ -81,52 +80,10 @@ const AdminPostList = () => {
         <Wrap>
           <p className='title'>게시물관리</p>
           <ul className="top">
-            <li className="left-box">
-              <form action="">
-                <div className='search-status-box'>
-                    상태값
-                  <label htmlFor="statusY">
-                    <input 
-                      id='statusY' 
-                      type="checkbox" 
-                      value={"N"} 
-                      onChange={(e) => statusChange(e)} 
-                    />
-                    N
-                  </label>
-                  <label htmlFor="statusN">
-                    <input 
-                      id='statusN' 
-                      type="checkbox" 
-                      value={"Y"} 
-                      onChange={(e) => statusChange(e)} 
-                    />
-                    Y
-                  </label>
-                </div>
-                <div>
-                  <input 
-                    type="search" 
-                    placeholder='검색' 
-                    className='search-input' 
-                  />
-                  <input 
-                    type="submit" 
-                    value='검색' 
-                    className='search-btn' 
-                  />
-                </div>
-              </form>
-
-              <select 
-                name="brdKey" 
-                id=""
-                onChange={(e) => keyChange(e)}
-              >
-                <option value="investment">investment</option>
-                <option value="free">free</option>
-              </select>
-            </li>
+            <SearchForm 
+              statusValue={statusChange} 
+              groupNone={true}
+            />
             <li className="right-box">
               <select
                 className='page-size'
@@ -152,10 +109,10 @@ const AdminPostList = () => {
                   <th>상세보기</th>
                 </tr>
               </thead>
+              <tbody>
               {postList.map((item,i) => {
                 return(
-                  <tbody key={item.key}>
-                    <tr>
+                    <tr key={i}>
                       <td>
                         {item.status}
                       </td>
@@ -181,9 +138,9 @@ const AdminPostList = () => {
                         >상세보기</button>
                       </td>
                     </tr>
-                  </tbody>
-                )
-              })}
+                  )
+                })}
+              </tbody>
             </table>
           </TableFrame>
           <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} />

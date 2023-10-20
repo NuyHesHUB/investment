@@ -7,6 +7,7 @@ import { Wrap } from "./AdminStyledComponents/StyledAdminCompanyList";
 ///// import component /////
 import Admin from "./Admin"
 import Pagenation from "./Pagenation"
+import SearchForm from "./SearchForm"
 
 const AdminCompanyList = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -28,9 +29,12 @@ const AdminCompanyList = () => {
   const [totalRows, setTotalRows] = useState(0); //데이터 정보 개수
   const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
-  
+  ///// search box /////
   const [status, setStatus] = useState([]); //status filter
-  
+  const statusChange = (statusValue) => {
+    setStatus(statusValue)
+  }
+
   useEffect(() => {
     axios.get(`${baseURL}/v1/company?query&pageRows=${pageRows}&page=${page}&${status}`, { headers }).then((res) => {
       setCompanyData(res.data.query);
@@ -39,7 +43,6 @@ const AdminCompanyList = () => {
       console.error("error");
     })
   }, [page, pageRows, status]);
-  // const newCompanyData = companyData.filter(i => !(i.status === status) ) 
   
   ///// PageSize change /////
   const changePageSize = (e) => {
@@ -47,25 +50,10 @@ const AdminCompanyList = () => {
     setPage(1)
     setCount(0)
   }
-  ///// status change /////
-  const statusChange = (e) => {
-    const value = e.target.value
-    if (status.includes(value)) {
-      setStatus(
-        status.filter(i => i !== value)
-      )
-    } else {
-      setStatus(
-        status => [...status, e.target.value].sort()
-      )
-    }
-  }
-  console.log(status)
-
+ 
   //////////////////////////
   ////////// 삭제 //////////
   //////////////////////////
-  //FIXME:삭제삭제 비즈니스넘버
   const deleteBoardList = (businessNum) => {
     console.log("삭제 테스트", userUid, headers)
     if (window.confirm("삭제하시겠습니까?")) {
@@ -87,6 +75,7 @@ const AdminCompanyList = () => {
   const modifyBtnClick = (businessNum) => {
     if (window.confirm("수정하시겠습니까?")) {
       axios.patch(`${baseURL}/v1/company/modify/${businessNum}`, companyData[idx], { headers }).then((res)=> {
+        alert("수정하였습니다.")
         navigate(`/admin/company_list`);
         setOpen(false)
       }).catch((error)=> {
@@ -114,7 +103,6 @@ const AdminCompanyList = () => {
       newData[i][name] = value
       return newData
     })
-    console.log("inputChange", value, name)
   }
 
   return(
@@ -124,43 +112,11 @@ const AdminCompanyList = () => {
         <Wrap>
           <p className='title'>업체관리</p>
           <ul className="top">
-            <li className="left-box">
-              <form action="">
-                <div className='search-status-box'>
-                    상태값
-                  <label htmlFor="statusY">
-                    <input 
-                      id='statusY' 
-                      type="checkbox" 
-                      value={"N"} 
-                      onChange={(e) => statusChange(e)} 
-                    />
-                    N
-                  </label>
-                  <label htmlFor="statusN">
-                    <input 
-                      id='statusN' 
-                      type="checkbox" 
-                      value={"Y"} 
-                      onChange={(e) => statusChange(e)} 
-                    />
-                    Y
-                  </label>
-                </div>
-                <div>
-                  <input 
-                    type="search" 
-                    placeholder='검색' 
-                    className='search-input' 
-                  />
-                  <input 
-                    type="submit" 
-                    value='검색' 
-                    className='search-btn' 
-                  />
-                </div>
-              </form>
-            </li>
+            <SearchForm 
+              statusValue={statusChange} 
+              brdKeyNone={true}
+              groupNone={true}
+            />
             <li className="right-box">
               <select
                 className='page-size'

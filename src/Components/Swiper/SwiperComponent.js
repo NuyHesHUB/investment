@@ -9,7 +9,8 @@ import 'swiper/css/pagination';
 // import Illust01 from '../../assets/image/illust_01.png';
 // import Illust02 from '../../assets/image/illust_02.png';
 import { ReactComponent as Illust01 } from '../../assets/image/visualImage1.svg';
-import Illust02 from '../../assets/image/illust_02.png';
+import { ReactComponent as Illust02 } from '../../assets/image/visualImage2.svg';
+// import Illust02 from '../../assets/image/illust_02.png';
 
 import AllIcon from '../../assets/category-image/all.png';
 import FoodIcon from '../../assets/category-image/food.png';
@@ -118,8 +119,11 @@ const SlideContentsWrap=styled.div`
     img{
         width: 400px;
     }
-    .imgBox {
+    .imgBox1 {
         width: 450px;
+    }
+    .imgBox2 {
+        width: 520px;
     }
     
 `
@@ -345,7 +349,7 @@ export const BannerSwiper = () => {
                                 </div>
                                 <div ref={fadeIn1.ref} style={fadeIn1.style}>
                                     {/* <img src={Illust01} alt="illust"/> */}
-                                    <div className='imgBox'>
+                                    <div className='imgBox1'>
                                         <Illust01 />
                                     </div>
                                 </div>
@@ -373,7 +377,10 @@ export const BannerSwiper = () => {
                                         </BtnBox>
                                     </div>
                                     <div ref={fadeIn5.ref} style={fadeIn5.style}>
-                                        <img src={Illust02} alt="illust"/>
+                                        {/* <img src={Illust02} alt="illust"/> */}
+                                        <div className='imgBox2'>
+                                            <Illust02 />
+                                        </div>
                                     </div>
                                 </SlideContentsWrap>
                             </Container>

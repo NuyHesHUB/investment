@@ -37,6 +37,7 @@ import AdminPostApprove from './Components/Admin/AdminPostApprove';
 import AdminMemberList from './Components/Admin/AdminMemberList';
 import AdminCompanyList from './Components/Admin/AdminCompanyList';
 import AdminPostList from './Components/Admin/AdminPostList';
+import AdminCommentList from './Components/Admin/AdminCommentList';
 // import AdminEditUser from './Components/Admin/AdminEditUser';
 // import AdminEditPost from './Components/Admin/AdminEditPost';
 import Header from './Components/Header';
@@ -377,6 +378,7 @@ const App = () => {
                 <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route>
                 <Route exact path="/admin/company_list" element={<AdminCompanyList/>}></Route>
                 <Route exact path="/admin/post_list" element={<AdminPostList/>}></Route>
+                <Route exact path="/admin/comment_list" element={<AdminCommentList/>}></Route>
                 {/* <Route exact path="/admin/member_edit/:index" element={<AdminEditUser/>}></Route>
                 <Route exact path="/admin/post_edit/:index" element={<AdminEditPost/>}></Route> */}
                 {/* <Route exact path="/admin/post_edit/:key/:index" element={<AdminEditPost/>}></Route> */}

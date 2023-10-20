@@ -6,7 +6,7 @@ import { CommonStyleFrame, TableFrame } from "./AdminStyledComponents/StyledComm
 import { Wrap, PopUpWrap } from "./AdminStyledComponents/StyledAdminBoard"
 ///// import component /////
 import Admin from "./Admin"
-import Pagenation from "./Pagenation"
+import SearchForm from "./SearchForm"
 
 const AdminBoardList = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -21,7 +21,11 @@ const AdminBoardList = () => {
   ///// boardList 데이터 가져오기 /////
   /////////////////////////////////////
   const [boardData, setBoardData] = useState([]);
+  ///// search box /////
   const [status, setStatus] = useState([]); //status filter
+  const statusChange = (statusValue) => {
+    setStatus(statusValue)
+  }
 
   useEffect(() => {
     axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers }).then((res) => {
@@ -30,20 +34,6 @@ const AdminBoardList = () => {
       console.error("error");
     })
   }, []);
-
-  ///// status change /////
-  const statusChange = (e) => {
-    const value = e.target.value
-    if (status.includes(value)) {
-      setStatus(
-        status.filter(i => i !== value)
-      )
-    } else {
-      setStatus(
-        status => [...status, e.target.value].sort()
-      )
-    }
-  }
 
   //////////////////////////
   ////////// 수정 //////////
@@ -57,13 +47,13 @@ const AdminBoardList = () => {
       newData[i][name] = value
       return newData
     })
-    console.log("inputChange", value, name)
   }
 
   // 수정 버튼 click //
   const modifyBtnClick = (i) => {
     if (window.confirm("수정하시겠습니까?")) {
       axios.patch(`${baseURL}/v1/board/modify`, boardData[i], { headers }).then((res)=> {
+        alert("수정하였습니다.")
         navigate(`/admin/board_list`);
       }).catch((error)=> {
         console.log(error)
@@ -112,7 +102,6 @@ const AdminBoardList = () => {
   });
 
   const newBoardListCreate = async () => {
-    console.log("createBtnClick 테스트", newBoardList.key.replace(/[^A-Za-z]/ig, ''))
     if(window.confirm("추가하시겠습니까?")) {
       if(
         newBoardList.key.length < 4 
@@ -121,7 +110,6 @@ const AdminBoardList = () => {
         alert("게시판 고유키는 4~20자리의 영어소문자, 숫자, 언더바(_)만 사용가능합니다.")  
       } else {
         await axios.post(`${baseURL}/v1/board/form`, newBoardList, { headers }).then((res) => {
-          console.log("추가test")
         }).catch((error) => {
           console.error(error)
         })
@@ -153,43 +141,11 @@ const AdminBoardList = () => {
         <Wrap>
           <p className='title'>게시판관리</p>
           <ul className="top">
-            <li className="left-box">
-              <form action="">
-                <div className='search-status-box'>
-                    상태값
-                  <label htmlFor="statusY">
-                    <input 
-                      id='statusY' 
-                      type="checkbox" 
-                      value={"N"} 
-                      onChange={(e) => statusChange(e)} 
-                    />
-                    N
-                  </label>
-                  <label htmlFor="statusN">
-                    <input 
-                      id='statusN' 
-                      type="checkbox" 
-                      value={"Y"} 
-                      onChange={(e) => statusChange(e)} 
-                    />
-                    Y
-                  </label>
-                </div>
-                <div>
-                  <input 
-                    type="search" 
-                    placeholder='검색' 
-                    className='search-input' 
-                  />
-                  <input 
-                    type="submit" 
-                    value='검색' 
-                    className='search-btn' 
-                  />
-                </div>
-              </form>
-            </li>
+            <SearchForm 
+              statusValue={statusChange} 
+              brdKeyNone={true}
+              groupNone={true}
+            />
             <li className="right-box">
               <button 
                 className="createBtn"

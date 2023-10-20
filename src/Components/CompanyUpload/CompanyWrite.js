@@ -112,6 +112,7 @@ const CompanyWrite = () => {
       ...postData,
       content: value
     });
+    console.log(content)
   };
   ///// 에디터 모듈 설정 /////
   const modules = useMemo(() => {
@@ -236,6 +237,11 @@ const CompanyWrite = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (window.confirm("등록하시겠습니까?")) {
+      setPostData({
+        ...postData,
+        content: content.replaceAll("'", "''")
+      }); // FIXME: 이러케 하면 되나
+      console.log(postData.content)
       await axios.post(`${baseURL}/v1/board/investment/post`, postData, { headers }).then((res) => {
         console.log("추가test")
         sessionStorage.removeItem('b_no');
@@ -348,10 +354,16 @@ const CompanyWrite = () => {
               </ul>
             </div>
 
-            {/********* 내용입력 input *********/}
+            {/********* 내용입력 *********/}
             <div className="mb-3">
               <label htmlFor="content" className="form-label">내용</label>
-              <ReactQuill ref={quillRef} value={content} onChange={(e) => handleContentChange(e)} modules={modules} formats={formats} />
+              <ReactQuill 
+                ref={quillRef} 
+                value={content} 
+                onChange={(e) => handleContentChange(e)} 
+                modules={modules} 
+                formats={formats} 
+              />
             </div>
             <div className="btnBox">
               <button onClick={() => prevPage()} className='cancelBtn'>취소</button>

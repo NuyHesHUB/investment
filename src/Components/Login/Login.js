@@ -90,7 +90,7 @@ const Login = () => {
             const response = await axios.post(`${baseURL}/v1/authorize/sign_in`, {
                 loginId,/* otz4193 */
                 loginPassword/* 동탄test1234! */
-        });
+            });
             console.log("로그인 성공");
         
             const userData = response.data.userData;
@@ -109,11 +109,14 @@ const Login = () => {
             console.log('Updated userUid:', userUid);
             sessionStorage.setItem('userUid', userUid);
 
-        if (userData.group === '관리자' && userData.isAdmin === 'Y') {
-            navigate("/admin") 
-        } else {
-            navigate("/")
-        }
+            /* 접속(login) 로그 */
+            await axios.post(`${baseURL}/v1/log/access/form`, { userUid: uid })
+
+            if (userData.group === '관리자' && userData.isAdmin === 'Y') {
+                navigate("/admin") 
+            } else {
+                navigate("/")
+            }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error === '가입되지 않은 [아이디]이거나 [비밀번호]가 올바르지 않습니다.') {
                 alert('가입되지 않은 아이디이거나 비밀번호가 올바르지 않습니다.');

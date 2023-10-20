@@ -168,7 +168,7 @@ const Admin = () => {
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/board_list">게시판관리</Link></li>
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_approve">승인목록</Link></li>
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_list">게시물관리</Link></li>
-                                                    <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_list">댓글관리</Link></li>
+                                                    <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/comment_list">댓글관리</Link></li>
                                                 </ul>
                                             </StyledNavGnb>
                                         </div>

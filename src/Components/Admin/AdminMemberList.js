@@ -7,7 +7,7 @@ import { Wrap, PageNation,  } from "./AdminStyledComponents/StyledAdminMemberLis
 ///// import component /////
 import Admin from "./Admin"
 import Pagenation from "./Pagenation"
-
+import SearchForm from "./SearchForm"
 
 const AdminMemberList = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -30,8 +30,17 @@ const AdminMemberList = () => {
   const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
 
+  ///// search box /////
   const [status, setStatus] = useState([]); //status filter
+  const [group, setGroup] = useState([]); //group filter
+  const statusChange = (statusValue) => {
+    setStatus(statusValue)
+  }
+  const groupChange = (groupValue) => {
+    setGroup(groupValue)
+  }
 
+  ///// 데이터 불러오기 /////
   useEffect(() => {
     axios.get(`${baseURL}/v1/users/?query=&pageRows=${pageRows}&page=${page}`, { headers }).then((res) => {
       setMemberData(res.data.query);
@@ -46,20 +55,10 @@ const AdminMemberList = () => {
     setPage(1)
     setCount(0)
   }
-
-  ///// status change /////
-  const statusChange = (e) => {
-    const value = e.target.value
-    if (status.includes(value)) {
-      setStatus(
-        status.filter(i => i !== value)
-      )
-    } else {
-      setStatus(
-        status => [...status, e.target.value].sort()
-      )
-    }
-  }
+  
+ 
+  console.log("status바뀜", status)
+  console.log("group바뀜", group)
 
   ///////////////////////
   ///// 수정 팝업창 /////
@@ -76,6 +75,7 @@ const AdminMemberList = () => {
   const modifyBtnClick = () => {
     if (window.confirm("수정하시겠습니까?")) {
       axios.patch(`${baseURL}/v1/users/modify/${userUid}`, memberData[idx], { headers }).then((res)=> {
+        alert("수정하였습니다.")
         navigate(`/admin/member_list`);
         setOpen(false)
       }).catch((error)=> {
@@ -102,45 +102,13 @@ const AdminMemberList = () => {
       <Admin /> {/* 헤더랑 메뉴 */}
       <CommonStyleFrame>
         <Wrap>
-          <p className='title'>회원목록</p>
-          <ul className="top">
-            <li className="left-box">
-              <form action="">
-                <div className='search-status-box'>
-                    상태값
-                  <label htmlFor="statusY">
-                    <input 
-                      id='statusY' 
-                      type="checkbox" 
-                      value={"N"} 
-                      onChange={(e) => statusChange(e)} 
-                    />
-                    N
-                  </label>
-                  <label htmlFor="statusN">
-                    <input 
-                      id='statusN' 
-                      type="checkbox" 
-                      value={"Y"} 
-                      onChange={(e) => statusChange(e)} 
-                    />
-                    Y
-                  </label>
-                </div>
-                <div>
-                  <input 
-                    type="search" 
-                    placeholder='검색' 
-                    className='search-input' 
-                  />
-                  <input 
-                    type="submit" 
-                    value='검색' 
-                    className='search-btn' 
-                  />
-                </div>
-              </form>
-            </li>
+          <p className='title'>회원관리</p>
+          <ul className='top'>
+            <SearchForm 
+              statusValue={statusChange} 
+              groupValue={groupChange}
+              brdKeyNone={true}
+            />
             <li className="right-box">
               <select
                 className='page-size'
@@ -153,6 +121,7 @@ const AdminMemberList = () => {
               </select>
             </li>
           </ul>
+
           <TableFrame>
             <table>
               <thead>
@@ -170,39 +139,39 @@ const AdminMemberList = () => {
                   <th>수정</th>
                 </tr>
               </thead>
-              {memberData.map((v,i) => {
+              <tbody>
+              {memberData.map((item,i) => {
                 return(
-                  <tbody key={v.brdKey}>
-                    <tr>
+                    <tr key={i}>
                       <td>
-                        {v.group}
+                        {item.group}
                       </td>
                       <td>
-                        {v.isAdmin}
+                        {item.isAdmin}
                       </td>
                       <td>
-                        {v.local}
+                        {item.local}
                       </td>
                       <td>
-                        {v.kakao}
+                        {item.kakao}
                       </td>
                       <td>
-                        {v.naver}
+                        {item.naver}
                       </td>
                       <td>
-                        {v.loginId}
+                        {item.loginId}
                       </td>
                       <td>
-                        {v.email}
+                        {item.email}
                       </td>
                       <td>
-                        {v.nickname}
+                        {item.nickname}
                       </td>
                       <td>
-                        {v.phone}
+                        {item.phone}
                       </td>
                       <td>
-                        {v.regDt.split("T")[0]} {v.regDt.split("T")[1].slice(0,8)}
+                        {item.regDt.split("T")[0]} {item.regDt.split("T")[1].slice(0,8)}
                       </td>
                       <td>
                         <button 
@@ -211,15 +180,15 @@ const AdminMemberList = () => {
                         >수정</button>
                       </td>
                     </tr>
-                  </tbody>
-                )
-              })}
+                  )
+                })}
+              </tbody>
             </table>
           </TableFrame>
           <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} />
 
-           {/***** 수정 팝업 창  *****/}
-           {memberData.length&& 
+          {/***** 수정 팝업 창  *****/}
+          {memberData.length&& 
             <Modify className={open ? 'active' : ''}>
               <div 
                 className="background"

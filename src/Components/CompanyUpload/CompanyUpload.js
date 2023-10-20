@@ -25,14 +25,14 @@ const CompanyUpload = () => {
 
   ///// page log /////
   useEffect(() => {
-    axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"업체등록" }).then((res) => {
+    axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page": "업체등록" }).then((res) => {
   }).catch((error) => {
     console.error(error)
   })
   }, []);
 
-  const [placeholderActive, setPlaceholderActive] = useState(true);
-  const [logoImage, setLogoImage] = useState('');
+  const [placeholderActive, setPlaceholderActive] = useState(true); //이미지등록placeholder
+  const [logoImage, setLogoImage] = useState(''); // 이미지미리보기링크데이터
   const [companyData, setCompanyData] = useState({
       companyName: "",
       representativeName: "",
@@ -50,18 +50,16 @@ const CompanyUpload = () => {
       const encodedFilename = encodeURIComponent(file.name);
       const imgUrl = URL.createObjectURL(file)
       setLogoImage(imgUrl) //미리보기 이미지 링크
-      
+      // 폼데이터에 저장
       const formData = new FormData();
       formData.append('files', file);
       formData.append('brdKey', "companyLogoImg");
       formData.append('filename', encodedFilename);
       
       await axios.post(`${baseURL}/v1/img/upload`, formData , { headers }).then((res) => {
-        console.log(res, "로고이미지res")
         const imageUrl = res.data.imageUrl
-        console.log("이미지의 링크:", imageUrl);
         //업체 데이터 로고 이미지부분 수정//
-        setPlaceholderActive(false) // 플레이스홀더없애기
+        setPlaceholderActive(false) // placeholder제거
         const updatedData = {
           ...companyData,
           logoImg: imageUrl,
@@ -69,10 +67,6 @@ const CompanyUpload = () => {
         };
         setCompanyData(updatedData); 
         e.target.value = ''
-        // setCompanyData({
-        //   ...companyData,
-        //   logoImg: imageUrl
-        // })
       }).catch((error) => {
         console.error(error)
       })

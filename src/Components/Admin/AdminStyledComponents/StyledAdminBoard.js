@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Wrap = styled.div`
   .createBtn {margin-right: 5px;}
   //modify & delete btn
-  
+  table input {width: 100%;}
 `
 
 export const PopUpWrap = styled.div`

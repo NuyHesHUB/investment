@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const CommonStyleFrame = styled.div`
   *{padding: 0; margin: 0; box-sizing: border-box;}
-  padding: 90px 0 0 300px ;
   position: relative;
+  padding: 90px 0 0 300px ;
   .modifyBtn {margin-right: 5px; background: #73bbff;}
   .deleteBtn {background: #ff7373;}
   .createBtn {
@@ -27,24 +27,20 @@ export const CommonStyleFrame = styled.div`
     width: 1000px; //임시 넓이
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin: 30px 0 10px;
+    align-items: end;
+    margin: 30px 0 20px;
   }
   ///// 검색 박스 /////
   ul.top .left-box {
-    /* background: green; */
     color: #555;
-    width: 370px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: end;
   }
   //상태값 검색
-  ul.top .left-box .search-status-box {
-    /* background: pink; */
+  ul.top .left-box .search-status-box,
+  ul.top .left-box .search-group-box {
     display: flex;
-    justify-content: space-between;
-    padding-right: 120px;
     align-items: center;
     input {margin: 0 3px 0 8px;}
   }
@@ -60,9 +56,10 @@ export const CommonStyleFrame = styled.div`
     border: 1px solid #ccc;
     padding: 3px 5px;
   }
-`
 
+`
 export const TableFrame = styled.div `
+font-size: 14px;
   table {width: 1000px; text-align: center;} // 임시 테이블 넓이
   table, th, td {
     border-collapse: collapse;

@@ -179,6 +179,7 @@ const Signup = () => {
         try {
             const response = await axios.post(`${baseURL}/v1/users/sign_up`, formData);
             console.log('회원가입 성공:', response);
+            alert("회원가입이 완료되었습니다.")
             navigate("/login") 
         } catch (error) {
             console.error('회원가입 실패:', error);

@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import styled from 'styled-components';
 export const PagenationWrap = styled.div`
-  width: 80%;
-  margin: 0 auto;
+/* background: palegreen; */
+  width: 1000px;
+  margin: 30px 0;
   display: flex;
   justify-content: center;
   button {
@@ -13,10 +14,10 @@ export const PagenationWrap = styled.div`
     font-family: 'Pretendard-Regular';
     font-size: 16px; 
     padding: 10px 10px; 
-
+    border: none;
   }
   button:disabled {color: #ccc; cursor: default;}
-  button.current-page {color: blue ;}
+  button.current-page {color: #568fe6; font-weight: bold;}
   button#num {
     background: none; 
     padding: 10px 10px; 
