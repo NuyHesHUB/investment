@@ -8,13 +8,7 @@ import axios from 'axios';
 const PostRegist = () => {
     const boardData = useSelector((state) => state.reducer?.adminBoardData);
     const userUid = sessionStorage.getItem('userUid');
-
-    /* console.log('boardData',boardData); */
-    
-
     const categoryData = boardData[6]?.categoryList || [];
-
-    
     let parsedCategoryData = [];
 
     if (typeof categoryData === 'string' && categoryData.length > 0) {

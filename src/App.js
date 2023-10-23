@@ -53,8 +53,12 @@ import BusinessNumberCheck from './Components/CompanyUpload/BusinessNumberCheck'
 /* 결제안내 페이지 */
 import PaymentInfoPage from './Components/Page/PaymentInfoPage';
 
+import ScrollToTop from './Hook/ScrollToTop';
+
 const App = () => {
+
     
+
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
@@ -206,8 +210,9 @@ const App = () => {
 
     return (
         <Router>
+            <ScrollToTop/>
             <Routes>
-
+                
                 {/* Home, Login, Signup */}
                 <Route exact path="/" element={<Home parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
                 <Route exact path="/login" element={<Login />}></Route>

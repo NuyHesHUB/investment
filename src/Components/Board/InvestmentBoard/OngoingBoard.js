@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 /* React-Router-Dom */
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 /* Axios */
 import axios from 'axios';
@@ -50,8 +50,14 @@ const InvestOngoingBoard = () => {
     );
 
     const [investOngoingPostData, setInvestOngoingPostData] = useState(null);
+
+    const { pathname } = useLocation();
+
     
+
+
     useEffect(() => {
+        /* window.scrollTo(0, 0); */
         const handlePopState = () => {
             const state = window.history.state;
             if (state) {

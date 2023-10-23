@@ -405,20 +405,21 @@ const NameBox=styled.div`
 `
 
 export const CategorySwiper = () => {
-    const categoryImage = [
-        { name: "외식", icon: FoodIcon},
-        { name: "제조", icon: ManuFacturingIcon},
-        { name: "대여", icon: RentalIcon},
-        { name: "유통", icon: RetailIcon},
-        { name: "서비스", icon: ServicesIcon},
-        { name: "기타", icon: OtherIcon},
-        { name: "외식", icon: FoodIcon},
-        { name: "제조", icon: ManuFacturingIcon},
-        { name: "대여", icon: RentalIcon},
-        { name: "유통", icon: RetailIcon},
-        { name: "서비스", icon: ServicesIcon},
-        { name: "기타", icon: OtherIcon},
+    const categoryImage  = [
+        { id: 1, name: "외식", icon: FoodIcon},
+        { id: 2, name: "제조", icon: ManuFacturingIcon},
+        { id: 3, name: "대여", icon: RentalIcon},
+        { id: 4, name: "유통", icon: RetailIcon},
+        { id: 5, name: "서비스", icon: ServicesIcon},
+        { id: 6, name: "기타", icon: OtherIcon},
+        { id: 7, name: "외식", icon: FoodIcon},
+        { id: 8, name: "제조", icon: ManuFacturingIcon},
+        { id: 9, name: "대여", icon: RentalIcon},
+        { id: 10, name: "유통", icon: RetailIcon},
+        { id: 11, name: "서비스", icon: ServicesIcon},
+        { id: 12, name: "기타", icon: OtherIcon},
     ];
+    
     const [activeSlide, setActiveSlide] = useState(0);
     const handleSlideIndex = (swiper) => {
         /* console.log("현재 활성화된 슬라이드 인덱스:", swiper.activeIndex); */
@@ -443,23 +444,24 @@ export const CategorySwiper = () => {
                 slidesPerView={5}
                 allowTouchMove={false}
             >
-                {categoryImage.map((item, index) => (
-                    <React.Fragment key={index}>
-                        <SwiperSlide className={Math.abs(activeSlide + 2) === index ? 'focused-slide' : ''}>
-                            <SlideWrap2>
-                                <div>
-                                    <CategoryWrap className='effect-img'>
-                                        <img src={item.icon} alt={`${item}아이콘`} />
-                                    </CategoryWrap>
-                                    <NameBox className={Math.abs(activeSlide + 2) === index ? 'focused-slide' : ''}>
-                                        <p>{item.name}</p>
-                                    </NameBox>
-                                    <span></span>
-                                </div>
+                {categoryImage.map((item, index) => {
+                    /* console.log('index',item.id); */
+                    return (
+                        <SwiperSlide key={item.id}>
+                            <SlideWrap2 >
+                                    <div className={Math.abs(activeSlide + 2) === index ? 'focused-slide' : ''}>
+                                        <CategoryWrap className='effect-img'>
+                                            <img src={item.icon} alt={`${item}아이콘`} />
+                                        </CategoryWrap>
+                                        <NameBox className={Math.abs(activeSlide + 2) === index ? 'focused-slide' : ''}>
+                                            <p>{item.name}</p>
+                                        </NameBox>
+                                        <span></span>
+                                    </div>
                             </SlideWrap2>
                         </SwiperSlide>
-                    </React.Fragment>
-                ))}
+                    )
+                })}
             </Swiper>
         </SwiperCustomWrap>
     );
