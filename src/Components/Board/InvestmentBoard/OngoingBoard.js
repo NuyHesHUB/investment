@@ -28,7 +28,7 @@ import useScrollFadeIn from '../../../Hook/useScrollFadeIn';
 
 const InvestOngoingBoard = () => {
 
-    const fadeIn1 = useScrollFadeIn('up', 1, 500);
+    /* const fadeIn1 = useScrollFadeIn('up', 1, 500); */
 
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
@@ -53,7 +53,7 @@ const InvestOngoingBoard = () => {
 
     const { pathname } = useLocation();
 
-    
+    const [isLoading, setIsLoading] = useState(true);
 
 
     useEffect(() => {
@@ -104,8 +104,10 @@ const InvestOngoingBoard = () => {
                 console.log('investPostResponse',data);
                 /* setInvestOngoingPostData(data.filter(item => item.condition === 'ongoing')); */
                 setInvestOngoingPostData(data);
+                setIsLoading(false);
             } catch (error) {
                 console.error('investOngoingBoardData 데이터 가져오기 실패', error);
+                setIsLoading(false);
             }
         }
         fetchData();
@@ -172,40 +174,45 @@ const InvestOngoingBoard = () => {
                                 <VisualImg />
                             </div>
                         </DummyBanner>
-                        {investOngoingPostData !== null && investOngoingPostData !== "" && investOngoingPostData.length ? 
-                        <div>
-                            <PostCardTitleWrap>
-                            <h3>진행 중인 투자</h3>
-                            </PostCardTitleWrap>
-                            <PostCardWrap>
-                            {investOngoingPostData &&
-                                investOngoingPostData?.length > 0 &&
-                                investOngoingPostData?.slice(0, PostCardCount).map((item, index) => (
-                                <Link key={index} to={
-                                    `/investment/ongoing/${item.id}`
-                                }>
-                                    <OngoingPostCard
-                                        key={index}
-                                        logoimg={item.logoImg}
-                                        name={item.companyName}
-                                        title={item.title}
-                                        content={removeTags(item.content)}
-                                        category={item.category}
-                                        date={formattedDates[index]}
-                                    />
-                                </Link>
-                            ))}
-                            </PostCardWrap>
-                            <MoreWrap>
-                                {investOngoingPostData?.length > PostCardCount && (
-                                    <div style={{marginTop:'80px'}}>
-                                        <MoreBtn onClick={handleLoadMore}>
-                                            <span>더보기</span>
-                                        </MoreBtn>
-                                    </div>
-                                )}
-                            </MoreWrap>
-                        </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>진행 중인 투자가 없습니다.</div>}
+                        {isLoading && <div>Loading........................</div>}
+                        {!isLoading && (
+                            <>
+                                {investOngoingPostData !== null && investOngoingPostData !== "" && investOngoingPostData.length ? 
+                                <div>
+                                    <PostCardTitleWrap>
+                                    <h3>진행 중인 투자</h3>
+                                    </PostCardTitleWrap>
+                                    <PostCardWrap>
+                                    {investOngoingPostData &&
+                                        investOngoingPostData?.length > 0 &&
+                                        investOngoingPostData?.slice(0, PostCardCount).map((item, index) => (
+                                        <Link key={index} to={
+                                            `/investment/ongoing/${item.id}`
+                                        }>
+                                            <OngoingPostCard
+                                                key={index}
+                                                logoimg={item.logoImg}
+                                                name={item.companyName}
+                                                title={item.title}
+                                                content={removeTags(item.content)}
+                                                category={item.category}
+                                                date={formattedDates[index]}
+                                            />
+                                        </Link>
+                                    ))}
+                                    </PostCardWrap>
+                                    <MoreWrap>
+                                        {investOngoingPostData?.length > PostCardCount && (
+                                            <div style={{marginTop:'80px'}}>
+                                                <MoreBtn onClick={handleLoadMore}>
+                                                    <span>더보기</span>
+                                                </MoreBtn>
+                                            </div>
+                                        )}
+                                    </MoreWrap>
+                                </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>진행 중인 투자가 없습니다.</div>}
+                            </>
+                        )}
                     </BoardWrap>
             </StyledFrame>
             <Footer/>
