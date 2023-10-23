@@ -179,6 +179,7 @@ export const RightInfoBottomBox=styled.div`
     flex-direction: column;
 `
 export const LikeBox=styled.div`
+    cursor: pointer;
     width: 100%;
     height: 52px;
     box-sizing: border-box;

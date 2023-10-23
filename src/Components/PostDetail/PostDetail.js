@@ -1,5 +1,6 @@
+/* eslint-disable no-whitespace-before-property */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 /* React-Router-Dom */
 import { useNavigate, useParams } from 'react-router-dom';
@@ -15,7 +16,7 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { VscThumbsup, VscThumbsdown } from 'react-icons/vsc';
 import { LuReply } from 'react-icons/lu';
 import { BsEye } from 'react-icons/bs';
-
+import { PiThumbsUpDuotone, PiThumbsDownDuotone } from 'react-icons/pi';
 
 /* Js-cookie */
 import Cookies from 'js-cookie';
@@ -87,6 +88,7 @@ import { Link, scroller } from 'react-scroll';
 
 /* image */
 import defaultLogo from '../../assets/default-image/company-default-img.png';
+import HeartEffect from '../../Effect/HeartEffect';
 
 const PostDetail = () => {
     
@@ -269,9 +271,15 @@ const PostDetail = () => {
     /*-----------------------------------------------------*\
                       댓글 좋아요 & 싫어요 기능
     \*-----------------------------------------------------*/
-    const handleCommentLikeBtnClick = async (index, commentId, type) => {
+    const handleCommentLikeBtnClick = async (index, commentId, type, status) => {
+        if (status === "N") {
+            alert('삭제된 댓글입니다.');
+            return
+        }
+
         setActiveCommentIndex(index);
-        console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다. 타입은 ${type}`);
+
+        /* console.log(`댓글 ID: ${commentId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다. 타입은 ${type} Status는 ${status}`); */
     
         try {
             const response = await axios.post(`${baseURL}/v1/board/like`, {
@@ -320,9 +328,14 @@ const PostDetail = () => {
     /*-----------------------------------------------------*\
                   댓글의 답글 좋아요 & 싫어요 기능
     \*-----------------------------------------------------*/
-    const handleReplyLikeBtnClick = async (replyIndex, replyId, index, type) => {
+    const handleReplyLikeBtnClick = async (replyIndex, replyId, index, type, status) => {
+        if (status === "N") {
+            alert('삭제된 답글입니다.');
+            return
+        }
+
         setActiveReplyIndex(replyIndex);
-        console.log(`댓글 ID: ${replyId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다. 타입은 ${type}`);
+        /* console.log(`댓글 ID: ${replyId}가 클릭되었습니다. 해당 댓글의 index는 ${index}입니다. 타입은 ${type} Status는 ${status}`); */
         try {
             const response = await axios.post(`${baseURL}/v1/board/like`, {
                 boardPostId: replyId,
@@ -498,6 +511,8 @@ const PostDetail = () => {
             console.log('답글 게시 성공', replyComment);
             setComments(prevComments => [...prevComments, replyComment]);
 
+            setShowCommentTab(false);
+
             axios.get(`${baseURL}/v1/board/investment/post/${id}/comments`, { headers })
             .then(response => {
                 const commentData = response.data.query;
@@ -567,19 +582,21 @@ const PostDetail = () => {
                                                         <CommentTopRightBox>
                                                             <CommentLikeBox
                                                                 type="like"
-                                                                onClick={() => handleCommentLikeBtnClick(index, item.id, 'like')}
-                                                                style={{ color: item.type === "like" ? "blue" : "rgb(85, 85, 85)" }}
+                                                                onClick={() => handleCommentLikeBtnClick(index, item.id, 'like', item.status)}
                                                             >
-                                                                <VscThumbsup/>
-                                                                {item.like}
+                                                                <PiThumbsUpDuotone
+                                                                    style={{ color: item.type === "like" ? "blue" : "rgb(85, 85, 85)" }}
+                                                                />
+                                                                <span style={{color:'rgb(85, 85, 85)'}}>{item.like}</span>
                                                             </CommentLikeBox>
                                                             <CommentLikeBox
                                                                 type="dislike"
-                                                                onClick={() => handleCommentLikeBtnClick(index, item.id, 'dislike')}
-                                                                style={{ color: item.type === "dislike" ? "red" : "rgb(85, 85, 85)" }}
+                                                                onClick={() => handleCommentLikeBtnClick(index, item.id, 'dislike', item.status)}
                                                             >
-                                                                <VscThumbsdown/>
-                                                                {item.dislike}
+                                                                <PiThumbsDownDuotone
+                                                                    style={{ color: item.type === "dislike" ? "red" : "rgb(85, 85, 85)" }}
+                                                                />
+                                                                <span style={{color:'rgb(85, 85, 85)'}}>{item.dislike}</span>
                                                             </CommentLikeBox>
                                                         </CommentTopRightBox>
                                                     </CommentTopBox>
@@ -587,23 +604,33 @@ const PostDetail = () => {
                                                         <p>{item.content}</p>
                                                     </CommentCenterBox>
                                                     <CommentBottomBox>
-                                                        <div
-                                                            onClick={() => handleCommentEditBtnClick(index, item.id)}
-                                                            style={{marginRight:'10px'}}
-                                                        >
-                                                            수정
-                                                        </div>
-                                                        <div
-                                                            onClick={() => handleDeleteComment(index, item.id)}
-                                                            style={{marginRight:'10px'}}
-                                                        >
-                                                            삭제
-                                                        </div>
-                                                        <div
+                                                        {item.status === "N" ? 
+                                                            <div
                                                             onClick={() => handleCommentBtnClick(index, item.id)}
-                                                        >
-                                                            답글달기
-                                                        </div>
+                                                            >
+                                                                답글달기
+                                                            </div>
+                                                            :
+                                                            <React.Fragment>
+                                                                <div
+                                                                onClick={() => handleCommentEditBtnClick(index, item.id)}
+                                                                style={{marginRight:'10px'}}
+                                                                >
+                                                                    수정
+                                                                </div>
+                                                                <div
+                                                                    onClick={() => handleDeleteComment(index, item.id)}
+                                                                    style={{marginRight:'10px'}}
+                                                                >
+                                                                    삭제
+                                                                </div>
+                                                                <div
+                                                                    onClick={() => handleCommentBtnClick(index, item.id)}
+                                                                >
+                                                                    답글달기
+                                                                </div>
+                                                            </React.Fragment>
+                                                        }
                                                     </CommentBottomBox>
                                                 </CommentBox>
 
@@ -647,19 +674,21 @@ const PostDetail = () => {
                                                                                 <CommentTopRightBox>
                                                                                     <CommentLikeBox
                                                                                         type="like"
-                                                                                        onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "like")}
-                                                                                        style={{ color: reply.type === "like" ? "blue" : "rgb(85, 85, 85)" }}
+                                                                                        onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "like", reply.status)}
                                                                                     >
-                                                                                        <VscThumbsup/>
-                                                                                        {reply.like}
+                                                                                        <PiThumbsUpDuotone
+                                                                                            style={{ color: reply.type === "like" ? "blue" : "rgb(85, 85, 85)" }}
+                                                                                        />
+                                                                                        <span style={{color:'rgb(85, 85, 85)'}}>{reply.like}</span>
                                                                                     </CommentLikeBox>
                                                                                     <CommentLikeBox
                                                                                         type="dislike"
-                                                                                        onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "dislike")}
-                                                                                        style={{ color: reply.type === "dislike" ? "red" : "rgb(85, 85, 85)" }}
+                                                                                        onClick={() => handleReplyLikeBtnClick( replyIndex, reply.id , index, "dislike", reply.status)}
                                                                                     >
-                                                                                        <VscThumbsdown/>
-                                                                                        {reply.dislike}
+                                                                                        <PiThumbsDownDuotone
+                                                                                            style={{ color: reply.type === "dislike" ? "red" : "rgb(85, 85, 85)" }}
+                                                                                        />
+                                                                                        <span style={{color:'rgb(85, 85, 85)'}}>{reply.dislike}</span>
                                                                                     </CommentLikeBox>
                                                                                 </CommentTopRightBox>
                                                                             </CommentTopBox>
@@ -668,18 +697,24 @@ const PostDetail = () => {
                                                                             </CommentCenterBox>
                                                                         </ReplyRightWrap>
                                                                         <CommentBottomBox>
-                                                                            <div
-                                                                                onClick={() => handleCommentEditBtnClick(replyIndex, reply.id)}
-                                                                                style={{marginRight:'10px'}}
-                                                                            >
-                                                                                수정
-                                                                            </div>
-                                                                            <div
-                                                                                onClick={() => handleDeleteComment(replyIndex, reply.id)}
-                                                                                style={{marginRight:'10px'}}
-                                                                            >
-                                                                                삭제
-                                                                            </div>
+                                                                            {reply.status === "N" ? 
+                                                                                null
+                                                                                :
+                                                                                <React.Fragment>
+                                                                                    <div
+                                                                                        onClick={() => handleCommentEditBtnClick(replyIndex, reply.id)}
+                                                                                        style={{marginRight:'10px'}}
+                                                                                    >
+                                                                                        수정
+                                                                                    </div>
+                                                                                    <div
+                                                                                        onClick={() => handleDeleteComment(replyIndex, reply.id)}
+                                                                                        style={{marginRight:'10px'}}
+                                                                                    >
+                                                                                        삭제
+                                                                                    </div>
+                                                                                </React.Fragment>
+                                                                            }
                                                                         </CommentBottomBox>
                                                                     </ReplyBox>
 
@@ -737,6 +772,9 @@ const PostDetail = () => {
     /* console.log('id',id); */
     /* console.log('postData',postData); */
     /* console.log('likeList',postList); */
+
+    
+
     return (
         <div>
             <Header/>
@@ -823,18 +861,23 @@ const PostDetail = () => {
                                         <RightInfoBottomBox>
                                             <LikeBox
                                                 type="like"
-                                                onClick={() => handleLike("like")}
+                                                onClick={() => {
+                                                    handleLike("like"); 
+                                                  }}
                                                 style={{
-                                                    border: postLikeType === "like" ? "1px solid red" : "",
-                                                    background: postLikeType === "like" ? "red" : ""
+                                                    border: postLikeType === "like" ? "" : "",
+                                                    background: postLikeType === "like" ? "" : ""
                                                 }}
                                             >
                                                 <div
                                                     style={{ 
-                                                        color: postLikeType === "like" ? "white" : "rgb(85, 85, 85)",
+                                                        color: postLikeType === "like" ? "" : "rgb(85, 85, 85)",
                                                     }}
                                                 >
-                                                    <AiOutlineHeart/> 
+                                                    <HeartEffect 
+                                                        postLikeType={postLikeType} 
+                                                        onClick={handleLike}
+                                                    />
                                                     <span>좋아요</span>
                                                 </div>
                                             </LikeBox>

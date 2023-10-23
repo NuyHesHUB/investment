@@ -32,7 +32,6 @@ const TopFooterLeft=styled.div`
             fill: #888;
             transition: .2s;
             &:hover{
-                /* fill: #1A9CF9; */
                 fill: #3FA9F5;
             }
         }
@@ -54,7 +53,6 @@ const TopRightItemBox=styled.div`
 const TopRightItemTitle=styled.div`
     font-weight: bold;
     font-size: 16px;
-    /* color: #242424; */
     color: #666;
     margin-bottom: 8px;
     pointer-events: none;
@@ -66,11 +64,9 @@ const TopRightItemContent=styled.div`
         cursor: pointer;
         transition: .2s ease;
         &:hover{
-            /* color: #1A9CF9; */
             color: #3FA9F5;
         }
     }
-    
 `
 const BottomFooterBox=styled.div`
     padding-top: 40px;
@@ -110,8 +106,6 @@ const BottomLeftDD=styled.dd`
     font-size: 16px;
     color: #777;
 `
-
-
 const BottomRight=styled.div`
     >div{
         visibility: hidden;

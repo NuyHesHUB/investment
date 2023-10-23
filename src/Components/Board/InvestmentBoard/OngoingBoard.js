@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 /* React-Router-Dom */
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 /* Axios */
 import axios from 'axios';
@@ -50,8 +50,14 @@ const InvestOngoingBoard = () => {
     );
 
     const [investOngoingPostData, setInvestOngoingPostData] = useState(null);
+
+    const { pathname } = useLocation();
+
     
+
+
     useEffect(() => {
+        /* window.scrollTo(0, 0); */
         const handlePopState = () => {
             const state = window.history.state;
             if (state) {
@@ -166,7 +172,7 @@ const InvestOngoingBoard = () => {
                                 <VisualImg />
                             </div>
                         </DummyBanner>
-                        {investOngoingPostData !== null && investOngoingPostData !== "" ? 
+                        {investOngoingPostData !== null && investOngoingPostData !== "" && investOngoingPostData.length ? 
                         <div>
                             <PostCardTitleWrap>
                             <h3>진행 중인 투자</h3>
@@ -199,7 +205,7 @@ const InvestOngoingBoard = () => {
                                     </div>
                                 )}
                             </MoreWrap>
-                        </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>오류가 발생했습니다.</div>}
+                        </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>진행 중인 투자가 없습니다.</div>}
                     </BoardWrap>
             </StyledFrame>
             <Footer/>

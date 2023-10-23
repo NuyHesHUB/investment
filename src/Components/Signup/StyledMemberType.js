@@ -41,18 +41,16 @@ export const TabMenu=styled.ul`
     flex-direction: row;
     align-items: center;
     list-style: none;
-
-  .submenu {
-    transition: 0.3s;
-    width: 100%;
-  }
-  .focused {
-    color: rgb(63,169,245);
-  }
-
-  & div.desc {
-    text-align: center;
-  }
+    .submenu {
+        transition: 0.3s;
+        width: 100%;
+    }
+    .focused {
+        color: rgb(63,169,245);
+    }
+    & div.desc {
+        text-align: center;
+    }
 `
 export const TabMenuItem=styled.li`
     width: 50%;
@@ -61,7 +59,6 @@ export const TabMenuItem=styled.li`
     align-items: center;
     justify-content: center;
     border-right: 1px solid rgb(238,238,238);
-    /* font-size: 24px; */
     font-size: 20px;
     font-weight: 600;
     cursor: pointer;
@@ -71,7 +68,7 @@ export const Desc=styled.div`
     height: 100%;
     border-top: 1px solid rgb(238,238,238);
     text-align: center;
-`;
+`
 export const Contents=styled.div`
     width: 100%;
     height: 100%;

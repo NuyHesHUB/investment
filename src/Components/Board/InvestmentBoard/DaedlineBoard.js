@@ -80,7 +80,7 @@ const InvestDeadlineBoard = () => {
     },[])
 
     console.log('investDeadlinePostData',investDeadlinePostData);
-
+    console.log('test');
     return (
         <React.Fragment>
             <Header/>
@@ -97,7 +97,7 @@ const InvestDeadlineBoard = () => {
                                 <VisualImg />
                             </div>
                         </DummyBanner>
-                        {investDeadlinePostData !== null && investDeadlinePostData !== "" ?
+                        {investDeadlinePostData !== null && investDeadlinePostData !== "" && investDeadlinePostData.length ?
                         <div>
                             <PostCardTitleWrap>
                             <h3>마감된 투자</h3>
@@ -128,7 +128,7 @@ const InvestDeadlineBoard = () => {
                                     </div>
                                 )}
                             </MoreWrap>
-                        </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>오류가 발생했습니다.</div>}
+                        </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>마감된 투자가 없습니다.</div>}
                     </BoardWrap>
             </StyledFrame>
             <Footer/>

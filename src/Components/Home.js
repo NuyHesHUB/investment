@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from 'react';
-
-/* React-Router-Dom */
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
 
 /* Axios */
 import axios from 'axios';
-
-/* Redux */
-import { useDispatch, useSelector } from 'react-redux';
-import { setBoardData} from '../store/actions/actions';
 
 /* Components */
 import Header from './Header';
@@ -26,12 +19,14 @@ import useScrollFadeIn from '../Hook/useScrollFadeIn';
 
 /* Styled-Components */
 import { 
+    
+    /* Category Section */
     StyledFrame, 
     CategorySection,
     CategoryContainer,
     CategoryContentsBox,
 
-
+    /* Service Section */
     ServiceSection,
     ServiceContainer,
     ServiceBox,
@@ -46,8 +41,8 @@ import {
     RightBottomContent,
     ServiceItemBox,
     ServiceItem,
-
-
+    
+    /* Bottom Section */
     BannerContainer,
     HomeImgBanner,
     LeftBannerBox,
@@ -56,17 +51,17 @@ import {
     ItemBox,
     RightBannerBox,
     ImgBox,
+    
 } from './StyledComponents/StyledHome';
 
 /* Image */
 import PhoneImg from '../assets/image/banner-phone-img.png';
 import ServiceImg01 from '../assets/image/service-01.png';
 import ServiceImg02 from '../assets/image/service-02.png';
-// import { ReactComponent as ServiceImg01 } from '../assets/image/visualImage1.svg';
-// import ServiceImg02 from '../assets/image/service-02.png';
 
 const Home = ({parsedCommunityCategoryData}) => {
 
+    /* Hook FadeIn */
     const fadeIn1 = useScrollFadeIn('up', 1, 500);
     const fadeIn2 = useScrollFadeIn('right', 1, 100);
     const fadeIn3 = useScrollFadeIn('up', 1, 200);
@@ -77,10 +72,6 @@ const Home = ({parsedCommunityCategoryData}) => {
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
-    const accessToken = sessionStorage.getItem('accessToken');
-    const headers = {
-        Authorization: `${accessToken}`
-    };
 
     /* Log API */
     const uid = userUid === null ? '' : userUid;
@@ -98,27 +89,6 @@ const Home = ({parsedCommunityCategoryData}) => {
     /*-----------------------------------------------------*\
                         Console.log 테스트
     \*-----------------------------------------------------*/
-    //console.log('process.env.REACT_APP_BASEURL :',process.env.REACT_APP_BASEURL);
-    //console.log('process.env.REACT_APP_KAKAOURI :',process.env.REACT_APP_KAKAOURI);
-    //console.log('process.env.REACT_APP_NAVERURI :',process.env.REACT_APP_NAVERURI);
-    //console.log('process.env.REACT_APP_TEST :',process.env.REACT_APP_TEST);
-    
-    /* console.log('home-test',parsedCategoryData); */
-    /* const categoryImage = [
-        { name: "외식" },
-        { name: "제조" },
-        { name: "기타" },
-        { name: "대여" },
-        { name: "운송" },
-        { name: "서비스" },
-        { name: "외식" },
-        { name: "제조" },
-        { name: "기타" },
-        { name: "대여" },
-        { name: "운송" },
-        { name: "서비스" },
-    ]; */
-
 
     return (
             <React.Fragment>
@@ -166,8 +136,6 @@ const Home = ({parsedCommunityCategoryData}) => {
                                     </ServiceBox>
                                 </ServiceContainer>
                             </ServiceSection>
-                            
-
                             <section style={{marginBottom:'100px'}}>
                                 <HomeImgBanner>
                                     <BannerContainer>
@@ -194,7 +162,6 @@ const Home = ({parsedCommunityCategoryData}) => {
                     </StyledFrame>
                 <Footer/>
             </React.Fragment>
-            
     );
 };
 

@@ -2,20 +2,19 @@ import React, { useEffect } from 'react';
 
 /* React-Router-Dom */
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-/* import { useHistory } from "react-router-dom"; */
 
 /* Axios */
 import axios from 'axios';
 
 /* Redux */
 import { useDispatch, useSelector } from 'react-redux';
-import { setAdminUserData, setAdminBoardData, setAdminPostData } from './store/actions/actions';
+import { setAdminBoardData } from './store/actions/actions';
 
 /* Basic Component */
 import Home from './Components/Home';
 import Login from './Components/Login/Login';
 import MemberType from './Components/Signup/MemberType';
-import Signup from './Components/Signup/Signup';
+/* import Signup from './Components/Signup/Signup'; */
 
 /* Member Edit */
 import MemberEditPage from './Components/MemberEdit/MemberEditPage';
@@ -25,11 +24,6 @@ import PostDetail from './Components/PostDetail/PostDetail';
 import PendingPostDetail from './Components/PostDetail/PendingPostDetail';
 import PostRegist from './Components/PostRegist/PostRegist';
 
-/* Gallery */
-import InvestBoardPage from './Components/Page/InvestBoardPage';
-import Gallery01 from './Components/Page/Gallery01';
-
-
 /* Admin Components */
 import Admin from './Components/Admin/Admin';
 import AdminBoardList from './Components/Admin/AdminBoardList';
@@ -37,12 +31,8 @@ import AdminPostApprove from './Components/Admin/AdminPostApprove';
 import AdminMemberList from './Components/Admin/AdminMemberList';
 import AdminCompanyList from './Components/Admin/AdminCompanyList';
 import AdminPostList from './Components/Admin/AdminPostList';
-import AdminCommentList from './Components/Admin/AdminCommentList';
-// import AdminEditUser from './Components/Admin/AdminEditUser';
-// import AdminEditPost from './Components/Admin/AdminEditPost';
-import Header from './Components/Header';
 
-
+/* Social Login Redirection */
 import KakaoRedirection from './Components/Login/KakaoRedirection';
 import NaverRedirection from './Components/Login/NaverRedirection';
 
@@ -61,62 +51,24 @@ import CompanyWrite from './Components/CompanyUpload/CompanyWrite';
 import BusinessNumberCheck from './Components/CompanyUpload/BusinessNumberCheck';
 
 /* 결제안내 페이지 */
-
 import PaymentInfoPage from './Components/Page/PaymentInfoPage';
+
+import ScrollToTop from './Hook/ScrollToTop';
 
 const App = () => {
 
-    /*------------------------------------------------*\
-                      .env console.log
-    \*------------------------------------------------*/
-    /* console.log('process.env.NODE_ENV :',process.env.NODE_ENV); */
-    /* console.log('process.env.REACT_APP_BASEURL :',process.env.REACT_APP_BASEURL);
-    console.log('process.env.REACT_APP_KAKAOURI :',process.env.REACT_APP_KAKAOURI);
-    console.log('process.env.REACT_APP_NAVERURI :',process.env.REACT_APP_NAVERURI);
-    console.log('process.env.REACT_APP_TEST :',process.env.REACT_APP_TEST);
-    console.log('process.env.REACT_APP_KAKAOKEY :',process.env.REACT_APP_KAKAOKEY); */
+    
 
-    const dispatch = useDispatch();
+    /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
-    const userUid = sessionStorage.getItem('userUid');
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {
         Authorization: `${accessToken}`
     }
-    /* const keyData = boardData?.[0]?.key; */
-    /* const storeData = useSelector((state) => state.reducer); */
-    /* console.log('rdxTest',rdxTest); */
-    /* console.log('app.js', categoryData); */
 
-    /* console.log('app.js', keyData); */
-    
-    /* console.log('app.js',storeData); */
-  
-    /* useEffect(() => {
-        axios.get(`${baseURL}/v1/board/`)
-            .then(response => {
-                const titles = response.data?.query;
-                dispatch(setBoardData(titles));
-            })
-            .catch(error => {
-                console.error('게시판 데이터를 가져올 수 없습니다.', error);
-            });
-    }, []); */
-    /* const boardDataString = localStorage.getItem('adminBoardData');
-    const boardData = JSON.parse(boardDataString);
-    const categoryData = JSON.parse(boardData.query[6].categoryList);
-
-    const postDataString = localStorage.getItem('adminPostData');
-    const postData = JSON.parse(postDataString); */
+    /* Redux State */
     const boardData = useSelector((state) => state.reducer.adminBoardData);
-    const testData = useSelector((state) => state.reducer);
-    console.log('testData',testData);
-    
-    /* console.log('App.js > boardData',boardData); */
-    /* console.log('App.js > postData',postData); */
-
-    /* console.log('boardData',boardData[6]?.categoryList); */
-
+    const dispatch = useDispatch();
 
     /*-----------------------------------------------------*\
                           투자 카테고리 
@@ -167,7 +119,7 @@ const App = () => {
         
         return mapping[koreanName] || koreanName;
 
-      });
+    });
 
     /*-----------------------------------------------------*\
             투자 게시판 카테고리 (추후 카테고리 분류를 위해)
@@ -179,13 +131,12 @@ const App = () => {
     if (typeof investmentCategoryData === 'string' && investmentCategoryData.length > 0) {
         try {
             parsedInvestmentCategoryData = JSON.parse(investmentCategoryData);
-            /* console.log('성공', parsedInvestmentCategoryData); */
         } catch (error) {
             console.error('투자 게시판 JSON 파싱 오류', error);
         }
     }
 
-    const investmentEnglishCategories = parsedInvestmentCategoryData.map((koreanName) => {
+    /* const investmentEnglishCategories = parsedInvestmentCategoryData.map((koreanName) => {
         const mapping = {
             '제조' : 'manufacturing',
             'IT' : 'it',
@@ -199,11 +150,11 @@ const App = () => {
             '엔터테이먼트' : 'entertainment',
             '교육' : 'education',
             '부동산' : 'realestate'
-        };
+    };
         
         return mapping[koreanName] || koreanName;
 
-    });
+    }); */
 
 
     /*-----------------------------------------------------*\
@@ -214,39 +165,18 @@ const App = () => {
     /* console.log('englishCategories',englishCategories); */
     /* console.log('boardData',boardData); */
     /* console.log('investmentEnglishCategories',investmentEnglishCategories); */
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                /* const adminUserResponse = await axios.get(`${baseURL}/v1/users`, { headers });
-                dispatch(setAdminUserData(adminUserResponse.data?.query)); */
-
                 const adminBoardResponse = await axios.get(`${baseURL}/v1/board?query=&pageRows=&page=`, { headers });
                 dispatch(setAdminBoardData(adminBoardResponse.data?.query));
-                /* const adminBoardData = adminBoardResponse.data?.query; */
-                /* console.log('adminBoardData',adminBoardData); */
-                /* const adminPostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers });
-                dispatch(setAdminPostData(adminPostResponse.data?.query)) */
-                /* const adminPostData = adminPostResponse.data?.query; */
-                /* console.log('adminPostData',adminPostData); */
-
-                /* localStorage.clear(); */
-                /* localStorage.setItem('adminUserData', JSON.stringify(adminUserResponse.data?.query)); */
-                /* localStorage.setItem('adminBoardData', JSON.stringify(adminBoardResponse.data?.query)); */
-                /* localStorage.setItem('adminBoardData', JSON.stringify(adminBoardResponse.data)); */
-                /* localStorage.setItem('adminPostData', JSON.stringify(adminPostResponse.data?.query)); */
             } catch (error) {
                 console.error('Admin User/Post 데이터 가져오기 실패', error);
             }
         }
         fetchData();
     }, []);
-    /* console.log('test' ,boardData.query[6].key); */
-    /* console.log('categoryData' ,categoryData); */
-    /* const categoryData1 = JSON.parse(boardData.query[6].categoryList); */
-    /* console.log('categoryData1',categoryData1[1]); */
-
-
-
 
     /*-----------------------------------------------------*\
                     페이지 이동 로그 테스트
@@ -280,59 +210,22 @@ const App = () => {
 
     return (
         <Router>
+            <ScrollToTop/>
             <Routes>
-                    
+                
                 {/* Home, Login, Signup */}
-                <Route exact path="/" element={<Home /* parsedCategoryData={parsedCategoryData} */ parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
+                <Route exact path="/" element={<Home parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
                 <Route exact path="/login" element={<Login />}></Route>
                 <Route exact path="/member_type" element={<MemberType />}></Route>
-                <Route exact path="/sign_up" element={<Signup/>}></Route>
+                {/* <Route exact path="/sign_up" element={<Signup/>}></Route> */} {/* [보류] 소셜로그인 */}
                 <Route exact path="/myinfo" element={<MemberEditPage />}></Route>
 
                 {/* Social Login Redirection */}
                 <Route exact path='/auth/kakao/callback' element={<KakaoRedirection />} />
                 <Route exact path='/auth/naver/callback' element={<NaverRedirection />} />
 
-
-                {/* Gallery */}
-                {/* <Route exact path='/gallery/dining' element={<CategoryPage categoryList="dining"/>}></Route>
-                <Route exact path='/gallery/manufacturing' element={<CategoryPage categoryList="manufacturing"/>}></Route>
-                <Route exact path='/gallery/sales' element={<CategoryPage categoryList="sales"/>}></Route>
-                <Route exact path='/gallery/rental' element={<CategoryPage categoryList="rental"/>}></Route>
-                <Route exact path='/gallery/car' element={<CategoryPage categoryList="car"/>}></Route>
-                <Route exact path='/gallery/other' element={<CategoryPage categoryList="other"/>}></Route> */}
-
-                {/* {parsedCategoryData.length > 0 && parsedCategoryData.map((item, index) => (
-                    <Route key={index} path={`/${boardData[6]?.key}/${index}`} element={<InvestBoardPage categoryIndex={index} parsedCategoryData={parsedCategoryData[index]}/>}
-                    />             
-                ))} */}
-
-                {/* <Route exact path='/investment/0' element={<CategoryPage categoryList="manufacturing"/>}></Route> */}
-
-                {/* {boardData.length > 0 && categoryData.length > 0 && boardData.map((item, index) => {
-                    const path = `/${boardData?.[0]?.key}/${categoryData[index]}`;
-                    console.log(`Route path: ${path}`);
-                    return (
-                        <Route
-                            key={index}
-                            exact
-                            path={path}
-                            element={<CategoryPage index={index} categoryList={categoryData[index]} />}
-                        />
-                    );
-                })} */}
-                
-
-                {/* <Route exact path='/:categoryList' element={<CategoryPage categoryList="dining"/>}></Route>
-                <Route exact path='/:key' element={<CategoryPage categoryList="manufacturing"/>}></Route>
-                <Route exact path='/sales' element={<CategoryPage categoryList="sales"/>}></Route>
-                <Route exact path='/rental' element={<CategoryPage categoryList="rental"/>}></Route>
-                <Route exact path='/car' element={<CategoryPage categoryList="car"/>}></Route>
-                <Route exact path='/other' element={<CategoryPage categoryList="other"/>}></Route> */}
-
                 {/* Community */}
                 <Route exact path="/community" element={<CommunityViewAll parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
-                {/* <Route exact path="/community/daily" element={<DetailCommunity parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route> */}
 
                 {communityEnglishCategories.length > 0  && communityEnglishCategories.map((item, index) => {
                     const path = `/community/${item}`
@@ -342,7 +235,7 @@ const App = () => {
                             key={index}
                             exact
                             path={path}
-                            element={<DetailCommunity num={index} koreanCategory={parsedCommunityCategoryData[index]} /* parsedCommunityCategoryData={parsedCommunityCategoryData} *//>}
+                            element={<DetailCommunity num={index} koreanCategory={parsedCommunityCategoryData[index]}/>}
                         />
                     )
                 })}
@@ -351,10 +244,6 @@ const App = () => {
                 <Route exact path="/investment/ongoing" element={<OngoingBoard koreanCategory={parsedInvestmentCategoryData}/>}></Route>
                 <Route exact path="/investment/deadline" element={<DeadlineBoard koreanCategory={parsedInvestmentCategoryData}/>}></Route>
 
-
-
-
-                
                 {/* Investment Post 보류 */}
                 <Route exact path="/investment/:condition/:id" element={<PostDetail/>} />
                 <Route exact path="/approve/:key/pending/:id" element={<PendingPostDetail/>} />
@@ -367,40 +256,14 @@ const App = () => {
                 <Route exact path="/business_number_check" element={<BusinessNumberCheck />}></Route>
                 <Route exact path="/payment_info_page" element={<PaymentInfoPage />}></Route>
 
-                {/* 게시판 */}
-                
-
                 {/* Admin */}
                 <Route exact path="/admin" element={<Admin />}></Route>
-                {/* <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route> */}
                 <Route exact path="/admin/board_list" element={<AdminBoardList />}></Route>
                 <Route exact path="/admin/post_approve" element={<AdminPostApprove/>}></Route>
                 <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route>
                 <Route exact path="/admin/company_list" element={<AdminCompanyList/>}></Route>
                 <Route exact path="/admin/post_list" element={<AdminPostList/>}></Route>
-                <Route exact path="/admin/comment_list" element={<AdminCommentList/>}></Route>
-                {/* <Route exact path="/admin/member_edit/:index" element={<AdminEditUser/>}></Route>
-                <Route exact path="/admin/post_edit/:index" element={<AdminEditPost/>}></Route> */}
-                {/* <Route exact path="/admin/post_edit/:key/:index" element={<AdminEditPost/>}></Route> */}
                 
-
-                {/* Admin */}
-                {/* <Route exact path="/admin" element={<Admin />}></Route>
-                <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route>
-                <Route exact path="/admin/board_list" element={<AdminBoardList/>}></Route>
-                <Route exact path="/admin/post_list" element={<AdminPostList/>}></Route>
-
-                <Route exact path="/admin/member_edit/:index" element={<AdminEditUser/>}></Route>
-                <Route exact path="/admin/post_edit/:index" element={<AdminEditPost/>}></Route> */}
-                {/* <Route exact path="/admin/post_edit/:key/:index" element={<AdminEditPost/>}></Route> */}
-                
-
-
-
-
-
-                
-
             </Routes>
         </Router>
     );

@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-/* Redux */
-import { useSelector, useDispatch } from 'react-redux';
-/* import { logout, setGalleryCategoryData } from '../store/actions/actions'; */
-
 /* React-Router-Dom */
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -33,13 +29,13 @@ import {
 } from './StyledComponents/StyledHeader';
 
 /* Image */
-import Logo from '../assets/image/logo.png';
 import { ReactComponent as LogoSvg } from '../assets/image/logo.svg';
 
-const Header = ({parsedCommunityCategoryData}) => {
-    const navigate = useNavigate();
-    /* const dispatch = useDispatch(); */
+const Header = (/* {parsedCommunityCategoryData} */) => {
 
+    const navigate = useNavigate();
+
+    /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
     const userUid = sessionStorage.getItem('userUid');
@@ -48,13 +44,6 @@ const Header = ({parsedCommunityCategoryData}) => {
     }
 
     const [userName, setUserName] = useState(null);
-    const [menuItems, setMenuItems] = useState([]);
-
-
-    const testData = useSelector((state) => state.reducer)
-
-    /* console.log('testData',testData); */
-    /* console.log('parsedCommunityCategoryData', parsedCommunityCategoryData); */
 
      /* 유저 정보 가져오기 */
      useEffect(() => {
@@ -81,45 +70,6 @@ const Header = ({parsedCommunityCategoryData}) => {
          /* dispatch(logout()); */
          navigate("/login");
      };
-
-
-    
-    /* const storeData = useSelector((state) => state.reducer.galleryListData);
-    console.log('storeData',storeData); */
-
-    
-    /* 메뉴 카테고리에 뿌려보기 home.js 전역관리 */
-    const boardData = useSelector((state) => state.reducer?.adminBoardData);
-
-    /* console.log('boardData',boardData[6]?.categoryList); */
-    /* console.log('boardData-test',boardData[6]?.key); */
-
-    /* const categoryData = boardData[6]?.categoryList || [];
-
-    let parsedCategoryData = [];
-
-    if (typeof categoryData === 'string' && categoryData.length > 0) {
-        try {
-            parsedCategoryData = JSON.parse(categoryData);
-        } catch (error) {
-            console.error('JSON 파싱 오류:', error);
-        }
-    } */
-
-    /* console.log('categoryData',parsedCategoryData); */
-
-    /* const sessionCategoryData = JSON.parse(sessionStorage.getItem('CategoryData'));  */
-
-    /* const filteredItems = boardData.filter(item => {
-        const key = item.key;
-        return ['economic', 'free', 'humor', 'investment', 'marketing'].includes(key);
-      }); */
-
-    /* console.log('filteredItems',filteredItems); */
-      
-    /* console.log('categoryData',categoryData); */
-
-
 
     /*-----------------------------------------------------*\
                     자유 게시판 카테고리 변환
@@ -274,7 +224,6 @@ const Header = ({parsedCommunityCategoryData}) => {
 
                             <MenuItem>
                                 <p to="#" onClick={userUid ? checkCompanyRegistration : navigateLogin}>글쓰기</p>
-                                {/* <Link to="/payment_info_page">글쓰기</Link> */}
                             </MenuItem>
                             <MenuItem>
                                 <Link to="/payment_info_page">결제안내</Link>
