@@ -403,7 +403,7 @@ const NameBox=styled.div`
         transition: .3s ease-in-out;
     }
 `
-
+/* 테스트 */
 export const CategorySwiper = () => {
     const categoryImage  = [
         { id: 1, name: "외식", icon: FoodIcon},
