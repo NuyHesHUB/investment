@@ -8,6 +8,8 @@ const NaverRedirection = () => {
     const code = new URL(document.location.toString()).searchParams.get('code');
     console.log('code',code);
 
+  
+
     useEffect(() => {
         const fetchData = async () => {
             try{
@@ -19,7 +21,24 @@ const NaverRedirection = () => {
                 const accessToken = response.data.accessToken;
                 const refreshToken = response.data.refreshToken;
                 const b_no = response.data.userData.b_no;
+                const uid = userUid === null ? '' : userUid
+                /* 접속(login) 로그 */
+             
                 
+                // axios.get(`${baseURL}/v1/users/?query=&pageRows&page`, { accessToken }).then((res) => {
+                //     console.log(res.data,"resresres")
+                //     if (res.data.totalRows === 0) {
+                //     // alert("회원가입 테스트")
+                //     }
+                // }).catch(() => {
+                //     console.error("error");
+                // })
+                 
+                // const idid = "4566d49af8449d941dcb2d702d535e12f1b1234a5b9a45e4b5f4c588049faf33"
+                // if (idid === userUid) {
+                //     alert("같아요")
+                // }
+
                 sessionStorage.setItem('userUid', userUid);
                 sessionStorage.setItem('accessToken', accessToken);
                 sessionStorage.setItem('refreshToken', refreshToken);
@@ -34,13 +53,39 @@ const NaverRedirection = () => {
                 } else {
                     navigate("/");
                 }
-
+               
+    //FIXME:FIXME:TODO:TODO:TODO: 500 internal server error 해결FIXME:FIXME:TODO:TODO:TODO:
+                ///// 접속 로그 /////
+                if (userUid) {
+                    await axios.post(`${baseURL}/v1/log/access/form`, { userUid: uid }).then((res) => {
+                        console.log(res,"logloglog테스트임")
+                    }).catch((error) => {
+                        console.log("접속로그에러에러에러",error)
+                    })
+                } else {
+                    console.log("Djqd업음업음", uid,'asdasd')
+                }
             } catch(error) {
                 console.error('실패');
             }
         }
         fetchData();
     }, []);
+
+    // useEffect(() => {
+    //     const accessLog = async () => {
+    //         if (userUid) {
+    //             await axios.post(`${baseURL}/v1/log/access/form`, { userUid: uid }).then((res) => {
+    //                 console.log(res,"logloglog")
+    //             })
+    //             console.log("테스트임테스트임테스트임")
+    //         } else {
+    //             console.log("Djqd업음업음", uid,'asdasd')
+    //         }
+    //     }
+    //     accessLog();
+    // }, [])
+
 
     return null;
 

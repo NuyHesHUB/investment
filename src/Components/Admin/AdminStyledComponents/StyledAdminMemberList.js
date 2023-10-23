@@ -4,6 +4,19 @@ export const Wrap = styled.div`
   //modify & delete btn
   .modifyBtn {margin-right: 5px; background: #73bbff;}
   .deleteBtn {background: #ff7373;}
+  @media screen and (max-width: 768px) {
+    td:nth-child(1):before {content:'group';}
+    td:nth-child(2):before {content:'isAdmin';}
+    td:nth-child(3):before {content:'local';}
+    td:nth-child(4):before {content:'kakao';}
+    td:nth-child(5):before {content:'naver';}
+    td:nth-child(6):before {content:'id';}
+    td:nth-child(7):before {content:'email';}
+    td:nth-child(8):before {content:'nickname';}
+    td:nth-child(9):before {content:'phone';}
+    td:nth-child(10):before {content:'regDt';}
+    td:nth-child(11):before {content:'수정';}
+  }
 `
 
 export const PageNation = styled.div`

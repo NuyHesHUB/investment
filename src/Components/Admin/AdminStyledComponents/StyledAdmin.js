@@ -13,6 +13,12 @@ export const StyledAdminFrame=styled.div`
         border: none;
         outline: none;
     }
+
+
+    @media (max-width: 768px) {
+        width: 768px;
+        background: #000;
+    } 
 `
 export const StyledAdminHeader=styled.header`
     /* h1{
@@ -21,6 +27,9 @@ export const StyledAdminHeader=styled.header`
         line-height: 0;
         overflow: hidden;
     } */
+    @media (max-width: 768px) {
+        max-width: 768px;
+    } 
 `
 export const StyledAdminTop=styled.div`
     position: fixed;
@@ -48,6 +57,14 @@ export const StyledAdminTop=styled.div`
         display: flex;
         align-items: center;
         padding: 10px;
+    }
+
+    @media (max-width: 768px) {
+        h3 {
+            margin: 0 !important;
+            width: 100%; 
+            height: 100%; 
+        } 
     }
 `
 export const StyledAdminNav=styled.nav`
@@ -104,5 +121,30 @@ export const StyledNavGnb=styled.div`
     }
     a{
         color: #000;
+    }
+    .close-btn {display: none;}
+    @media (max-width: 768px) {
+        transform: translateX(-1500px);
+        background: pink;
+        transition: transform .2s;
+        z-index: -1;
+        &.active {
+            width: calc(100vw - 90px) ;
+            /* min-width: 768px; */
+            /* min-width: 220px; */
+            transform: translateX(0px)
+        }
+        .close-btn.active {
+            display: block;
+            width: 100px;
+            margin: 0 auto;
+            background: none;
+            background: blue;
+            color: red;
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
     }
 `

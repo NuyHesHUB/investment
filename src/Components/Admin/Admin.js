@@ -87,6 +87,8 @@ const Admin = () => {
     /* const [visibleDiv, setVisibleDiv] = useState(2); */ 
 
     const [visibleDiv, setVisibleDiv] = useState(parseInt(localStorage.getItem('selectedMenu')) || 2);
+    const [mobileMenu, setMobileMenu] = useState(false);
+    console.log(mobileMenu, "모바일메뉴테스트")
     const userGroup = sessionStorage.getItem('userGroup');
     useEffect(() => {
       localStorage.setItem('selectedMenu', visibleDiv.toString());
@@ -143,17 +145,22 @@ const Admin = () => {
                             <StyledAdminNav>
                                 <AdminNavUl>
                                     <li>
-                                        <button onClick={() => setVisibleDiv(2)}>
+                                        <button onClick={() => {setVisibleDiv(2); setMobileMenu(true)}}>
                                             <BsPersonCircle/>
                                         </button>
                                         <div>
-                                            <StyledNavGnb className={`div ${visibleDiv === 2 ? 'visible' : ''}`}>
+                                            <StyledNavGnb className={`div ${visibleDiv === 2 ? 'visible' : ''} ${mobileMenu ? "active" : ''}`}>
+                                                
                                                 <h3>회원관리</h3>
                                                 <ul style={{marginTop:'20px'}}>
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/member_list">회원관리</Link></li>
                                                     {/* <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link>접속자집계</Link></li> */}
                                                     {/* <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link>접속자검색</Link></li> */}
                                                 </ul>
+                                                <button 
+                                                onClick={() => setMobileMenu(false)}
+                                                className={mobileMenu ? "close-btn active" : 'close-btn'}
+                                                >X</button>
                                             </StyledNavGnb>
                                         </div>
                                     </li>
@@ -162,7 +169,7 @@ const Admin = () => {
                                             <AiOutlineUnorderedList/>
                                         </button>
                                         <div>
-                                            <StyledNavGnb className={`div ${visibleDiv === 3 ? 'visible' : ''}`}>
+                                            <StyledNavGnb className={`div ${visibleDiv === 3 ? 'visible' : ''} ${mobileMenu ? "active" : ''}`}>
                                                 <h3>게시판관리</h3>
                                                 <ul style={{marginTop:'20px'}}>
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/board_list">게시판관리</Link></li>
@@ -170,6 +177,10 @@ const Admin = () => {
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/post_list">게시물관리</Link></li>
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/comment_list">댓글관리</Link></li>
                                                 </ul>
+                                                <button 
+                                                onClick={() => setMobileMenu(false)}
+                                                className={mobileMenu ? "close-btn active" : 'close-btn'}
+                                                >X</button>
                                             </StyledNavGnb>
                                         </div>
                                     </li>
@@ -178,11 +189,15 @@ const Admin = () => {
                                             <BsFillBuildingFill/>
                                         </button>
                                         <div>
-                                            <StyledNavGnb className={`div ${visibleDiv === 4 ? 'visible' : ''}`}>
+                                            <StyledNavGnb className={`div ${visibleDiv === 4 ? 'visible' : ''} ${mobileMenu ? "active" : ''}`}>
                                                 <h3>업체관리</h3>
                                                 <ul style={{marginTop:'20px'}}>
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/company_list">업체관리</Link></li>
                                                 </ul>
+                                                <button 
+                                                onClick={() => setMobileMenu(false)}
+                                                className={mobileMenu ? "close-btn active" : 'close-btn'}
+                                                >X</button>
                                             </StyledNavGnb>
                                         </div>
                                     </li>

@@ -1,9 +1,41 @@
 import React, { useState } from 'react';
 
 import styled from 'styled-components';
-const SearchFormWrap = styled.div`
+export const SearchFormWrap = styled.div`
   .none {display: none;}
+  select {margin-left: 7px; height: 20px;}
+ ///// 검색 박스 /////
+ .left-box {
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+  //상태값 검색
+  .left-box .search-status-box,
+  .left-box .search-group-box {
+    display: flex;
+    align-items: center;
+    input {margin: 0 3px 0 8px;}
+  }
+  .search-btn {
+    border: none;
+    height: 23px; 
+    padding: 2px 5px; 
+    border-radius: 3px; 
+    cursor: pointer;
+    background: #cbcdd4; //임시색
+    color: #fff;
+  }
+  .search-input {
+    margin-right: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    padding: 3px 5px;
+  }
 `
+
+
 const SearchForm = (props) => {
   const [status, setStatus] = useState([]); //status filter
   const [group, setGroup] = useState([]); //group filter

@@ -4,8 +4,13 @@ export const Wrap = styled.div`
   .createBtn {margin-right: 5px;}
   //modify & delete btn
   table input {width: 100%;}
+  td {padding: 2px 5px;}
+  th:nth-child(1) {width: 13%;}
+  th:nth-child(2) {width: 7%;}
+  th:nth-child(3) {width: 20%;}
+  th:nth-child(4) {width: 53%;}
+  th:last-child {width: 7%;}
 `
-
 export const PopUpWrap = styled.div`
   display: none;
   &.active{

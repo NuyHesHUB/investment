@@ -5,6 +5,7 @@ import { CommonStyleFrame, TableFrame, } from "./AdminStyledComponents/StyledCom
 import { Wrap } from "./AdminStyledComponents/StyledAdminCommentList"
 ///// import component /////
 import Admin from "./Admin"
+import SearchForm from "./SearchForm"
 import Pagenation from "./Pagenation"
 
 const CommentList = () => {
@@ -40,7 +41,7 @@ const CommentList = () => {
     <>
     <Admin />
     <CommonStyleFrame>
-    <Wrap>
+      <Wrap>
         <p className='title'>댓글관리<br />(미완성)</p>
         <ul className="top">
           <li className="left-box">
@@ -133,7 +134,7 @@ const CommentList = () => {
                     </td>
                     <td>
                       <button 
-                        className='view' 
+                        className='deleteBtn' 
                         // onClick={() => postToShow(item.id)}
                       >삭제하기</button>
                     </td>
@@ -144,11 +145,9 @@ const CommentList = () => {
           </table>
         </TableFrame>
         {/* <Pagenation page={page} setPage={setPage} pageRows={pageRows} setPageRows={setPageRows} totalRows={totalRows} setTotalRows={setTotalRows} endPage={endPage} count={count} setCount={setCount} setEndPage={setEndPage} /> */}
-        
       </Wrap>
     </CommonStyleFrame>
     </>
   )
-
 }
 export default CommentList;

@@ -15,6 +15,7 @@ const AdminMemberList = () => {
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
+  // const uid = userUid === null ? '' : userUid
   const headers = {
     Authorization: `${accessToken}`
   }
@@ -49,16 +50,19 @@ const AdminMemberList = () => {
       console.error("error");
     })
   }, [page, pageRows]);
+
+  useEffect(() => {
+    axios.get(`${baseURL}/v1/users/123456`, { headers }).then((res) => {
+    }).catch(() => {
+      console.error("error");
+    })
+  }, [page, pageRows]);
   
   const changePageSize = (e) => {
     setPageRows(e.target.value)
     setPage(1)
     setCount(0)
   }
-  
- 
-  console.log("status바뀜", status)
-  console.log("group바뀜", group)
 
   ///////////////////////
   ///// 수정 팝업창 /////
@@ -67,12 +71,14 @@ const AdminMemberList = () => {
   const [idx, setIdx] = useState(0);
   const [open, setOpen] = useState(false);
   // 수정 팝업창 열기
-  const modifyOpen = (i) => {
+  const modifyOpen = (index) => {
     setOpen(true)
-    setIdx(i)
+    setIdx(index)
   }
+  // console.log( memberData[1],"인덱스테스ㅡ트",idx)
   // 수정 btn Click
-  const modifyBtnClick = () => {
+  const modifyBtnClick = (uid) => {
+    console.log("인덱스테스ㅡ트",idx,memberData[idx])
     if (window.confirm("수정하시겠습니까?")) {
       axios.patch(`${baseURL}/v1/users/modify/${userUid}`, memberData[idx], { headers }).then((res)=> {
         alert("수정하였습니다.")
@@ -80,6 +86,7 @@ const AdminMemberList = () => {
         setOpen(false)
       }).catch((error)=> {
         console.log(error)
+        alert("에러에러")
       })
     }
   }
@@ -140,9 +147,9 @@ const AdminMemberList = () => {
                 </tr>
               </thead>
               <tbody>
-              {memberData.map((item,i) => {
+              {memberData.map((item,index) => {
                 return(
-                    <tr key={i}>
+                    <tr key={index}>
                       <td>
                         {item.group}
                       </td>
@@ -176,7 +183,7 @@ const AdminMemberList = () => {
                       <td>
                         <button 
                           className='modifyBtn' 
-                          onClick={() => modifyOpen(i)}
+                          onClick={() => modifyOpen(index)}
                         >수정</button>
                       </td>
                     </tr>
@@ -198,7 +205,8 @@ const AdminMemberList = () => {
                 <div className="popup-top">
                   <button
                     className="modify-btn"
-                    onClick={() => modifyBtnClick(memberData[idx].businessNum)}
+                    onClick={() => modifyBtnClick()}
+                    // onClick={() => modifyBtnClick(memberData[idx].uid)}
                   >수정</button>
                   <button
                     className="cancel-btn"
@@ -209,13 +217,36 @@ const AdminMemberList = () => {
                   <table>
                     <tbody>
                       <tr>
-                        <th>id</th>
-                        <td>{memberData[idx].group}</td>
+                        <th>group</th>
+                        <td>
+                          <select 
+                              name="group"
+                              value={memberData[idx].group}
+                              onChange={(e) => inputChange(e, idx)}
+                            >
+                              <option value="일반">일반</option>
+                              <option value="업체">업체</option>
+                              <option value="관리자">관리자</option>
+                            </select>
+                          </td>
                       </tr>
                       <tr>
                         <th>isAdmin</th>
                         <td>
-                          {memberData[idx].isAdmin}
+                          {/* <input 
+                              type="text" 
+                              name="isAdmin"
+                              value={memberData[idx].isAdmin}
+                              onChange={(e) => inputChange(e, idx)}
+                            /> */}
+                            <select 
+                              name="isAdmin"
+                              value={memberData[idx].isAdmin}
+                              onChange={(e) => inputChange(e, idx)}
+                            >
+                              <option value="Y">Y</option>
+                              <option value="N">N</option>
+                            </select>
                         </td>
                       </tr>
                       <tr>

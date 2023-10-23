@@ -6,13 +6,12 @@ import {Wrap, PageNation} from "./AdminStyledComponents/StyledAdminPostApprove"
 import { CommonStyleFrame, TableFrame } from "./AdminStyledComponents/StyledCommon"
 ///// import component /////
 import Admin from "./Admin"
+import SearchForm from "./SearchForm"
 import Pagenation from "./Pagenation"
 
 const AdminPostApprove = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
   const navigate = useNavigate();
-
-
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
@@ -88,20 +87,11 @@ const AdminPostApprove = () => {
         <Wrap>
           <p className='title'>승인목록</p>
           <ul className="top">
-            <li className="left-box">
-              <div>
-                <input 
-                  type="search" 
-                  placeholder='검색' 
-                  className='search-input' 
-                />
-                <input 
-                  type="submit" 
-                  value='검색' 
-                  className='search-btn' 
-                />
-              </div>
-            </li>
+            <SearchForm 
+              statusNone={true} 
+              brdKeyNone={true}
+              groupNone={true}
+            />
             <li className="right-box">
               <select
                 className='page-size'
@@ -171,10 +161,11 @@ const AdminPostApprove = () => {
                         {item.content}
                       </td>
                       <td>
-                        {item.regDt}
+                        {item.regDt.split("T")[0]} {item.regDt.split("T")[1].slice(0,8)}
                       </td>
                       <td>
                         <button
+                          className="detailBtn"
                           onClick={() => postToShow(item.id)}
                         >상세보기</button>
                       </td>
@@ -188,10 +179,6 @@ const AdminPostApprove = () => {
         </Wrap>
       </CommonStyleFrame>
     </>
-
-
   )
-
-
 }
 export default AdminPostApprove;

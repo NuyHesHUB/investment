@@ -1,17 +1,12 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  /* background: #b2bfd4; */
   width: 700px;
   margin: 0 auto;
   h2.title {
     text-align: center;
     padding-bottom: 50px;
   }
-  /* form {
-    width: 700px;
-    margin: 0 auto;
-  } */
   label {
     display: block;
     margin-bottom: 3px;
@@ -75,7 +70,6 @@ export const Container = styled.div`
     justify-content: space-between;
   }
   .attachPreview:last-child {margin-bottom: 0;}
-
   .attach_del_btn {
     border: none;
     background: none;

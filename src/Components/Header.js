@@ -202,7 +202,7 @@ const Header = ({parsedCommunityCategoryData}) => {
             : navigate('#')
         } else {
             //userGroup이 업체 or 관리자일 경우, 글쓰기 페이지 이동
-            navigate('/company_write')
+            navigate('/company_write', {replace: true})
         }
     }
     // const checkCompanyRegistration = () => {

@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 export const PagenationWrap = styled.div`
 /* background: palegreen; */
-  width: 1000px;
+  width: 80%;
+  min-width: 1000px; // 임시 넓이
   margin: 30px 0;
   display: flex;
   justify-content: center;

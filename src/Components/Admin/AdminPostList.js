@@ -133,7 +133,7 @@ const AdminPostList = () => {
                       </td>
                       <td>
                         <button 
-                          className='view' 
+                          className="detailBtn"
                           onClick={() => postToShow(item.id)}
                         >상세보기</button>
                       </td>

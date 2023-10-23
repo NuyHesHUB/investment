@@ -109,8 +109,7 @@ const Login = () => {
             console.log('Updated userUid:', userUid);
             sessionStorage.setItem('userUid', userUid);
 
-            /* 접속(login) 로그 */
-            await axios.post(`${baseURL}/v1/log/access/form`, { userUid: uid })
+           
 
             if (userData.group === '관리자' && userData.isAdmin === 'Y') {
                 navigate("/admin") 

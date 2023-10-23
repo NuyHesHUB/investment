@@ -87,7 +87,7 @@ const PaymentInfoPage = () => {
             <Line />
             <TextBox>
               <span>
-                <span className='bold'>전화합니다아아아아 입금 은행과 입금자명 확인합니당<br /></span>
+                <span className='bold'>아래의 번호로 전화하여 입금은행과 입금자명을 확인합니당<br /></span>
                 전화번호: 010-1234-1234
               </span>
             </TextBox>
@@ -97,7 +97,7 @@ const PaymentInfoPage = () => {
             <Line />
             <TextBox>
               <span>
-                <span className='bold'>입금 확인이 완료되면 게시물이 승인됩니다.??????? <br /></span>
+                <span className='bold'>입금 확인이 완료되면 게시물이 승인됩니다 <br /></span>
                 어쩌구저쩌꾸
               </span>
             </TextBox>

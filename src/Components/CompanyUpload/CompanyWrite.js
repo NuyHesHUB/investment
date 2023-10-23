@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef  } from 'react';
-import { useNavigate  } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import ReactQuill , { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -13,6 +13,7 @@ import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
 import { PiFilePlusThin } from "react-icons/pi";
 import { BsTrash3 } from "react-icons/bs";
 
+
 const CompanyWrite = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
   ///// JWT /////
@@ -23,7 +24,7 @@ const CompanyWrite = () => {
     Authorization: `${accessToken}`
   }
   const navigate = useNavigate();
-
+  const location = useLocation();
   ///// page log /////
   useEffect(() => {
     axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"투자등록하기" }).then((res) => {
@@ -31,7 +32,6 @@ const CompanyWrite = () => {
     console.error(error)
   })
   }, []);
-
 
   const [content, setContent] = useState(''); // 내용부분
   const [asdf , setasdf] = useState()
@@ -107,13 +107,13 @@ const CompanyWrite = () => {
   }
     
   const handleContentChange = (value) => {
-    setContent(value);
+    setContent(value.replaceAll("'",""));
     setPostData({
       ...postData,
-      content: value
+      content: content
     });
-    console.log(content)
   };
+  
   ///// 에디터 모듈 설정 /////
   const modules = useMemo(() => {
     return {
@@ -159,6 +159,15 @@ const CompanyWrite = () => {
     })
   }
 
+  const [title, setTitle] = useState('');
+  const handleTitleChange = (e, name) => {
+    const value = e.target.value
+    setTitle(value.replaceAll("'",""));
+    setPostData({
+      ...postData,
+      [name] : title
+    });
+  };
   const handleValueChange = (e, name) => {
     const value = e.target.value
     setPostData({
@@ -166,7 +175,11 @@ const CompanyWrite = () => {
       [name] : value
     });
   };
-
+  // setContent(value.replaceAll("'",""));
+  // setPostData({
+  //   ...postData,
+  //   content: content
+  // });
   ///// 첨부파일 /////
   const [selectedFilesName, setSelectedFilesName] = useState([]); //파일명 미리보기 / 좀이따 위로 올리기
   const handleFileChange  = async (e) => {
@@ -237,11 +250,7 @@ const CompanyWrite = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (window.confirm("등록하시겠습니까?")) {
-      setPostData({
-        ...postData,
-        content: content.replaceAll("'", "''")
-      }); // FIXME: 이러케 하면 되나
-      console.log(postData.content)
+      console.log(content,"등록버튼클릭테스트")
       await axios.post(`${baseURL}/v1/board/investment/post`, postData, { headers }).then((res) => {
         console.log("추가test")
         sessionStorage.removeItem('b_no');
@@ -249,6 +258,7 @@ const CompanyWrite = () => {
         navigate('/payment_info_page')
       }).catch((error) => {
         console.error(error)
+        console.log(content,"등록버튼클릭테스트*(에러_)")
         alert("error")
       })
     }
@@ -259,7 +269,7 @@ const CompanyWrite = () => {
       navigate(-1)
     }  
   }
-
+  
   return (
     <StyledFrame>
       <Header />
@@ -300,7 +310,8 @@ const CompanyWrite = () => {
                 className="form-control title" 
                 name="title" 
                 placeholder='제목을 입력해주세요'
-                onChange={(e) => handleValueChange(e, "title")} 
+                value={title || ""}
+                onChange={(e) => handleTitleChange(e, "title")} 
               />
             </div>
 
@@ -319,7 +330,7 @@ const CompanyWrite = () => {
             </div>
 
             {/********* 첨부파일 input *********/}
-            <div className="mb-3">
+            <div className="mb-3 attaches-cont">
               <label htmlFor="attaches" className="form-label attaches">
                 첨부파일
                 <div className='attaches-btn'>
@@ -343,7 +354,7 @@ const CompanyWrite = () => {
                 {selectedFilesName && selectedFilesName.map((item, index) => {
                   return(
                     <li className='attachPreview' key={index}>
-                      <span>{item} ///인덱스:{index}</span>
+                      <span>{item}</span>
                       <button 
                         className='attach_del_btn' 
                         onClick={(e) => attachDelete(e, index)}
@@ -373,7 +384,7 @@ const CompanyWrite = () => {
                 onClick={handleSubmit} 
                 disabled={
                   postData.title.length === 0 || 
-                  postData.content.length === 0 || 
+                  content.length === 0 || 
                   postData.extraField.investmentAmount.length === 0 ? 
                   true : 
                   false

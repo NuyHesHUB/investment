@@ -44,7 +44,7 @@ export const PriceCard = styled.div`
 export const Container = styled.section`
   /* background: palegreen; */
   min-width: 700px;
-  max-width: 950px;
+  max-width: 1000px;
   height: 950px; //임시
   margin: 200px auto;
   display: flex;
@@ -80,7 +80,7 @@ export const Line = styled.div`
 `
 export const TextBox = styled.div`
   /* background: skyblue; */
-  width: 460px;
+  width: 520px;
   height: 150px;
   display: flex;
   align-items: center;
