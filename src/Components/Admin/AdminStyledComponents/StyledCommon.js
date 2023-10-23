@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const CommonStyleFrame = styled.div`
-  
   *{padding: 0; margin: 0; box-sizing: border-box;}
   position: relative;
   padding: 90px 0 0 300px ;
@@ -38,8 +37,13 @@ export const CommonStyleFrame = styled.div`
 
   @media screen and (max-width: 768px) {
     max-width: 768px;
-    width: calc(100vw - 60px);
+    width: calc(100vw - 70px);
     padding: 90px 0 0 60px ;
+    ul.top {
+      width: calc(100vw - 70px);
+      max-width: 768px;
+      min-width: 300px;
+    }
     p.title {
       width: 130px;
       margin: 0 auto 60px;
@@ -52,8 +56,7 @@ export const CommonStyleFrame = styled.div`
 
 `
 export const TableFrame = styled.div `
-
-
+/* padding: 0 50px; */
 font-size: 14px;
   table {
     width: 80%;
@@ -75,31 +78,34 @@ font-size: 14px;
     table {
       display: block;
       border: none;
-      min-width: 300px;
     }
     thead {display: none;}
     /* tbody {border: 1px solid #000;} */
+    table, tr, tbody {
+      min-width: calc(100vw - 70px);
+    }
     tr {
+      width: 50%;
       display:block;
       margin-bottom:10px;
       border-top:none;
       border: 1px solid #000;
     }
     td {
-      display:block;
-      position:relative;
-      width: 100vw;
-      padding-left:50%;
-      border-width:0 0 1px 0;
+      display: block;
+      position: relative;
+      padding-left: 46%;
+      text-align: left;
+      border-width: 0 0 1px 0;
     }
     td:last-child {border: none;}
     td:before {
+      text-align: center;
       display:block;
       position:absolute;
       left:0;
       top:0;
       width:40%;
-      /* padding:10px 0; */
       height: 100%;
       background:#ccc;
     }

@@ -33,6 +33,9 @@ export const SearchFormWrap = styled.div`
     border: 1px solid #ccc;
     padding: 3px 5px;
   }
+
+  @media (max-width: 768px) {
+  }
 `
 
 

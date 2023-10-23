@@ -124,8 +124,8 @@ export const StyledNavGnb=styled.div`
     }
     .close-btn {display: none;}
     @media (max-width: 768px) {
-        transform: translateX(-1500px);
-        background: pink;
+        height: 100vh;
+        transform: translateX(-2500px);
         transition: transform .2s;
         z-index: -1;
         &.active {

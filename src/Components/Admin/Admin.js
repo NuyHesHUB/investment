@@ -165,7 +165,7 @@ const Admin = () => {
                                         </div>
                                     </li>
                                     <li>
-                                        <button onClick={() => setVisibleDiv(3)}>
+                                        <button onClick={() => {setVisibleDiv(3); setMobileMenu(true)}}>
                                             <AiOutlineUnorderedList/>
                                         </button>
                                         <div>
@@ -185,7 +185,7 @@ const Admin = () => {
                                         </div>
                                     </li>
                                     <li>
-                                        <button onClick={() => setVisibleDiv(4)}>
+                                        <button onClick={() => {setVisibleDiv(4); setMobileMenu(true)}}>
                                             <BsFillBuildingFill/>
                                         </button>
                                         <div>
