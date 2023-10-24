@@ -19,6 +19,12 @@ export const ADMIN_USER_DATA='ADMIN_USER_DATA';
 export const ADMIN_BOARD_DATA='ADMIN_BOARD_DATA';
 export const ADMIN_POST_DATA='ADMIN_POST_DATA';
 
+/* Ongoing 게시물 데이터 */
+export const ONGOING_POST_DATA='ONGOING_POST_DATA';
+
+/* Deadline 게시물 데이터 */
+export const DEADLINE_POST_DATA='DEADLINE_POST_DATA';
+
 /* PostCard (Ongoing) */
 export const ONGOING_POSTCARD='ONGOING_POSTCARD';
 

@@ -38,7 +38,9 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
+    const refreshToken = sessionStorage.getItem('refreshToken');
     const userUid = sessionStorage.getItem('userUid');
+
     const headers = {
         Authorization: `${accessToken}`
     }
@@ -53,11 +55,39 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                     const data = response.data?.query[0].nickname;
                     setUserName(data);
                 }).catch(error => {
-                    console.error('회원 이름 가져오기 실패', error);
+                    if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 만료되었습니다.') {
+                        console.log('로그인이 만료되었습니다.');
+                        const fetchData = async () => {
+                            try {
+                                const newHeaders  = {
+                                    refreshToken : `${refreshToken}`
+                                };
+                                const authResponse = await axios.post(
+                                    `${baseURL}/v1/authorize/token`, null , { headers: newHeaders }
+                                );
+
+                                /* console.log('authResponse', authResponse); */
+
+                                sessionStorage.removeItem('accessToken');
+
+                                const newAccessToken = authResponse.data.accessToken;
+
+                                sessionStorage.setItem('accessToken', newAccessToken);
+
+                            } catch (error) {
+                                console.error('auth 권한확인 실패', error);
+                                handleLogout();
+                            } /* 리프레시토큰은 7일 액세스토큰은 15분 */
+                        }
+                        fetchData();
+                            
+                    } else {
+                        console.error('회원 이름 가져오기 실패', error);
+                    }
                 });
          } 
      },[accessToken])
- 
+
      /* 로그아웃 하면 상태관리 로그아웃 & 토큰 삭제 */
      const handleLogout = (e) => {
          e.preventDefault();

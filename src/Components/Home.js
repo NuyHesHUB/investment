@@ -58,6 +58,7 @@ import {
 import PhoneImg from '../assets/image/banner-phone-img.png';
 import ServiceImg01 from '../assets/image/service-01.png';
 import ServiceImg02 from '../assets/image/service-02.png';
+import Loading from '../Effect/Loading';
 
 const Home = ({parsedCommunityCategoryData}) => {
 

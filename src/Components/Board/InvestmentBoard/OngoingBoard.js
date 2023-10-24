@@ -8,7 +8,7 @@ import axios from 'axios';
 
 /* Redux */
 import { useDispatch, useSelector } from 'react-redux';
-import { setOngoingPostCardCount } from '../../../store/actions/actions';
+import { setOngoingPostCardCount, setOngoingPostData } from '../../../store/actions/actions';
 
 /* Components */
 import Header from '../../Header';
@@ -23,6 +23,7 @@ import { BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap, MoreWrap, More
 import { ReactComponent as VisualImg } from './VisualImg.svg';
 
 import useScrollFadeIn from '../../../Hook/useScrollFadeIn';
+import Loading from '../../../Effect/Loading';
 
 
 
@@ -55,9 +56,21 @@ const InvestOngoingBoard = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
+    const postSaveData = useSelector((state) => state.reducer.ongoingPostData);
+    
+    
+    if (postSaveData.length > 0) {
+        console.log('리덕스 테스트 데이터 있음');
+    } else{
+        console.log('리덕스 테스트 데이터 없음');
+    }
 
+    console.log('테스트', postSaveData);
+
+    /*-----------------------------------------------*\
+                  PostCard 더보기 전역상태관리
+    \*-----------------------------------------------*/
     useEffect(() => {
-        /* window.scrollTo(0, 0); */
         const handlePopState = () => {
             const state = window.history.state;
             if (state) {
@@ -90,27 +103,33 @@ const InvestOngoingBoard = () => {
     })
     }, []);
 
-    console.log(uid, "userUid")
   
     /*-----------------------------------------------*\
                   investment post 데이터 API
     \*-----------------------------------------------*/
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                /* const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post?query&pageRows=&page=&category=&status=&condition=`, { headers }); */
-                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params });
-                const data = PostResponse.data?.query;
-                console.log('investPostResponse',data);
-                /* setInvestOngoingPostData(data.filter(item => item.condition === 'ongoing')); */
-                setInvestOngoingPostData(data);
-                setIsLoading(false);
-            } catch (error) {
-                console.error('investOngoingBoardData 데이터 가져오기 실패', error);
-                setIsLoading(false);
+        if (postSaveData.length > 0) {
+            setIsLoading(false);
+        } else {
+            const fetchData = async () => {
+                try {
+                    const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params });
+                    const data = PostResponse.data?.query;
+                    console.log('investPostResponse',data);
+                    /* setInvestOngoingPostData(data); */
+                    dispatch(setOngoingPostData(data));
+                    /* setIsLoading(false); */
+                    setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000); 
+                } catch (error) {
+                    console.error('investOngoingBoardData 데이터 가져오기 실패', error);
+                    setIsLoading(false);
+                }
             }
+            fetchData();
         }
-        fetchData();
+        
     },[])
 
     
@@ -121,37 +140,33 @@ const InvestOngoingBoard = () => {
     /*-----------------------------------------------*\
                         End Date
     \*-----------------------------------------------*/
-    const formattedDates = Array.isArray(investOngoingPostData) && investOngoingPostData.length > 0 &&
-    investOngoingPostData
+    const formattedDates = Array.isArray(postSaveData) && postSaveData.length > 0 &&
+    postSaveData
     /* .filter(item => item && item.condition === 'ongoing') */
     .map((item, index) => {
-        if (investOngoingPostData?.[index].endDt?.length > 0 ) {
+        if (postSaveData?.[index].endDt?.length > 0 ) {
             const endDt = new Date(item.endDt);
             const currentDt = new Date();
             const timeDiff = endDt - currentDt;
             const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-            return `D-${daysDiff}`
+            if ( daysDiff < 0 ) {
+                return `😨마감일 초과`
+            } else {
+                return `D-${daysDiff}`
+            }
         } else {
             return `empty`
         }
         
     });
 
-    /* const removeTags = (html) => {
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return doc.body.textContent || "";
-    }; */
-
     const removeTags = (html) => {
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const decodedString = doc.body.textContent || "";
         return decodedString
-      };
+    };
     
-    /* const removeTags = (html) => {
-        return html.replace(/<\/?[^>]+(>|$)/g, "");
-      }; */
     /*-----------------------------------------------*\
                     Console.log 테스트
     \*-----------------------------------------------*/
@@ -174,18 +189,18 @@ const InvestOngoingBoard = () => {
                                 <VisualImg />
                             </div>
                         </DummyBanner>
-                        {isLoading && <div>Loading........................</div>}
+                        {isLoading && <Loading/>}
                         {!isLoading && (
                             <>
-                                {investOngoingPostData !== null && investOngoingPostData !== "" && investOngoingPostData.length ? 
+                                {postSaveData !== null && postSaveData !== "" && postSaveData.length ? 
                                 <div>
                                     <PostCardTitleWrap>
                                     <h3>진행 중인 투자</h3>
                                     </PostCardTitleWrap>
                                     <PostCardWrap>
-                                    {investOngoingPostData &&
-                                        investOngoingPostData?.length > 0 &&
-                                        investOngoingPostData?.slice(0, PostCardCount).map((item, index) => (
+                                    {postSaveData &&
+                                        postSaveData?.length > 0 &&
+                                        postSaveData?.slice(0, PostCardCount).map((item, index) => (
                                         <Link key={index} to={
                                             `/investment/ongoing/${item.id}`
                                         }>
@@ -202,7 +217,7 @@ const InvestOngoingBoard = () => {
                                     ))}
                                     </PostCardWrap>
                                     <MoreWrap>
-                                        {investOngoingPostData?.length > PostCardCount && (
+                                        {postSaveData?.length > PostCardCount && (
                                             <div style={{marginTop:'80px'}}>
                                                 <MoreBtn onClick={handleLoadMore}>
                                                     <span>더보기</span>

@@ -68,7 +68,12 @@ const App = () => {
 
     /* Redux State */
     const boardData = useSelector((state) => state.reducer.adminBoardData);
+    const testData = useSelector((state) => state.reducer);
     const dispatch = useDispatch();
+
+
+    console.log('testData',testData);
+
 
     /*-----------------------------------------------------*\
                           투자 카테고리 

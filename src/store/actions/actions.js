@@ -68,3 +68,15 @@ export const setDeadlinePostCardCount = (num) => ({
     type: actionTypes.DEADLINE_POSTCARD,
     payload: num,
 })
+
+/* Ongoing Post Data */
+
+export const setOngoingPostData = (ongoingPostData) => ({
+    type: actionTypes.ONGOING_POST_DATA,
+    payload: ongoingPostData
+})
+
+export const setDeadlinePostData = (deadlinePostData) => ({
+    type: actionTypes.DEADLINE_POST_DATA,
+    payload: deadlinePostData
+})

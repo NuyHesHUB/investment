@@ -13,9 +13,9 @@ import 'swiper/css/pagination';
 
 /* Image */
 import { ReactComponent as Illust01 } from '../../assets/image/visualImage1.svg';
-import Illust02 from '../../assets/image/illust_02.png';
+import { ReactComponent as Illust02 } from '../../assets/image/visualImage2.svg';
+/* import Illust02 from '../../assets/image/illust_02.png'; */
 
-import AllIcon from '../../assets/category-image/all.png';
 import FoodIcon from '../../assets/category-image/food.png';
 import ManuFacturingIcon from '../../assets/category-image/manufacturing.png';
 import OtherIcon from '../../assets/category-image/other.png';
@@ -124,7 +124,7 @@ const SlideContentsWrap=styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    img{
+    /* img{
         width: 400px;
     }
     .imgBox1 {
@@ -132,8 +132,11 @@ const SlideContentsWrap=styled.div`
     }
     .imgBox2 {
         width: 520px;
-    }
+    } */
     
+`
+const ImgBox=styled.div`
+    width: 450px;
 `
 const TitleBox=styled.div`
     position: relative;
@@ -250,7 +253,8 @@ export const BannerSwiper = () => {
     return (
         <SlideFram>
                 <Swiper
-                    autoplay={{ delay: 5000 }}
+                    /* autoplay={{ delay: 5000 }} */
+                    autoplay={false}
                     cssMode={true}
                     speed={500}
                     loop={true}
@@ -286,11 +290,11 @@ export const BannerSwiper = () => {
                                         <Link to="/member_type"><BtnItem ref={fadeIn3.ref} style={fadeIn3.style}><BsCheck2Square/>간편회원가입</BtnItem></Link>
                                     </BtnBox>
                                 </div>
-                                <div ref={fadeIn1.ref} style={fadeIn1.style}>
+                                <ImgBox ref={fadeIn1.ref} style={fadeIn1.style}>
                                     <div className='imgBox'>
                                         <Illust01 />
                                     </div>
-                                </div>
+                                </ImgBox>
                             </SlideContentsWrap>
                             </Container>
                         </SlideWrap1>
@@ -314,9 +318,11 @@ export const BannerSwiper = () => {
                                             <Link to="/member_type"><BtnItem ref={fadeIn7.ref} style={fadeIn7.style}><BsCheck2Square/>간편회원가입</BtnItem></Link>
                                         </BtnBox>
                                     </div>
-                                    <div ref={fadeIn5.ref} style={fadeIn5.style}>
-                                        <img src={Illust02} alt="illust"/>
-                                    </div>
+                                    <ImgBox ref={fadeIn5.ref} style={fadeIn5.style}>
+                                        <div className='imgBox'>
+                                            <Illust02 />
+                                        </div>
+                                    </ImgBox>
                                 </SlideContentsWrap>
                             </Container>
                         </SlideWrap1>
