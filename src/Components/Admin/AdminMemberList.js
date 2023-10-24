@@ -24,12 +24,29 @@ const AdminMemberList = () => {
   ///// 데이터 가져오기 /////
   ///////////////////////////
   const [memberData, setMemberData] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   //페이지네이션데이터
   const [page, setPage] = useState(1); // 현재 페이지
   const [pageRows, setPageRows] = useState(2); // 한 페이지에 보여질 데이터 개수
   const [totalRows, setTotalRows] = useState(0); //데이터 정보 개수
-  const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
+  const [endPage, setEndPage] = useState(windowWidth < 768 ? 5 : 10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
+  ///// resize /////
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth)
+    if (windowWidth <= 768) {
+      setEndPage(5)
+    } else {
+      setEndPage(10)
+    }
+  }
+  useEffect(() => {
+      window.addEventListener("resize", handleResize);
+      console.log("리사이즈함수", windowWidth, window.innerWidth, endPage)
+    return() => { //clean up
+      window.removeEventListener("resize", handleResize);
+    }
+  }, [window.innerWidth < 768]);
 
   ///// search box /////
   const [status, setStatus] = useState([]); //status filter
@@ -80,7 +97,7 @@ const AdminMemberList = () => {
   const modifyBtnClick = (uid) => {
     console.log("인덱스테스ㅡ트",idx,memberData[idx])
     if (window.confirm("수정하시겠습니까?")) {
-      axios.patch(`${baseURL}/v1/users/modify/${userUid}`, memberData[idx], { headers }).then((res)=> {
+      axios.patch(`${baseURL}/v1/users/modify/${uid}`, memberData[idx], { headers }).then((res)=> {
         alert("수정하였습니다.")
         navigate(`/admin/member_list`);
         setOpen(false)
@@ -205,8 +222,8 @@ const AdminMemberList = () => {
                 <div className="popup-top">
                   <button
                     className="modify-btn"
-                    onClick={() => modifyBtnClick()}
-                    // onClick={() => modifyBtnClick(memberData[idx].uid)}
+                    // onClick={() => modifyBtnClick()}
+                    onClick={() => modifyBtnClick(memberData[idx].uid)}
                   >수정</button>
                   <button
                     className="cancel-btn"

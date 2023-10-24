@@ -26,12 +26,12 @@ const CompanyWrite = () => {
   const navigate = useNavigate();
   const location = useLocation();
   ///// page log /////
-  useEffect(() => {
-    axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"투자등록하기" }).then((res) => {
-  }).catch((error) => {
-    console.error(error)
-  })
-  }, []);
+  // useEffect(() => {
+  //   axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"투자등록하기" }).then((res) => {
+  // }).catch((error) => {
+  //   console.error(error)
+  // })
+  // }, []);
 
   const [content, setContent] = useState(''); // 내용부분
   const [asdf , setasdf] = useState()

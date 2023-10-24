@@ -5,11 +5,27 @@ export const Wrap = styled.div`
   //modify & delete btn
   table input {width: 100%;}
   td {padding: 2px 5px;}
-  th:nth-child(1) {width: 13%;}
+  /* th:nth-child(1) {width: 13%;}
   th:nth-child(2) {width: 7%;}
   th:nth-child(3) {width: 20%;}
   th:nth-child(4) {width: 53%;}
-  th:last-child {width: 7%;}
+  th:last-child {width: 7%;} */
+
+  @media screen and (max-width: 768px) {
+    table input {width: 85%;}
+    table, tr, tbody {
+      min-width: calc(100vw - 85px);
+    }
+    td {
+      padding-left: 46%;
+    }
+    td:nth-child(1):before {content:'key';}
+    td:nth-child(2):before {content:'status';}
+    td:nth-child(3):before {content:'title';}
+    td:nth-child(4):before {content:'categoryList';}
+    td:nth-child(5):before {content:'수정/삭제';}
+  }
+
 `
 export const PopUpWrap = styled.div`
   display: none;

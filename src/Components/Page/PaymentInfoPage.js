@@ -17,12 +17,13 @@ const PaymentInfoPage = () => {
   const uid = userUid === null ? '' : userUid
   const navigate = useNavigate();
   ///// page log /////
-  useEffect(() => {
-     axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"결제안내" }).then((res) => {
-    }).catch((error) => {
-      console.error(error)
-    })
-  }, []);
+  // useEffect(() => {
+  //    axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"결제안내" }).then((res) => {
+  //   }).catch((error) => {
+  //     console.error(error)
+  //   })
+  // }, []);
+
   const navigateLogin = () => {
     if (window.confirm("로그인이 되어 있지 않습니다. 로그인하시겠습니까?")) {
         navigate('/login')

@@ -24,13 +24,13 @@ const AdminPostApprove = () => {
   ///////////////////////////
   const [postData, setPostData] = useState([]);
   const [key, setKey] = useState("investment");
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   // const [postKey, setPostKey] = useState('');
-
   //페이지네이션데이터
   const [page, setPage] = useState(1); // 현재 페이지
   const [pageRows, setPageRows] = useState(2); // 한 페이지에 보여질 데이터 개수
   const [totalRows, setTotalRows] = useState(0); //데이터 정보 개수 (현재 3개)
-  const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
+  const [endPage, setEndPage] = useState(window.innerWidth < 768 ? 5 : 10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
 
   useEffect(() => {
@@ -42,6 +42,23 @@ const AdminPostApprove = () => {
       console.error("error");
     })
   }, [page,pageRows]);
+
+  ///// resize /////
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth)
+    if (windowWidth <= 768) {
+      setEndPage(5)
+    } else {
+      setEndPage(10)
+    }
+  }
+  useEffect(() => {
+      window.addEventListener("resize", handleResize);
+      console.log("리사이즈함수", windowWidth, window.innerWidth, endPage)
+    return() => { //clean up
+      window.removeEventListener("resize", handleResize);
+    }
+  }, [window.innerWidth < 768]);
 
   // condition 수정 //
   // const conditionChange = (e, i) => {

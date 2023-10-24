@@ -23,11 +23,12 @@ const AdminCompanyList = () => {
   ///// 데이터 가져오기 /////
   ///////////////////////////
   const [companyData, setCompanyData] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   //페이지네이션데이터
   const [page, setPage] = useState(1); // 현재 페이지
   const [pageRows, setPageRows] = useState(2); // 한 페이지에 보여질 데이터 개수
   const [totalRows, setTotalRows] = useState(0); //데이터 정보 개수
-  const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
+  const [endPage, setEndPage] = useState(window.innerWidth < 768 ? 5 : 10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
   ///// search box /////
   const [status, setStatus] = useState([]); //status filter
@@ -44,6 +45,23 @@ const AdminCompanyList = () => {
     })
   }, [page, pageRows, status]);
   
+  ///// resize /////
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth)
+    if (windowWidth <= 768) {
+      setEndPage(5)
+    } else {
+      setEndPage(10)
+    }
+  }
+  useEffect(() => {
+      window.addEventListener("resize", handleResize);
+      console.log("리사이즈함수", windowWidth, window.innerWidth, endPage)
+    return() => { //clean up
+      window.removeEventListener("resize", handleResize);
+    }
+  }, [window.innerWidth < 768]);
+
   ///// PageSize change /////
   const changePageSize = (e) => {
     setPageRows(e.target.value)
@@ -145,46 +163,6 @@ const AdminCompanyList = () => {
                 </tr>
               </thead>
               <tbody>
-              {/* {newCompanyData.map((item, i) => {
-                return(
-                  <tr key={item.id}>
-                    <td>
-                      {item.id}
-                    </td>
-                    <td>
-                      {item.status}
-                    </td>
-                    <td>
-                      {item.loginId}
-                    </td>
-                    <td>
-                      {item.nickname}
-                    </td>
-                    <td>
-                      {item.companyName}
-                    </td>
-                    <td>
-                      {item.businessNum}
-                    </td>
-                    <td>
-                      {item.representativeName}
-                    </td>
-                    <td>
-                      {item.regDt.split("T")[0]} {item.regDt.split("T")[1].slice(0,8)}
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => modifyOpen(i)}
-                        className='modifyBtn' 
-                      >수정</button>
-                      <button 
-                        className='deleteBtn'
-                        onClick={() => deleteBoardList(item.businessNum)}
-                      >삭제</button>
-                    </td>
-                  </tr>
-                )
-              })} */}
               {companyData.map((item, i) => {
                 return(
                   <tr key={item.id}>

@@ -18,12 +18,12 @@ const BusinessNumberCheck = () => {
   }
 
   ///// page log /////
-  useEffect(() => {
-    axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"사업자등록번호확인" }).then((res) => {
-  }).catch((error) => {
-    console.error(error)
-  })
-  }, []);
+  // useEffect(() => {
+  //   axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"사업자등록번호확인" }).then((res) => {
+  // }).catch((error) => {
+  //   console.error(error)
+  // })
+  // }, []);
   
   const [businessNum, setBusinessNum] = useState({
     b_no: ""
