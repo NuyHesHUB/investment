@@ -21,18 +21,19 @@ const AdminPostList = () => {
 
   const [postList, setPostList] = useState([]);
   const [key, setKey] = useState("investment");
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   //페이지네이션데이터
   const [page, setPage] = useState(1); // 현재 페이지
   const [pageRows, setPageRows] = useState(2); // 한 페이지에 보여질 데이터 개수
   const [totalRows, setTotalRows] = useState(0); //데이터 정보 개수
-  const [endPage, setEndPage] = useState(10); // 페이지네이션 단위
+  const [endPage, setEndPage] = useState(window.innerWidth < 768 ? 5 : 10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
 
   const [status, setStatus] = useState([]); //status filter
   const statusChange = (statusValue) => {
     setStatus(statusValue)
   }
-  
+
   ///// 데이터 불러오기 /////
   useEffect(() => {
     axios.get(`${baseURL}/v1/board/${key}/post?query&pageRows=${pageRows}&page=${page}&category=&status=&condition=`, { headers }).then((res) => {
@@ -44,6 +45,24 @@ const AdminPostList = () => {
     })
   }, [page, pageRows, key]);
 
+  ///// resize /////
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth)
+    if (windowWidth <= 768) {
+      setEndPage(5)
+    } else {
+      setEndPage(10)
+    }
+  }
+  useEffect(() => {
+      window.addEventListener("resize", handleResize);
+      console.log("리사이즈함수", windowWidth, window.innerWidth, endPage)
+    return() => { //clean up
+      window.removeEventListener("resize", handleResize);
+    }
+  }, [window.innerWidth < 768]);
+
+  ///// PageSize change /////
   const changePageSize = (e) => {
     setPageRows(e.target.value)
     setPage(1)

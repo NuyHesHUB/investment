@@ -24,12 +24,12 @@ const CompanyUpload = () => {
   }
 
   ///// page log /////
-  useEffect(() => {
-    axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page": "업체등록" }).then((res) => {
-  }).catch((error) => {
-    console.error(error)
-  })
-  }, []);
+  // useEffect(() => {
+  //   axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page": "업체등록" }).then((res) => {
+  // }).catch((error) => {
+  //   console.error(error)
+  // })
+  // }, []);
 
   const [placeholderActive, setPlaceholderActive] = useState(true); //이미지등록placeholder
   const [logoImage, setLogoImage] = useState(''); // 이미지미리보기링크데이터

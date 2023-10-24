@@ -56,14 +56,31 @@ export const StyledAdminTop=styled.div`
         display: flex;
         align-items: center;
         padding: 10px;
+        .mobile-logout-ico {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            a {display: none;}
+            .mobile-logout-ico {
+                display: block;
+            }
+        }
     }
 
     @media (max-width: 768px) {
+        /* justify-content: center; */
+        h1 {width: 25vw; font-size: 1.7rem;}
         h3 {
             margin: 0 !important;
-            width: 100%; 
+            width: 50vw; 
             height: 100%; 
+            text-align: center;
+            font-size: 1.05rem;
         } 
+        .right-admin-top {
+            width: 25vw;
+            justify-content: end;
+        }
     }
 `
 export const StyledAdminNav=styled.nav`
@@ -93,6 +110,20 @@ export const StyledAdminNav=styled.nav`
         }
     }
 `
+export const MobileMenuOpen=styled.div`
+    display: none;
+    @media (max-width: 480px) {
+        background: rgba(255,255,255,.2);
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        &.none {display: none;}
+    }
+`
 export const AdminNavUl=styled.ul`
     position: relative;
     height: 100%;
@@ -100,6 +131,12 @@ export const AdminNavUl=styled.ul`
     width: 50px;
     li{
         border-bottom: 1px solid #ddd;
+    }
+    @media (max-width: 480px) {
+        display: none;
+        &.active {
+            display: block;
+        }
     }
 `
 export const StyledNavGnb=styled.div`
@@ -135,15 +172,20 @@ export const StyledNavGnb=styled.div`
         }
         .close-btn.active {
             display: block;
-            width: 100px;
+            display: flex;
+            align-items: center;
+            width: 96%;
             margin: 0 auto;
             background: none;
-            background: blue;
-            color: red;
+            color: #fff;
+            background: rgb(63, 81, 181);
             position: absolute;
             bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
+        }
+        .close-btn.active:hover {
+            background: rgb(48, 62, 141);
         }
     }
 `

@@ -83,14 +83,14 @@ const InvestOngoingBoard = () => {
     /*-----------------------------------------------*\
                         page log
     \*-----------------------------------------------*/
-    useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, {  userUid: uid, "page":"진행중" }).then((res) => {
-    }).catch((error) => {
-        console.error(error)
-    })
-    }, []);
+    // useEffect(() => {
+    //     axios.post(`${baseURL}/v1/log/movement/form`, {  userUid: uid, "page":"진행중" }).then((res) => {
+    // }).catch((error) => {
+    //     console.error(error)
+    // })
+    // }, []);
 
-    console.log(uid, "userUid")
+    // console.log(uid, "userUid")
   
     /*-----------------------------------------------*\
                   investment post 데이터 API

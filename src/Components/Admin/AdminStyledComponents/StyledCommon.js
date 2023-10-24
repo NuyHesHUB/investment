@@ -54,6 +54,11 @@ export const CommonStyleFrame = styled.div`
       text-align: center;
     }
   }
+  @media (max-width: 480px) {
+    padding: 90px 0 30px;
+    display: flex;
+    justify-content: center;
+  }
 
 `
 export const TableFrame = styled.div `
@@ -70,7 +75,7 @@ font-size: 14px;
     padding: 3px 0;
     text-align: center;
   }
-  th {background: #6371c2; color: #fff;}
+  th {background: #7c87c2; color: #fff;}
   
   select {width: 80px;}
 
@@ -88,32 +93,39 @@ font-size: 14px;
     }
     tr {
       width: 50%;
-      display:block;
-      margin-bottom:10px;
-      border-top:none;
+      display: block;
+      margin-bottom: 10px;
+      border-top: none;
       border: 1px solid #000;
     }
     td {
+      min-height: 30px;
       display: block;
+      display: flex;
+      align-items: center;
       position: relative;
-      padding-left: 46%;
+      padding: 6px 0;
+      padding-left: 40%;
       text-align: left;
       border-width: 0 0 1px 0;
     }
     td:last-child {border: none;}
     td:before {
       text-align: center;
-      display:block;
-      position:absolute;
-      left:0;
-      top:0;
-      width:40%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 36%;
       height: 100%;
-      background:#ccc;
+      background: #7c87c2;
+      color: #fff;
+      font-weight: bold;
     }
   }
 `
-
 export const Modify = styled.div`
   display: none;
   &.active{
@@ -132,6 +144,7 @@ export const Modify = styled.div`
       left: 0;
       cursor: pointer;
     }
+  
     .popup {
       background: white;
       position: absolute;
@@ -141,6 +154,7 @@ export const Modify = styled.div`
       /* margin: 90px 0 0 200px ; */
       transform: translateX(-50%);
       padding: 10px;
+      margin-left: 25px;
       select {width: 100px;}
       input {border: 1px solid #000; width: 100%;}
       input:disabled {border: 1px solid #bbb; background: #eee;}
@@ -154,6 +168,29 @@ export const Modify = styled.div`
       .cancel-btn {background: red;}
       table {width: 600px;}
       th {width: 120px;}
+
+      /// 반응형 768px
+      @media screen and (max-width: 768px) {
+        .popup {width: 90%;}
+        table {width: 80%; padding: 0;}
+        table, tr, tbody {
+          min-width: 88vw;
+        }
+        tr {
+          display: flex;
+        }
+        td {
+          padding-left: 10px;
+        }
+        th {
+          border: none;
+          width: 30%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        td:before{display: none;}
+      }
     }
   }
 `

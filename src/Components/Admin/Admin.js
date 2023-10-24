@@ -8,15 +8,16 @@ import { useDispatch, useSelector } from 'react-redux';
 /* import { setAdminUserData, setAdminBoardData, setAdminPostData, logout } from '../../store/actions/actions'; */
 
 /* StyledComponents */
-import { StyledAdminFrame, StyledAdminHeader, StyledAdminTop, StyledAdminNav, AdminNavUl, StyledNavGnb } from './AdminStyledComponents/StyledAdmin';
+import { StyledAdminFrame, StyledAdminHeader, StyledAdminTop, StyledAdminNav, AdminNavUl, StyledNavGnb, MobileMenuOpen } from './AdminStyledComponents/StyledAdmin';
 import { HeaderLogo } from '../StyledComponents/StyledHeader';
 
 /* React-Router-Dom */
 import { Link, useNavigate } from 'react-router-dom';
 
 /* React-Icons */
-import { AiOutlineUnorderedList } from "react-icons/ai";
+import { AiOutlineUnorderedList, AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { BsPersonCircle, BsFillBuildingFill } from "react-icons/bs";
+import { CiLogout } from "react-icons/ci";
 
 const Admin = () => {
     const baseURL = process.env.REACT_APP_BASEURL;
@@ -87,8 +88,8 @@ const Admin = () => {
     /* const [visibleDiv, setVisibleDiv] = useState(2); */ 
 
     const [visibleDiv, setVisibleDiv] = useState(parseInt(localStorage.getItem('selectedMenu')) || 2);
+    const [tabletMenu, setTabletMenu] = useState(false);
     const [mobileMenu, setMobileMenu] = useState(false);
-    console.log(mobileMenu, "모바일메뉴테스트")
     const userGroup = sessionStorage.getItem('userGroup');
     useEffect(() => {
       localStorage.setItem('selectedMenu', visibleDiv.toString());
@@ -138,18 +139,25 @@ const Admin = () => {
                                     <ul>
                                         <li>
                                             <Link onClick={handleLogout}>로그아웃</Link>
+                                            <CiLogout color='#fff'size={40} className='mobile-logout-ico' />
                                         </li>
                                     </ul>
                                 </div>
                             </StyledAdminTop>
                             <StyledAdminNav>
-                                <AdminNavUl>
+                            <MobileMenuOpen 
+                                className={mobileMenu ? "none" : ''} 
+                                onClick={() => {setMobileMenu(true); setTabletMenu(true)}}
+                            > {/* //FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME: */}
+                                <AiOutlineMenu size={30} />
+                            </MobileMenuOpen>
+                                <AdminNavUl className={mobileMenu ? "active" : ''}>
                                     <li>
-                                        <button onClick={() => {setVisibleDiv(2); setMobileMenu(true)}}>
+                                        <button onClick={() => {setVisibleDiv(2); setTabletMenu(true)}}>
                                             <BsPersonCircle/>
                                         </button>
                                         <div>
-                                            <StyledNavGnb className={`div ${visibleDiv === 2 ? 'visible' : ''} ${mobileMenu ? "active" : ''}`}>
+                                            <StyledNavGnb className={`div ${visibleDiv === 2 ? 'visible' : ''} ${tabletMenu ? "active" : ''}`}>
                                                 
                                                 <h3>회원관리</h3>
                                                 <ul style={{marginTop:'20px'}}>
@@ -158,18 +166,20 @@ const Admin = () => {
                                                     {/* <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link>접속자검색</Link></li> */}
                                                 </ul>
                                                 <button 
-                                                onClick={() => setMobileMenu(false)}
-                                                className={mobileMenu ? "close-btn active" : 'close-btn'}
-                                                >X</button>
+                                                    onClick={() => {setTabletMenu(false); setMobileMenu(false);}}
+                                                    className={tabletMenu ? "close-btn active" : 'close-btn'}
+                                                >
+                                                    <AiOutlineClose /> CLOSE
+                                                </button>
                                             </StyledNavGnb>
                                         </div>
                                     </li>
                                     <li>
-                                        <button onClick={() => {setVisibleDiv(3); setMobileMenu(true)}}>
+                                        <button onClick={() => {setVisibleDiv(3); setTabletMenu(true)}}>
                                             <AiOutlineUnorderedList/>
                                         </button>
                                         <div>
-                                            <StyledNavGnb className={`div ${visibleDiv === 3 ? 'visible' : ''} ${mobileMenu ? "active" : ''}`}>
+                                            <StyledNavGnb className={`div ${visibleDiv === 3 ? 'visible' : ''} ${tabletMenu ? "active" : ''}`}>
                                                 <h3>게시판관리</h3>
                                                 <ul style={{marginTop:'20px'}}>
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/board_list">게시판관리</Link></li>
@@ -178,26 +188,30 @@ const Admin = () => {
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/comment_list">댓글관리</Link></li>
                                                 </ul>
                                                 <button 
-                                                onClick={() => setMobileMenu(false)}
-                                                className={mobileMenu ? "close-btn active" : 'close-btn'}
-                                                >X</button>
+                                                    onClick={() => {setTabletMenu(false); setMobileMenu(false);}}
+                                                    className={tabletMenu ? "close-btn active" : 'close-btn'}
+                                                >
+                                                    <AiOutlineClose /> CLOSE
+                                                </button>
                                             </StyledNavGnb>
                                         </div>
                                     </li>
                                     <li>
-                                        <button onClick={() => {setVisibleDiv(4); setMobileMenu(true)}}>
+                                        <button onClick={() => {setVisibleDiv(4); setTabletMenu(true)}}>
                                             <BsFillBuildingFill/>
                                         </button>
                                         <div>
-                                            <StyledNavGnb className={`div ${visibleDiv === 4 ? 'visible' : ''} ${mobileMenu ? "active" : ''}`}>
+                                            <StyledNavGnb className={`div ${visibleDiv === 4 ? 'visible' : ''} ${tabletMenu ? "active" : ''}`}>
                                                 <h3>업체관리</h3>
                                                 <ul style={{marginTop:'20px'}}>
                                                     <li style={{marginBottom:'10px', paddingBottom:'6px'}}><Link to="/admin/company_list">업체관리</Link></li>
                                                 </ul>
                                                 <button 
-                                                onClick={() => setMobileMenu(false)}
-                                                className={mobileMenu ? "close-btn active" : 'close-btn'}
-                                                >X</button>
+                                                    onClick={() => {setTabletMenu(false); setMobileMenu(false);}}
+                                                    className={tabletMenu ? "close-btn active" : 'close-btn'}
+                                                >
+                                                    <AiOutlineClose /> CLOSE
+                                                </button>
                                             </StyledNavGnb>
                                         </div>
                                     </li>

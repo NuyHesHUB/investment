@@ -56,12 +56,12 @@ const InvestDeadlineBoard = () => {
     /*-----------------------------------------------*\
                         page log
     \*-----------------------------------------------*/
-    useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"마감" }).then((res) => {
-    }).catch((error) => {
-        console.error(error)
-    })
-    }, []);
+    // useEffect(() => {
+    //     axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"마감" }).then((res) => {
+    // }).catch((error) => {
+    //     console.error(error)
+    // })
+    // }, []);
 
     /*-----------------------------------------------*\
                   investment post 데이터 API

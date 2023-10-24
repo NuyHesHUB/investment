@@ -5,6 +5,14 @@ export const Wrap = styled.div`
   .modifyBtn {margin-right: 5px; background: #73bbff;}
   .deleteBtn {background: #ff7373;}
   @media screen and (max-width: 768px) {
+    /* table, tr, tbody {
+      min-width: calc(100vw - 85px);
+    } */
+    /* ul.top table,
+    ul.top tr,
+    ul.top tbody {
+      min-width: 88vw;
+    } */
     td:nth-child(1):before {content:'group';}
     td:nth-child(2):before {content:'isAdmin';}
     td:nth-child(3):before {content:'local';}
