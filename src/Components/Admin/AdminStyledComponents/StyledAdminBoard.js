@@ -10,6 +10,16 @@ export const Wrap = styled.div`
   th:nth-child(3) {width: 20%;}
   th:nth-child(4) {width: 53%;}
   th:last-child {width: 7%;}
+
+
+  @media screen and (max-width: 768px) {
+    td:nth-child(1):before {content:'key';}
+    td:nth-child(2):before {content:'status';}
+    td:nth-child(3):before {content:'title';}
+    td:nth-child(4):before {content:'categoryList';}
+    td:nth-child(5):before {content:'수정/삭제';}
+  }
+
 `
 export const PopUpWrap = styled.div`
   display: none;

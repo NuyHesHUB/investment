@@ -7,4 +7,6 @@ export const Wrap = styled.div`
   th:nth-child(5) {width: 25%}
   /* th:nth-child(6) {width: 400px; } */
   th:last-child {width: 5.5%;}
+
+  
 `

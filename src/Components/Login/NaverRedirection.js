@@ -23,8 +23,7 @@ const NaverRedirection = () => {
                 const b_no = response.data.userData.b_no;
                 const uid = userUid === null ? '' : userUid
                 /* 접속(login) 로그 */
-             
-                
+
                 // axios.get(`${baseURL}/v1/users/?query=&pageRows&page`, { accessToken }).then((res) => {
                 //     console.log(res.data,"resresres")
                 //     if (res.data.totalRows === 0) {

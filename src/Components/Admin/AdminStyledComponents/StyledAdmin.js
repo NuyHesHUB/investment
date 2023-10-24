@@ -14,10 +14,9 @@ export const StyledAdminFrame=styled.div`
         outline: none;
     }
 
-
     @media (max-width: 768px) {
-        width: 768px;
-        background: #000;
+        /* width: 768px; */
+        /* background: #000; */
     } 
 `
 export const StyledAdminHeader=styled.header`

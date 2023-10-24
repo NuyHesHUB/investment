@@ -36,12 +36,13 @@ export const CommonStyleFrame = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    max-width: 768px;
-    width: calc(100vw - 70px);
+    overflow: hidden;
+    max-width: 700px;
+    /* width: calc(100vw - 70px); */
     padding: 90px 0 0 60px ;
     ul.top {
       width: calc(100vw - 70px);
-      max-width: 768px;
+      max-width: 700px;
       min-width: 300px;
     }
     p.title {
@@ -76,6 +77,7 @@ font-size: 14px;
 
   @media screen and (max-width: 768px) {
     table {
+      width: 100%;
       display: block;
       border: none;
     }
