@@ -31,7 +31,6 @@ const KakaoRedirection = () => {
                 }
                 
                 if (response.data.type === "first") {
-                    alert("회원가입이 완료되었습니다.")
                     navigate('/success_sign_up')
                 } else {
 
