@@ -7,13 +7,25 @@ import React, { useState } from 'react';
 /* import { Link, useNavigate } from 'react-router-dom'; */
 
 /* StyledComponents */
-import { StyledFrame, MemberTypeWrap, MemberTypeBox, SignUpTitle, TabBox, TabMenu, TabMenuItem, Desc, Contents } from './StyledMemberType';
+import { 
+    StyledFrame, 
+    MemberTypeWrap, 
+    MemberTypeBox, 
+    SignUpTitle, 
+    TabBox, 
+    TabMenu, 
+    TabMenuItem, 
+    Desc, 
+    Contents,
+    WhofinSignUp
+} from './StyledMemberType';
 
 /* Components */
 import Header from '../Header';
 import Footer from '../Footer';
 import NaverLogin from '../Login/SocialNaverLogin';
 import KakaoLogin from '../Login/SocialKakaoLogin';
+import { Link } from 'react-router-dom';
 
 const MemberType = () => {
     /* const navigate = useNavigate(); */
@@ -77,6 +89,18 @@ const MemberType = () => {
                       Tab Menu Contents
     \*------------------------------------------------*/
     const menuArr = [
+        
+        { name: '후핀 회원가입', content: (
+            <Contents>
+                <div className='contents-wrap local-contents'>
+                    <h6>후핀에 오신 것을 환영합니다.</h6>
+                    <p>지금 회원 가입하신 후 <i>후핀</i>의 서비스를 만나보세요.</p>
+                    <div>
+                        <Link to="/member_type/agree"><WhofinSignUp>가 입 하 기</WhofinSignUp></Link>
+                    </div>
+                </div>
+            </Contents>
+        )},
         { name: '소셜 간편가입', content: (
             <Contents>
                 <div className='contents-wrap personal-contents'>
@@ -86,14 +110,7 @@ const MemberType = () => {
                     <KakaoLogin contents="카카오 회원가입"/>
                 </div>
             </Contents>
-        ) },
-        { name: '후핀 회원가입', content: (
-            <Contents>
-                <div className='contents-wrap personal-contents'>
-                    ddddddddd
-                </div>
-            </Contents>
-        )}
+        ) }
         /* { name: '사업자 회원', content: (
             <Contents>
                 {isVerified ? (

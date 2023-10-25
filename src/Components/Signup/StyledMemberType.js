@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+const primaryColor = `#3fa9f5`;
+
 export const StyledFrame=styled.div`
     width: 100%;
     overflow: hidden;
@@ -111,5 +113,42 @@ export const Contents=styled.div`
             background: #fff;
             border: 1px solid rgb(238,238,238);
         }
+    }
+    .local-contents{
+        h6{
+            margin-bottom: 10px;
+        }
+        p{
+            i{
+                font-style: normal;
+                color: ${primaryColor};
+                font-weight: bold;
+                font-size: 18px;
+                margin: 0 3px;
+            }
+        }
+        >div{
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+        }
+    }
+`
+export const WhofinSignUp=styled.div`
+    width: 130px;
+    height: 50px;
+    border-radius: 15px;
+    background: ${primaryColor};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    box-sizing: border-box;
+    padding: 0 20px;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+    &:hover{
+        background: #1A9CF9;
     }
 `
