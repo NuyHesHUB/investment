@@ -7,7 +7,8 @@ export const Wrap = styled.div`
   th:nth-child(5) {width: 25%}
   /* th:nth-child(6) {width: 400px; } */
   th:last-child {width: 5.5%;}
-
+  
+  ///// 반응형 /////
   @media screen and (max-width: 768px) {
     td:nth-child(1):before {content:'status';}
     td:nth-child(2):before {content:'id';}

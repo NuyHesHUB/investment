@@ -35,6 +35,7 @@ export const CommonStyleFrame = styled.div`
     color: #fff;
   }
 
+  ///// 반응형 /////
   @media screen and (max-width: 768px) {
     overflow: hidden;
     max-width: 700px;
@@ -86,6 +87,7 @@ font-size: 14px;
   select {width: 80px;}
 
 
+  ///// 반응형 /////
   @media screen and (max-width: 768px) {
     table {
       width: 100%;
@@ -175,7 +177,7 @@ export const Modify = styled.div`
       table {width: 600px;}
       th {width: 120px;}
 
-      /// 반응형 768px
+      ///// 반응형 /////
       @media screen and (max-width: 768px) {
         .popup {width: 90%;}
         table {width: 80%; padding: 0;}

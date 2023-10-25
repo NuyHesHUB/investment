@@ -23,9 +23,7 @@ export const PagenationWrap = styled.div`
     background: none; 
     padding: 10px 10px; 
   }
-  div.box {
-    /* background: pink; */
-  }
+  ///// 반응형 /////
   @media screen and (max-width: 768px) {
     max-width: 768px;
     min-width: 300px;
@@ -34,8 +32,8 @@ export const PagenationWrap = styled.div`
 
   @media screen and (max-width: 480px) {
     button {
-    padding: 10px 5px; 
-  }
+      padding: 10px 5px; 
+    }
   }
 
 `

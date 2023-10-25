@@ -11,6 +11,7 @@ export const Wrap = styled.div`
   th:nth-child(4) {width: 53%;}
   th:last-child {width: 7%;} */
 
+  ///// 반응형 /////
   @media screen and (max-width: 768px) {
     table input {width: 85%;}
     table, tr, tbody {
