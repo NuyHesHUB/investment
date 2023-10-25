@@ -47,7 +47,7 @@ const PaymentInfoPage = () => {
         </TitleBox>
         <PriceInfo>
           <PriceCard>
-            <p>투자 등록 1개</p> 
+            <p className='num_items'>투자 등록 1개</p> 
             <p className='price'>₩100,000원</p>
             <p className='surtax'>부가세포함..??</p>
             <p className='while'><span>30</span>일 동안 등록</p>

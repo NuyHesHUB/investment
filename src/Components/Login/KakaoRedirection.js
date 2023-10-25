@@ -30,6 +30,7 @@ const KakaoRedirection = () => {
                     sessionStorage.setItem('b_no', b_no);
                 }
                 
+
                 if (response.data.type === "first") {
                     alert("회원가입이 완료되었습니다.")
                 }
@@ -43,6 +44,10 @@ const KakaoRedirection = () => {
 
             } catch(error) {
                 console.error('실패');
+                if (error.response.data.err === "해당 계정은 가입이 불가능합니다.") {
+                    alert("가입이 불가능한 카카오 계정입니다.")
+                    navigate('/login')
+                }
             }
         }
         fetchData();

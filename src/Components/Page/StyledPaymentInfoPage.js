@@ -29,17 +29,20 @@ export const PriceCard = styled.div`
   height: 96%;
   border: 1px solid #eee;
   border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  padding: 50px 0 100px;
+  padding: 30px 0 100px;
   color: #555;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
-  .price {font-size: 26px; margin-top: 15px; font-weight: 500; color: #000;}
-  .surtax {font-size: 12px;}
-  .while {margin: 10px 0 30px; font-size: 14px;}
-  .while span {color: #3fa9f5; font-weight: bold;}
+  .num_items {
+    background: #79b8ff;
+    display: inline-block;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 15px;
+  }
+  .price {font-size: 30px; margin: 25px 0 5px; font-weight: 600; /* color: #419aff; */}
+  .surtax {font-size: 12px; color: #ccc;}
+  .while {margin: 20px 0 50px; font-size: 18px;}
+  .while span {font-weight: bold;}
 `
 export const Container = styled.section`
   /* background: palegreen; */
