@@ -36,6 +36,17 @@ export const SearchFormWrap = styled.div`
 
   @media (max-width: 768px) {
   }
+
+  @media (max-width: 480px) {
+    .left-box {
+      flex-direction: column;
+      align-items: start;
+    }
+    select {
+      margin: 5px 0 0;
+    }
+  }
+  
 `
 
 
@@ -158,17 +169,7 @@ const SearchForm = (props) => {
           <option value="free">free</option>
         </select>
       </li>
-      <li className="right-box">
-        {/* <select
-          className='page-size'
-          onChange={(e) => changePageSize(e)}
-        >
-          <option value={2}>2개씩</option>
-          <option value={4}>4개씩</option>
-          <option value={6}>6개씩</option>
-          <option value={10}>10개씩</option>
-        </select> */}
-      </li>
+     
     </SearchFormWrap>
   )
 }

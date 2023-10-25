@@ -17,5 +17,9 @@ export const Wrap = styled.div`
     td:nth-child(6):before {content:'content';}
     td:nth-child(7):before {content:'상세보기';}
   }
+
+  @media screen and (max-width: 768px) {
+    padding-left: 30px;
+  }
   
 `

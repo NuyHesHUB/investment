@@ -38,8 +38,7 @@ export const CommonStyleFrame = styled.div`
   @media screen and (max-width: 768px) {
     overflow: hidden;
     max-width: 700px;
-    /* width: calc(100vw - 70px); */
-    padding: 90px 0 0 60px ;
+    padding: 90px 0 0 60px;
     ul.top {
       width: calc(100vw - 70px);
       max-width: 700px;
@@ -54,10 +53,17 @@ export const CommonStyleFrame = styled.div`
       text-align: center;
     }
   }
+  
   @media (max-width: 480px) {
     padding: 90px 0 30px;
     display: flex;
     justify-content: center;
+
+    ul.top {
+      flex-direction: column;
+      align-items: start;
+    }
+    .right-box {margin-top: 10px;}
   }
 
 `

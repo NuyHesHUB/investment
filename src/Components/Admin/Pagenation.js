@@ -31,6 +31,13 @@ export const PagenationWrap = styled.div`
     min-width: 300px;
     width: calc(100vw - 70px);
   }
+
+  @media screen and (max-width: 480px) {
+    button {
+    padding: 10px 5px; 
+  }
+  }
+
 `
 const Pagenation = ({ page, setPage, pageRows, setPageRows, totalRows, setTotalRows, endPage, setEndPage, count, setCount }) => {
 
