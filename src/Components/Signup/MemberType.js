@@ -87,6 +87,13 @@ const MemberType = () => {
                 </div>
             </Contents>
         ) },
+        { name: '후핀 회원가입', content: (
+            <Contents>
+                <div className='contents-wrap personal-contents'>
+                    ddddddddd
+                </div>
+            </Contents>
+        )}
         /* { name: '사업자 회원', content: (
             <Contents>
                 {isVerified ? (
