@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 /* Axios */
 import axios from 'axios';
@@ -51,7 +51,9 @@ import {
     ItemBox,
     RightBannerBox,
     ImgBox,
-    
+
+    /* Ad */
+    BannerAd    
 } from './StyledComponents/StyledHome';
 
 /* Image */
@@ -91,6 +93,29 @@ const Home = ({parsedCommunityCategoryData}) => {
                         Console.log 테스트
     \*-----------------------------------------------------*/
 
+
+
+    const [adBannerScroll, setAdBannerScroll] = useState(false);
+
+    const handleScroll = () => {
+        // const isScrolled = window.scrollY > 480;
+        // setAdBannerScroll(isScrolled);
+        if (window.scrollY > 500) {
+            setAdBannerScroll(true);
+        } else if (window.scrollY < 500) {
+            setAdBannerScroll(false);
+        }
+    };
+    
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    console.log(window.scrollY, "현재높이")
+
     return (
             <React.Fragment>
                 <Header parsedCommunityCategoryData={parsedCommunityCategoryData}/>
@@ -98,6 +123,7 @@ const Home = ({parsedCommunityCategoryData}) => {
                             <section>
                                 <BannerSwiper/>
                             </section>
+                        <BannerAd className={adBannerScroll ? 'active' : ''} /> {/* 임시 광고 자리 */}
                             <CategorySection>
                                 <CategoryContainer>
                                     <CategoryContentsBox ref={fadeIn1.ref} style={fadeIn1.style}>

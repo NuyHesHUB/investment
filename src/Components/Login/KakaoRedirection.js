@@ -30,17 +30,19 @@ const KakaoRedirection = () => {
                     sessionStorage.setItem('b_no', b_no);
                 }
                 
-
                 if (response.data.type === "first") {
                     alert("회원가입이 완료되었습니다.")
+                    navigate('/success_sign_up')
+                } else {
+
+                    console.log('response', response);
+                    if (userData.group === '관리자' && userData.isAdmin === 'Y') {
+                        navigate("/admin");
+                    } else {
+                        navigate("/");
+                    }
                 }
 
-                console.log('response', response);
-                if (userData.group === '관리자' && userData.isAdmin === 'Y') {
-                    navigate("/admin");
-                } else {
-                    navigate("/");
-                }
 
             } catch(error) {
                 console.error('실패');

@@ -35,6 +35,7 @@ import AdminPostList from './Components/Admin/AdminPostList';
 /* Social Login Redirection */
 import KakaoRedirection from './Components/Login/KakaoRedirection';
 import NaverRedirection from './Components/Login/NaverRedirection';
+import SuccessSignUp from './Components/Login/SuccessSignUp';
 
 /* Community Board */
 import CommunityViewAll from './Components/Board/CommunityBoard/CommunityViewAll';
@@ -228,6 +229,7 @@ const App = () => {
                 {/* Social Login Redirection */}
                 <Route exact path='/auth/kakao/callback' element={<KakaoRedirection />} />
                 <Route exact path='/auth/naver/callback' element={<NaverRedirection />} />
+                <Route exact path='/success_sign_up' element={<SuccessSignUp />} />
 
                 {/* Community */}
                 <Route exact path="/community" element={<CommunityViewAll parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>

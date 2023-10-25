@@ -20,7 +20,7 @@ export const Container = styled.div`
   }
   input {width: 400px;}
   input.investment-amount {text-align: right;}
-  select {width: 200px; cursor: pointer;}
+  select {width: 100%; cursor: pointer;}
   input.title {width: 100%;}
   .ql-container {min-height: 330px; padding: 10px; cursor: text;}
   .ql-container .ql-blank {min-height: 300px;}

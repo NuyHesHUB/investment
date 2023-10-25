@@ -5,6 +5,7 @@ export const StyledFrame=styled.div`
     /* height: 2000px; */
     overflow: hidden;
     padding-top: 80px;
+    position: relative;
 `
 
 export const CategorySection=styled.div`
@@ -34,8 +35,6 @@ export const CategoryContentsBox=styled.div`
         }
     }
 `
-
-
 
 
 
@@ -280,5 +279,21 @@ export const ImgBox=styled.div`
     bottom: -130px;
     img{
         width: 100%;
+    }
+`
+
+
+
+export const BannerAd = styled.div`
+    background: #ccc;
+    width: 150px;
+    height: 500px;
+    /* position: absolute; */
+    position: absolute;
+    top: 600px;
+    left: 20px;
+    &.active {
+        position: fixed;
+        top: 100px;
     }
 `

@@ -23,9 +23,7 @@ const NaverRedirection = () => {
                 const b_no = response.data.userData.b_no;
                 const uid = userUid === null ? '' : userUid
 
-                if (response.data.type === "first") {
-                    alert("회원가입이 완료되었습니다.")
-                }
+              
 
                 sessionStorage.setItem('userUid', userUid);
                 sessionStorage.setItem('accessToken', accessToken);
@@ -35,11 +33,15 @@ const NaverRedirection = () => {
                 if(b_no){
                     sessionStorage.setItem('b_no', b_no);
                 }
-                
-                if (userData.group === '관리자' && userData.isAdmin === 'Y') {
-                    navigate("/admin");
+                if (response.data.type === "first") {
+                    alert("회원가입이 완료되었습니다.")
+                    navigate('/success_sign_up')
                 } else {
-                    navigate("/");
+                    if (userData.group === '관리자' && userData.isAdmin === 'Y') {
+                        navigate("/admin");
+                    } else {
+                        navigate("/");
+                    }
                 }
                
                 ///// 접속 로그 /////
