@@ -78,7 +78,7 @@ const PaymentInfoPage = () => {
             <Line />
             <TextBox>
               <span>
-                <span className='bold'>아래의 계좌로 입금합니다아아아아아아 <br /></span>
+                <span className='bold'>아래의 계좌로 입금을 완료합니다 <br /></span>
                 농협 1234-12-123456 | 예금주: 화진로보틱스
               </span>
             </TextBox>
@@ -88,7 +88,7 @@ const PaymentInfoPage = () => {
             <Line />
             <TextBox>
               <span>
-                <span className='bold'>아래의 번호로 전화하여 입금은행과 입금자명을 확인합니당<br /></span>
+                <span className='bold'>아래의 번호로 전화하여 입금은행과 입금자명을 확인합니다<br /></span>
                 전화번호: 010-1234-1234
               </span>
             </TextBox>
@@ -98,8 +98,7 @@ const PaymentInfoPage = () => {
             <Line />
             <TextBox>
               <span>
-                <span className='bold'>입금 확인이 완료되면 게시물이 승인됩니다 <br /></span>
-                어쩌구저쩌꾸
+                <span className='bold'>입금 확인이 완료되면 게시물이 승인됩니다</span>
               </span>
             </TextBox>
           </Box>

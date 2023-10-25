@@ -78,14 +78,14 @@ const Home = ({parsedCommunityCategoryData}) => {
     const uid = userUid === null ? '' : userUid;
 
     ///// page log /////
-    useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"메인" })
-        .then((res) => {
-        })
-        .catch((error) => {
-            console.error(error)
-        })
-    }, []);
+    // useEffect(() => {
+    //     axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"메인" })
+    //     .then((res) => {
+    //     })
+    //     .catch((error) => {
+    //         console.error(error)
+    //     })
+    // }, []);
 
     /*-----------------------------------------------------*\
                         Console.log 테스트
