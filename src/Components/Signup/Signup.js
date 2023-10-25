@@ -12,7 +12,7 @@ import Header from '../Header';
 import Footer from '../Footer';
 
 /* StyledComponents */
-import { StyledFrame, StyledSigninFrame } from './StyledSignupFrame';
+import { StyledFrame, StyledSigninFrame, StyledSigninWrap, LoginBox, Required, CheckBox, SubmitBtnBox } from './StyledSignupFrame';
 
 const Signup = () => {
 
@@ -26,7 +26,7 @@ const Signup = () => {
 
     /* FormData State */
     const [formData, setFormData] = useState({
-        group: '',
+        group: '일반',
         isAdmin:'N',
         loginId: '',
         loginPassword: '',
@@ -240,18 +240,19 @@ const Signup = () => {
         <StyledFrame>
             <Header/>
             <StyledSigninFrame>
+                <StyledSigninWrap>
                     <h1>회원가입</h1>
-                    <div style={{marginTop:'20px', marginBottom:'20px', textAlign:'center'}}>
-                        <span style={{marginBottom:'20px'}}>이미 계정이 있으신가요? </span>
+                    <LoginBox>
+                        <span>이미 계정이 있으신가요? </span>
                         <Link to="/login">
                             로그인 하기
                         </Link>
-                    </div>
+                    </LoginBox>
                     <form onSubmit={onSubmit}>
-                        <div className='form-input-wrap'>
+                        {/* <div className='form-input-wrap'>
                             <div style={{width:'140px', textAlign:'left'}}>
                                 <label>그룹</label>
-                                <span>*</span>
+                                <Required>*</Required>
                             </div>
                             <div className='form-input-radio-box'>
                                 <div style={{display:'flex',justifyContent:'center'}}>
@@ -279,11 +280,11 @@ const Signup = () => {
                                 {groupError && <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{groupError}</div>}
                             </div>
                             <div style={{width:'120px', marginLeft:'8px'}}></div>
-                        </div>
+                        </div> */}
                         <div className='form-input-wrap'>
                             <div style={{width:'140px', textAlign:'left'}}>
                                 <label>아이디</label>
-                                <span>*</span>
+                                <Required>*</Required>
                             </div>
                             <div className='form-input-box'>
                                 <input
@@ -294,19 +295,18 @@ const Signup = () => {
                                     onChange={handleInputChange}
                                 />
                             </div>
-                            <div className='id-check-btn' style={{width:'120px', marginLeft:'8px'}}>
+                            <CheckBox className='id-check-btn'>
                                 <Link 
-                                    style={{display:'flex',alignItems:'center',justifyContent:'center', textDecoration:'none'}} 
                                     onClick={handleCheckId}>
-                                    <span style={{color:'rgb(95, 0, 128)'}}>중복검사</span>
+                                    <span>중복검사</span>
                                 </Link>
-                            </div>
+                            </CheckBox>
                         </div>
                         {loginIdError && <div style={{color:'rgb(240, 63, 64)', fontSize:'13px'}}>{loginIdError}</div>}
                         <div className='form-input-wrap'>
                             <div style={{width:'140px', textAlign:'left'}}>
                                 <label>이메일</label>
-                                <span>*</span>
+                                <Required>*</Required>
                             </div>
                             <div className='form-input-box'>
                                 <input
@@ -323,7 +323,7 @@ const Signup = () => {
                         <div className='form-input-wrap'>
                             <div style={{width:'140px', textAlign:'left'}}>
                                 <label>닉네임</label>
-                                <span>*</span>
+                                <Required>*</Required>
                             </div>
                             <div className='form-input-box'>
                                 <input
@@ -340,7 +340,7 @@ const Signup = () => {
                         <div className='form-input-wrap'>
                             <div style={{width:'140px', textAlign:'left'}}>
                                 <label>비밀번호</label>
-                                <span>*</span>
+                                <Required>*</Required>
                             </div>
                             <div className='form-input-box'>
                                 <input
@@ -358,7 +358,6 @@ const Signup = () => {
                         <div className='form-input-wrap'>
                             <div style={{width:'140px', textAlign:'left'}}>
                                 <label>비밀번호 확인</label>
-                                <span>*</span>
                             </div>
                             <div className='form-input-box'>
                                 <input
@@ -378,7 +377,7 @@ const Signup = () => {
                         <div className='form-input-wrap'>
                             <div style={{width:'140px', textAlign:'left'}}>
                                 <label>전화번호</label>
-                                <span>*</span>
+                                <Required>*</Required>
                             </div>
                             <div className='form-input-box'>
                                 <input
@@ -392,11 +391,15 @@ const Signup = () => {
                              </div>
                              <div style={{width:'120px', marginLeft:'8px'}}></div>
                         </div>
-                        <button className='submit-btn' type='submit'>제출</button>
+                        <SubmitBtnBox>
+                            <button className='submit-btn' type='submit'>회 원 가 입</button>
+                        </SubmitBtnBox>
                     </form>
+                </StyledSigninWrap>
             </StyledSigninFrame>
             <Footer/>
         </StyledFrame>
+        
     );
 };
 

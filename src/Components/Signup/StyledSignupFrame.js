@@ -2,30 +2,34 @@ import styled from 'styled-components';
 
 export const StyledFrame=styled.div`
     width: 100vw;
-    height: 100vh;
+    overflow: hidden;
 `
 export const StyledSigninFrame=styled.div`
     width: 700px;
+    min-height: 1000px;
+    padding-top: 80px;
     margin: 0 auto;
-    margin-top: 50px;
     display: flex;
     flex-direction: column;
     text-align: center;
+    align-items: center;
+    justify-content: center;
     background: #fff;
     .submit-btn{
-        display: block;
-        padding: 0px 10px;
-        text-align: center;
-        overflow: hidden;
-        width: 200px;
-        margin: 0 auto;
         cursor: pointer;
-        height: 46px;
-        border-radius: 3px;
-        color: rgb(95, 0, 128);
-        background-color: rgb(255, 255, 255);
-        border: 1px solid rgb(95, 0, 128);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 200px;
+        height: 40px;
+        background: #3fa9f5;
         box-sizing: border-box;
+        padding: 0px 20px;
+        border-radius: 4px;
+        border: 2px solid #3fa9f5;
+        color: #fff;
+        font-weight: bold;
+        font-size: 18px;
     }
     .form-input-wrap{
         display: flex;
@@ -33,19 +37,6 @@ export const StyledSigninFrame=styled.div`
         justify-content: center;
         align-items: center;
         margin-bottom: 20px;
-    }
-    .form-input-wrap .id-check-btn a{
-        display: block;
-        padding: 0px 10px;
-        text-align: center;
-        overflow: hidden;
-        width: 100%;
-        height: 46px;
-        border-radius: 3px;
-        color: rgb(95, 0, 128);
-        background-color: rgb(255, 255, 255);
-        border: 1px solid rgb(95, 0, 128);
-        box-sizing: border-box;
     }
     .form-input-box{
         position: relative;
@@ -68,4 +59,52 @@ export const StyledSigninFrame=styled.div`
         outline: none;
         box-sizing: border-box;
     }
+`
+export const StyledSigninWrap=styled.div`
+
+`
+export const LoginBox=styled.div`
+    margin: 40px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span{
+        margin-right: 5px;
+    }
+    a{
+        color: #3fa9f5;
+        font-weight: bold;
+        font-size: 18px;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+`
+export const Required=styled.span`
+    color: tomato;
+    font-weight: bold;
+    font-size: 20px;
+`
+export const CheckBox=styled.div`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 46px;
+    background: #fff;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #3fa9f5;
+    margin-left: 8px;
+    a{
+        text-decoration: none;
+        color: #3fa9f5;
+        font-size: 18px;
+    }
+`
+export const SubmitBtnBox=styled.div`
+    margin: 80px 0;
+    display: flex;
+    justify-content: center;
 `
