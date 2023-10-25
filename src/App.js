@@ -14,7 +14,7 @@ import { setAdminBoardData } from './store/actions/actions';
 import Home from './Components/Home';
 import Login from './Components/Login/Login';
 import MemberType from './Components/Signup/MemberType';
-/* import Signup from './Components/Signup/Signup'; */
+import Signup from './Components/Signup/Signup';
 
 /* Member Edit */
 import MemberEditPage from './Components/MemberEdit/MemberEditPage';
@@ -222,7 +222,7 @@ const App = () => {
                 <Route exact path="/" element={<Home parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
                 <Route exact path="/login" element={<Login />}></Route>
                 <Route exact path="/member_type" element={<MemberType />}></Route>
-                {/* <Route exact path="/sign_up" element={<Signup/>}></Route> */} {/* [보류] 소셜로그인 */}
+                <Route exact path="/sign_up" element={<Signup/>}></Route> {/* [보류] 소셜로그인 */}
                 <Route exact path="/myinfo" element={<MemberEditPage />}></Route>
 
                 {/* Social Login Redirection */}
