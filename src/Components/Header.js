@@ -295,11 +295,16 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                                         </UserGroupItem>
                                     </UserGroupBox>
                                 ) : (
-                                    <React.Fragment>
+                                    <UserGroupBox>
+                                        <UserGroupItem style={{marginRight:'10px'}}>
+                                            <Link to="member_edit">
+                                                <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
+                                            </Link>
+                                        </UserGroupItem>
                                         <UserGroupItem>
                                             <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
                                         </UserGroupItem>
-                                    </React.Fragment>
+                                    </UserGroupBox>
                                 )
                             ) : (
                                 <RightHeaderMenuList>

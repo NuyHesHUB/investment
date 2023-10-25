@@ -33,12 +33,13 @@ const Signup = () => {
         nickname: '',
         phone: '',
         email: '',
-        img: '',
-        termsOfService: '',
-        privacyPolicy: '',
-        note: '',
-        companyName: '',
-        businessNum: ''
+        /* img: '', */
+        termsOfService: 'Y',
+        privacyPolicy: 'Y',
+        socialType: 'local',
+        /* note: '', */
+        /* companyName: '', */
+        /* businessNum: '' */
     });
 
     /* Submit Error State */
@@ -322,7 +323,8 @@ const Signup = () => {
                         </div>
                         <div className='form-input-wrap'>
                             <div style={{width:'140px', textAlign:'left'}}>
-                                <label>닉네임</label>
+                                {/* <label>닉네임</label> */}
+                                <label>이름</label>
                                 <Required>*</Required>
                             </div>
                             <div className='form-input-box'>
