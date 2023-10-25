@@ -296,11 +296,11 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                                     </UserGroupBox>
                                 ) : (
                                     <UserGroupBox>
-                                        <UserGroupItem style={{marginRight:'10px'}}>
+                                        {/* <UserGroupItem style={{marginRight:'10px'}}>
                                             <Link to="member_edit">
                                                 <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
                                             </Link>
-                                        </UserGroupItem>
+                                        </UserGroupItem> */}
                                         <UserGroupItem>
                                             <HeaderBtn onClick={handleLogout}>로그아웃</HeaderBtn>
                                         </UserGroupItem>
@@ -315,7 +315,8 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                                             </UserGroupItem>
                                             <Divider>|</Divider>
                                             <SignUpItem>
-                                                <Link to="/member_type" >
+                                                {/* <Link to="/member_type" > */}
+                                                <Link to="/signup" >
                                                     회원가입
                                                 </Link>
                                             </SignUpItem>

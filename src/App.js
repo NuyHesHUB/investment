@@ -224,7 +224,10 @@ const App = () => {
                 {/* Home, Login, Signup */}
                 <Route exact path="/" element={<Home parsedCommunityCategoryData={parsedCommunityCategoryData}/>}></Route>
                 <Route exact path="/login" element={<Login />}></Route>
-                <Route exact path="/member_type" element={<MemberType />}></Route>
+                
+                {/* <Route exact path="/member_type" element={<MemberType />}></Route> */}
+                <Route exact path="/signup" element={<MemberType />}></Route>
+
                 <Route exact path="/member_type/agree" element={<MemberAgree />}></Route>
                 <Route exact path="/sign_up" element={<Signup/>}></Route> {/* [보류] 소셜로그인 */}
                 <Route exact path="/myinfo" element={<MemberEditPage />}></Route>

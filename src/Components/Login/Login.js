@@ -166,7 +166,8 @@ const Login = () => {
                         <NaverLogin contents="네이버 로그인"/>
                         <KakaoLogin contents="카카오 로그인"/>
                     <LoginSignUpBox>
-                        <p>아직 계정이 없으신가요?</p><Link to="/member_type">가입하기</Link>
+                        {/* <p>아직 계정이 없으신가요?</p><Link to="/member_type">가입하기</Link> */}
+                        <p>아직 계정이 없으신가요?</p><Link to="/signup">가입하기</Link>
                     </LoginSignUpBox>
                 </LoginBox>
             </LoginWrap>
