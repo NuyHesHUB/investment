@@ -244,6 +244,7 @@ const InvestOngoingBoard = () => {
                                             </div>
                                         </MoreWrap>
                                     )}
+
                                     {/* <MoreWrap>
                                         <div style={{marginTop:'80px'}}>
                                             <MoreBtn onClick={handleLoadMore}>
@@ -251,6 +252,7 @@ const InvestOngoingBoard = () => {
                                             </MoreBtn>
                                         </div>
                                     </MoreWrap> */}
+
                                     {/* <MoreWrap>
                                         {postSaveData?.length > PostCardCount && (
                                             <div style={{marginTop:'80px'}}>
@@ -260,6 +262,7 @@ const InvestOngoingBoard = () => {
                                             </div>
                                         )}
                                     </MoreWrap> */}
+                                    
                                 </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>진행 중인 투자가 없습니다.</div>}
                             </>
                         )}
