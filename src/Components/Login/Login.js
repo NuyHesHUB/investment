@@ -18,7 +18,7 @@ import NaverLogin from './SocialNaverLogin';
 import GoogleLogin from './SocialGoogleLogin';
 
 /* StyledComponents */
-import { StyledFrame, LoginWrap, LoginBox, LoginTitle, LoginSignUpBox,LoginFormBox, LoginContentsBox, ForgetDivideBox, Divider, SocialLoginBox, SocialIconBox, SocialIcon } from './StyledLoginFrame';
+import { StyledFrame, LoginWrap, LoginBox, LoginTitle, LoginSignUpBox, LoginFormBox, LoginContentsBox, ForgetDivideBox, Divider, SocialLoginBox, SocialIconBox, SocialIcon } from './StyledLoginFrame';
 
 /* Imgage */
 /* import NaverBtn from '../../assets/Login-Image/naver_bar.png'; */

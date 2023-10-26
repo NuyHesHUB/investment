@@ -298,7 +298,12 @@ const PostDetail = () => {
             await fetchComments();
 
         } catch (error) {
-            console.error('좋아요 기능 실패', error);
+            if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
+                alert('로그인이 필요합니다.');
+                navigate('/login');
+            } else {
+                console.error(`좋아요 기능 실패`, error);
+            }
         }
     };
     
@@ -356,7 +361,12 @@ const PostDetail = () => {
             await fetchComments();
 
         } catch (error) {
-            console.error('좋아요 기능 실패', error);
+            if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 유효하지 않습니다.') {
+                alert('로그인이 필요합니다.');
+                navigate('/login');
+            } else {
+                console.error(`좋아요 기능 실패`, error);
+            }
         }
     };
 

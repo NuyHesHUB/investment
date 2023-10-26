@@ -4,7 +4,7 @@ const initialState = {
     adminUserData: [],
     adminBoardData: [],
     adminPostData: [],
-    ongoingPostcardCount: 6,
+    ongoingPostcardCount: null,
     deadlinePostcardCount: 6,
     ongoingPostData: [],
     deadlinePostData: [],

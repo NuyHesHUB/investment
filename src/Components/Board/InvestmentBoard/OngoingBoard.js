@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 /* React-Router-Dom */
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 /* Axios */
 import axios from 'axios';
@@ -22,14 +22,10 @@ import { BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap, MoreWrap, More
 /* img */
 import { ReactComponent as VisualImg } from './VisualImg.svg';
 
-import useScrollFadeIn from '../../../Hook/useScrollFadeIn';
+/* Effect */
 import Loading from '../../../Effect/Loading';
 
-
-
 const InvestOngoingBoard = () => {
-
-    /* const fadeIn1 = useScrollFadeIn('up', 1, 500); */
 
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
@@ -39,38 +35,31 @@ const InvestOngoingBoard = () => {
     const headers = {
         Authorization: `${accessToken}`
     };
-    const params = {
-        pageRows : '',
-        page : '',
-        category : '',
-        status : '',
-        condition :'ongoing',
-    };
+    
     const dispatch = useDispatch();
     const PostCardCount = useSelector((state) => state.reducer.ongoingPostcardCount
     );
 
-    const [investOngoingPostData, setInvestOngoingPostData] = useState(null);
-
-    const { pathname } = useLocation();
+    /* const [investOngoingPostData, setInvestOngoingPostData] = useState(null); */
 
     const [isLoading, setIsLoading] = useState(true);
+    const [pageRows, setPageRows] = useState(3);
+    const params = {
+        pageRows,
+        page : 1,
+        category : '',
+        status : '',
+        condition :'ongoing',
+    };
+    /* const [totalLength, setTotalLength] = useState(null); */
 
     const postSaveData = useSelector((state) => state.reducer.ongoingPostData);
-    
-    
-    if (postSaveData.length > 0) {
-        console.log('리덕스 테스트 데이터 있음');
-    } else{
-        console.log('리덕스 테스트 데이터 없음');
-    }
-
-    console.log('테스트', postSaveData);
+    console.log('postSaveData',postSaveData);
 
     /*-----------------------------------------------*\
                   PostCard 더보기 전역상태관리
     \*-----------------------------------------------*/
-    useEffect(() => {
+    /* useEffect(() => {
         const handlePopState = () => {
             const state = window.history.state;
             if (state) {
@@ -84,14 +73,40 @@ const InvestOngoingBoard = () => {
             window.removeEventListener('popstate', handlePopState);
         };
 
-    }, [PostCardCount]);
+    }, [PostCardCount]); */
+
+    /* const handleLoadMore = () => {
+        const updatedNumPostsToShow = PostCardCount + 3;
+        dispatch(setOngoingPostCardCount(updatedNumPostsToShow));
+    }; */
 
     const handleLoadMore = () => {
-        const updatedNumPostsToShow = PostCardCount + 6;
-        dispatch(setOngoingPostCardCount(updatedNumPostsToShow));
+        const updatedRows = pageRows + 3;
+        setPageRows(updatedRows);
+    
+        const updatedParams = {
+            ...params,
+            pageRows: updatedRows,
+        };
+    
+        dispatch(setOngoingPostCardCount(updatedRows * 3)); // Update the total count
+    
+        const fetchData = async () => {
+            try {
+                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params: updatedParams });
+                const data = PostResponse.data?.query;
+                
+                /* console.log('investPostResponse',data); */
+                dispatch(setOngoingPostData(data));
+                setIsLoading(false);
+            } catch (error) {
+                console.error('investOngoingBoardData 데이터 가져오기 실패', error);
+                setIsLoading(false);
+            }
+        };
+    
+        fetchData();
     };
-
-
 
     /*-----------------------------------------------*\
                         page log
@@ -116,13 +131,15 @@ const InvestOngoingBoard = () => {
                 try {
                     const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params });
                     const data = PostResponse.data?.query;
+                    const lenthData = PostResponse.data?.totalRows;
+                    console.log('lenthData',lenthData);
                     console.log('investPostResponse',data);
-                    /* setInvestOngoingPostData(data); */
+                    /* setTotalLength(lenthData); */
+                    dispatch(setOngoingPostCardCount(lenthData));
                     dispatch(setOngoingPostData(data));
-                    /* setIsLoading(false); */
                     setTimeout(() => {
                         setIsLoading(false);
-                    }, 1000); 
+                    }, 800); 
                 } catch (error) {
                     console.error('investOngoingBoardData 데이터 가져오기 실패', error);
                     setIsLoading(false);
@@ -174,6 +191,7 @@ const InvestOngoingBoard = () => {
     /* console.log('formattedDates',formattedDates); */
     /* console.log('investOngoingPostData',investOngoingPostData); */
     /* console.log('koreanCategory',koreanCategory); */
+    console.log('totalLength',PostCardCount);
     return (
         <React.Fragment>
             <Header/>
@@ -217,7 +235,23 @@ const InvestOngoingBoard = () => {
                                         </Link>
                                     ))}
                                     </PostCardWrap>
-                                    <MoreWrap>
+                                    {postSaveData.length < PostCardCount && (
+                                        <MoreWrap>
+                                            <div style={{ marginTop: '80px' }}>
+                                                <MoreBtn onClick={handleLoadMore}>
+                                                    <span>더보기</span>
+                                                </MoreBtn>
+                                            </div>
+                                        </MoreWrap>
+                                    )}
+                                    {/* <MoreWrap>
+                                        <div style={{marginTop:'80px'}}>
+                                            <MoreBtn onClick={handleLoadMore}>
+                                                <span>더보기</span>
+                                            </MoreBtn>
+                                        </div>
+                                    </MoreWrap> */}
+                                    {/* <MoreWrap>
                                         {postSaveData?.length > PostCardCount && (
                                             <div style={{marginTop:'80px'}}>
                                                 <MoreBtn onClick={handleLoadMore}>
@@ -225,7 +259,7 @@ const InvestOngoingBoard = () => {
                                                 </MoreBtn>
                                             </div>
                                         )}
-                                    </MoreWrap>
+                                    </MoreWrap> */}
                                 </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>진행 중인 투자가 없습니다.</div>}
                             </>
                         )}
