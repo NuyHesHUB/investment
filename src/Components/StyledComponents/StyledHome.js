@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const StyledFrame=styled.div`
     width: calc(100vw - (100vw - 100%));
     /* height: 2000px; */
-    overflow: hidden;
+    /* overflow: hidden; */
     padding-top: 80px;
     position: relative;
 `
@@ -285,15 +285,11 @@ export const ImgBox=styled.div`
 
 
 export const BannerAd = styled.div`
-    background: #ccc;
+    background: pink;
     width: 150px;
     height: 500px;
-    /* position: absolute; */
-    position: absolute;
-    top: 600px;
-    left: 20px;
-    &.active {
-        position: fixed;
-        top: 100px;
-    }
+    margin: 20px 0 0 20px;
+    top: 100px;
+    position: sticky;
+    position: -webkit-sticky;
 `

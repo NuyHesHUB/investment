@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import Resizer from "react-image-file-resizer";
 //import component
 import Header from "../Header"
 import Footer from "../Footer"
@@ -38,15 +39,36 @@ const CompanyUpload = () => {
   useEffect(() => {
     axios.get(`${baseURL}/v1/company/${b_no}?userUid=${userUid}`, { headers }).then((res) => {
       setCompanyData(res.data.query[0]);
+      if (companyData.logoImg) {
+        setPlaceholderActive(false)
+        setLogoImage(companyData.logoImg)
+      }
+      console.log("정보불러오기성공", res)
     }).catch(() => {
       console.error("error");
     })
-  }, []);
+  }, [companyData]);
 
-  
+
+
+  console.log(companyData.logoImg,"로고이미지링크")
   ////////////////////////////////
   ///// 로고 이미지 미리보기 /////
   ////////////////////////////////
+  ///// 리사이즈 /////
+  const resizeFile = (file) =>
+   new Promise((res) => {
+      Resizer.imageFileResizer(
+        file, // target file
+        100, // maxWidth
+        100, // maxHeight
+        "WEBP", // compressFormat : Can be either JPEG, PNG or WEBP.
+        80, // quality : 0 and 100. Used for the JPEG compression
+        0, // rotation
+        (uri) => res(uri), // responseUriFunc
+        "file" // outputType : Can be either base64, blob or file.(Default type is base64)	
+      );
+   });
   const inputFileChange = async (e) => {
     try {
       const file = e.target.files[0]
@@ -161,7 +183,7 @@ const CompanyUpload = () => {
                       <p>로고 이미지 업로드</p>
                     </div>
                     <div className={logoImage ? 'imgBox active' : 'imgBox'}>
-                      <img src={logoImage} id="preview" />
+                      <img src={companyData.logoImg ? companyData.logoImg : logoImage} id="preview" />
                       <div className='logo-btnBox'>
                         <label htmlFor="logo-upload" className='logo-change-btn'>
                           변경

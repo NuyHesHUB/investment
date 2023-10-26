@@ -113,12 +113,12 @@ const PostDetail = () => {
     /*-----------------------------------------------*\
                         page log
     \*-----------------------------------------------*/
-    useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":`진행중상세페이지 boardPostId:${id}` }).then((res) => {
-    }).catch((error) => {
-        console.error(error)
-    })
-    }, []);
+    // useEffect(() => {
+    //     axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":`진행중상세페이지 boardPostId:${id}` }).then((res) => {
+    // }).catch((error) => {
+    //     console.error(error)
+    // })
+    // }, []);
     
 
     /* 게시글 데이터 */

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import ReactQuill , { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Resizer from "react-image-file-resizer";
 //import component
 import Header from "../Header"
 import Footer from "../Footer"
@@ -34,8 +35,7 @@ const CompanyWrite = () => {
   // }, []);
 
   const [content, setContent] = useState(''); // 내용부분
-  const [asdf , setasdf] = useState()
-  const [investmentAmount, setInvestmentAmount] = useState(0); //투자희망금액 (아직 코드 안짬)
+  const [investmentAmount, setInvestmentAmount] = useState(0); //투자희망금액
   const [postData, setPostData] = useState({
     category: "제조",
     condition: "pending",
@@ -54,8 +54,24 @@ const CompanyWrite = () => {
 
   const quillRef = useRef(true);
   /////////////////////////
-  ///// 이미지 핸들러 /////
+  /////     이미지    /////
   /////////////////////////
+
+  ///// 리사이즈 /////
+  const resizeFile = (file) =>
+    new Promise((res) => {
+      Resizer.imageFileResizer(
+        file, // target file
+        900, // maxWidth
+        1500, // maxHeight
+        "WEBP", // compressFormat : Can be either JPEG, PNG or WEBP.
+        80, // quality : 0 and 100. Used for the JPEG compression
+        0, // rotation
+        (uri) => res(uri), // responseUriFunc
+        "file" // outputType : Can be either base64, blob or file.(Default type is base64)	
+      );
+    });
+  ///// 이미지 핸들러 /////
   const imageHandler = () => { 
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -64,16 +80,18 @@ const CompanyWrite = () => {
     input.click();
     
     input.onchange = async () => {
-      const files = input.files;
+      const files =input.files;
       const editor = quillRef.current.getEditor();
       const formData = new FormData();
       console.log(files, "파일")
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
+        const compressedFile = (await resizeFile(file)); // 리사이징
+        console.log("이미지확장자테스트", compressedFile)
         const encodedFilename = encodeURIComponent(file.name);
-        // const encodedFilename = file.name;
-        formData.append('files', file);  // Append each file to the FormData
+        // formData.append('files', file);  // Append each file to the FormData
+        formData.append('files', compressedFile);  // 리사이징
         formData.append('filename', encodedFilename);
       }
       formData.append('brdKey', "investment");
@@ -95,24 +113,77 @@ const CompanyWrite = () => {
           } else {
             IMG_URL = result.data[i].imageUrl;
           }
+          console.log(IMG_URL,"IMG_URL")
           const range = editor.getSelection();
           setTimeout(() => editor.insertEmbed(range.index, "image", IMG_URL), 500);
         }
-        console.log("성공")
-        // console.log('성공', IMG_URL);
       } catch (error) {
         console.log(error, '실패')
       }
     }
   }
+
+  // const imageHandler = () => { 
+  //   const input = document.createElement('input');
+  //   input.setAttribute('type', 'file');
+  //   input.setAttribute('accept', 'image/*');
+  //   input.setAttribute('multiple', 'true');
+  //   input.click();
     
+  //   input.onchange = async () => {
+  //     // const files = input.files;
+  //     const files =input.files;
+  //     const editor = quillRef.current.getEditor();
+  //     const formData = new FormData();
+  //     console.log(files, "파일")
+  //     console.log("이미지확장자테스트", files)
+  //     for (let i = 0; i < files.length; i++) {
+  //       const file = files[i];
+        
+  //       const encodedFilename = encodeURIComponent(file.name);
+  //       formData.append('files', file);  // Append each file to the FormData
+  //       formData.append('filename', encodedFilename);
+  //     }
+  //     formData.append('brdKey', "investment");
+  //     // FormData의 key 확인
+  //     for (let key of formData.keys()) {
+  //       console.log(key,"키");
+  //     }
+
+  //     // FormData의 value 확인
+  //     for (let value of formData.values()) {
+  //       console.log(value,"값");
+  //     }
+  //     try {
+  //       const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })        
+  //       for (let i = 0; i < files.length; i++) {
+  //         let IMG_URL = '';
+  //         if(result.data.length === undefined) {
+  //           IMG_URL = result.data.imageUrl;
+  //         } else {
+  //           IMG_URL = result.data[i].imageUrl;
+  //         }
+  //         const range = editor.getSelection();
+  //         setTimeout(() => editor.insertEmbed(range.index, "image", IMG_URL), 500);
+  //         console.log("성공", IMG_URL)
+  //       }
+  //       // console.log('성공', IMG_URL);
+  //     } catch (error) {
+  //       console.log(error, '실패')
+  //     }
+  //   }
+  // }
+  
+  ///// 내용 변경 /////
   const handleContentChange = (value) => {
     setContent(value.replaceAll("'",""));
+  };
+  useEffect(() => {
     setPostData({
       ...postData,
       content: content
     });
-  };
+  }, [content])
   
   ///// 에디터 모듈 설정 /////
   const modules = useMemo(() => {
@@ -147,8 +218,8 @@ const CompanyWrite = () => {
     'background', 
   ];
 
-  const [formattedValue, setFormattedValue] = useState();
   ///// 투자희망금액 /////
+  const [formattedValue, setFormattedValue] = useState();
   const investmentAmountChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, '')
     setFormattedValue(value.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1,'))
@@ -159,15 +230,20 @@ const CompanyWrite = () => {
     })
   }
 
+  ///// 제목 변경 /////
   const [title, setTitle] = useState('');
-  const handleTitleChange = (e, name) => {
+  const handleTitleChange = (e) => {
     const value = e.target.value
     setTitle(value.replaceAll("'",""));
+  };
+  useEffect(() => {
     setPostData({
       ...postData,
-      [name] : title
+      title : title
     });
-  };
+  },[title])
+
+  ///// 그외 input value 변경 /////
   const handleValueChange = (e, name) => {
     const value = e.target.value
     setPostData({
@@ -175,13 +251,9 @@ const CompanyWrite = () => {
       [name] : value
     });
   };
-  // setContent(value.replaceAll("'",""));
-  // setPostData({
-  //   ...postData,
-  //   content: content
-  // });
+
   ///// 첨부파일 /////
-  const [selectedFilesName, setSelectedFilesName] = useState([]); //파일명 미리보기 / 좀이따 위로 올리기
+  const [selectedFilesName, setSelectedFilesName] = useState([]); //파일명 미리보기
   const handleFileChange  = async (e) => {
     const files = e.target.files;
     console.log("파일첨부테스트", files)
@@ -229,6 +301,7 @@ const CompanyWrite = () => {
     } // if문 끝
     e.target.value = ''
   }
+
   ///// 첨부파일 삭제 /////
   const attachDelete = async (e, index) => {
     await axios.delete(`${baseURL}/v1/attachment/delete`, { data : {url: postData.attaches[index]}, headers} ).then((res) => {
@@ -244,21 +317,17 @@ const CompanyWrite = () => {
       alert("error")
     })
   }
-  // console.log(selectedFilesName, postData.attaches, postData, "파일명삭제테스트")
 
   ///// 등록/취소 Btn /////
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (window.confirm("등록하시겠습니까?")) {
-      console.log(content,"등록버튼클릭테스트")
       await axios.post(`${baseURL}/v1/board/investment/post`, postData, { headers }).then((res) => {
-        console.log("추가test")
         sessionStorage.removeItem('b_no');
         alert("추가하였습니다")
         navigate('/payment_info_page')
       }).catch((error) => {
         console.error(error)
-        console.log(content,"등록버튼클릭테스트*(에러_)")
         alert("error")
       })
     }
@@ -311,7 +380,7 @@ const CompanyWrite = () => {
                 name="title" 
                 placeholder='제목을 입력해주세요'
                 value={title || ""}
-                onChange={(e) => handleTitleChange(e, "title")} 
+                onChange={(e) => handleTitleChange(e)} 
               />
             </div>
 

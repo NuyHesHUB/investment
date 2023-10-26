@@ -120,10 +120,12 @@ const Home = ({parsedCommunityCategoryData}) => {
             <React.Fragment>
                 <Header parsedCommunityCategoryData={parsedCommunityCategoryData}/>
                     <StyledFrame>
-                            <section>
-                                <BannerSwiper/>
-                            </section>
-                        <BannerAd className={adBannerScroll ? 'active' : ''} /> {/* 임시 광고 자리 */}
+                        <section>
+                            <BannerSwiper/>
+                        </section>
+                        <BannerAd className={adBannerScroll ? 'active' : ''}>
+                            <div></div>    
+                        </BannerAd> {/* 임시 광고 자리 */}
                             <CategorySection>
                                 <CategoryContainer>
                                     <CategoryContentsBox ref={fadeIn1.ref} style={fadeIn1.style}>

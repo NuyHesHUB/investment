@@ -128,12 +128,12 @@ const Login = () => {
     /*-----------------------------------------------*\
                         page log
     \*-----------------------------------------------*/
-    useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"로그인" }).then((res) => {
-    }).catch((error) => {
-        console.error(error)
-    })
-    }, []);
+    // useEffect(() => {
+    //     axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"로그인" }).then((res) => {
+    // }).catch((error) => {
+    //     console.error(error)
+    // })
+    // }, []);
 
     /* useEffect(() => {
     const refreshAccessToken = async () => {

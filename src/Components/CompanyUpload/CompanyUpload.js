@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import Resizer from "react-image-file-resizer";
 //import component
 import Header from "../Header"
 import Footer from "../Footer"
@@ -44,15 +45,30 @@ const CompanyUpload = () => {
   ////////////////////////////////
   ///// 로고 이미지 미리보기 /////
   ////////////////////////////////
+   ///// 리사이즈 /////
+   const resizeFile = (file) =>
+   new Promise((res) => {
+      Resizer.imageFileResizer(
+        file, // target file
+        100, // maxWidth
+        100, // maxHeight
+        "WEBP", // compressFormat : Can be either JPEG, PNG or WEBP.
+        80, // quality : 0 and 100. Used for the JPEG compression
+        0, // rotation
+        (uri) => res(uri), // responseUriFunc
+        "file" // outputType : Can be either base64, blob or file.(Default type is base64)	
+      );
+   });
   const inputFileChange = async (e) => {
     try {
       const file = e.target.files[0]
+      const compressedFile = (await resizeFile(file));
       const encodedFilename = encodeURIComponent(file.name);
       const imgUrl = URL.createObjectURL(file)
       setLogoImage(imgUrl) //미리보기 이미지 링크
       // 폼데이터에 저장
       const formData = new FormData();
-      formData.append('files', file);
+      formData.append('files', compressedFile);
       formData.append('brdKey', "companyLogoImg");
       formData.append('filename', encodedFilename);
       

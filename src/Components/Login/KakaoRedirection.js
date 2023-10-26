@@ -42,7 +42,6 @@ const KakaoRedirection = () => {
                     }
                 }
 
-
             } catch(error) {
                 console.error('실패');
                 if (error.response.data.err === "해당 계정은 가입이 불가능합니다.") {
