@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Resizer from "react-image-file-resizer";
-//import component
+/* Import Component */
 import Header from "../Header"
 import Footer from "../Footer"
-// styled
+/* Styled */ 
 import { Wrap, Container, Inner } from "./StyledCompanyUpload"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
-// icon
+/* Icon */ 
 import { AiOutlineCamera } from "react-icons/ai";
+/* Log */
+import PageLog from '../../Hook/PageLog'
 
 const CompanyUpload = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -17,21 +19,16 @@ const CompanyUpload = () => {
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
-  const uid = userUid === null ? '' : userUid
+  const uid = userUid === null ? '' : userUid;
   const userGroup = sessionStorage.getItem('userGroup');
-  const b_no = sessionStorage.getItem('b_no')
+  const b_no = sessionStorage.getItem('b_no');
   const headers = {
     Authorization: `${accessToken}`
   }
 
   ///// page log /////
-  // useEffect(() => {
-  //   axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page": "업체등록" }).then((res) => {
-  // }).catch((error) => {
-  //   console.error(error)
-  // })
-  // }, []);
-
+  // PageLog("업체등록");
+ 
   const [placeholderActive, setPlaceholderActive] = useState(true); //이미지등록placeholder
   const [logoImage, setLogoImage] = useState(''); // 이미지미리보기링크데이터
   const [companyData, setCompanyData] = useState({
@@ -84,10 +81,10 @@ const CompanyUpload = () => {
         setCompanyData(updatedData); 
         e.target.value = ''
       }).catch((error) => {
-        console.error(error)
+        console.error(error);
       })
     } catch {
-      console.error("error")
+      console.error("error");
     }
   }
   // 로고 이미지 삭제 //

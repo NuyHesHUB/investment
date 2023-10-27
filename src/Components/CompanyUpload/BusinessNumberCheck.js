@@ -5,6 +5,8 @@ import axios from 'axios';
 import Header from '../Header'
 // styled
 import { Wrap, Container, Inner } from './StyledBusinessNumberCheck'
+/* Log */
+import PageLog from '../../Hook/PageLog'
 
 const BusinessNumberCheck = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -18,12 +20,7 @@ const BusinessNumberCheck = () => {
   }
 
   ///// page log /////
-  // useEffect(() => {
-  //   axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"사업자등록번호확인" }).then((res) => {
-  // }).catch((error) => {
-  //   console.error(error)
-  // })
-  // }, []);
+  // PageLog("사업자등록번호확인");
   
   const [businessNum, setBusinessNum] = useState({
     b_no: ""
@@ -38,7 +35,6 @@ const BusinessNumberCheck = () => {
     } else {
       await axios.post(`${baseURL}/v1/users/validate`, businessNum, {headers}).then((res) => { //데이터추가
         const b_no = res.data.data.b_no
-        console.log("사업자등록번호진위여부test", res, b_no)
         sessionStorage.setItem('b_no', b_no)
         navigate(`/company_upload`)
         //사업자번호 넘기기

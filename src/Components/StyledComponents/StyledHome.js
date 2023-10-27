@@ -281,9 +281,6 @@ export const ImgBox=styled.div`
         width: 100%;
     }
 `
-
-
-
 export const BannerAd = styled.div`
     background: pink;
     width: 150px;

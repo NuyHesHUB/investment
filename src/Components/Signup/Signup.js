@@ -11,6 +11,9 @@ import axios from 'axios';
 import Header from '../Header';
 import Footer from '../Footer';
 
+/* Log */
+import PageLog from '../../Hook/PageLog'
+
 /* StyledComponents */
 import { StyledFrame, StyledSigninFrame, StyledSigninWrap, LoginBox, Required, CheckBox, SubmitBtnBox } from './StyledSignupFrame';
 
@@ -19,7 +22,6 @@ const Signup = () => {
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
-    const uid = userUid === null ? '' : userUid
     
     /* React-Router-Dom */
     const navigate = useNavigate();
@@ -55,6 +57,11 @@ const Signup = () => {
 
     /* LoginID Check State */
     const [loginIdCheck, setLoginIdCheck] = useState(false);
+
+    /*------------------------------------------------*\
+                         page Log
+    \*------------------------------------------------*/
+    // PageLog("회원가입");
 
     /*------------------------------------------------*\
                     Login ID 유효성 검사
@@ -225,17 +232,6 @@ const Signup = () => {
             validatePhone(value);
         }
     };
-    console.log(formData);
-
-    /*-----------------------------------------------*\
-                        page log
-    \*-----------------------------------------------*/
-    useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"회원가입" }).then(() => {
-    }).catch((error) => {
-        console.error(error)
-    })
-    }, []);
 
     return (
         <StyledFrame>

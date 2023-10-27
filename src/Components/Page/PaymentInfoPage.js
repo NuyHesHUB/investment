@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import React from 'react';
+import { useNavigate } from "react-router-dom";
 //import component
 import Header from "../Header";
 import Footer from "../Footer";
@@ -9,20 +8,15 @@ import { Wrap, PriceInfo, PriceCard, TitleBox, Container, Box, Line, TextBox } f
 // icon
 import { CiEdit, CiDollar, CiPhone } from "react-icons/ci";
 import { BsCheck2 } from "react-icons/bs";
+/* Log */
+import PageLog from '../../Hook/PageLog'
 
 const PaymentInfoPage = () => {
-  const baseURL = process.env.REACT_APP_BASEURL;
   const userUid = sessionStorage.getItem('userUid');
   const userGroup = sessionStorage.getItem('userGroup');
-  const uid = userUid === null ? '' : userUid
   const navigate = useNavigate();
   ///// page log /////
-  // useEffect(() => {
-  //    axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"결제안내" }).then((res) => {
-  //   }).catch((error) => {
-  //     console.error(error)
-  //   })
-  // }, []);
+  // PageLog("결제안내");
 
   const navigateLogin = () => {
     if (window.confirm("로그인이 되어 있지 않습니다. 로그인하시겠습니까?")) {
@@ -67,7 +61,6 @@ const PaymentInfoPage = () => {
             <TextBox>
               <span>
                 <span className='bold'>업체를 등록한 후, 게시물을 작성합니다<br /></span>
-                {/* 1. 상단 메뉴바 <Link className='write' to='/company_write'>글쓰기</Link> 버튼 클릭 <br /> */}
                 1. 상단 메뉴바 <span className='write' onClick={userUid ? checkCompanyRegistration : navigateLogin}>글쓰기</span> 버튼 클릭 <br />
                 2. 내용 입력 후 등록하기
               </span>
@@ -107,7 +100,6 @@ const PaymentInfoPage = () => {
       </Wrap>
       <Footer />
     </>
-    
   )
 }
 export default PaymentInfoPage;

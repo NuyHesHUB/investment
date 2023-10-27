@@ -1,40 +1,36 @@
 import React, { useEffect, useState, useMemo, useRef  } from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import ReactQuill , { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Resizer from "react-image-file-resizer";
-//import component
+/* import component */
 import Header from "../Header"
 import Footer from "../Footer"
-// styled
+/* styled */ 
 import { Container } from "./StyledCompanyWrite"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
-//icon
+/* icon */
 import { PiFilePlusThin } from "react-icons/pi";
 import { BsTrash3 } from "react-icons/bs";
-
+/* Log */
+import PageLog from '../../Hook/PageLog'
 
 const CompanyWrite = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
-  const uid = userUid === null ? '' : userUid
+  const b_no = sessionStorage.getItem('b_no');
   const headers = {
     Authorization: `${accessToken}`
   }
   const navigate = useNavigate();
-  const location = useLocation();
-  ///// page log /////
-  // useEffect(() => {
-  //   axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"투자등록하기" }).then((res) => {
-  // }).catch((error) => {
-  //   console.error(error)
-  // })
-  // }, []);
 
-  const [content, setContent] = useState(''); // 내용부분
+  ///// page log /////
+  // PageLog("글쓰기(투자등록)");
+
+  const [content, setContent] = useState(''); // 내용
   const [investmentAmount, setInvestmentAmount] = useState(0); //투자희망금액
   const [postData, setPostData] = useState({
     category: "제조",
@@ -52,26 +48,25 @@ const CompanyWrite = () => {
     attaches: ""
   });
 
-  const quillRef = useRef(true);
   /////////////////////////
   /////     이미지    /////
   /////////////////////////
-
   ///// 리사이즈 /////
   const resizeFile = (file) =>
-    new Promise((res) => {
-      Resizer.imageFileResizer(
-        file, // target file
-        900, // maxWidth
-        1500, // maxHeight
-        "WEBP", // compressFormat : Can be either JPEG, PNG or WEBP.
-        80, // quality : 0 and 100. Used for the JPEG compression
-        0, // rotation
-        (uri) => res(uri), // responseUriFunc
-        "file" // outputType : Can be either base64, blob or file.(Default type is base64)	
+  new Promise((res) => {
+    Resizer.imageFileResizer(
+      file, // target file
+      900, // maxWidth
+      1500, // maxHeight
+      "WEBP", // compressFormat : Can be either JPEG, PNG or WEBP.
+      80, // quality : 0 and 100. Used for the JPEG compression
+      0, // rotation
+      (uri) => res(uri), 
+      "file" 
       );
     });
-  ///// 이미지 핸들러 /////
+    ///// 이미지 핸들러 /////
+  const quillRef = useRef(true);
   const imageHandler = () => { 
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -83,27 +78,17 @@ const CompanyWrite = () => {
       const files =input.files;
       const editor = quillRef.current.getEditor();
       const formData = new FormData();
-      console.log(files, "파일")
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const compressedFile = (await resizeFile(file)); // 리사이징
-        console.log("이미지확장자테스트", compressedFile)
         const encodedFilename = encodeURIComponent(file.name);
         // formData.append('files', file);  // Append each file to the FormData
         formData.append('files', compressedFile);  // 리사이징
         formData.append('filename', encodedFilename);
       }
       formData.append('brdKey', "investment");
-      // FormData의 key 확인
-      for (let key of formData.keys()) {
-        console.log(key,"키");
-      }
-
-      // FormData의 value 확인
-      for (let value of formData.values()) {
-        console.log(value,"값");
-      }
+   
       try {
         const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })        
         for (let i = 0; i < files.length; i++) {
@@ -113,7 +98,6 @@ const CompanyWrite = () => {
           } else {
             IMG_URL = result.data[i].imageUrl;
           }
-          console.log(IMG_URL,"IMG_URL")
           const range = editor.getSelection();
           setTimeout(() => editor.insertEmbed(range.index, "image", IMG_URL), 500);
         }
@@ -122,57 +106,6 @@ const CompanyWrite = () => {
       }
     }
   }
-
-  // const imageHandler = () => { 
-  //   const input = document.createElement('input');
-  //   input.setAttribute('type', 'file');
-  //   input.setAttribute('accept', 'image/*');
-  //   input.setAttribute('multiple', 'true');
-  //   input.click();
-    
-  //   input.onchange = async () => {
-  //     // const files = input.files;
-  //     const files =input.files;
-  //     const editor = quillRef.current.getEditor();
-  //     const formData = new FormData();
-  //     console.log(files, "파일")
-  //     console.log("이미지확장자테스트", files)
-  //     for (let i = 0; i < files.length; i++) {
-  //       const file = files[i];
-        
-  //       const encodedFilename = encodeURIComponent(file.name);
-  //       formData.append('files', file);  // Append each file to the FormData
-  //       formData.append('filename', encodedFilename);
-  //     }
-  //     formData.append('brdKey', "investment");
-  //     // FormData의 key 확인
-  //     for (let key of formData.keys()) {
-  //       console.log(key,"키");
-  //     }
-
-  //     // FormData의 value 확인
-  //     for (let value of formData.values()) {
-  //       console.log(value,"값");
-  //     }
-  //     try {
-  //       const result = await axios.post(`${baseURL}/v1/img/upload`, formData , { headers })        
-  //       for (let i = 0; i < files.length; i++) {
-  //         let IMG_URL = '';
-  //         if(result.data.length === undefined) {
-  //           IMG_URL = result.data.imageUrl;
-  //         } else {
-  //           IMG_URL = result.data[i].imageUrl;
-  //         }
-  //         const range = editor.getSelection();
-  //         setTimeout(() => editor.insertEmbed(range.index, "image", IMG_URL), 500);
-  //         console.log("성공", IMG_URL)
-  //       }
-  //       // console.log('성공', IMG_URL);
-  //     } catch (error) {
-  //       console.log(error, '실패')
-  //     }
-  //   }
-  // }
   
   ///// 내용 변경 /////
   const handleContentChange = (value) => {
@@ -256,7 +189,6 @@ const CompanyWrite = () => {
   const [selectedFilesName, setSelectedFilesName] = useState([]); //파일명 미리보기
   const handleFileChange  = async (e) => {
     const files = e.target.files;
-    console.log("파일첨부테스트", files)
     if (
       files.length > 5 
       || postData.attaches.length >= 5 
@@ -289,9 +221,8 @@ const CompanyWrite = () => {
             ATTACH_URL_LIST.push(ATTACH_URL)
           }
         }
-        console.log('성공', result);
       } catch (error) {
-        console.log(error, '실패')
+        console.error(error)
       }
       // postData에 저장
       setPostData({
@@ -338,133 +269,137 @@ const CompanyWrite = () => {
       navigate(-1)
     }  
   }
+  if (!b_no) {
+    alert("업체등록이 되어 있지 않습니다.")
+    navigate('/')
+  } else {
+    return (
+      <StyledFrame>
+        <Header />
+        <Container>
+          <CommonStyleFrame>
+            <div className="container mt-5">
+              <h2 className='title'>투자 등록하기</h2>
   
-  return (
-    <StyledFrame>
-      <Header />
-      <Container>
-        <CommonStyleFrame>
-          <div className="container mt-5">
-            <h2 className='title'>투자 등록하기</h2>
-
-            {/********* 업종 input *********/}
-            <div className="mb-3">
-              <label htmlFor="category" className="form-label">업종</label> {/* select로 변경 */}
-              <select 
-                name="category"
-                id="category"
-                onChange={(e) => handleValueChange(e, "category")}
-              >
-                <option value="제조">제조</option>
-                <option value="IT">IT</option>
-                <option value="외식">외식</option>
-                <option value="서비스">서비스</option>
-                <option value="의료">의료</option>
-                <option value="유통/물류">유통/물류</option>
-                <option value="운송">운송</option>
-                <option value="대여">대여</option>
-                <option value="기타">기타</option>
-                <option value="엔터테이먼트">엔터테이먼트</option>
-                <option value="교육">교육</option>
-                <option value="부동산">부동산</option>
-              </select>
+              {/********* 업종 input *********/}
+              <div className="mb-3">
+                <label htmlFor="category" className="form-label">업종</label> {/* select로 변경 */}
+                <select 
+                  name="category"
+                  id="category"
+                  onChange={(e) => handleValueChange(e, "category")}
+                >
+                  <option value="제조">제조</option>
+                  <option value="IT">IT</option>
+                  <option value="외식">외식</option>
+                  <option value="서비스">서비스</option>
+                  <option value="의료">의료</option>
+                  <option value="유통/물류">유통/물류</option>
+                  <option value="운송">운송</option>
+                  <option value="대여">대여</option>
+                  <option value="기타">기타</option>
+                  <option value="엔터테이먼트">엔터테이먼트</option>
+                  <option value="교육">교육</option>
+                  <option value="부동산">부동산</option>
+                </select>
+              </div>
+  
+              {/********* 제목 input *********/}
+              <div className="mb-3">
+                <label htmlFor="title" className="form-label">제목</label>
+                <input 
+                  type="text"
+                  id="title"
+                  className="form-control title" 
+                  name="title" 
+                  placeholder='제목을 입력해주세요'
+                  value={title || ""}
+                  onChange={(e) => handleTitleChange(e)} 
+                />
+              </div>
+  
+              {/********* 투자희망금액 input *********/}
+              <div className="mb-3">
+                <label htmlFor="investment-amount" className="form-label">투자희망금액</label>
+                <input 
+                  type="text" 
+                  id="investment-amount"
+                  className="form-control investment-amount" 
+                  value={formattedValue || ""}
+                  placeholder='0'
+                  onChange={(e) => investmentAmountChange(e)} 
+                />
+                <span> 원</span>
+              </div>
+  
+              {/********* 첨부파일 input *********/}
+              <div className="mb-3 attaches-cont">
+                <label htmlFor="attaches" className="form-label attaches">
+                  첨부파일
+                  <div className='attaches-btn'>
+                    {/* <BsFileEarmarkPlus size={70} color='#aaa' />  */}
+                    <PiFilePlusThin size={70} color='#aaa' /> 
+                    <p>첨부파일 업로드하기</p>
+                    <p className='attach-amount'>최대 5개 / <span>{selectedFilesName.length}</span>개</p>
+                  </div>
+                </label>
+                <input 
+                  type="file"
+                  accept=".gif, .jpg, .jpeg, .png, .pdf, .ppt, .doc, .hwp, .txt, .xls, .xlsx"
+                  id="attaches" 
+                  className="form-control" 
+                  // value={selectedFiles}
+                  onChange={(e) => handleFileChange(e)} 
+                  multiple
+                />
+                {/* 첨부파일 이미지 미리보기 */}
+                <ul className={selectedFilesName.length > 0 ? "attachPreviewBox" : ""}>
+                  {selectedFilesName && selectedFilesName.map((item, index) => {
+                    return(
+                      <li className='attachPreview' key={index}>
+                        <span>{item}</span>
+                        <button 
+                          className='attach_del_btn' 
+                          onClick={(e) => attachDelete(e, index)}
+                        ><BsTrash3 size={15} /></button> {/* //FIXME: 아이콘 고치기, 기능 구현 */}
+                      </li> 
+                    )
+                  })}
+                </ul>
+              </div>
+  
+              {/********* 내용입력 *********/}
+              <div className="mb-3">
+                <label htmlFor="content" className="form-label">내용</label>
+                <ReactQuill 
+                  ref={quillRef} 
+                  value={content} 
+                  onChange={(e) => handleContentChange(e)} 
+                  modules={modules} 
+                  formats={formats} 
+                />
+              </div>
+              <div className="btnBox">
+                <button onClick={() => prevPage()} className='cancelBtn'>취소</button>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  onClick={handleSubmit} 
+                  disabled={
+                    postData.title.length === 0 || 
+                    content.length === 0 || 
+                    postData.extraField.investmentAmount.length === 0 ? 
+                    true : 
+                    false
+                  }>등록</button>
+              </div>
             </div>
-
-            {/********* 제목 input *********/}
-            <div className="mb-3">
-              <label htmlFor="title" className="form-label">제목</label>
-              <input 
-                type="text"
-                id="title"
-                className="form-control title" 
-                name="title" 
-                placeholder='제목을 입력해주세요'
-                value={title || ""}
-                onChange={(e) => handleTitleChange(e)} 
-              />
-            </div>
-
-            {/********* 투자희망금액 input *********/}
-            <div className="mb-3">
-              <label htmlFor="investment-amount" className="form-label">투자희망금액</label>
-              <input 
-                type="text" 
-                id="investment-amount"
-                className="form-control investment-amount" 
-                value={formattedValue || ""}
-                placeholder='0'
-                onChange={(e) => investmentAmountChange(e)} 
-              />
-              <span> 원</span>
-            </div>
-
-            {/********* 첨부파일 input *********/}
-            <div className="mb-3 attaches-cont">
-              <label htmlFor="attaches" className="form-label attaches">
-                첨부파일
-                <div className='attaches-btn'>
-                  {/* <BsFileEarmarkPlus size={70} color='#aaa' />  */}
-                  <PiFilePlusThin size={70} color='#aaa' /> 
-                  <p>첨부파일 업로드하기</p>
-                  <p className='attach-amount'>최대 5개 / <span>{selectedFilesName.length}</span>개</p>
-                </div>
-              </label>
-              <input 
-                type="file"
-                accept=".gif, .jpg, .jpeg, .png, .pdf, .ppt, .doc, .hwp, .txt, .xls, .xlsx"
-                id="attaches" 
-                className="form-control" 
-                // value={selectedFiles}
-                onChange={(e) => handleFileChange(e)} 
-                multiple
-              />
-              {/* 첨부파일 이미지 미리보기 */}
-              <ul className={selectedFilesName.length > 0 ? "attachPreviewBox" : ""}>
-                {selectedFilesName && selectedFilesName.map((item, index) => {
-                  return(
-                    <li className='attachPreview' key={index}>
-                      <span>{item}</span>
-                      <button 
-                        className='attach_del_btn' 
-                        onClick={(e) => attachDelete(e, index)}
-                      ><BsTrash3 size={15} /></button> {/* //FIXME: 아이콘 고치기, 기능 구현 */}
-                    </li> 
-                  )
-                })}
-              </ul>
-            </div>
-
-            {/********* 내용입력 *********/}
-            <div className="mb-3">
-              <label htmlFor="content" className="form-label">내용</label>
-              <ReactQuill 
-                ref={quillRef} 
-                value={content} 
-                onChange={(e) => handleContentChange(e)} 
-                modules={modules} 
-                formats={formats} 
-              />
-            </div>
-            <div className="btnBox">
-              <button onClick={() => prevPage()} className='cancelBtn'>취소</button>
-              <button 
-                type="submit" 
-                className="btn btn-primary" 
-                onClick={handleSubmit} 
-                disabled={
-                  postData.title.length === 0 || 
-                  content.length === 0 || 
-                  postData.extraField.investmentAmount.length === 0 ? 
-                  true : 
-                  false
-                }>등록</button>
-            </div>
-          </div>
-        </CommonStyleFrame>
-      </Container>
-      <Footer />
-    </StyledFrame>
-  );
+          </CommonStyleFrame>
+        </Container>
+        <Footer />
+      </StyledFrame>
+    );
+  }
 };
 
 export default CompanyWrite;

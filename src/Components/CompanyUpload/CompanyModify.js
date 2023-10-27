@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Resizer from "react-image-file-resizer";
-//import component
+/* Import Component */ 
 import Header from "../Header"
 import Footer from "../Footer"
-// styled
+/* Styled */ 
 import { Wrap, Container, Inner } from "./StyledCompanyUpload"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
-// icon
+/* Icon */
 import { AiOutlineCamera } from "react-icons/ai";
+/* Log */
+import PageLog from '../../Hook/PageLog'
 
 const CompanyUpload = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -24,12 +26,7 @@ const CompanyUpload = () => {
   }
 
   ///// page log /////
-  // useEffect(() => {
-  //   axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"업체정보수정" }).then((res) => {
-  // }).catch((error) => {
-  //   console.error(error)
-  // })
-  // }, []);
+  // PageLog("업체정보수정");
 
   const [placeholderActive, setPlaceholderActive] = useState(true);
   const [logoImage, setLogoImage] = useState('');
@@ -39,45 +36,47 @@ const CompanyUpload = () => {
   useEffect(() => {
     axios.get(`${baseURL}/v1/company/${b_no}?userUid=${userUid}`, { headers }).then((res) => {
       setCompanyData(res.data.query[0]);
-      if (companyData.logoImg) {
-        setPlaceholderActive(false)
-        setLogoImage(companyData.logoImg)
-      }
       console.log("정보불러오기성공", res)
     }).catch(() => {
       console.error("error");
     })
+  }, []);
+  
+  useEffect(() => {
+    if (companyData.logoImg) {
+      setPlaceholderActive(false);
+      setLogoImage(companyData.logoImg);
+    }
+    console.log("asdasdasd")
   }, [companyData]);
 
-
-
-  console.log(companyData.logoImg,"로고이미지링크")
   ////////////////////////////////
   ///// 로고 이미지 미리보기 /////
   ////////////////////////////////
   ///// 리사이즈 /////
   const resizeFile = (file) =>
-   new Promise((res) => {
+    new Promise((res) => {
       Resizer.imageFileResizer(
         file, // target file
         100, // maxWidth
         100, // maxHeight
-        "WEBP", // compressFormat : Can be either JPEG, PNG or WEBP.
-        80, // quality : 0 and 100. Used for the JPEG compression
-        0, // rotation
-        (uri) => res(uri), // responseUriFunc
-        "file" // outputType : Can be either base64, blob or file.(Default type is base64)	
+        "WEBP",
+        80, 
+        0,
+        (uri) => res(uri),
+        "file" 
       );
-   });
+  });
   const inputFileChange = async (e) => {
     try {
       const file = e.target.files[0]
+      const compressedFile = (await resizeFile(file)); // 리사이징
       const encodedFilename = encodeURIComponent(file.name);
       const imgUrl = URL.createObjectURL(file)
       setLogoImage(imgUrl) //미리보기 이미지 링크
       
       const formData = new FormData();
-      formData.append('files', file);
+      formData.append('files', compressedFile);
       formData.append('brdKey', "companyLogoImg");
       formData.append('filename', encodedFilename);
       
@@ -94,10 +93,6 @@ const CompanyUpload = () => {
         };
         setCompanyData(updatedData); 
         e.target.value = ''
-        // setCompanyData({
-        //   ...companyData,
-        //   logoImg: imageUrl
-        // })
       }).catch((error) => {
         console.error(error)
       })
@@ -126,10 +121,6 @@ const CompanyUpload = () => {
   ///////////////////////////////////
   const companyValueModify = (e, name) => {
     const value = e.target.value
-    /* setCompanyData({
-      ...companyData,
-      [name]: value,
-    }) */
     const updatedData = {
       ...companyData,
       [name]: value,
@@ -137,7 +128,6 @@ const CompanyUpload = () => {
     };
     setCompanyData(updatedData);
   }
-  // console.log(b_no, "disabled테스트당")
 
   //////////////////////////
   ///// 수정 버튼 클릭 /////
@@ -146,7 +136,7 @@ const CompanyUpload = () => {
   const representativeNameLen = companyData?.representativeName
   const uploadBtnClick = async () => {
     if (!companyNameLen || !representativeNameLen){
-      alert("회사명과 대표자 이름은 필수 입력값입니다.")
+      alert("회사명과 대표자명은 필수 입력값입니다.")
     } else {
       if(window.confirm("업체 정보를 수정하시겠습니까?")) {
         await axios.patch(`${baseURL}/v1/company/modify/${companyData?.businessNum}`, companyData, { headers }).then((res) => {

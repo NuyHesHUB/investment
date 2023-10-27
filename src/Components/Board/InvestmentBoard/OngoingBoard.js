@@ -25,6 +25,8 @@ import { ReactComponent as VisualImg } from './VisualImg.svg';
 import useScrollFadeIn from '../../../Hook/useScrollFadeIn';
 import Loading from '../../../Effect/Loading';
 
+/* Log */
+import PageLog from '../../../Hook/PageLog'
 
 
 const InvestOngoingBoard = () => {
@@ -92,19 +94,12 @@ const InvestOngoingBoard = () => {
     };
 
 
-
     /*-----------------------------------------------*\
                         page log
     \*-----------------------------------------------*/
-    // useEffect(() => {
-    //     axios.post(`${baseURL}/v1/log/movement/form`, {  userUid: uid, "page":"진행중" }).then((res) => {
-    // }).catch((error) => {
-    //     console.error(error)
-    // })
-    // }, []);
-
-    // console.log(uid, "userUid")
+    // PageLog("진행중");
   
+    
     /*-----------------------------------------------*\
                   investment post 데이터 API
     \*-----------------------------------------------*/

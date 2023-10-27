@@ -17,6 +17,9 @@ import { BsCheck2Square } from 'react-icons/bs';
 /* Hook */
 import useScrollFadeIn from '../Hook/useScrollFadeIn';
 
+/* Log */
+import PageLog from '../Hook/PageLog'
+
 /* Styled-Components */
 import { 
     
@@ -72,6 +75,8 @@ const Home = ({parsedCommunityCategoryData}) => {
     const fadeIn5 = useScrollFadeIn('none', 1, 300);
     const fadeIn6 = useScrollFadeIn('img', 1, 200);
 
+   
+
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const userUid = sessionStorage.getItem('userUid');
@@ -80,41 +85,12 @@ const Home = ({parsedCommunityCategoryData}) => {
     const uid = userUid === null ? '' : userUid;
 
     ///// page log /////
-    // useEffect(() => {
-    //     axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"메인" })
-    //     .then((res) => {
-    //     })
-    //     .catch((error) => {
-    //         console.error(error)
-    //     })
-    // }, []);
+    // PageLog("메인");
 
     /*-----------------------------------------------------*\
                         Console.log 테스트
     \*-----------------------------------------------------*/
 
-
-
-    const [adBannerScroll, setAdBannerScroll] = useState(false);
-
-    const handleScroll = () => {
-        // const isScrolled = window.scrollY > 480;
-        // setAdBannerScroll(isScrolled);
-        if (window.scrollY > 500) {
-            setAdBannerScroll(true);
-        } else if (window.scrollY < 500) {
-            setAdBannerScroll(false);
-        }
-    };
-    
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
-    console.log(window.scrollY, "현재높이")
 
     return (
             <React.Fragment>
@@ -123,7 +99,7 @@ const Home = ({parsedCommunityCategoryData}) => {
                         <section>
                             <BannerSwiper/>
                         </section>
-                        <BannerAd className={adBannerScroll ? 'active' : ''}>
+                        <BannerAd>
                             <div></div>    
                         </BannerAd> {/* 임시 광고 자리 */}
                             <CategorySection>
