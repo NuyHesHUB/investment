@@ -19,7 +19,6 @@ const CompanyUpload = () => {
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
-  const uid = userUid === null ? '' : userUid;
   const userGroup = sessionStorage.getItem('userGroup');
   const b_no = sessionStorage.getItem('b_no');
   const headers = {
@@ -52,8 +51,8 @@ const CompanyUpload = () => {
         "WEBP", // compressFormat : Can be either JPEG, PNG or WEBP.
         80, // quality : 0 and 100. Used for the JPEG compression
         0, // rotation
-        (uri) => res(uri), // responseUriFunc
-        "file" // outputType : Can be either base64, blob or file.(Default type is base64)	
+        (uri) => res(uri), 
+        "file"
       );
    });
   const inputFileChange = async (e) => {

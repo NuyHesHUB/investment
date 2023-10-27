@@ -19,7 +19,6 @@ const CompanyUpload = () => {
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
-  const uid = userUid === null ? '' : userUid
   const b_no = sessionStorage.getItem('b_no');
   const headers = {
     Authorization: `${accessToken}`
@@ -36,9 +35,8 @@ const CompanyUpload = () => {
   useEffect(() => {
     axios.get(`${baseURL}/v1/company/${b_no}?userUid=${userUid}`, { headers }).then((res) => {
       setCompanyData(res.data.query[0]);
-      console.log("정보불러오기성공", res)
-    }).catch(() => {
-      console.error("error");
+    }).catch((error) => {
+      console.error(error);
     })
   }, []);
   
@@ -47,7 +45,6 @@ const CompanyUpload = () => {
       setPlaceholderActive(false);
       setLogoImage(companyData.logoImg);
     }
-    console.log("asdasdasd")
   }, [companyData]);
 
   ////////////////////////////////
@@ -81,9 +78,7 @@ const CompanyUpload = () => {
       formData.append('filename', encodedFilename);
       
       await axios.post(`${baseURL}/v1/img/upload`, formData , { headers }).then((res) => {
-        console.log(res, "로고이미지res")
         const imageUrl = res.data.imageUrl
-        console.log("이미지의 링크:", imageUrl);
         //업체 데이터 로고 이미지부분 수정//
         setPlaceholderActive(false) // 플레이스홀더없애기
         const updatedData = {
@@ -102,7 +97,6 @@ const CompanyUpload = () => {
   }
   // 로고 이미지 삭제 //
   const logoImgDelete = async () => {
-    console.log(companyData.logoImg,"companyData.logoImg")
     await axios.delete(`${baseURL}/v1/attachment/delete`, { data : {url: companyData.logoImg}, headers} ).then((res) => {
       setLogoImage('')
       setCompanyData({

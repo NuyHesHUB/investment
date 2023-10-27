@@ -55,6 +55,9 @@ import BusinessNumberCheck from './Components/CompanyUpload/BusinessNumberCheck'
 /* 결제안내 페이지 */
 import PaymentInfoPage from './Components/Page/PaymentInfoPage';
 
+/* 접근 권한 */
+import PrivateRoute from './PrivateRoute';
+
 /* Scroll Top */
 import ScrollToTop from './Hook/ScrollToTop';
 
@@ -65,6 +68,7 @@ const App = () => {
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
+    const b_no = sessionStorage.getItem('b_no');
     const headers = {
         Authorization: `${accessToken}`
     }
@@ -261,18 +265,37 @@ const App = () => {
 
                 {/* 글쓰기 & 업체등록 */}
                 <Route exact path="/company_upload" element={<CompanyUpload />}></Route>
-                <Route exact path="/company_write" element={<CompanyWrite />}></Route>
-                <Route exact path="/company_modify" element={<CompanyModify />}></Route>
-                <Route exact path="/business_number_check" element={<BusinessNumberCheck />}></Route>
-                <Route exact path="/payment_info_page" element={<PaymentInfoPage />}></Route>
+                {/* <Route exact path="/company_write" element={<CompanyWrite />}></Route> */}
+                    
+                <Route exact path="/company_write" element={
+                    b_no 
+                    ? <CompanyWrite /> 
+                    : <PrivateRoute 
+                        authenticated={accessToken}
+                        component={<Login />}
+                    />
+                }></Route>
+                <Route exact path="/company_modify" element={
+                    <PrivateRoute 
+                        authenticated={accessToken}
+                        component={<CompanyModify />}
+                    />
+                } />
+                <Route exact path="/business_number_check" element={
+                    <PrivateRoute 
+                        authenticated={accessToken}
+                        component={<BusinessNumberCheck />}
+                    />
+                }/>
+                <Route exact path="/payment_info_page" element={<PaymentInfoPage />} />
 
                 {/* Admin */}
-                <Route exact path="/admin" element={<Admin />}></Route>
-                <Route exact path="/admin/board_list" element={<AdminBoardList />}></Route>
-                <Route exact path="/admin/post_approve" element={<AdminPostApprove/>}></Route>
-                <Route exact path="/admin/member_list" element={<AdminMemberList/>}></Route>
-                <Route exact path="/admin/company_list" element={<AdminCompanyList/>}></Route>
-                <Route exact path="/admin/post_list" element={<AdminPostList/>}></Route>
+                <Route exact path="/admin" element={<Admin />} />
+                <Route exact path="/admin/board_list" element={<AdminBoardList />} />
+                <Route exact path="/admin/post_approve" element={<AdminPostApprove/>} />
+                <Route exact path="/admin/member_list" element={<AdminMemberList/>} />
+                <Route exact path="/admin/company_list" element={<AdminCompanyList/>} />
+                <Route exact path="/admin/post_list" element={<AdminPostList/>} />
                 
             </Routes>
         </Router>

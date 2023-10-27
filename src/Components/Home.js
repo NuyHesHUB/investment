@@ -6,6 +6,7 @@ import axios from 'axios';
 /* Components */
 import Header from './Header';
 import Footer from './Footer';
+import BannerAd from './BannerAd';
 
 /* Swiper-Components */
 import { BannerSwiper, CategorySwiper } from './Swiper/SwiperComponent';
@@ -54,9 +55,6 @@ import {
     ItemBox,
     RightBannerBox,
     ImgBox,
-
-    /* Ad */
-    BannerAd    
 } from './StyledComponents/StyledHome';
 
 /* Image */
@@ -99,9 +97,7 @@ const Home = ({parsedCommunityCategoryData}) => {
                         <section>
                             <BannerSwiper/>
                         </section>
-                        <BannerAd>
-                            <div></div>    
-                        </BannerAd> {/* 임시 광고 자리 */}
+                        <BannerAd />
                             <CategorySection>
                                 <CategoryContainer>
                                     <CategoryContentsBox ref={fadeIn1.ref} style={fadeIn1.style}>

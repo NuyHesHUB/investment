@@ -41,7 +41,7 @@ const BusinessNumberCheck = () => {
       }).catch((error) => {
         console.log(error.response.data,"error.response")
         if (error.response && error.response.data && error.response.data.err === '가입된 사업자 입니다.') {
-          alert('가입된 사업자 입니다.');
+          alert('이미 가입된 사업자 입니다.');
         } else {
           console.error('error', error);
           alert('입력하신 사업자 번호의 사업자 등록 상태 확인이 필요합니다.')

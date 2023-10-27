@@ -269,10 +269,7 @@ const CompanyWrite = () => {
       navigate(-1)
     }  
   }
-  if (!b_no) {
-    alert("업체등록이 되어 있지 않습니다.")
-    navigate('/')
-  } else {
+
     return (
       <StyledFrame>
         <Header />
@@ -399,7 +396,6 @@ const CompanyWrite = () => {
         <Footer />
       </StyledFrame>
     );
-  }
 };
 
 export default CompanyWrite;
