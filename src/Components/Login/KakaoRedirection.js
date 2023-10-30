@@ -19,7 +19,6 @@ const KakaoRedirection = () => {
                 const accessToken = response.data.accessToken;
                 const refreshToken = response.data.refreshToken;
                 const b_no = response.data.userData.b_no;
-                console.log(b_no,'b_no')
 
                 sessionStorage.setItem('userUid', userUid);
                 sessionStorage.setItem('accessToken', accessToken);
@@ -31,7 +30,6 @@ const KakaoRedirection = () => {
                 }
                 
                 if (response.data.type === "first") {
-                    alert("회원가입이 완료되었습니다.")
                     navigate('/success_sign_up')
                 } else {
 
@@ -42,7 +40,6 @@ const KakaoRedirection = () => {
                         navigate("/");
                     }
                 }
-
 
             } catch(error) {
                 console.error('실패');

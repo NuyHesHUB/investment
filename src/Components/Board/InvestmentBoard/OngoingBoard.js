@@ -25,6 +25,8 @@ import { ReactComponent as VisualImg } from './VisualImg.svg';
 /* Effect */
 import Loading from '../../../Effect/Loading';
 
+
+
 const InvestOngoingBoard = () => {
 
     /* Basic */
@@ -81,45 +83,18 @@ const InvestOngoingBoard = () => {
     }; */
 
     const handleLoadMore = () => {
-        const updatedRows = pageRows + 3;
-        setPageRows(updatedRows);
-    
-        const updatedParams = {
-            ...params,
-            pageRows: updatedRows,
-        };
-    
-        dispatch(setOngoingPostCardCount(updatedRows * 3)); // Update the total count
-    
-        const fetchData = async () => {
-            try {
-                const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params: updatedParams });
-                const data = PostResponse.data?.query;
-                
-                /* console.log('investPostResponse',data); */
-                dispatch(setOngoingPostData(data));
-                setIsLoading(false);
-            } catch (error) {
-                console.error('investOngoingBoardData 데이터 가져오기 실패', error);
-                setIsLoading(false);
-            }
-        };
-    
-        fetchData();
+        const updatedNumPostsToShow = PostCardCount + 6;
+        dispatch(setOngoingPostCardCount(updatedNumPostsToShow));
     };
+
+
 
     /*-----------------------------------------------*\
                         page log
     \*-----------------------------------------------*/
-    // useEffect(() => {
-    //     axios.post(`${baseURL}/v1/log/movement/form`, {  userUid: uid, "page":"진행중" }).then((res) => {
-    // }).catch((error) => {
-    //     console.error(error)
-    // })
-    // }, []);
-
-    // console.log(uid, "userUid")
+    // PageLog("진행중");
   
+    
     /*-----------------------------------------------*\
                   investment post 데이터 API
     \*-----------------------------------------------*/

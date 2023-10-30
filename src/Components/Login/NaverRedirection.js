@@ -34,7 +34,6 @@ const NaverRedirection = () => {
                     sessionStorage.setItem('b_no', b_no);
                 }
                 if (response.data.type === "first") {
-                    alert("회원가입이 완료되었습니다.")
                     navigate('/success_sign_up')
                 } else {
                     if (userData.group === '관리자' && userData.isAdmin === 'Y') {
