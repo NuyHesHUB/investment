@@ -150,8 +150,18 @@ const CompanyUpload = () => {
       navigate(`/`)
     }
   }
+  
+  useEffect(() => {
+    if (!accessToken) {
+      alert("회원만 접근할 수 있는 페이지입니다.")
+      navigate("/");
+    }
+  }, [accessToken, navigate]);
+
   return(
     <StyledFrame>
+      {accessToken ? 
+      <>
       <Header />
       <Wrap>
         <Container>
@@ -247,7 +257,11 @@ const CompanyUpload = () => {
           </CommonStyleFrame>
         </Container>
       </Wrap>
-      <Footer />
+      <Footer /> 
+      </>
+
+      : null
+      }
     </StyledFrame>
   )
 }

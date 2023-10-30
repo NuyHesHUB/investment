@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 /* React-Router-Dom */
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -64,7 +64,7 @@ import ScrollToTop from './Hook/ScrollToTop';
 const App = () => {
 
     
-
+    
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
@@ -72,6 +72,13 @@ const App = () => {
     const headers = {
         Authorization: `${accessToken}`
     }
+
+    const [token, setToken] = useState();
+    useEffect(() => {
+        setToken(accessToken)
+        console.log(token,"토큰")
+    }, [accessToken])
+    console.log(token,accessToken, "토큰22")
 
     /* Redux State */
     const boardData = useSelector((state) => state.reducer.adminBoardData);
@@ -271,22 +278,12 @@ const App = () => {
                     b_no 
                     ? <CompanyWrite /> 
                     : <PrivateRoute 
-                        authenticated={accessToken}
+                        authenticated={headers}
                         component={<Login />}
                     />
                 }></Route>
-                <Route exact path="/company_modify" element={
-                    <PrivateRoute 
-                        authenticated={accessToken}
-                        component={<CompanyModify />}
-                    />
-                } />
-                <Route exact path="/business_number_check" element={
-                    <PrivateRoute 
-                        authenticated={accessToken}
-                        component={<BusinessNumberCheck />}
-                    />
-                }/>
+                <Route exact path="/company_modify" element={<CompanyModify />} />
+                <Route exact path="/business_number_check" element={<BusinessNumberCheck />}/>
                 <Route exact path="/payment_info_page" element={<PaymentInfoPage />} />
 
                 {/* Admin */}

@@ -19,7 +19,6 @@ const KakaoRedirection = () => {
                 const accessToken = response.data.accessToken;
                 const refreshToken = response.data.refreshToken;
                 const b_no = response.data.userData.b_no;
-                console.log(b_no,'b_no')
 
                 sessionStorage.setItem('userUid', userUid);
                 sessionStorage.setItem('accessToken', accessToken);
