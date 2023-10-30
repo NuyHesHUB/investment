@@ -270,7 +270,17 @@ const CompanyWrite = () => {
     }  
   }
 
+  useEffect(() => {
+    if (!accessToken) {
+      alert("회원만 접근할 수 있는 페이지입니다.")
+      navigate("/");
+    }
+  }, [accessToken, navigate]);
+
     return (
+      <>
+      {accessToken ? 
+
       <StyledFrame>
         <Header />
         <Container>
@@ -395,6 +405,9 @@ const CompanyWrite = () => {
         </Container>
         <Footer />
       </StyledFrame>
+      : null
+      }
+      </>
     );
 };
 
