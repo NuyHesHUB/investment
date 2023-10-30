@@ -80,3 +80,8 @@ export const setDeadlinePostData = (deadlinePostData) => ({
     type: actionTypes.DEADLINE_POST_DATA,
     payload: deadlinePostData
 })
+
+export const setUserNameData = (userNameData) => ({
+    type: actionTypes.USER_NAME_DATA,
+    userNameData: userNameData
+})

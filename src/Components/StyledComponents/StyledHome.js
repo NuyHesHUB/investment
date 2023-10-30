@@ -13,6 +13,8 @@ export const CategorySection=styled.div`
     height: 500px;
     display: flex;
     align-items: center;
+    position: absolute;
+    top: 580px;
 `
 export const CategoryContainer=styled.div`
     width: 100%;

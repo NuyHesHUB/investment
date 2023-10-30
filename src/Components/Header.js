@@ -31,6 +31,9 @@ import {
 /* Image */
 import { ReactComponent as LogoSvg } from '../assets/image/logo.svg';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserNameData } from '../store/actions/actions';
+
 const Header = (/* {parsedCommunityCategoryData} */) => {
 
     const navigate = useNavigate();
@@ -47,6 +50,12 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
 
     const [userName, setUserName] = useState(null);
 
+    const userReduxName = useSelector((state) => state.reducer.userNameData);
+    const dispatch = useDispatch();
+
+    
+
+
      /* 유저 정보 가져오기 */
      useEffect(() => {
          if (accessToken) { 
@@ -54,6 +63,7 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                 .then(response => {
                     const data = response.data?.query[0].nickname;
                     setUserName(data);
+                    dispatch(setUserNameData(data));
                 }).catch(error => {
                     if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 만료되었습니다.') {
                         console.log('로그인이 만료되었습니다.');
@@ -87,7 +97,7 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                 });
          } 
      },[accessToken])
-
+     console.log('테스트', userReduxName)
      /* 로그아웃 하면 상태관리 로그아웃 & 토큰 삭제 */
      const handleLogout = (e) => {
          e.preventDefault();

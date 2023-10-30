@@ -30,3 +30,5 @@ export const ONGOING_POSTCARD='ONGOING_POSTCARD';
 
 /* PostCard (Deadline) */
 export const DEADLINE_POSTCARD='DEADLINE_POSTCARD';
+
+export const USER_NAME_DATA='USER_NAME_DATA';
