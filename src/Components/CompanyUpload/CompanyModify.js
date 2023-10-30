@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-//import component
+import Resizer from "react-image-file-resizer";
+/* Import Component */ 
 import Header from "../Header"
 import Footer from "../Footer"
-// styled
+/* Styled */ 
 import { Wrap, Container, Inner } from "./StyledCompanyUpload"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
-// icon
+/* Icon */
 import { AiOutlineCamera } from "react-icons/ai";
+/* Log */
+import PageLog from '../../Hook/PageLog'
 
 const CompanyUpload = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -16,19 +19,13 @@ const CompanyUpload = () => {
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
-  const uid = userUid === null ? '' : userUid
   const b_no = sessionStorage.getItem('b_no');
   const headers = {
     Authorization: `${accessToken}`
   }
 
   ///// page log /////
-  // useEffect(() => {
-  //   axios.post(`${baseURL}/v1/log/movement/form`, { userUid:uid, "page":"업체정보수정" }).then((res) => {
-  // }).catch((error) => {
-  //   console.error(error)
-  // })
-  // }, []);
+  // PageLog("업체정보수정");
 
   const [placeholderActive, setPlaceholderActive] = useState(true);
   const [logoImage, setLogoImage] = useState('');
@@ -38,31 +35,50 @@ const CompanyUpload = () => {
   useEffect(() => {
     axios.get(`${baseURL}/v1/company/${b_no}?userUid=${userUid}`, { headers }).then((res) => {
       setCompanyData(res.data.query[0]);
-    }).catch(() => {
-      console.error("error");
+    }).catch((error) => {
+      console.error(error);
     })
   }, []);
-
   
+  useEffect(() => {
+    if (companyData.logoImg) {
+      setPlaceholderActive(false);
+      setLogoImage(companyData.logoImg);
+    }
+  }, [companyData]);
+
   ////////////////////////////////
   ///// 로고 이미지 미리보기 /////
   ////////////////////////////////
+  ///// 리사이즈 /////
+  const resizeFile = (file) =>
+    new Promise((res) => {
+      Resizer.imageFileResizer(
+        file, // target file
+        100, // maxWidth
+        100, // maxHeight
+        "WEBP",
+        80, 
+        0,
+        (uri) => res(uri),
+        "file" 
+      );
+  });
   const inputFileChange = async (e) => {
     try {
       const file = e.target.files[0]
+      const compressedFile = (await resizeFile(file)); // 리사이징
       const encodedFilename = encodeURIComponent(file.name);
       const imgUrl = URL.createObjectURL(file)
       setLogoImage(imgUrl) //미리보기 이미지 링크
       
       const formData = new FormData();
-      formData.append('files', file);
+      formData.append('files', compressedFile);
       formData.append('brdKey', "companyLogoImg");
       formData.append('filename', encodedFilename);
       
       await axios.post(`${baseURL}/v1/img/upload`, formData , { headers }).then((res) => {
-        console.log(res, "로고이미지res")
         const imageUrl = res.data.imageUrl
-        console.log("이미지의 링크:", imageUrl);
         //업체 데이터 로고 이미지부분 수정//
         setPlaceholderActive(false) // 플레이스홀더없애기
         const updatedData = {
@@ -72,10 +88,6 @@ const CompanyUpload = () => {
         };
         setCompanyData(updatedData); 
         e.target.value = ''
-        // setCompanyData({
-        //   ...companyData,
-        //   logoImg: imageUrl
-        // })
       }).catch((error) => {
         console.error(error)
       })
@@ -85,7 +97,6 @@ const CompanyUpload = () => {
   }
   // 로고 이미지 삭제 //
   const logoImgDelete = async () => {
-    console.log(companyData.logoImg,"companyData.logoImg")
     await axios.delete(`${baseURL}/v1/attachment/delete`, { data : {url: companyData.logoImg}, headers} ).then((res) => {
       setLogoImage('')
       setCompanyData({
@@ -104,10 +115,6 @@ const CompanyUpload = () => {
   ///////////////////////////////////
   const companyValueModify = (e, name) => {
     const value = e.target.value
-    /* setCompanyData({
-      ...companyData,
-      [name]: value,
-    }) */
     const updatedData = {
       ...companyData,
       [name]: value,
@@ -115,7 +122,6 @@ const CompanyUpload = () => {
     };
     setCompanyData(updatedData);
   }
-  // console.log(b_no, "disabled테스트당")
 
   //////////////////////////
   ///// 수정 버튼 클릭 /////
@@ -124,7 +130,7 @@ const CompanyUpload = () => {
   const representativeNameLen = companyData?.representativeName
   const uploadBtnClick = async () => {
     if (!companyNameLen || !representativeNameLen){
-      alert("회사명과 대표자 이름은 필수 입력값입니다.")
+      alert("회사명과 대표자명은 필수 입력값입니다.")
     } else {
       if(window.confirm("업체 정보를 수정하시겠습니까?")) {
         await axios.patch(`${baseURL}/v1/company/modify/${companyData?.businessNum}`, companyData, { headers }).then((res) => {
@@ -144,8 +150,18 @@ const CompanyUpload = () => {
       navigate(`/`)
     }
   }
+  
+  useEffect(() => {
+    if (!accessToken) {
+      alert("회원만 접근할 수 있는 페이지입니다.")
+      navigate("/");
+    }
+  }, [accessToken, navigate]);
+
   return(
     <StyledFrame>
+      {accessToken ? 
+      <>
       <Header />
       <Wrap>
         <Container>
@@ -161,7 +177,7 @@ const CompanyUpload = () => {
                       <p>로고 이미지 업로드</p>
                     </div>
                     <div className={logoImage ? 'imgBox active' : 'imgBox'}>
-                      <img src={logoImage} id="preview" />
+                      <img src={companyData.logoImg ? companyData.logoImg : logoImage} id="preview" />
                       <div className='logo-btnBox'>
                         <label htmlFor="logo-upload" className='logo-change-btn'>
                           변경
@@ -241,7 +257,11 @@ const CompanyUpload = () => {
           </CommonStyleFrame>
         </Container>
       </Wrap>
-      <Footer />
+      <Footer /> 
+      </>
+
+      : null
+      }
     </StyledFrame>
   )
 }

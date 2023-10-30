@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-//import component
+import Resizer from "react-image-file-resizer";
+/* Import Component */
 import Header from "../Header"
 import Footer from "../Footer"
-// styled
+/* Styled */ 
 import { Wrap, Container, Inner } from "./StyledCompanyUpload"
 import { StyledFrame, CommonStyleFrame } from "./StyleCommon"
-// icon
+/* Icon */ 
 import { AiOutlineCamera } from "react-icons/ai";
+/* Log */
+import PageLog from '../../Hook/PageLog'
 
 const CompanyUpload = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -16,21 +19,15 @@ const CompanyUpload = () => {
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
   const userUid = sessionStorage.getItem('userUid');
-  const uid = userUid === null ? '' : userUid
   const userGroup = sessionStorage.getItem('userGroup');
-  const b_no = sessionStorage.getItem('b_no')
+  const b_no = sessionStorage.getItem('b_no');
   const headers = {
     Authorization: `${accessToken}`
   }
 
   ///// page log /////
-  // useEffect(() => {
-  //   axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page": "업체등록" }).then((res) => {
-  // }).catch((error) => {
-  //   console.error(error)
-  // })
-  // }, []);
-
+  // PageLog("업체등록");
+ 
   const [placeholderActive, setPlaceholderActive] = useState(true); //이미지등록placeholder
   const [logoImage, setLogoImage] = useState(''); // 이미지미리보기링크데이터
   const [companyData, setCompanyData] = useState({
@@ -44,15 +41,30 @@ const CompanyUpload = () => {
   ////////////////////////////////
   ///// 로고 이미지 미리보기 /////
   ////////////////////////////////
+   ///// 리사이즈 /////
+   const resizeFile = (file) =>
+   new Promise((res) => {
+      Resizer.imageFileResizer(
+        file, // target file
+        100, // maxWidth
+        100, // maxHeight
+        "WEBP", // compressFormat : Can be either JPEG, PNG or WEBP.
+        80, // quality : 0 and 100. Used for the JPEG compression
+        0, // rotation
+        (uri) => res(uri), 
+        "file"
+      );
+   });
   const inputFileChange = async (e) => {
     try {
       const file = e.target.files[0]
+      const compressedFile = (await resizeFile(file));
       const encodedFilename = encodeURIComponent(file.name);
       const imgUrl = URL.createObjectURL(file)
       setLogoImage(imgUrl) //미리보기 이미지 링크
       // 폼데이터에 저장
       const formData = new FormData();
-      formData.append('files', file);
+      formData.append('files', compressedFile);
       formData.append('brdKey', "companyLogoImg");
       formData.append('filename', encodedFilename);
       
@@ -68,10 +80,10 @@ const CompanyUpload = () => {
         setCompanyData(updatedData); 
         e.target.value = ''
       }).catch((error) => {
-        console.error(error)
+        console.error(error);
       })
     } catch {
-      console.error("error")
+      console.error("error");
     }
   }
   // 로고 이미지 삭제 //

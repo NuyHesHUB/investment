@@ -90,6 +90,9 @@ import { Link, scroller } from 'react-scroll';
 import defaultLogo from '../../assets/default-image/company-default-img.png';
 import HeartEffect from '../../Effect/HeartEffect';
 
+/* Log */
+import PageLog from '../../Hook/PageLog'
+
 const PostDetail = () => {
     
     /* useNavigate */
@@ -113,12 +116,7 @@ const PostDetail = () => {
     /*-----------------------------------------------*\
                         page log
     \*-----------------------------------------------*/
-    useEffect(() => {
-        axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":`진행중상세페이지 boardPostId:${id}` }).then((res) => {
-    }).catch((error) => {
-        console.error(error)
-    })
-    }, []);
+    // PageLog(`진행중상세페이지 boardPostId:${id}`);
     
 
     /* 게시글 데이터 */

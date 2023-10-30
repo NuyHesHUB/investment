@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import DeadlinePostCard from './DeadlinePostCard';
 /* img */
 import { ReactComponent as VisualImg } from './VisualImg.svg';
+/* Log */
+import PageLog from '../../../Hook/PageLog'
 
 const InvestDeadlineBoard = () => {
     /* Basic */
@@ -56,12 +58,7 @@ const InvestDeadlineBoard = () => {
     /*-----------------------------------------------*\
                         page log
     \*-----------------------------------------------*/
-    // useEffect(() => {
-    //     axios.post(`${baseURL}/v1/log/movement/form`, { userUid: uid, "page":"마감" }).then((res) => {
-    // }).catch((error) => {
-    //     console.error(error)
-    // })
-    // }, []);
+    // PageLog("마감");
 
     /*-----------------------------------------------*\
                   investment post 데이터 API
