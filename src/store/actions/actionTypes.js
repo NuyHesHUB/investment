@@ -19,14 +19,13 @@ export const ADMIN_USER_DATA='ADMIN_USER_DATA';
 export const ADMIN_BOARD_DATA='ADMIN_BOARD_DATA';
 export const ADMIN_POST_DATA='ADMIN_POST_DATA';
 
-/* Ongoing 게시물 데이터 */
+/* Ongoing Post */
+export const ONGOING_VIEW_ROWS='ONGOING_VIEW_ROWS';
+export const ONGOING_TOTAL_ROWS='ONGOING_TOTAL_ROWS';
 export const ONGOING_POST_DATA='ONGOING_POST_DATA';
+export const ONGOING_MORE_BTN='ONGOING_MORE_BTN';
 
-/* Deadline 게시물 데이터 */
+export const DEADLINE_VIEW_ROWS='DEADLINE_VIEW_ROWS';
+export const DEADLINE_TOTAL_ROWS='DEADLINE_TOTAL_ROWS';
 export const DEADLINE_POST_DATA='DEADLINE_POST_DATA';
-
-/* PostCard (Ongoing) */
-export const ONGOING_POSTCARD='ONGOING_POSTCARD';
-
-/* PostCard (Deadline) */
-export const DEADLINE_POSTCARD='DEADLINE_POSTCARD';
+export const DEADLINE_MORE_BTN='DEADLINE_MORE_BTN';

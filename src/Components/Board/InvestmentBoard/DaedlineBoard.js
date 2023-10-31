@@ -45,18 +45,19 @@ const InvestDeadlineBoard = () => {
         condition :'deadline',
     };
     const dispatch = useDispatch();
-    const PostCardCount = useSelector((state) => state.reducer.deadlinePostcardCount);
 
     /* const [investDeadlinePostData, setInvestDeadlinePostData] = useState(null); */
     
     const [isLoading, setIsLoading] = useState(true);
 
-    const postSaveData = useSelector((state) => state.reducer.deadlinePostData);
-
+    const postData = useSelector((state) => state.reducer.deadlinePostData);
+    const totalRows = useSelector((state) => state.reducer.deadlineTotalRows);
+    const viewRows = useSelector((state) => state.reducer.deadlineViewRows);
+    
     /*-----------------------------------------------*\
                   PostCard 더보기 전역상태관리
     \*-----------------------------------------------*/
-    useEffect(() => {
+    /* useEffect(() => {
         const handlePopState = () => {
             const state = window.history.state;
             if (state) {
@@ -75,7 +76,7 @@ const InvestDeadlineBoard = () => {
     const handleLoadMore = () => {
         const updatedNumPostsToShow = PostCardCount + 6;
         dispatch(setDeadlinePostCardCount(updatedNumPostsToShow));
-    };
+    }; */
 
     /*-----------------------------------------------*\
                         page log
@@ -86,7 +87,7 @@ const InvestDeadlineBoard = () => {
                   investment post 데이터 API
     \*-----------------------------------------------*/
     useEffect(() => {
-        if (postSaveData.length > 0) {
+        if (postData.length > 0) {
             setIsLoading(false);
         } else {
             const fetchData = async () => {
@@ -126,15 +127,15 @@ const InvestDeadlineBoard = () => {
                         {isLoading && <Loading/>}
                         {!isLoading && (
                             <>
-                                {postSaveData !== null && postSaveData !== "" && postSaveData.length ?
+                                {postData !== null && postData !== "" && postData.length ?
                                 <div>
                                     <PostCardTitleWrap>
                                     <h3>마감된 투자</h3>
                                     </PostCardTitleWrap>
                                     <PostCardWrap>
-                                    {postSaveData && 
-                                        postSaveData?.length > 0 &&
-                                        postSaveData?.slice(0, PostCardCount).map((item, index) => (
+                                    {postData && 
+                                        postData?.length > 0 &&
+                                        postData?.slice(0, postData).map((item, index) => (
                                         <div key={index}>
                                             <DeadlinePostCard
                                                     key={index}
@@ -149,9 +150,9 @@ const InvestDeadlineBoard = () => {
                                     ))}
                                     </PostCardWrap>
                                     <MoreWrap>
-                                        {postSaveData?.length > postSaveData && (
+                                        {postData?.length > postData && (
                                             <div style={{marginTop:'80px'}}>
-                                                <MoreBtn onClick={handleLoadMore}>
+                                                <MoreBtn /* onClick={handleLoadMore} */>
                                                     <span>더보기</span>
                                                 </MoreBtn>
                                             </div>
