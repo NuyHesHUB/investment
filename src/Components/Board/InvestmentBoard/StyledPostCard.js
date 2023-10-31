@@ -84,7 +84,7 @@ export const DeadlineContainer=styled.div`
 `
 export const IconImg=styled.img`
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
 `
 export const CompanyName=styled.h4`
     color: #000;
