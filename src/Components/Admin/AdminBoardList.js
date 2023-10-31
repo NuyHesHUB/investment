@@ -7,6 +7,8 @@ import { Wrap, PopUpWrap } from "./AdminStyledComponents/StyledAdminBoard"
 ///// import component /////
 import Admin from "./Admin"
 import SearchForm from "./SearchForm"
+///// icon /////
+import { HiMiniPlusCircle } from 'react-icons/hi2'
 
 const AdminBoardList = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -18,11 +20,11 @@ const AdminBoardList = () => {
     Authorization: `${accessToken}`
   }
   /////////////////////////////////////
-  ///// boardList 데이터 가져오기 /////
+  //    boardList 데이터 가져오기    //
   /////////////////////////////////////
   const [boardData, setBoardData] = useState([]);
   ///// search box /////
-  const [status, setStatus] = useState([]); //status filter
+  const [status, setStatus] = useState([]);
   const statusChange = (statusValue) => {
     setStatus(statusValue)
   }
@@ -36,7 +38,7 @@ const AdminBoardList = () => {
   }, []);
 
   //////////////////////////
-  ////////// 수정 //////////
+  //         수정         //
   //////////////////////////
 
   // input 수정 //
@@ -62,7 +64,7 @@ const AdminBoardList = () => {
   }
 
   //////////////////////////
-  ////////// 삭제 //////////
+  //         삭제         //
   //////////////////////////
   const deleteBoardList = (key) => {
     console.log("삭제 테스트", key, userUid, headers)
@@ -82,7 +84,7 @@ const AdminBoardList = () => {
   }
 
   /////////////////////////
-  ///// 추가버튼 클릭 /////
+  //    추가버튼 클릭    //
   /////////////////////////
   const [open, setOpen] = useState(false);
   const createBtnClick = () => {
@@ -119,7 +121,7 @@ const AdminBoardList = () => {
     }
   }
   /////////////////////////////
-  ///// 팝업(게시판 추가) /////
+  //    팝업(게시판 추가)    //
   /////////////////////////////
   const onChange = (e, name) => {
     const value = e.target.value
@@ -127,7 +129,6 @@ const AdminBoardList = () => {
       ...newBoardList,
       [name]: value
     })
-    console.log("onchange test", e.target.value, newBoardList)
   }
 
   const cancel = () => {
@@ -150,7 +151,9 @@ const AdminBoardList = () => {
               <button 
                 className="createBtn"
                 onClick={createBtnClick}
-              >추가</button>
+              >
+                <HiMiniPlusCircle size={35} color='#96aee2' />
+              </button>
             </li>
           </ul>
           <TableFrame>

@@ -1,38 +1,51 @@
 import React, { useState } from 'react';
+import { BiSearch } from 'react-icons/bi'
 
 import styled from 'styled-components';
 export const SearchFormWrap = styled.div`
   .none {display: none;}
-  select {margin-left: 7px; height: 20px;}
- ///// 검색 박스 /////
+  select {
+    margin-left: 7px; 
+    height: 20px;
+    border: none;
+    background: #eee;
+    height: 23px;
+  }
  .left-box {
     color: #555;
     display: flex;
     justify-content: space-between;
     align-items: end;
+    font-size: 14px;
   }
   //상태값 검색
   .left-box .search-status-box,
   .left-box .search-group-box {
     display: flex;
     align-items: center;
+    margin-bottom: 5px;
+    font-weight: 300;
     input {margin: 0 3px 0 8px;}
   }
-  .search-btn {
-    border: none;
-    height: 23px; 
-    padding: 2px 5px; 
-    border-radius: 3px; 
+  .search-box {display: flex;}
+  span {font-weight: 500;}
+  label.search-btn-label {
+    display: flex;
+    align-items: center;
     cursor: pointer;
-    background: #cbcdd4; //임시색
-    color: #fff;
+  }
+  .search-btn {
+    display: none;
   }
   .search-input {
     margin-right: 5px;
     border-radius: 3px;
-    border: 1px solid #ccc;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin-top: 5px;
     padding: 3px 5px;
   }
+  .search-input::placeholder {color: #ccc;}
 
   @media (max-width: 768px) {
   }
@@ -85,16 +98,19 @@ const SearchForm = (props) => {
   }
    ///// key값 change /////
    const keyChange = (e) => {
-    setKey(e.target.value)
-    props.keyValue(group)
+    const value = e.target.value
+    setKey(value)
+    props.keyValue(key)
   }
 
   return (
     <SearchFormWrap>
       <li className="left-box">
         <form action="">
+
+          {/* 상태값 */}
           <div className={props.statusNone ? "none" : 'search-status-box'}>
-              상태값
+              <span>상태값 |</span>
             <label htmlFor="statusY">
               <input 
                 id='statusY' 
@@ -115,8 +131,9 @@ const SearchForm = (props) => {
             </label>
           </div>
           
+          {/* 그룹값 */}
           <div className={props.groupNone ? "none" : 'search-group-box'}>
-            그룹값
+            <span>그룹값 |</span>
             <label htmlFor="regular">
               <input 
                 id='regular' 
@@ -145,19 +162,26 @@ const SearchForm = (props) => {
               관리자
             </label>
           </div>
-          <div>
+
+          {/* 검색창  */}
+          <div className='search-box'>
             <input 
               type="search" 
-              placeholder='검색' 
+              placeholder='검색어 입력' 
               className='search-input' 
             />
+            <label htmlFor="search-btn" className='search-btn-label'>
+              <BiSearch size={25} color='#999' />
+            </label>
             <input 
+              id='search-btn'
               type="submit" 
               value='검색' 
               className='search-btn' 
-            />
+            /> 
           </div>
         </form>
+        
         {/* brdKey 선택 */}
         <select 
           name="brdKey" 

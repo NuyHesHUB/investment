@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
+import { 
+  HiOutlineChevronDoubleLeft, 
+  HiOutlineChevronLeft, 
+  HiOutlineChevronDoubleRight, 
+  HiOutlineChevronRight, 
+} from 'react-icons/hi'
+
 import styled from 'styled-components';
 export const PagenationWrap = styled.div`
-/* background: palegreen; */
   width: 80%;
   min-width: 1000px; // 임시 넓이
   margin: 30px 0;
   display: flex;
   justify-content: center;
+  .box {display: flex;}
   button {
     background: none;
     color: #555;
@@ -16,9 +23,11 @@ export const PagenationWrap = styled.div`
     font-size: 16px; 
     padding: 10px 10px; 
     border: none;
+    display: flex;
+    align-items: center;
   }
   button:disabled {color: #ccc; cursor: default;}
-  button.current-page {color: #568fe6; font-weight: bold;}
+  button.current-page {font-weight: bold;}
   button#num {
     background: none; 
     padding: 10px 10px; 
@@ -49,7 +58,9 @@ const Pagenation = ({ page, setPage, pageRows, setPageRows, totalRows, setTotalR
             setPage((endPage*(count-1))+1)
           }}
           disabled = {page <= endPage}
-        >&lt;&lt;</button>
+        >
+          <HiOutlineChevronDoubleLeft />
+        </button>
 
         <button 
           onClick = {() => {
@@ -59,7 +70,9 @@ const Pagenation = ({ page, setPage, pageRows, setPageRows, totalRows, setTotalR
             }
           }} 
           disabled = {page === 1}
-        >prev</button>
+        >
+          <HiOutlineChevronLeft />
+        </button>
       
         {Array(
           endPage < totalPages ?
@@ -84,7 +97,9 @@ const Pagenation = ({ page, setPage, pageRows, setPageRows, totalRows, setTotalR
             }
           }}
           disabled = {page === Math.ceil((totalRows/pageRows))}
-        >next</button>
+        >
+          <HiOutlineChevronRight />
+        </button>
 
         <button 
           onClick = {() => { 
@@ -92,7 +107,9 @@ const Pagenation = ({ page, setPage, pageRows, setPageRows, totalRows, setTotalR
             setPage((endPage*(count+1))+1)
           }}
           disabled = {!(endPage < totalPages)}
-        >&gt;&gt;</button>
+        >
+          <HiOutlineChevronDoubleRight />
+        </button>
       </div>
     </PagenationWrap>
   )

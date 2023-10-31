@@ -20,7 +20,7 @@ const AdminPostApprove = () => {
   }
 
   ///////////////////////////
-  ///// 데이터 가져오기 /////
+  //    데이터 가져오기    //
   ///////////////////////////
   const [postData, setPostData] = useState([]);
   const [key, setKey] = useState("investment");
@@ -35,7 +35,6 @@ const AdminPostApprove = () => {
 
   useEffect(() => {
     axios.get(`${baseURL}/v1/board/${'investment'}/post?query&pageRows=&page=&category=&status=&condition=pending`, { headers }).then((res) => {
-      console.log("GET START", res.data, res.data.totalRows);
       setPostData(res.data.query);
       setTotalRows(res.data.totalRows);
     }).catch(() => {
@@ -54,7 +53,6 @@ const AdminPostApprove = () => {
   }
   useEffect(() => {
       window.addEventListener("resize", handleResize);
-      console.log("리사이즈함수", windowWidth, window.innerWidth, endPage)
     return() => { //clean up
       window.removeEventListener("resize", handleResize);
     }
@@ -148,9 +146,9 @@ const AdminPostApprove = () => {
                 </tr>
               </thead>
               <tbody>
-              {postData.map((item,i) => {
+              {postData.map((item, i) => {
                 return(
-                    <tr key={item.brdKey}>
+                    <tr key={item.id}>
                       {/* <td>
                         {v.brdKey}
                       </td> */}

@@ -4,11 +4,12 @@ export const CommonStyleFrame = styled.div`
   *{padding: 0; margin: 0; box-sizing: border-box;}
   position: relative;
   padding: 90px 0 0 300px ;
-  .modifyBtn {margin-right: 5px; background: #73bbff;}
+  .modifyBtn {margin-right: 5px; background: #cfcfcf;}
   .deleteBtn {background: #ff7373;}
   .createBtn {
-    background: yellowgreen; //임시색
-    padding: 4px 5px;
+    background: none;
+    display: flex;
+    align-items: center;
   }
   .detailBtn {background: #d0d0d0;}
   p.title {
@@ -18,7 +19,18 @@ export const CommonStyleFrame = styled.div`
     border-bottom: 2px solid #555;
     font-size: 26px;
   }
-  // top //
+  button {
+    border: none; 
+    padding: 2px 5px; 
+    border-radius: 3px; 
+    cursor: pointer;
+    color: #fff;
+  }
+  input {
+    border: none;
+    border-bottom: 1px solid #aaa;
+  }
+  /////  top  /////
   ul.top {
     width: 80%;
     min-width: 1000px; // 임시 넓이
@@ -26,13 +38,6 @@ export const CommonStyleFrame = styled.div`
     justify-content: space-between;
     align-items: end;
     margin: 30px 0 20px;
-  }
-  button {
-    border: none; 
-    padding: 2px 5px; 
-    border-radius: 3px; 
-    cursor: pointer;
-    color: #fff;
   }
 
   ///// 반응형 /////
@@ -69,22 +74,34 @@ export const CommonStyleFrame = styled.div`
 
 `
 export const TableFrame = styled.div `
-/* padding: 0 50px; */
 font-size: 14px;
   table {
     width: 80%;
     min-width: 1000px; // 임시 넓이
     table-layout: fixed;
   }
-  table, th, td {
+  table, th, td{
     border-collapse: collapse;
-    border: 1px solid #222;
-    padding: 3px 0;
+    border: 1px solid #999;
+    border-right: none;
+    border-left: none;
     text-align: center;
   }
-  th {background: #7c87c2; color: #fff;}
-  
-  select {width: 80px;}
+  th {
+    background: #b7b7b9; 
+    color: #fff;
+    padding: 5px 0;
+  }
+  td {
+    padding: 10px 0;
+  }
+  select {
+    width: 95%;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+  }
+
 
 
   ///// 반응형 /////
@@ -104,7 +121,7 @@ font-size: 14px;
       display: block;
       margin-bottom: 10px;
       border-top: none;
-      border: 1px solid #000;
+      border: 1px solid #999;
     }
     td {
       min-height: 30px;
@@ -128,7 +145,7 @@ font-size: 14px;
       top: 0;
       width: 36%;
       height: 100%;
-      background: #7c87c2;
+      background: #b7b7b9;
       color: #fff;
       font-weight: bold;
     }
@@ -164,7 +181,7 @@ export const Modify = styled.div`
       padding: 10px;
       margin-left: 25px;
       select {width: 100px;}
-      input {border: 1px solid #000; width: 100%;}
+      input {width: 95%;}
       input:disabled {border: 1px solid #bbb; background: #eee;}
       .popup-top {
         display: flex; 
@@ -173,7 +190,7 @@ export const Modify = styled.div`
         margin-bottom: 4px;
       }
       .modify-btn {background: yellowgreen;}
-      .cancel-btn {background: red;}
+      .cancel-btn {background: #ff7373;}
       table {width: 600px;}
       th {width: 120px;}
 

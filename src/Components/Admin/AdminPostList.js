@@ -20,7 +20,6 @@ const AdminPostList = () => {
   }
 
   const [postList, setPostList] = useState([]);
-  const [key, setKey] = useState("investment");
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   //페이지네이션데이터
   const [page, setPage] = useState(1); // 현재 페이지
@@ -28,10 +27,17 @@ const AdminPostList = () => {
   const [totalRows, setTotalRows] = useState(0); //데이터 정보 개수
   const [endPage, setEndPage] = useState(window.innerWidth < 768 ? 5 : 10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
-
+  
+  const [key, setKey] = useState("investment");
   const [status, setStatus] = useState([]); //status filter
+
   const statusChange = (statusValue) => {
     setStatus(statusValue)
+  }
+  
+  ///// key값 change /////
+  const keyChange = (keyValue) => {
+    setKey(keyValue)
   }
 
   ///// 데이터 불러오기 /////
@@ -39,7 +45,6 @@ const AdminPostList = () => {
     axios.get(`${baseURL}/v1/board/${key}/post?query&pageRows=${pageRows}&page=${page}&category=&status=&condition=`, { headers }).then((res) => {
       setPostList(res.data.query);
       setTotalRows(res.data.totalRows);
-      // console.log(res.data.query,"res.data.queryres.data.query")
     }).catch(() => {
       console.error("error");
     })
@@ -56,7 +61,6 @@ const AdminPostList = () => {
   }
   useEffect(() => {
       window.addEventListener("resize", handleResize);
-      console.log("리사이즈함수", windowWidth, window.innerWidth, endPage)
     return() => { //clean up
       window.removeEventListener("resize", handleResize);
     }
@@ -68,24 +72,7 @@ const AdminPostList = () => {
     setPage(1)
     setCount(0)
   }
-  ///// status change /////
-  // const statusChange = (e) => {
-  //   const value = e.target.value
-  //   if (status.includes(value)) {
-  //     setStatus(
-  //       status.filter(i => i !== value)
-  //     )
-  //   } else {
-  //     setStatus(
-  //       status => [...status, e.target.value]
-  //     )
-  //   }
-  // }
 
-  ///// key값 change /////
-  const keyChange = (e) => {
-    setKey(e.target.value)
-  }
 
   ///// 상세보기 btn /////
   const postToShow = (id) => {
@@ -101,6 +88,7 @@ const AdminPostList = () => {
           <ul className="top">
             <SearchForm 
               statusValue={statusChange} 
+              keyValue={keyChange} 
               groupNone={true}
             />
             <li className="right-box">

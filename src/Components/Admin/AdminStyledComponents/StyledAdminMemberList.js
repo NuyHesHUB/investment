@@ -2,8 +2,19 @@ import styled from 'styled-components';
 
 export const Wrap = styled.div`
   //modify & delete btn
-  .modifyBtn {margin-right: 5px; background: #73bbff;}
-  .deleteBtn {background: #ff7373;}
+  th:nth-child(1) {width: 7%;}
+  th:nth-child(2) {width: 8%;}
+  th:nth-child(3) {width: 5%;}
+  th:nth-child(4) {width: 5%;}
+  th:nth-child(5) {width: 5%;}
+  th:nth-child(6) {width: 10%;}
+  th:nth-child(7) {width: 20%;}
+  th:nth-child(8) {width: 8%;}
+  th:nth-child(9) {width: 12%;}
+  th:nth-child(10) {width: 15%;}
+  th:nth-child(11) {width: 5%;}
+
+
   @media screen and (max-width: 768px) {
     /* table, tr, tbody {
       min-width: calc(100vw - 85px);

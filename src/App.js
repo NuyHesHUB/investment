@@ -65,6 +65,7 @@ const App = () => {
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
+    const userGroup = sessionStorage.getItem('userGroup');
     const b_no = sessionStorage.getItem('b_no');
     const headers = {
         Authorization: `${accessToken}`
@@ -268,9 +269,9 @@ const App = () => {
                 {/* <Route exact path="/company_write" element={<CompanyWrite />}></Route> */}
                     
                 <Route exact path="/company_write" element={
-                    b_no && accessToken
+                    ["업체", "관리자"].includes(userGroup)
                     ? <CompanyWrite /> 
-                    : accessToken
+                    : "일반" === userGroup
                     ? <BusinessNumberCheck />
                     : <Login />
                 }></Route>

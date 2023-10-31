@@ -31,7 +31,7 @@ const AdminCompanyList = () => {
   const [endPage, setEndPage] = useState(window.innerWidth < 768 ? 5 : 10); // 페이지네이션 단위
   const [count, setCount] = useState(0); 
   ///// search box /////
-  const [status, setStatus] = useState([]); //status filter
+  const [status, setStatus] = useState([]);
   const statusChange = (statusValue) => {
     setStatus(statusValue)
   }
@@ -48,16 +48,12 @@ const AdminCompanyList = () => {
   ///// resize /////
   const handleResize = () => {
     setWindowWidth(window.innerWidth)
-    if (windowWidth <= 768) {
-      setEndPage(5)
-    } else {
-      setEndPage(10)
-    }
+    windowWidth <= 768 ? setEndPage(5) : setEndPage(10)
   }
+
   useEffect(() => {
       window.addEventListener("resize", handleResize);
-      console.log("리사이즈함수", windowWidth, window.innerWidth, endPage)
-    return() => { //clean up
+    return() => {
       window.removeEventListener("resize", handleResize);
     }
   }, [window.innerWidth < 768]);
@@ -70,10 +66,9 @@ const AdminCompanyList = () => {
   }
  
   //////////////////////////
-  ////////// 삭제 //////////
+  //         삭제         //
   //////////////////////////
   const deleteBoardList = (businessNum) => {
-    console.log("삭제 테스트", userUid, headers)
     if (window.confirm("삭제하시겠습니까?")) {
       axios.delete(`${baseURL}/v1/company/delete/${businessNum}`,  {
         data: {
@@ -102,7 +97,7 @@ const AdminCompanyList = () => {
     }
   }
   ///////////////////////
-  ///// 수정 팝업창 /////
+  //    수정 팝업창    //
   ///////////////////////
   const [open, setOpen] = useState(false);
   // 수정 팝업창 열기
@@ -157,7 +152,7 @@ const AdminCompanyList = () => {
                   <th>nickname</th>
                   <th>companyName</th>
                   <th>businessNum</th>
-                  <th>representativeName</th>
+                  <th>name</th>
                   <th>regDt</th>
                   <th>수정/삭제</th>
                 </tr>

@@ -12,6 +12,7 @@ export const Wrap = styled.div`
 
 
   @media screen and (max-width: 768px) {
+    td {word-break: break-all;}
     td:nth-child(1):before {content:'num';}
     td:nth-child(2):before {content:'status';}
     td:nth-child(3):before {content:'condition';}

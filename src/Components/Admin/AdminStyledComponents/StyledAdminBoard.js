@@ -3,22 +3,22 @@ import styled from 'styled-components';
 export const Wrap = styled.div`
   .createBtn {margin-right: 5px;}
   //modify & delete btn
-  table input {width: 100%;}
-  td {padding: 2px 5px;}
-  /* th:nth-child(1) {width: 13%;}
+  table input {width: 95%;}
+  td {padding: 8px 5px;}
+  th:nth-child(1) {width: 13%;}
   th:nth-child(2) {width: 7%;}
   th:nth-child(3) {width: 20%;}
-  th:nth-child(4) {width: 53%;}
-  th:last-child {width: 7%;} */
+  th:nth-child(4) {width: 50%;}
+  th:last-child {width: 10%;}
 
   ///// 반응형 /////
   @media screen and (max-width: 768px) {
-    table input {width: 85%;}
+    table input {width: 95%;}
     table, tr, tbody {
       min-width: calc(100vw - 85px);
     }
     td {
-      padding-left: 46%;
+      padding-left: 40%;
     }
     td:nth-child(1):before {content:'key';}
     td:nth-child(2):before {content:'status';}

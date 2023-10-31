@@ -3,7 +3,7 @@ import { useNavigate  } from "react-router-dom";
 import axios from 'axios';
 ///// style /////
 import { CommonStyleFrame, TableFrame, Modify } from "./AdminStyledComponents/StyledCommon"
-import { Wrap, PageNation,  } from "./AdminStyledComponents/StyledAdminMemberList"
+import { Wrap, } from "./AdminStyledComponents/StyledAdminMemberList"
 ///// import component /////
 import Admin from "./Admin"
 import Pagenation from "./Pagenation"
@@ -14,8 +14,6 @@ const AdminMemberList = () => {
   const navigate = useNavigate();
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
-  const userUid = sessionStorage.getItem('userUid');
-  // const uid = userUid === null ? '' : userUid
   const headers = {
     Authorization: `${accessToken}`
   }
@@ -42,7 +40,6 @@ const AdminMemberList = () => {
   }
   useEffect(() => {
       window.addEventListener("resize", handleResize);
-      console.log("리사이즈함수", windowWidth, window.innerWidth, endPage)
     return() => { //clean up
       window.removeEventListener("resize", handleResize);
     }
@@ -92,10 +89,8 @@ const AdminMemberList = () => {
     setOpen(true)
     setIdx(index)
   }
-  // console.log( memberData[1],"인덱스테스ㅡ트",idx)
   // 수정 btn Click
   const modifyBtnClick = (uid) => {
-    console.log("인덱스테스ㅡ트",idx,memberData[idx])
     if (window.confirm("수정하시겠습니까?")) {
       axios.patch(`${baseURL}/v1/users/modify/${uid}`, memberData[idx], { headers }).then((res)=> {
         alert("수정하였습니다.")
@@ -103,7 +98,7 @@ const AdminMemberList = () => {
         setOpen(false)
       }).catch((error)=> {
         console.log(error)
-        alert("에러에러")
+        alert("error")
       })
     }
   }
@@ -118,7 +113,6 @@ const AdminMemberList = () => {
       newData[i][name] = value
       return newData
     })
-    console.log("inputChange", value, name)
   }
 
   return (
@@ -315,7 +309,7 @@ const AdminMemberList = () => {
                       <tr>
                         <th>regDt</th>
                         <td>
-                          {memberData[idx].regDt}
+                          {memberData[idx].regDt.split("T")[0]} {memberData[idx].regDt.split("T")[1].slice(0,8)}
                         </td>
                       </tr>
                     </tbody>
