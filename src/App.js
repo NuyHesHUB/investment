@@ -55,9 +55,6 @@ import BusinessNumberCheck from './Components/CompanyUpload/BusinessNumberCheck'
 /* 결제안내 페이지 */
 import PaymentInfoPage from './Components/Page/PaymentInfoPage';
 
-/* 접근 권한 */
-import PrivateRoute from './PrivateRoute';
-
 /* Scroll Top */
 import ScrollToTop from './Hook/ScrollToTop';
 
@@ -72,13 +69,6 @@ const App = () => {
     const headers = {
         Authorization: `${accessToken}`
     }
-
-    const [token, setToken] = useState();
-    useEffect(() => {
-        setToken(accessToken)
-        console.log(token,"토큰")
-    }, [accessToken])
-    console.log(token,accessToken, "토큰22")
 
     /* Redux State */
     const boardData = useSelector((state) => state.reducer.adminBoardData);
@@ -278,12 +268,11 @@ const App = () => {
                 {/* <Route exact path="/company_write" element={<CompanyWrite />}></Route> */}
                     
                 <Route exact path="/company_write" element={
-                    b_no 
+                    b_no && accessToken
                     ? <CompanyWrite /> 
-                    : <PrivateRoute 
-                        authenticated={headers}
-                        component={<Login />}
-                    />
+                    : accessToken
+                    ? <BusinessNumberCheck />
+                    : <Login />
                 }></Route>
                 <Route exact path="/company_modify" element={<CompanyModify />} />
                 <Route exact path="/business_number_check" element={<BusinessNumberCheck />}/>
