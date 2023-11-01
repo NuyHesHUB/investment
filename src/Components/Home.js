@@ -98,7 +98,7 @@ const Home = ({parsedCommunityCategoryData}) => {
                         <section>
                             <BannerSwiper/>
                         </section>
-                        <BannerAd />
+                        {/* <BannerAd /> */}
                             <CategorySection>
                                 <CategoryContainer>
                                     <CategoryContentsBox ref={fadeIn1.ref} style={fadeIn1.style}>
@@ -119,12 +119,12 @@ const Home = ({parsedCommunityCategoryData}) => {
                                         <ServiceRightBox ref={fadeIn4.ref} style={fadeIn4.style}>
                                             <RightContentsBox>
                                                 <RightTitle >
-                                                    <h2>투자에 고민이 있으신가요?</h2>
+                                                    <h2>사업에 고민이 있으신가요?</h2>
                                                 </RightTitle>
                                                 <RightTopContent>
-                                                    <p style={{marginBottom:'10px'}}>당신의 투자를 더욱 가치 있게 만들어 드릴</p>
+                                                    <p style={{marginBottom:'10px'}}>당신을 더욱 가치 있게</p>
                                                     <p>파트너를 찾아 드리는 전문 플랫폼,</p>
-                                                    <p>바로 <i>"</i><span>WhoFin</span><i>"</i>입니다.</p>
+                                                    <p>바로 <i></i><span>WhoFin</span><i></i>입니다.</p>
                                                 </RightTopContent>
                                                 <RightBottomContent>
                                                     <p>우리와 함께라면 더 나은 미래로 나아갈 수 있습니다.</p>

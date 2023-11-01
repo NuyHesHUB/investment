@@ -278,16 +278,16 @@ export const BannerSwiper = () => {
                             <SlideContentsWrap>
                                 <div ref={fadeIn4.ref} style={fadeIn4.style}>
                                     <TitleBox>
-                                        <h2>후핀 투자 파트너</h2>
+                                        <h2>당신의 파트너</h2>
                                         <IconBox><FcIdea/></IconBox>
                                     </TitleBox>
                                     <ContentsBox>
-                                        <p>다음 단계를 위한 협력 가능한 <i><span>투자 파트너</span></i>를 찾아보세요</p>
+                                        <p>다음 단계를 위한 협력 가능한 <i><span>파트너</span></i>를 찾아보세요</p>
                                         <p>기업의 고민을 해결해 드리는 전문가와 연결해 드립니다</p>
                                     </ContentsBox>
                                     <BtnBox>
-                                        <Link to="/investment/ongoing"><BtnItem ref={fadeIn2.ref} style={fadeIn2.style}><BsCheck2Square/>투자자 찾기</BtnItem></Link>
-                                        <Link to="/member_type"><BtnItem ref={fadeIn3.ref} style={fadeIn3.style}><BsCheck2Square/>간편회원가입</BtnItem></Link>
+                                        <Link to="/investment/ongoing"><BtnItem ref={fadeIn2.ref} style={fadeIn2.style}><BsCheck2Square/>파트너 찾기</BtnItem></Link>
+                                        <Link to="/signup"><BtnItem ref={fadeIn3.ref} style={fadeIn3.style}><BsCheck2Square/>간편회원가입</BtnItem></Link>
                                     </BtnBox>
                                 </div>
                                 <ImgBox ref={fadeIn1.ref} style={fadeIn1.style}>
@@ -306,16 +306,16 @@ export const BannerSwiper = () => {
                                 <SlideContentsWrap>
                                     <div ref={fadeIn8.ref} style={fadeIn8.style}>
                                         <TitleBox>
-                                            <h2>후핀 투자 파트너</h2>
+                                            <h2>당신의 파트너</h2>
                                             <IconBox><FcIdea/></IconBox>
                                         </TitleBox>
                                         <ContentsBox>
-                                            <p>다음 단계를 위한 협력 가능한 <i><span>투자 파트너</span></i>를 찾아보세요</p>
+                                            <p>다음 단계를 위한 협력 가능한 <i><span>파트너</span></i>를 찾아보세요</p>
                                             <p>기업의 고민을 해결해 드리는 전문가와 연결해 드립니다</p>
                                         </ContentsBox>
                                         <BtnBox>
-                                            <Link to="/investment/ongoing"><BtnItem ref={fadeIn6.ref} style={fadeIn6.style}><BsCheck2Square/>투자자 찾기</BtnItem></Link>
-                                            <Link to="/member_type"><BtnItem ref={fadeIn7.ref} style={fadeIn7.style}><BsCheck2Square/>간편회원가입</BtnItem></Link>
+                                            <Link to="/investment/ongoing"><BtnItem ref={fadeIn6.ref} style={fadeIn6.style}><BsCheck2Square/>파트너 찾기</BtnItem></Link>
+                                            <Link to="/signup"><BtnItem ref={fadeIn7.ref} style={fadeIn7.style}><BsCheck2Square/>간편회원가입</BtnItem></Link>
                                         </BtnBox>
                                     </div>
                                     <ImgBox ref={fadeIn5.ref} style={fadeIn5.style}>

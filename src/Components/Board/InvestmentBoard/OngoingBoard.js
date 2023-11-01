@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
 /* React-Router-Dom */
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 /* Axios */
 import axios from 'axios';
 
 /* Redux */
 import { useDispatch, useSelector } from 'react-redux';
-import { setOngoingPostCardCount, setOngoingPostData } from '../../../store/actions/actions';
+import { setOngoingMoreBtn, setOngoingPostData, setOngoingTotalRows, setOngoingViewRows } from '../../../store/actions/actions';
 
 /* Components */
 import Header from '../../Header';
@@ -22,16 +22,13 @@ import { BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap, MoreWrap, More
 /* img */
 import { ReactComponent as VisualImg } from './VisualImg.svg';
 
-import useScrollFadeIn from '../../../Hook/useScrollFadeIn';
+/* Effect */
 import Loading from '../../../Effect/Loading';
 
-/* Log */
-import PageLog from '../../../Hook/PageLog'
+
 
 
 const InvestOngoingBoard = () => {
-
-    /* const fadeIn1 = useScrollFadeIn('up', 1, 500); */
 
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
@@ -41,83 +38,50 @@ const InvestOngoingBoard = () => {
     const headers = {
         Authorization: `${accessToken}`
     };
+    
+    const dispatch = useDispatch();
+
+    /* Loading */
+    const [isLoading, setIsLoading] = useState(true);
+
+    const postData = useSelector((state) => state.reducer.ongoingPostData);
+    const totalRows = useSelector((state) => state.reducer.ongoingTotalRows);
+    const viewRows = useSelector((state) => state.reducer.ongoingViewRows);
+    /* const isMoreBtn = useSelector((state) => state.reducer.ongoingMoreBtn); */
+
     const params = {
-        pageRows : '',
-        page : '',
+        pageRows : viewRows,
+        page : 1,
         category : '',
         status : '',
         condition :'ongoing',
     };
-    const dispatch = useDispatch();
-    const PostCardCount = useSelector((state) => state.reducer.ongoingPostcardCount
-    );
 
-    const [investOngoingPostData, setInvestOngoingPostData] = useState(null);
-
-    const { pathname } = useLocation();
-
-    const [isLoading, setIsLoading] = useState(true);
-
-    const postSaveData = useSelector((state) => state.reducer.ongoingPostData);
-    
-    
-    if (postSaveData.length > 0) {
-        console.log('리덕스 테스트 데이터 있음');
-    } else{
-        console.log('리덕스 테스트 데이터 없음');
-    }
-
-    console.log('테스트', postSaveData);
-
-    /*-----------------------------------------------*\
-                  PostCard 더보기 전역상태관리
-    \*-----------------------------------------------*/
-    useEffect(() => {
-        const handlePopState = () => {
-            const state = window.history.state;
-            if (state) {
-                const updatedNumPostsToShow = state.PostCardCount || PostCardCount;
-                dispatch(setOngoingPostCardCount(updatedNumPostsToShow));
-            }
-    };
-        window.addEventListener('popstate', handlePopState);
-
-        return () => {
-            window.removeEventListener('popstate', handlePopState);
-        };
-
-    }, [PostCardCount]);
-
-    const handleLoadMore = () => {
-        const updatedNumPostsToShow = PostCardCount + 6;
-        dispatch(setOngoingPostCardCount(updatedNumPostsToShow));
-    };
-
-
+    console.log('totalRows',totalRows);
+    console.log('viewRows',viewRows);
     /*-----------------------------------------------*\
                         page log
     \*-----------------------------------------------*/
     // PageLog("진행중");
-  
+    
     
     /*-----------------------------------------------*\
                   investment post 데이터 API
     \*-----------------------------------------------*/
     useEffect(() => {
-        if (postSaveData.length > 0) {
+        if (postData.length > 0) {
             setIsLoading(false);
         } else {
             const fetchData = async () => {
                 try {
                     const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params });
                     const data = PostResponse.data?.query;
-                    console.log('investPostResponse',data);
-                    /* setInvestOngoingPostData(data); */
+                    const totalRowsData = PostResponse.data?.totalRows;
+                    dispatch(setOngoingTotalRows(totalRowsData));
                     dispatch(setOngoingPostData(data));
-                    /* setIsLoading(false); */
                     setTimeout(() => {
                         setIsLoading(false);
-                    }, 1000); 
+                    }, 800); 
                 } catch (error) {
                     console.error('investOngoingBoardData 데이터 가져오기 실패', error);
                     setIsLoading(false);
@@ -128,19 +92,65 @@ const InvestOngoingBoard = () => {
         
     },[])
 
-    
-    /* const businessNums = investOngoingPostData?.map(item => item.businessNum); */
-
-    /* console.log('businessNums',businessNums); */
+    /*-----------------------------------------------*\
+                        More Btn
+    \*-----------------------------------------------*/
+    /* const handleLoadMore = (e) => {
+        e.preventDefault();
+        const moreRows = viewRows + 3;
+        if (moreRows <= totalRows) {
+            dispatch(setOngoingViewRows(moreRows));
+            const updatedParams = {
+                ...params,
+                pageRows: moreRows,
+            };
+            const fetchData = async () => {
+                try {
+                    const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params: updatedParams });
+                    const data = PostResponse.data?.query;
+                    dispatch(setOngoingPostData(data));
+                    setIsLoading(false);
+                } catch (error) {
+                    console.error('investOngoingBoardData 데이터 가져오기 실패', error);
+                    setIsLoading(false);
+                }
+            };
+            fetchData();
+        } else {
+            console.log('더 이상 데이터가 없습니다.');
+        }
+    } */
+    const handleLoadMore = async (e) => {
+        e.preventDefault();
+        const moreRows = viewRows + 3;
+        const updatedParams = {
+            ...params,
+            pageRows: moreRows,
+        }
+        try {
+            const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params: updatedParams });
+            const data = PostResponse.data?.query;
+            if ( data.length > 0 ) {
+                dispatch(setOngoingViewRows(moreRows));
+                dispatch(setOngoingPostData(data));
+            } else {
+                console.log('더 이상 데이터가 없습니다.');
+            }
+            setIsLoading(false);
+        } catch (error) {
+            console.error('investDeadlineBoardData 데이터 가져오기 실패', error);
+            setIsLoading(false);
+        }
+    };
 
     /*-----------------------------------------------*\
                         End Date
     \*-----------------------------------------------*/
-    const formattedDates = Array.isArray(postSaveData) && postSaveData.length > 0 &&
-    postSaveData
+    const formattedDates = Array.isArray(postData) && postData.length > 0 &&
+    postData
     /* .filter(item => item && item.condition === 'ongoing') */
     .map((item, index) => {
-        if (postSaveData?.[index].endDt?.length > 0 ) {
+        if (postData?.[index].endDt?.length > 0 ) {
             const endDt = new Date(item.endDt);
             const currentDt = new Date();
             const timeDiff = endDt - currentDt;
@@ -169,6 +179,9 @@ const InvestOngoingBoard = () => {
     /* console.log('formattedDates',formattedDates); */
     /* console.log('investOngoingPostData',investOngoingPostData); */
     /* console.log('koreanCategory',koreanCategory); */
+    /* console.log('ismoreBtn',isMoreBtn); */
+    /* console.log('viewRows', viewRows); */
+
     return (
         <React.Fragment>
             <Header/>
@@ -188,15 +201,15 @@ const InvestOngoingBoard = () => {
                         {isLoading && <Loading/>}
                         {!isLoading && (
                             <>
-                                {postSaveData !== null && postSaveData !== "" && postSaveData.length ? 
+                                {postData !== null && postData !== "" && postData.length ? 
                                 <div>
                                     <PostCardTitleWrap>
                                     <h3>진행 중인 투자</h3>
                                     </PostCardTitleWrap>
                                     <PostCardWrap>
-                                    {postSaveData &&
-                                        postSaveData?.length > 0 &&
-                                        postSaveData?.slice(0, PostCardCount).map((item, index) => (
+                                    {postData &&
+                                        postData?.length > 0 &&
+                                        postData?.map((item, index) => (
                                         <Link key={index} to={
                                             `/investment/ongoing/${item.id}`
                                         }>
@@ -212,15 +225,15 @@ const InvestOngoingBoard = () => {
                                         </Link>
                                     ))}
                                     </PostCardWrap>
-                                    <MoreWrap>
-                                        {postSaveData?.length > PostCardCount && (
-                                            <div style={{marginTop:'80px'}}>
+                                    {!(viewRows >= totalRows) && (
+                                        <MoreWrap>
+                                            <div style={{ marginTop: '80px' }}>
                                                 <MoreBtn onClick={handleLoadMore}>
                                                     <span>더보기</span>
                                                 </MoreBtn>
                                             </div>
-                                        )}
-                                    </MoreWrap>
+                                        </MoreWrap>
+                                    )}
                                 </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>진행 중인 투자가 없습니다.</div>}
                             </>
                         )}

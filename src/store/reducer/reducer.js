@@ -4,40 +4,22 @@ const initialState = {
     adminUserData: [],
     adminBoardData: [],
     adminPostData: [],
-    ongoingPostcardCount: 6,
-    deadlinePostcardCount: 6,
+
+    ongoingViewRows: 6,
+    ongoingTotalRows: null,
     ongoingPostData: [],
+    ongoingMoreBtn: true,
+
+    deadlineViewRows: 6,
+    deadlineTotalRows: null,
     deadlinePostData: [],
-    userNameData: [],
+    deadlineMoreBtn: true,
+
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
 
-        case actionTypes.ONGOING_POSTCARD:
-            return {
-                ...state,
-                ongoingPostcardCount: action.payload
-            }
-            
-        case actionTypes.DEADLINE_POSTCARD:
-            return {
-                ...state,
-                deadlinePostcardCount: action.payload
-            }
-        
-        case actionTypes.ONGOING_POST_DATA:
-            return {
-                ...state,
-                ongoingPostData: action.payload
-            };
-        
-        case actionTypes.DEADLINE_POST_DATA:
-            return {
-                ...state,
-                deadlinePostData: action.payload
-            };
-            
         case actionTypes.ADMIN_USER_DATA:
             return {
                 ...state,
@@ -56,10 +38,52 @@ const reducer = (state = initialState, action) => {
                 adminPostData: action.adminPostData
             }
         
-        case actionTypes.USER_NAME_DATA:
+        case actionTypes.ONGOING_VIEW_ROWS:
             return {
                 ...state,
-                userNameData: action.userNameData
+                ongoingViewRows: action.payload
+            }
+        
+        case actionTypes.ONGOING_TOTAL_ROWS:
+            return {
+                ...state,
+                ongoingTotalRows: action.payload
+            }
+
+        case actionTypes.ONGOING_POST_DATA:
+            return {
+                ...state,
+                ongoingPostData: action.payload
+            }
+
+        case actionTypes.ONGOING_MORE_BTN:
+            return {
+                ...state,
+                ongoingMoreBtn: action.payload
+            }
+
+        case actionTypes.DEADLINE_VIEW_ROWS:
+            return {
+                ...state,
+                deadlineViewRows: action.payload
+            }
+
+        case actionTypes.DEADLINE_TOTAL_ROWS:
+            return {
+                ...state,
+                deadlineTotalRows: action.payload
+            }
+
+        case actionTypes.DEADLINE_POST_DATA:
+            return {
+                ...state,
+                deadlinePostData: action.payload
+            }
+        
+        case actionTypes.DEADLINE_MORE_BTN:
+            return {
+                ...state,
+                deadlineMoreBtn: action.payload
             }
             
         default: return state;

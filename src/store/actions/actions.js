@@ -59,21 +59,42 @@ export const setAdminPostData = (adminPostData) => ({
 
 /* PostCard */
 
-export const setOngoingPostCardCount = (num) => ({
+/* export const setOngoingPostCardCount = (num) => ({
     type: actionTypes.ONGOING_POSTCARD,
     payload: num,
-})
+}) */
+/* export const setOngoingPostData = (ongoingPostData) => ({
+    type: actionTypes.ONGOING_POST_DATA,
+    payload: ongoingPostData
+}) */
 
-export const setDeadlinePostCardCount = (num) => ({
-    type: actionTypes.DEADLINE_POSTCARD,
+export const setOngoingViewRows = (num) => ({
+    type: actionTypes.ONGOING_VIEW_ROWS,
     payload: num,
 })
-
-/* Ongoing Post Data */
+export const setOngoingTotalRows = (num) => ({
+    type: actionTypes.ONGOING_TOTAL_ROWS,
+    payload: num,
+})
 
 export const setOngoingPostData = (ongoingPostData) => ({
     type: actionTypes.ONGOING_POST_DATA,
-    payload: ongoingPostData
+    payload: ongoingPostData,
+})
+
+export const setOngoingMoreBtn = (ongoingMoreBtn) => ({
+    type: actionTypes.ONGOING_MORE_BTN,
+    payload: ongoingMoreBtn
+})
+
+export const setDeadlineViewRows = (num) => ({
+    type: actionTypes.DEADLINE_VIEW_ROWS,
+    payload: num,
+})
+
+export const setDeadlineTotalRows = (num) => ({
+    type: actionTypes.DEADLINE_TOTAL_ROWS,
+    payload: num
 })
 
 export const setDeadlinePostData = (deadlinePostData) => ({
@@ -81,7 +102,7 @@ export const setDeadlinePostData = (deadlinePostData) => ({
     payload: deadlinePostData
 })
 
-export const setUserNameData = (userNameData) => ({
-    type: actionTypes.USER_NAME_DATA,
-    userNameData: userNameData
+export const setDeadlineMoreBtn = (deadlineMoreBtn) => ({
+    type: actionTypes.DEADLINE_MORE_BTN,
+    payload: deadlineMoreBtn
 })
