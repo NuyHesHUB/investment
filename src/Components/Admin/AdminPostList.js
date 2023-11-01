@@ -73,7 +73,6 @@ const AdminPostList = () => {
     setCount(0)
   }
 
-
   ///// 상세보기 btn /////
   const postToShow = (id) => {
     navigate(`/${key}/ongoing/${id}`)

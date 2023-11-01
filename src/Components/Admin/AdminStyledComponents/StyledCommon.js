@@ -40,6 +40,11 @@ export const CommonStyleFrame = styled.div`
     margin: 30px 0 20px;
   }
 
+  .right-box select {
+    border: none;
+    background: #eee;
+  }
+
   ///// 반응형 /////
   @media screen and (max-width: 768px) {
     overflow: hidden;

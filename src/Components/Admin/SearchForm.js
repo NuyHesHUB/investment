@@ -66,7 +66,7 @@ export const SearchFormWrap = styled.div`
 const SearchForm = (props) => {
   const [status, setStatus] = useState([]); //status filter
   const [group, setGroup] = useState([]); //group filter
-  const [key, setKey] = useState([]); //key filter
+  const [key, setKey] = useState(''); //key filter
   ///// status change /////
   const statusChange = (e) => {
     const value = e.target.value
@@ -102,6 +102,8 @@ const SearchForm = (props) => {
     setKey(value)
     props.keyValue(key)
   }
+
+ 
 
   return (
     <SearchFormWrap>
@@ -193,7 +195,7 @@ const SearchForm = (props) => {
           <option value="free">free</option>
         </select>
       </li>
-     
+
     </SearchFormWrap>
   )
 }
