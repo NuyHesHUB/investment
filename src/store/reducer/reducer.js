@@ -5,12 +5,12 @@ const initialState = {
     adminBoardData: [],
     adminPostData: [],
 
-    ongoingViewRows: 3,
+    ongoingViewRows: 6,
     ongoingTotalRows: null,
     ongoingPostData: [],
     ongoingMoreBtn: true,
 
-    deadlineViewRows: 3,
+    deadlineViewRows: 6,
     deadlineTotalRows: null,
     deadlinePostData: [],
     deadlineMoreBtn: true,

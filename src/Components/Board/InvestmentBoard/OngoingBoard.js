@@ -57,6 +57,8 @@ const InvestOngoingBoard = () => {
         condition :'ongoing',
     };
 
+    console.log('totalRows',totalRows);
+    console.log('viewRows',viewRows);
     /*-----------------------------------------------*\
                         page log
     \*-----------------------------------------------*/
@@ -93,7 +95,7 @@ const InvestOngoingBoard = () => {
     /*-----------------------------------------------*\
                         More Btn
     \*-----------------------------------------------*/
-    const handleLoadMore = (e) => {
+    /* const handleLoadMore = (e) => {
         e.preventDefault();
         const moreRows = viewRows + 3;
         if (moreRows <= totalRows) {
@@ -117,7 +119,29 @@ const InvestOngoingBoard = () => {
         } else {
             console.log('더 이상 데이터가 없습니다.');
         }
-    }
+    } */
+    const handleLoadMore = async (e) => {
+        e.preventDefault();
+        const moreRows = viewRows + 3;
+        const updatedParams = {
+            ...params,
+            pageRows: moreRows,
+        }
+        try {
+            const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params: updatedParams });
+            const data = PostResponse.data?.query;
+            if ( data.length > 0 ) {
+                dispatch(setOngoingViewRows(moreRows));
+                dispatch(setOngoingPostData(data));
+            } else {
+                console.log('더 이상 데이터가 없습니다.');
+            }
+            setIsLoading(false);
+        } catch (error) {
+            console.error('investDeadlineBoardData 데이터 가져오기 실패', error);
+            setIsLoading(false);
+        }
+    };
 
     /*-----------------------------------------------*\
                         End Date

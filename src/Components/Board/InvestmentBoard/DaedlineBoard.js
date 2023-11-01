@@ -8,7 +8,7 @@ import axios from 'axios';
 
 /* Redux */
 import { useDispatch, useSelector } from 'react-redux';
-import { setDeadlinePostCardCount, setDeadlinePostData } from '../../../store/actions/actions';
+import { setDeadlinePostCardCount, setDeadlinePostData, setDeadlineTotalRows, setDeadlineViewRows } from '../../../store/actions/actions';
 
 /* Components */
 import Header from '../../Header';
@@ -37,13 +37,7 @@ const InvestDeadlineBoard = () => {
     const headers = {
         Authorization: `${accessToken}`
     };
-    const params = {
-        pageRows : '',
-        page : '',
-        category : '',
-        status : '',
-        condition :'deadline',
-    };
+    
     const dispatch = useDispatch();
 
     /* const [investDeadlinePostData, setInvestDeadlinePostData] = useState(null); */
@@ -53,30 +47,14 @@ const InvestDeadlineBoard = () => {
     const postData = useSelector((state) => state.reducer.deadlinePostData);
     const totalRows = useSelector((state) => state.reducer.deadlineTotalRows);
     const viewRows = useSelector((state) => state.reducer.deadlineViewRows);
-    
-    /*-----------------------------------------------*\
-                  PostCard 더보기 전역상태관리
-    \*-----------------------------------------------*/
-    /* useEffect(() => {
-        const handlePopState = () => {
-            const state = window.history.state;
-            if (state) {
-                const updatedNumPostsToShow = state.PostCardCount || PostCardCount;
-                dispatch(setDeadlinePostCardCount(updatedNumPostsToShow));
-            }
+
+    const params = {
+        pageRows : viewRows,
+        page : 1,
+        category : '',
+        status : '',
+        condition :'deadline',
     };
-        window.addEventListener('popstate', handlePopState);
-
-        return () => {
-            window.removeEventListener('popstate', handlePopState);
-        };
-
-    }, [PostCardCount]);
-
-    const handleLoadMore = () => {
-        const updatedNumPostsToShow = PostCardCount + 6;
-        dispatch(setDeadlinePostCardCount(updatedNumPostsToShow));
-    }; */
 
     /*-----------------------------------------------*\
                         page log
@@ -94,6 +72,8 @@ const InvestDeadlineBoard = () => {
                 try { 
                     const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params });
                     const data = PostResponse.data?.query;
+                    const totalRowsData = PostResponse.data?.totalRows;
+                    dispatch(setDeadlineTotalRows(totalRowsData));
                     dispatch(setDeadlinePostData(data));
                     setTimeout(() => {
                         setIsLoading(false);
@@ -107,6 +87,57 @@ const InvestDeadlineBoard = () => {
         }
 
     },[])
+
+    /*-----------------------------------------------*\
+                        More Btn
+    \*-----------------------------------------------*/
+    /* const handleLoadMore = async (e) => {
+        e.preventDefault();
+        const moreRows = viewRows + 3;
+        if (moreRows <= totalRows) {
+            dispatch(setDeadlineViewRows(moreRows));
+            const updatedParams = {
+                ...params,
+                pageRows: moreRows,
+            };
+            const fetchData = async () => {
+                try {
+                    const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params: updatedParams });
+                    const data = PostResponse.data?.query;
+                    dispatch(setDeadlinePostData(data));
+                    setIsLoading(false);
+                } catch (error) {
+                    console.error('investDeadlineBoardData 데이터 가져오기 실패', error);
+                    setIsLoading(false);
+                }
+            };
+            fetchData();
+        } else {
+            console.log('더 이상 데이터가 없습니다.');
+        }
+    } */
+    const handleLoadMore = async (e) => {
+        e.preventDefault();
+        const moreRows = viewRows + 3;
+        const updatedParams = {
+            ...params,
+            pageRows: moreRows,
+        }
+        try {
+            const PostResponse = await axios.get(`${baseURL}/v1/board/investment/post`, { headers, params: updatedParams });
+            const data = PostResponse.data?.query;
+            if ( data.length > 0 ) {
+                dispatch(setDeadlineViewRows(moreRows));
+                dispatch(setDeadlinePostData(data));
+            } else {
+                console.log('더 이상 데이터가 없습니다.');
+            }
+            setIsLoading(false);
+        } catch (error) {
+            console.error('investDeadlineBoardData 데이터 가져오기 실패', error);
+            setIsLoading(false);
+        }
+    };
 
     return (
         <React.Fragment>
@@ -135,7 +166,7 @@ const InvestDeadlineBoard = () => {
                                     <PostCardWrap>
                                     {postData && 
                                         postData?.length > 0 &&
-                                        postData?.slice(0, postData).map((item, index) => (
+                                        postData?.map((item, index) => (
                                         <div key={index}>
                                             <DeadlinePostCard
                                                     key={index}
@@ -149,15 +180,15 @@ const InvestDeadlineBoard = () => {
                                         </div>
                                     ))}
                                     </PostCardWrap>
-                                    <MoreWrap>
-                                        {postData?.length > postData && (
-                                            <div style={{marginTop:'80px'}}>
-                                                <MoreBtn /* onClick={handleLoadMore} */>
+                                    {!(viewRows >= totalRows) && (
+                                        <MoreWrap>
+                                            <div style={{ marginTop: '80px' }}>
+                                                <MoreBtn onClick={handleLoadMore}>
                                                     <span>더보기</span>
                                                 </MoreBtn>
                                             </div>
-                                        )}
-                                    </MoreWrap>
+                                        </MoreWrap>
+                                    )}
                                 </div> : <div style={{color:'rgb(85,85,85)',height:'200px',display:'flex',justifyContent:'center',alignItems:'center'}}>마감된 투자가 없습니다.</div>}
                             </>
                         )}
