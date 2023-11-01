@@ -98,7 +98,7 @@ const Home = ({parsedCommunityCategoryData}) => {
                         <section>
                             <BannerSwiper/>
                         </section>
-                        {/* <BannerAd /> */}
+                        <BannerAd />
                             <CategorySection>
                                 <CategoryContainer>
                                     <CategoryContentsBox ref={fadeIn1.ref} style={fadeIn1.style}>
