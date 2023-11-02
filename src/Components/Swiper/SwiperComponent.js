@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 /* Hook */
 import useScrollFadeIn from '../../Hook/useScrollFadeIn';
@@ -30,6 +30,8 @@ import styled, { keyframes } from 'styled-components';
 import { FcIdea } from 'react-icons/fc';
 import { BsCheck2Square } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import PremiumAdCard from '../Advertisement/PremiumAdCard';
+import SpecialAdCard from '../Advertisement/SpecialAdCard';
 
 /*-----------------------------------------------*\
           Styled-Components : Keyframes
@@ -476,4 +478,180 @@ export const CategorySwiper = () => {
             </Swiper>
         </SwiperCustomWrap>
     );
+};
+
+
+const SwiperPrAdWrap = styled.div`
+    max-width: 1000px;
+    position: relative;
+    .swiper-wrapper{
+        display: flex;
+    }
+    .swiper-slide{
+        width: 300px !important;
+        margin: 0 10px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+`
+const PrAdCardFrame = styled.div`
+    height: 100%;
+`
+
+const CardTrack = styled.div`
+    display: flex;
+`
+
+export const PremiumAdCardSwiper = () => {
+
+    const swiperRef = useRef(null);
+
+    /* useEffect(() => {
+        const swiper = swiperRef.current.swiper;
+
+        const handleMouseEnter = () => {
+            swiper.autoplay.stop();
+        };
+
+        const handleMouseLeave = () => {
+            swiper.autoplay.start();
+        };
+
+        swiper.el.addEventListener('mouseenter', handleMouseEnter);
+        swiper.el.addEventListener('mouseleave', handleMouseLeave);
+
+        return () => {
+            swiper.el.removeEventListener('mouseenter', handleMouseEnter);
+            swiper.el.removeEventListener('mouseleave', handleMouseLeave);
+        };
+
+    }, []); */
+
+    const PremiumAdList = [
+        { id: 1, title: "타이틀1", company: "ㅇㅇ컴퍼니", content: "플랫폼 개발비용 투자 가능", region: "화성", tel: "010-1234-1234" },
+        { id: 2, title: "타이틀2", company: "ㅇㅇ산업", content: "ㅇㅇ 상품을 같이 만드실 분", region: "서울", tel: "010-1234-1234" },
+        { id: 3, title: "타이틀3", company: "ㅇㅇ식당", content: "키오스크 투자 가능", region: "서울", tel: "010-1234-1234" },
+        { id: 4, title: "타이틀4", company: "ㅇㅇㅇ공업", content: "수출 제품 동업자 구합니다.", region: "서울", tel: "010-1234-1234" },
+        { id: 5, title: "타이틀5", company: "ㅇㅇㅇㅇ", content: "원재료 구매를 같이 하실분", region: "서울", tel: "010-1234-1234" },
+        { id: 6, title: "타이틀6", company: "ㅇㅇㅇ주식회사", content: "기업 투자 가능합니다. 전화주세요", region: "서울", tel: "010-1234-1234" },
+        { id: 7, title: "타이틀7", company: "ㅇㅇ월드", content: "실내 인테리어가 필요하신분?", region: "서울", tel: "010-1234-1234" },
+        { id: 8, title: "타이틀8", company: "ㅇㅇ나라", content: "회사 입주 청소 전문 회사입니다.", region: "서울", tel: "010-1234-1234" },
+    ];
+
+    return (
+        <SwiperPrAdWrap>
+            <PrAdCardFrame>
+                <Swiper
+                    ref={swiperRef}
+                    autoplay={{
+                        delay: 5000,
+                    }}
+                    cssMode={true}
+                    speed={800}
+                    loop={false}
+                    modules={[Navigation, Pagination, Autoplay]}
+                    navigation={false}
+                    allowTouchMove={false}
+                    slidesPerView={3}
+                    
+                >   
+                    <CardTrack >
+                        {PremiumAdList.map((item, index) => {
+                            return (
+                                <SwiperSlide key={index}>
+                                    <PremiumAdCard
+                                        adTitle={item.title}
+                                        adCompany={item.company}
+                                        adContent={item.content}
+                                        adTel={item.tel}
+                                    />
+                                </SwiperSlide>
+                            )
+                        })}
+                    </CardTrack>
+                    
+                </Swiper>
+            </PrAdCardFrame>
+        </SwiperPrAdWrap>
+    )
+};
+
+
+
+
+
+const SwiperSpAdWrap = styled.div`
+    height: 300px;
+    max-height: 300px;
+    .swiper{
+        padding-top: 50px;
+    }
+    .swiper-wrapper{
+        height: 310px;
+    }
+    .swiper-slide{
+       /* padding-top: 50px; */
+       padding-top: 2px;
+       padding-left: 5px;
+       padding-right: 5px;
+    }
+`
+const SpAdCardFrame = styled.div`
+    
+`
+
+const SpCardTrack = styled.div`
+    
+`
+
+export const SpecialAdCardSwiper = () => {
+
+    const SpecialAdList = [
+        { id: 1, title: "타이틀1", company: "ㅇㅇ컴퍼니", content: "플랫폼 개발비용 투자 가능", region: "화성", tel: "010-1234-1234" },
+        { id: 2, title: "타이틀2", company: "ㅇㅇ산업", content: "ㅇㅇ 상품을 같이 만드실 분", region: "서울", tel: "010-1234-1234" },
+        { id: 3, title: "타이틀3", company: "ㅇㅇ식당", content: "키오스크 투자 가능", region: "서울", tel: "010-1234-1234" },
+        { id: 4, title: "타이틀4", company: "ㅇㅇㅇ공업", content: "수출 제품 동업자 구합니다.", region: "서울", tel: "010-1234-1234" },
+        { id: 5, title: "타이틀5", company: "ㅇㅇㅇㅇ", content: "원재료 구매를 같이 하실분", region: "서울", tel: "010-1234-1234" },
+        { id: 6, title: "타이틀6", company: "ㅇㅇㅇ주식회사", content: "기업 투자 가능합니다. 전화주세요", region: "서울", tel: "010-1234-1234" },
+        { id: 7, title: "타이틀7", company: "ㅇㅇ월드", content: "실내 인테리어가 필요하신분?", region: "서울", tel: "010-1234-1234" },
+        { id: 8, title: "타이틀8", company: "ㅇㅇ나라", content: "회사 입주 청소 전문 회사입니다.", region: "서울", tel: "010-1234-1234" },
+    ];
+
+    return (
+        <SwiperSpAdWrap>
+            <SpAdCardFrame>
+                <Swiper
+                    direction="vertical"
+                    autoplay={{
+                        delay: 5000,
+                    }}
+                    cssMode={true}
+                    speed={800}
+                    loop={false}
+                    modules={[Navigation, Pagination, Autoplay]}
+                    navigation={false}
+                    allowTouchMove={false}
+                    slidesPerView={2}
+                >   
+                    <SpCardTrack >
+                        {SpecialAdList.map((item, index) => {
+                            return (
+                                <SwiperSlide key={index}>
+                                    <SpecialAdCard
+                                        adTitle={item.title}
+                                        adCompany={item.company}
+                                        adContent={item.content}
+                                        adTel={item.tel}
+                                    />
+                                </SwiperSlide>
+                            )
+                        })}
+                    </SpCardTrack>
+                    
+                </Swiper>
+            </SpAdCardFrame>
+        </SwiperSpAdWrap>
+    )
 };
