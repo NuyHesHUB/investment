@@ -34,7 +34,6 @@ const InvestOngoingBoard = () => {
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
     const userUid = sessionStorage.getItem('userUid');
-    const uid = userUid === null ? '' : userUid
     const headers = {
         Authorization: `${accessToken}`
     };

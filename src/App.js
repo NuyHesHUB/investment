@@ -45,6 +45,8 @@ import DetailCommunity from './Components/Board/CommunityBoard/DetailCommunity';
 import OngoingBoard from './Components/Board/InvestmentBoard/OngoingBoard';
 import DeadlineBoard from './Components/Board/InvestmentBoard/DaedlineBoard';
 
+/* announcement */
+import AnnouncementBoard from './Components/Board/announcementBoard/AnnouncementBoard'
 
 /* 업체등록, 글쓰기 페이지 */
 import CompanyUpload from './Components/CompanyUpload/CompanyUpload';
@@ -263,6 +265,9 @@ const App = () => {
                 <Route exact path="/investment/:condition/:id" element={<PostDetail/>} />
                 <Route exact path="/approve/:key/pending/:id" element={<PendingPostDetail/>} />
                 <Route exact path="/post_regist" element={<PostRegist/>} />
+
+
+                <Route exact path="/announcement" element={<AnnouncementBoard />} />
 
                 {/* 글쓰기 & 업체등록 */}
                 <Route exact path="/company_upload" element={<CompanyUpload />}></Route>
