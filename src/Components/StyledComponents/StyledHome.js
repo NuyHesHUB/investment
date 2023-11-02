@@ -7,6 +7,31 @@ export const StyledFrame=styled.div`
     padding-top: 80px;
     position: relative;
 `
+export const AdContainer=styled.div`
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const CategorySection=styled.div`
     width: 100%;
