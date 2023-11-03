@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BsFillBuildingFill } from 'react-icons/bs'
+import { BsFillBuildingFill } from 'react-icons/bs';
+import { TbPhoneCall } from 'react-icons/tb';
 
 const mainColor = '#3fa9f5';
 
 const CardFrame = styled.div`
     cursor: pointer;
     position: relative;
-    width: 300px;
-    height: 130px;
+    width: 390px;
+    height: 140px;
     min-height: 130px;
     border-radius: 10px;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
@@ -74,22 +75,10 @@ const ContentBox = styled.div`
 
 const TelBox = styled.div`
     font-size: 16px;
+    display: flex;
+    align-items: center;
 `
-/* 
 
-        <React.Fragment>
-            <CardFrame>
-                <CardWrap>
-                    <TitleBox>{adTitle}</TitleBox>
-                    <CompanyBox>
-                        <BiSolidBank/>
-                        <span>{adCompany}</span>
-                    </CompanyBox>
-                    <ContentBox>{adContent}</ContentBox>
-                    <TelBox>{adTel}</TelBox>
-                </CardWrap>
-            </CardFrame>
-        </React.Fragment>  */
 const SpecialAdCard = ({adTitle, adCompany, adContent, adTel}) => {
 
     return (
@@ -102,7 +91,10 @@ const SpecialAdCard = ({adTitle, adCompany, adContent, adTel}) => {
                         <span>{adCompany}</span>
                     </CompanyBox>
                     <ContentBox>{adContent}</ContentBox>
-                    <TelBox>{adTel}</TelBox>
+                    <TelBox>
+                        <TbPhoneCall/>
+                        <span>{adTel}</span>
+                    </TelBox>
                 </CardWrap>
             </CardFrame>
         </React.Fragment>

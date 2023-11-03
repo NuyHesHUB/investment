@@ -8,9 +8,13 @@ export const StyledFrame=styled.div`
     position: relative;
 `
 export const AdContainer=styled.div`
-    max-width: 1440px;
+    /* max-width: 1460px; */
+    max-width: 1442px;
+    padding-top: 50px;
+    padding-bottom: 50px;
     margin: 0 auto;
     display: flex;
+    justify-content: space-between;
 `
 
 

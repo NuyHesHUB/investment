@@ -32,6 +32,7 @@ import { BsCheck2Square } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import PremiumAdCard from '../Advertisement/PremiumAdCard';
 import SpecialAdCard from '../Advertisement/SpecialAdCard';
+import BannerAdCard from '../Advertisement/BannerAdCard';
 
 /*-----------------------------------------------*\
           Styled-Components : Keyframes
@@ -57,8 +58,9 @@ const wideLine = keyframes`
                 Main Banner : Styled
 \*-----------------------------------------------*/
 const SlideFram=styled.div`
-    width: 100%;
+    max-width: 1440px;
     height: 500px;
+    margin: 0 auto;
     position: relative;
         .custom-pagination{
             position: absolute;
@@ -69,8 +71,6 @@ const SlideFram=styled.div`
             z-index: 900;
         }
         .custom_bullet{
-            /* width: clamp(80px, 9vw, 126px); */
-            /* height: clamp(5px, 1vw, 15px); */
             width: 15px;
             height: 15px;
             border-radius: 50%;
@@ -125,7 +125,7 @@ const SlideContentsWrap=styled.div`
     color: #fff;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     /* img{
         width: 400px;
     }
@@ -144,17 +144,17 @@ const TitleBox=styled.div`
     position: relative;
     display: inline-block;
     h2{
-        font-size: 70px;
+        font-size: 50px;
         font-weight: bold;
         margin-bottom: 50px;
     }
 `
 const IconBox=styled.div`
     position: absolute;
-    right: -75px;
+    right: -65px;
     top: 5px;
     svg{
-        font-size: 60px;
+        font-size: 50px;
     }
     animation: ${moveUp} 2s ease-in-out infinite;
 `
@@ -164,7 +164,7 @@ const ContentsBox=styled.div`
         margin-bottom: 5px;
     }
     p{
-        font-size: 30px;
+        font-size: 25px;
         font-weight: bold;
         >i{
             display: inline-block;
@@ -482,18 +482,16 @@ export const CategorySwiper = () => {
 
 
 const SwiperPrAdWrap = styled.div`
-    max-width: 1000px;
+    /* max-width: 1030px; */
+    max-width: 1042px;
     position: relative;
     .swiper-wrapper{
         display: flex;
     }
     .swiper-slide{
-        width: 300px !important;
-        margin: 0 10px;
-        padding-top: 50px;
-        padding-bottom: 50px;
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        box-sizing: border-box;
     }
 `
 const PrAdCardFrame = styled.div`
@@ -505,29 +503,6 @@ const CardTrack = styled.div`
 `
 
 export const PremiumAdCardSwiper = () => {
-
-    const swiperRef = useRef(null);
-
-    /* useEffect(() => {
-        const swiper = swiperRef.current.swiper;
-
-        const handleMouseEnter = () => {
-            swiper.autoplay.stop();
-        };
-
-        const handleMouseLeave = () => {
-            swiper.autoplay.start();
-        };
-
-        swiper.el.addEventListener('mouseenter', handleMouseEnter);
-        swiper.el.addEventListener('mouseleave', handleMouseLeave);
-
-        return () => {
-            swiper.el.removeEventListener('mouseenter', handleMouseEnter);
-            swiper.el.removeEventListener('mouseleave', handleMouseLeave);
-        };
-
-    }, []); */
 
     const PremiumAdList = [
         { id: 1, title: "타이틀1", company: "ㅇㅇ컴퍼니", content: "플랫폼 개발비용 투자 가능", region: "화성", tel: "010-1234-1234" },
@@ -544,18 +519,37 @@ export const PremiumAdCardSwiper = () => {
         <SwiperPrAdWrap>
             <PrAdCardFrame>
                 <Swiper
-                    ref={swiperRef}
+                    /* autoplay={{
+                        delay: 1000,
+                        disableOnInteraction: false
+                    }} */
                     autoplay={{
-                        delay: 5000,
+                        enabled: true,
+                        delay: 3000,          
+                        pauseOnMouseEnter: true,
+                        disableOnInteraction: false,
                     }}
-                    cssMode={true}
-                    speed={800}
-                    loop={false}
+                    /* autoplay={false} */
+                    /* cssMode={true} */
+                    speed={500}
+                    loop={true}
+                    /* loopedSlidesLimit={false} */
+                    /* loopedSlides={3} */
+
+                    /* swiper-slide에 각각 margin-right를 준다. */
+                    spaceBetween={10}
+
+                    /* 전체적인 슬라이드의 왼쪽에 px단위로 공백을 준다. */
+                    slidesOffsetBefore={2}
+
+                    /* 전체적인 슬라이드의 오른쪽에 px단위로 공백을 준다. */
+                    slidesOffsetAfter={0}
+
                     modules={[Navigation, Pagination, Autoplay]}
                     navigation={false}
                     allowTouchMove={false}
                     slidesPerView={3}
-                    
+                    /* slidesPerGroup={1} */
                 >   
                     <CardTrack >
                         {PremiumAdList.map((item, index) => {
@@ -578,24 +572,19 @@ export const PremiumAdCardSwiper = () => {
     )
 };
 
-
-
-
-
 const SwiperSpAdWrap = styled.div`
     height: 300px;
-    max-height: 300px;
     .swiper{
-        padding-top: 50px;
+        height: 300px;
+        padding-top: 2px;
+        padding-left: 5px;
+        padding-right: 5px;
     }
     .swiper-wrapper{
-        height: 310px;
+        
     }
     .swiper-slide{
-       /* padding-top: 50px; */
-       padding-top: 2px;
-       padding-left: 5px;
-       padding-right: 5px;
+
     }
 `
 const SpAdCardFrame = styled.div`
@@ -627,13 +616,24 @@ export const SpecialAdCardSwiper = () => {
                     autoplay={{
                         delay: 5000,
                     }}
-                    cssMode={true}
+                    /* autoplay={false} */
+                    /* cssMode={true} */
                     speed={800}
-                    loop={false}
+                    loop={true}
                     modules={[Navigation, Pagination, Autoplay]}
                     navigation={false}
                     allowTouchMove={false}
                     slidesPerView={2}
+
+                    /* swiper-slide에 각각 margin-right를 준다. */
+                    spaceBetween={12}
+
+                    /* 전체적인 슬라이드의 왼쪽에 px단위로 공백을 준다. */
+                    slidesOffsetBefore={0}
+                    
+
+                    /* 전체적인 슬라이드의 오른쪽에 px단위로 공백을 준다. */
+                    slidesOffsetAfter={0}
                 >   
                     <SpCardTrack >
                         {SpecialAdList.map((item, index) => {
@@ -653,5 +653,82 @@ export const SpecialAdCardSwiper = () => {
                 </Swiper>
             </SpAdCardFrame>
         </SwiperSpAdWrap>
+    )
+};
+
+
+const SwiperBnAdWrap = styled.div`
+    max-width: 1280px;
+    margin: 0 auto;
+    .swiper{
+        
+    }
+    .swiper-wrapper{
+        
+    }
+    .swiper-slide{
+        /* width: 600px !important; */
+    }
+`
+const BnAdCardFrame = styled.div`
+    
+`
+
+const BnCardTrack = styled.div`
+    
+`
+
+export const BannerAdCardSwiper = () => {
+
+    const BannerAdList = [
+        { id: 1, title: "타이틀1", company: "ㅇㅇ컴퍼니", content: "플랫폼 개발비용 투자 가능", region: "화성", tel: "010-1234-1234", backgound: "orange" },
+        { id: 2, title: "타이틀2", company: "ㅇㅇ산업", content: "ㅇㅇ 상품을 같이 만드실 분", region: "서울", tel: "010-1234-1234", backgound: "blue" },
+        { id: 3, title: "타이틀3", company: "ㅇㅇ식당", content: "키오스크 투자 가능", region: "서울", tel: "010-1234-1234", backgound: "purple" },
+        { id: 4, title: "타이틀4", company: "ㅇㅇㅇ공업", content: "수출 제품 동업자 구합니다.", region: "서울", tel: "010-1234-1234", backgound: "pink" },
+    ];
+
+    return (
+        <SwiperBnAdWrap>
+            <BnAdCardFrame>
+                <Swiper
+                    autoplay={{
+                        delay: 7000,
+                    }}
+                    /* autoplay={false} */
+                    /* cssMode={true} */
+                    speed={800}
+                    loop={true}
+                    modules={[Navigation, Pagination, Autoplay]}
+                    navigation={false}
+                    allowTouchMove={false}
+                    slidesPerView={2}
+
+                    /* swiper-slide에 각각 margin-right를 준다. */
+                    spaceBetween={0}
+
+                    /* 전체적인 슬라이드의 왼쪽에 px단위로 공백을 준다. */
+                    slidesOffsetBefore={0}
+                    
+
+                    /* 전체적인 슬라이드의 오른쪽에 px단위로 공백을 준다. */
+                    slidesOffsetAfter={0}
+                >   
+                    <BnCardTrack >
+                        {BannerAdList.map((item, index) => {
+                            return (
+                                <SwiperSlide key={index}>
+                                    <BannerAdCard
+                                        backgound={item.backgound}
+                                        content={item.content}
+                                        company={item.company}
+                                        tel={item.tel}
+                                    />
+                                </SwiperSlide>
+                            )
+                        })}
+                    </BnCardTrack>
+                </Swiper>
+            </BnAdCardFrame>
+        </SwiperBnAdWrap>
     )
 };

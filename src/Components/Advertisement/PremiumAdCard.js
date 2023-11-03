@@ -1,15 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BsFillBuildingFill } from 'react-icons/bs'
+import { BsFillBuildingFill } from 'react-icons/bs';
+import { TbPhoneCall } from 'react-icons/tb';
 
 const mainColor = '#3fa9f5';
 
 const CardFrame = styled.div`
     cursor: pointer;
     position: relative;
-    width: 300px;
-    height: 300px;
-    min-height: 300px;
+    /* width: 300px; */
+    width: 310px;
+    /* height: 300px; */
+    height: 296px;
+    min-height: 296px;
     border-radius: 10px;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
     background: #fff;
@@ -71,7 +74,9 @@ const ContentBox = styled.div`
 `
 
 const TelBox = styled.div`
-
+    font-size: 16px;
+    display: flex;
+    align-items: center;
 `
 
 const PremiumAdCard = ({adTitle, adCompany, adContent, adTel}) => {
@@ -86,7 +91,10 @@ const PremiumAdCard = ({adTitle, adCompany, adContent, adTel}) => {
                                 <span>{adCompany}</span>
                             </CompanyBox>
                             <ContentBox>{adContent}</ContentBox>
-                            <TelBox>{adTel}</TelBox>
+                            <TelBox>
+                                <TbPhoneCall/>
+                                <span>{adTel}</span>
+                            </TelBox>
                         </CardWrap>
                     </CardFrame>
         </React.Fragment>
