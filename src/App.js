@@ -46,10 +46,16 @@ import OngoingBoard from './Components/Board/InvestmentBoard/OngoingBoard';
 import DeadlineBoard from './Components/Board/InvestmentBoard/DaedlineBoard';
 
 /* announcement */
-import AnnouncementBoard from './Components/Board/announcementBoard/AnnouncementBoard'
-import AnnouncementPost from './Components/Board/announcementBoard/AnnouncementPost'
-import AnnouncementWrite from './Components/Board/announcementBoard/AnnouncementWrite'
-import AnnouncementModify from './Components/Board/announcementBoard/AnnouncementModify'
+import AnnouncementBoard from './Components/Board/AnnouncementBoard/AnnouncementBoard'
+import AnnouncementPost from './Components/Board/AnnouncementBoard/AnnouncementPost'
+import AnnouncementWrite from './Components/Board/AnnouncementBoard/AnnouncementWrite'
+import AnnouncementModify from './Components/Board/AnnouncementBoard/AnnouncementModify'
+
+/* business story */
+import BusinessStoryBoard from './Components/Board/BusinessStoryBoard/BusinessStoryBoard'
+import BusinessStoryPost from './Components/Board/BusinessStoryBoard/BusinessStoryPost'
+import BusinessStoryModify from './Components/Board/BusinessStoryBoard/BusinessStoryModify'
+import BusinessStoryWrite from './Components/Board/BusinessStoryBoard/BusinessStoryWrite'
 
 /* 업체등록, 글쓰기 페이지 */
 import CompanyUpload from './Components/CompanyUpload/CompanyUpload';
@@ -70,8 +76,6 @@ const App = () => {
     /* Basic */
     const baseURL = process.env.REACT_APP_BASEURL;
     const accessToken = sessionStorage.getItem('accessToken');
-    const userGroup = sessionStorage.getItem('userGroup');
-    const b_no = sessionStorage.getItem('b_no');
     const headers = {
         Authorization: `${accessToken}`
     }
@@ -275,17 +279,17 @@ const App = () => {
                 <Route exact path="/announcement/write" element={<AnnouncementWrite />} />
                 <Route exact path="/announcement/:id/modify" element={<AnnouncementModify />} />
 
+                
+                <Route exact path="/business_story" element={<BusinessStoryBoard />} />
+                <Route exact path="/business_story/write" element={<BusinessStoryWrite />} />
+                <Route exact path="/business_story/:id" element={<BusinessStoryPost />} />
+                <Route exact path="/business_story/:id/modify" element={<BusinessStoryModify />} />
+
                 {/* 글쓰기 & 업체등록 */}
                 <Route exact path="/company_upload" element={<CompanyUpload />}></Route>
                 {/* <Route exact path="/company_write" element={<CompanyWrite />}></Route> */}
                     
-                <Route exact path="/company_write" element={
-                    ["업체", "관리자"].includes(userGroup)
-                    ? <CompanyWrite /> 
-                    : "일반" === userGroup
-                    ? <BusinessNumberCheck />
-                    : <Login />
-                }></Route>
+                <Route exact path="/company_write" element={<CompanyWrite />}></Route>
                 <Route exact path="/company_modify" element={<CompanyModify />} />
                 <Route exact path="/business_number_check" element={<BusinessNumberCheck />}/>
                 <Route exact path="/payment_info_page" element={<PaymentInfoPage />} />

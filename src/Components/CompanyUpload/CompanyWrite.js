@@ -20,7 +20,7 @@ const CompanyWrite = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
-  const userUid = sessionStorage.getItem('userUid');
+  const userGroup = sessionStorage.getItem('userGroup');
   const b_no = sessionStorage.getItem('b_no');
   const headers = {
     Authorization: `${accessToken}`
@@ -274,13 +274,16 @@ const CompanyWrite = () => {
     if (!accessToken) {
       alert("회원만 접근할 수 있는 페이지입니다.")
       navigate("/");
+    } else if (userGroup === "일반") {
+      window.confirm("업체가 등록되어있지 않습니다. 등록하시겠습니까?") ?
+      navigate("/business_number_check") :
+      navigate("/")
     }
-  }, [accessToken, navigate]);
+  }, [accessToken, userGroup, navigate]);
 
     return (
       <>
-      {accessToken ? 
-
+      {accessToken && userGroup === "업체" ? 
       <StyledFrame>
         <Header />
         <Container>

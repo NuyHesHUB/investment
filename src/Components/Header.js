@@ -267,7 +267,10 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                                 <Link to="/payment_info_page">결제안내</Link>
                             </MenuItem>
                             <MenuItem>
-                                <Link to="/announcement">공지사항</Link>
+                                <Link to="/announcement">공지</Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <Link to="/business_story">story</Link>
                             </MenuItem>
                         </MenuList>
                     </HeaderMenu>

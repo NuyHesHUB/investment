@@ -12,9 +12,9 @@ export const Container = styled.div`
   margin: 0 auto;
 
   p.cate {
-    background:#ffc4ce;
+    background:#d9eefd;
     display: inline-block;
-    color: red;
+    color: #3FA9F5;
     padding: 3px 10px;
     font-size: 0.8rem;
     border-radius: 10px;
@@ -41,6 +41,23 @@ export const Container = styled.div`
     display: flex;
     justify-content: space-between;
   }
+  .comment-container {
+    position: relative;
+    margin-top: 20px;
+  }
+  .comment-textarea {
+    width: 1000px;
+    resize: none !important;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px #ccc;
+    border: none;
+  }
+  .comment-container button {
+    position: absolute;
+    bottom: 15px;
+    right: 10px;
+  }
+
   button {
     cursor: pointer;
     background: #3FA9F5; 
