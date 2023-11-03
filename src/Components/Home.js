@@ -10,7 +10,7 @@ import BannerAd from './BannerAd';
 import AdCard from './Advertisement/PremiumAdCard';
 
 /* Swiper-Components */
-import { BannerSwiper, CategorySwiper, PremiumAdCardSwiper, SpecialAdCardSwiper } from './Swiper/SwiperComponent';
+import { BannerAdCardSwiper, BannerSwiper, CategorySwiper, PremiumAdCardSwiper, SpecialAdCardSwiper } from './Swiper/SwiperComponent';
 
 /* React-Icons */
 import { LuCheckCircle } from 'react-icons/lu';
@@ -69,6 +69,8 @@ import ServiceImg02 from '../assets/image/service-02.png';
 import Loading from '../Effect/Loading';
 import { useSelector } from 'react-redux';
 import SpecialAdCard from './Advertisement/SpecialAdCard';
+import BannerAdCard from './Advertisement/BannerAdCard';
+import InvestOngoingBoard from './Board/InvestmentBoard/OngoingBoard';
 
 const Home = ({parsedCommunityCategoryData}) => {
 
@@ -107,11 +109,16 @@ const Home = ({parsedCommunityCategoryData}) => {
                         <section>
                             <AdContainer>
                                 <PremiumAdCardSwiper></PremiumAdCardSwiper>
-                                <SpecialAdCardSwiper></SpecialAdCardSwiper>
+                                <div>
+                                    <SpecialAdCardSwiper></SpecialAdCardSwiper>
+                                </div>
                             </AdContainer>
                         </section>
+                        <section style={{marginLeft:'40px',paddingBottom:'50px'}}>
+                            <BannerAdCardSwiper></BannerAdCardSwiper>
+                        </section>
                         <section>
-                            
+                            <InvestOngoingBoard/>
                         </section>
                     </StyledFrame>
                 <Footer/>

@@ -16,8 +16,8 @@ import Footer from '../../Footer';
 import OngoingPostCard from './OngoingPostCard';
 
 /* Styled-Components */
-import { StyledFrame } from '../../StyledComponents/StyledHome';
-import { BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap, MoreWrap, MoreBtn } from './StyledOngoingBoard';
+/* import { StyledFrame } from '../../StyledComponents/StyledHome'; */
+import { OngoingFrame, BoardWrap, DummyBanner, PostCardTitleWrap, PostCardWrap, MoreWrap, MoreBtn } from './StyledOngoingBoard';
 
 /* img */
 import { ReactComponent as VisualImg } from './VisualImg.svg';
@@ -183,10 +183,10 @@ const InvestOngoingBoard = () => {
 
     return (
         <React.Fragment>
-            <Header/>
-            <StyledFrame>
+            {/* <Header/> */}
+            <OngoingFrame>
                     <BoardWrap>
-                        <DummyBanner>
+                        {/* <DummyBanner>
                             <div>
                                 당신의 돈, 당신의 선택.<br />
                                 WhoFin에서는 혁신적인 투자 경험을 제공합니다.<br />
@@ -196,7 +196,7 @@ const InvestOngoingBoard = () => {
                             <div className='leftBox'>
                                 <VisualImg />
                             </div>
-                        </DummyBanner>
+                        </DummyBanner> */}
                         {isLoading && <Loading/>}
                         {!isLoading && (
                             <>
@@ -237,8 +237,8 @@ const InvestOngoingBoard = () => {
                             </>
                         )}
                     </BoardWrap>
-            </StyledFrame>
-            <Footer/>
+            </OngoingFrame>
+            {/* <Footer/> */}
         </React.Fragment>
     );
 };

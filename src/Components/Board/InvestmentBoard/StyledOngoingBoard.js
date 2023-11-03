@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+export const OngoingFrame=styled.div`
+        width: calc(100vw - (100vw - 100%));
+        /* height: 2000px; */
+        /* overflow: hidden; */
+        position: relative;
+`
+
 export const DummyBanner=styled.div`
     width: 100%;
     height: 400px;
@@ -27,13 +34,14 @@ export const PostCardTitleWrap=styled.div`
     width: 100%;
     padding: 0 250px;
     box-sizing: border-box;
-    margin-top: 124px;
+    /* margin-top: 124px; */
     margin-bottom: 42px;
     h3{
         color: rgb(0, 0, 0);
         font-size: 30px;
         font-weight: 600;
-        text-align: left;
+        /* text-align: left; */
+        text-align: center;
     }
 `
 export const PostCardWrap=styled.div`

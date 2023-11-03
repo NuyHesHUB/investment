@@ -217,19 +217,19 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                     </HeaderLogo>
                     <HeaderMenu>
                         <MenuList>
-                            <MenuItem 
+                            {/* <MenuItem 
                                 onMouseEnter={() => handleMouseEnter('ongoing')}
                                 onMouseLeave={() => handleMouseLeave('ongoing')}
                             >
                                 <Link to="/investment/ongoing">진행중</Link>
-                                {/* <ul className={subMenuOpen.processing ? 'sub-menu on' : 'sub-menu'}>
+                                <ul className={subMenuOpen.processing ? 'sub-menu on' : 'sub-menu'}>
                                     {parsedCategoryData && parsedCategoryData.map((item,index) => (
                                         <li key={index}>
                                             <Link to={`/${boardData[6]?.key}/${index}`}>{item}</Link>
                                         </li>
                                     ))}         
-                                </ul> */}
-                            </MenuItem>
+                                </ul>
+                            </MenuItem> */}
                             <MenuItem 
                                 onMouseEnter={() => handleMouseEnter('deadline')}
                                 onMouseLeave={() => handleMouseLeave('deadline')}
