@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef  } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import ReactQuill , { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -13,7 +13,7 @@ import { StyledFrame, CommonStyleFrame } from "../../CompanyUpload/StyleCommon"
 /* Log */
 import PageLog from '../../../Hook/PageLog'
 
-const AnnouncementWrite = () => {
+const AnnouncementModify = () => {
   const baseURL = process.env.REACT_APP_BASEURL;
   ///// JWT /////
   const accessToken = sessionStorage.getItem('accessToken'); 
@@ -22,11 +22,10 @@ const AnnouncementWrite = () => {
     Authorization: `${accessToken}`
   }
   const navigate = useNavigate();
-
+  const { id } = useParams();
   ///// page log /////
   // PageLog("글쓰기(투자등록)");
 
-  const [content, setContent] = useState(''); // 내용
   const [postData, setPostData] = useState({
     category: "",
     condition: "ongoing",
@@ -43,6 +42,16 @@ const AnnouncementWrite = () => {
     attaches: ""
   });
 
+  useEffect(() => {
+    axios.get(`${baseURL}/v1/board/announcement/post/${id}`, { headers }).then((res) => {
+      const data = res.data?.query[0]
+      setPostData(data);
+      console.log(data,"공지사항게시글테스트");
+    }).catch((error) => {
+      console.log(error,"공지사항ERROR")
+    })
+  }, []);
+
   /////////////////////////
   /////     이미지    /////
   /////////////////////////
@@ -50,17 +59,17 @@ const AnnouncementWrite = () => {
   const resizeFile = (file) =>
   new Promise((res) => {
     Resizer.imageFileResizer(
-      file, // target file
-      900, // maxWidth
-      1500, // maxHeight
-      "WEBP", // compressFormat : Can be either JPEG, PNG or WEBP.
-      80, // quality : 0 and 100. Used for the JPEG compression
-      0, // rotation
+      file,
+      900,
+      1500,
+      "WEBP",
+      80,
+      0,
       (uri) => res(uri), 
       "file" 
       );
     });
-    ///// 이미지 핸들러 /////
+  ///// 이미지 핸들러 /////
   const quillRef = useRef(true);
   const imageHandler = () => { 
     const input = document.createElement('input');
@@ -100,16 +109,23 @@ const AnnouncementWrite = () => {
     }
   }
   
-  ///// 내용 변경 /////
+  ///// content 수정 /////
   const handleContentChange = (value) => {
-    setContent(value.replaceAll("'",""));
-  };
-  useEffect(() => {
+    // setContent(value.replaceAll("'",""));
     setPostData({
       ...postData,
-      content: content
+      content : value,
     });
-  }, [content])
+  };
+
+  ///// title 수정 /////
+  const onChange = (e) => {
+    const { value, name } = e.target;
+    setPostData({
+      ...postData,
+      [name]: value,
+    });
+  };
   
   ///// 에디터 모듈 설정 /////
   const modules = useMemo(() => {
@@ -144,25 +160,12 @@ const AnnouncementWrite = () => {
     'background', 
   ];
 
-  ///// 제목 변경 /////
-  const [title, setTitle] = useState('');
-  const handleTitleChange = (e) => {
-    const value = e.target.value
-    setTitle(value.replaceAll("'",""));
-  };
-  useEffect(() => {
-    setPostData({
-      ...postData,
-      title : title
-    });
-  },[title])
-
   ///// 등록/취소 Btn /////
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (window.confirm("등록하시겠습니까?")) {
-      await axios.post(`${baseURL}/v1/board/announcement/post`, postData, { headers }).then((res) => {
-        alert("등록하였습니다")
+    if (window.confirm("수정하시겠습니까?")) {
+      await axios.patch(`${baseURL}/v1/board/announcement/post/${id}`, postData, { headers }).then((res) => {
+        alert("수정하였습니다")
         navigate('/announcement')
       }).catch((error) => {
         console.error(error)
@@ -174,7 +177,7 @@ const AnnouncementWrite = () => {
   const prevPage = () => {
     if (window.confirm("취소하시겠습니까?")) {
       navigate(-1)
-    }
+    }  
   }
 
   useEffect(() => {
@@ -182,7 +185,7 @@ const AnnouncementWrite = () => {
       alert("관리자만 접근할 수 있는 페이지입니다.")
       navigate("/");
     }
-  }, [userGroup, navigate]);
+  }, [accessToken, navigate]);
 
   return (
     <>
@@ -192,7 +195,7 @@ const AnnouncementWrite = () => {
       <Container>
         <CommonStyleFrame>
           <div className="container mt-5">
-            <h2 className='title'>공지쓰기</h2>
+            <h2 className='title'>공지수정</h2>
 
             {/********* 제목 input *********/}
             <div className="mb-3">
@@ -203,8 +206,8 @@ const AnnouncementWrite = () => {
                 className="form-control title" 
                 name="title" 
                 placeholder='공지 제목을 입력해주세요'
-                value={title || ""}
-                onChange={(e) => handleTitleChange(e)} 
+                value={postData.title}
+                onChange={onChange} 
               />
             </div>
 
@@ -214,8 +217,9 @@ const AnnouncementWrite = () => {
               <label htmlFor="content" className="form-label">내용</label>
               <ReactQuill 
                 ref={quillRef} 
-                value={content} 
-                onChange={(e) => handleContentChange(e)} 
+                value={postData.content || ""} 
+                name = "content"
+                onChange={handleContentChange} 
                 modules={modules} 
                 formats={formats} 
               />
@@ -228,10 +232,10 @@ const AnnouncementWrite = () => {
                 onClick={handleSubmit} 
                 disabled={
                   postData.title?.length === 0 || 
-                  content?.length === 0 ? 
+                  postData.content?.length === 0 ? 
                   true : 
                   false
-                }>등록</button>
+                }>수정</button>
             </div>
           </div>
         </CommonStyleFrame>
@@ -244,4 +248,4 @@ const AnnouncementWrite = () => {
   );
 };
 
-export default AnnouncementWrite;
+export default AnnouncementModify;

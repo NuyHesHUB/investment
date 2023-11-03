@@ -1,37 +1,36 @@
 import styled from 'styled-components';
 
 export const PostWrap = styled.div`
-  background: pink;
+  /* background: pink; */
   padding: 50px;
   overflow: hidden;
-  margin-top: 60px;
-`
-export const TitleBox = styled.h2`
-text-align: center;
-color: #333;
-font-size: 40px;
-margin-bottom: 100px;
 `
 export const Container = styled.div`
-  background: skyblue;
+  /* background: skyblue; */
   width: 1000px;
   padding: 50px;
   margin: 0 auto;
 
   h2 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     padding: 10px 0;
     font-weight: 400;
   }
   p.date {
-    color: #000;
-    padding: 10px 0;
+    color: #aaa;
+    font-weight: 300;
+    padding: 0px 0 10px;
   }
   p.content {
-    padding: 30px 0 50px;
+    padding: 50px 0 50px;
     margin: 10px 0 30px;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    font-weight: 300;
+  }
+  .btn-container {
+    display: flex;
+    justify-content: space-between;
   }
   button {
     cursor: pointer;
@@ -46,5 +45,8 @@ export const Container = styled.div`
   }
   button.back {
     background: #ccc;
+  }
+  button.delete-btn {
+    background: #ff5269;
   }
 `

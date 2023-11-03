@@ -8,7 +8,7 @@ import Footer from "../../Footer"
 import PageLog from '../../../Hook/PageLog'
 /* Styled-Components */
 import { StyledFrame } from '../../StyledComponents/StyledHome';
-import { PostWrap, TitleBox, Container } from './StyledAnnouncementPost';
+import { PostWrap, Container } from './StyledAnnouncementPost';
 
 
 
@@ -24,9 +24,6 @@ const AnnouncementPost = () => {
   const userGroup = sessionStorage.getItem('userGroup');
   const { id } = useParams();
   const [noticeData, setNoticeData] = useState([]);
-
-
-
 
   useEffect(() => {
     if (userUid) {
@@ -53,34 +50,55 @@ const AnnouncementPost = () => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const decodedString = doc.body.textContent || "";
     return decodedString
-};
+  };
+
+  const deleteBtnClick = (id) => {
+    if (window.confirm("삭제하시겠습니까?")) {
+      axios.delete(`${baseURL}/v1/board/announcement/post/${id}`,  {
+        data: {
+          "userUid": userUid
+        },
+        headers}).then((res) => {
+        alert("삭제되었습니다.");
+        navigate('/announcement')
+      }).catch((error) => {
+        console.error(error)
+        alert("권한이 없습니다.")
+      })
+    }
+  }
 
   return (
     <>
       <Header />
       <StyledFrame>
         <PostWrap>
-          <TitleBox>
-            공지사항
-          </TitleBox>
           {noticeData && noticeData.regDt &&
-           <Container>
-            <div className='post-container'>
-              <h2>{noticeData.title}</h2>
-              <p className='date'>{noticeData.regDt.split("T")[0]} | {noticeData.regDt.split("T")[1].slice(0,8)}</p>
-              <p className='content'>
-                {removeTags(noticeData.content)}
-              </p>
-            </div>
-            <div className='btn-container'>
-            {userGroup === "관리자" ? 
-              <button>수정</button>
-            : null}
-            <button className='back' onClick={() => navigate(-1)}>목록</button>
-            </div>
-           </Container>
+            <Container>
+              <div className='post-container'>
+                <h2>{noticeData.title}</h2>
+                <p className='date'>{noticeData.regDt.split("T")[0]} | {noticeData.regDt.split("T")[1].slice(0,8)}</p>
+                <p className='content'>
+                  {removeTags(noticeData.content)}
+                </p>
+              </div>
+              <div className='btn-container'>
+                <button className='back' onClick={() => navigate(-1)}>목록</button>
+                {userGroup === "관리자" ? 
+                  <div>
+                    <button 
+                      className='modify-btn'
+                      onClick={() => navigate(`/announcement/${id}/modify`)}
+                    >수정</button>
+                    <button 
+                      className='delete-btn'
+                      onClick={() => deleteBtnClick(noticeData.id)}
+                    >삭제</button>
+                  </div>
+                : null}
+              </div>
+            </Container>
           }
-          
         </PostWrap>
       </StyledFrame>
       <Footer />

@@ -49,6 +49,7 @@ import DeadlineBoard from './Components/Board/InvestmentBoard/DaedlineBoard';
 import AnnouncementBoard from './Components/Board/announcementBoard/AnnouncementBoard'
 import AnnouncementPost from './Components/Board/announcementBoard/AnnouncementPost'
 import AnnouncementWrite from './Components/Board/announcementBoard/AnnouncementWrite'
+import AnnouncementModify from './Components/Board/announcementBoard/AnnouncementModify'
 
 /* 업체등록, 글쓰기 페이지 */
 import CompanyUpload from './Components/CompanyUpload/CompanyUpload';
@@ -272,6 +273,7 @@ const App = () => {
                 <Route exact path="/announcement" element={<AnnouncementBoard />} />
                 <Route exact path="/announcement/:id" element={<AnnouncementPost />} />
                 <Route exact path="/announcement/write" element={<AnnouncementWrite />} />
+                <Route exact path="/announcement/:id/modify" element={<AnnouncementModify />} />
 
                 {/* 글쓰기 & 업체등록 */}
                 <Route exact path="/company_upload" element={<CompanyUpload />}></Route>

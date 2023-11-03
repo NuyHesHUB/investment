@@ -53,7 +53,10 @@ const Announcement = () => {
         <BoardWrap>
           <Container>
             <div className='top'>
-              <h2>공지사항</h2>
+              <div className='board-title-box'>
+                <h2>공지사항</h2>
+                <p>공지사항 게시판입니다.</p>
+              </div>
               {userGroup === "관리자" ? 
                 <button className='write-btn' onClick={() => navigate('/announcement/write')}>공지쓰기</button>
               : null}

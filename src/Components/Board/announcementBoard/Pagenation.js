@@ -10,7 +10,6 @@ import {
 
 import styled from 'styled-components';
 export const PagenationWrap = styled.div`
-  background: deeppink;
   width: 1000px;
   margin: 30px auto;
   display: flex;
