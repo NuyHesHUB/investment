@@ -9,6 +9,7 @@ import axios from 'axios';
 /* StyledComponents */
 import { 
     StyledFrame, 
+    
     Container, 
     WrapBox, 
     HeaderLogo, 
@@ -32,7 +33,7 @@ import {
 /* Image */
 import { ReactComponent as LogoSvg } from '../assets/image/logo.svg';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 
 const Header = (/* {parsedCommunityCategoryData} */) => {
