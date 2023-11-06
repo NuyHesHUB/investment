@@ -24,7 +24,8 @@ import PageLog from '../Hook/PageLog'
 
 /* Styled-Components */
 import { 
-    
+    HomeWrap,
+
     /* Category Section */
     StyledFrame, 
     AdContainer,
@@ -100,16 +101,18 @@ const Home = ({parsedCommunityCategoryData}) => {
 
 
     return (
-            <React.Fragment>
+            <HomeWrap>
                 <Header parsedCommunityCategoryData={parsedCommunityCategoryData}/>
                     <StyledFrame>
-                        <section>
+                        <section /* style={{filter:'brightness(70%)'}} */>
                             <BannerSwiper/>
                         </section>
                         <section>
                             <AdContainer>
-                                <PremiumAdCardSwiper></PremiumAdCardSwiper>
-                                <div>
+                                <div /* style={{filter:'brightness(70%)'}} */>
+                                    <PremiumAdCardSwiper></PremiumAdCardSwiper>
+                                </div>
+                                <div /* style={{filter:'brightness(70%)'}} */>
                                     <SpecialAdCardSwiper></SpecialAdCardSwiper>
                                 </div>
                             </AdContainer>
@@ -122,7 +125,7 @@ const Home = ({parsedCommunityCategoryData}) => {
                         </section>
                     </StyledFrame>
                 <Footer/>
-            </React.Fragment>
+            </HomeWrap>
     );
 };
 

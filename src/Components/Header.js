@@ -16,6 +16,7 @@ import {
     HeaderBtn, 
     MenuList, 
     MenuItem,
+    MenuSubItem,
     RightHeaderMenu,
     RightHeaderMenuWrap,
     RightHeaderMenuList,
@@ -61,7 +62,8 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
          if (accessToken) { 
              axios.get(`${baseURL}/v1/users/${userUid}`, { headers })
                 .then(response => {
-                    const data = response.data?.query[0].nickname;
+                    /* const data = response.data?.query[0].nickname; */
+                    const data = response.data?.query[0].loginId;
                     setUserName(data);
                 }).catch(error => {
                     if (error.response && error.response.data && error.response.data.error === '사용자 로그인 정보가 만료되었습니다.') {
@@ -234,7 +236,7 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                                 onMouseEnter={() => handleMouseEnter('deadline')}
                                 onMouseLeave={() => handleMouseLeave('deadline')}
                             >
-                                <Link to="/investment/deadline">마감</Link>
+                                <Link to="/investment/deadline">마감된 투자</Link>
                                 {/* <ul className={subMenuOpen.deadline ? 'sub-menu on' : 'sub-menu'}>
                                     {filteredItems.map((item, index)=>(
                                         <Link key={index} to={`/board/${item.key}`}>
@@ -263,15 +265,28 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                             <MenuItem>
                                 <p to="#" onClick={userUid ? checkCompanyRegistration : navigateLogin}>글쓰기</p>
                             </MenuItem>
-                            <MenuItem>
+                            {/* <MenuItem>
                                 <Link to="/payment_info_page">결제안내</Link>
-                            </MenuItem>
-                            <MenuItem>
+                            </MenuItem> */}
+                            {/* <MenuItem>
                                 <Link to="/announcement">공지</Link>
-                            </MenuItem>
+                            </MenuItem> */}
                             <MenuItem>
-                                <Link to="/business_story">story</Link>
+                                <Link to="/business_story">사업자 스토리</Link>
                             </MenuItem>
+                        </MenuList>
+                    </HeaderMenu>
+                    <HeaderMenu>
+                        <MenuList>
+                            <MenuSubItem>
+                                <Link to="/payment_info_page">결제안내</Link>
+                            </MenuSubItem>
+                            <MenuSubItem>
+                                <Link to="/ad_info_page">광고안내</Link>
+                            </MenuSubItem>
+                            <MenuSubItem>
+                                <Link to="/announcement">공지사항</Link>
+                            </MenuSubItem>
                         </MenuList>
                     </HeaderMenu>
                 </WrapBox>
@@ -281,6 +296,7 @@ const Header = (/* {parsedCommunityCategoryData} */) => {
                             {userName &&  userName.length > 0 ? (
                                     <UserNameWrap>
                                         <UserNameBox>{userName}</UserNameBox>
+                                        {/* <UserNameBox>ADMIN</UserNameBox> */}
                                         <HelloBox>님 반갑습니다</HelloBox>
                                     </UserNameWrap>
                                 ) : (null)

@@ -68,6 +68,7 @@ import PaymentInfoPage from './Components/Page/PaymentInfoPage';
 
 /* Scroll Top */
 import ScrollToTop from './Hook/ScrollToTop';
+import AdvertisementInfoPage from './Components/Page/AdvertisementInfoPage';
 
 const App = () => {
 
@@ -293,6 +294,7 @@ const App = () => {
                 <Route exact path="/company_modify" element={<CompanyModify />} />
                 <Route exact path="/business_number_check" element={<BusinessNumberCheck />}/>
                 <Route exact path="/payment_info_page" element={<PaymentInfoPage />} />
+                <Route exact path="/ad_info_page" element={<AdvertisementInfoPage />} />
 
                 {/* Admin */}
                 <Route exact path="/admin" element={<Admin />} />
