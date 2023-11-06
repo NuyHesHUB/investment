@@ -7,6 +7,11 @@ export const StyledFrame=styled.div`
     padding-top: 80px;
     position: relative;
 `
+export const HomeWrap=styled.div`
+    width: 100%;
+    height: 100%;
+    /* background: rgba(0,0,0,.2); */
+`
 export const AdContainer=styled.div`
     /* max-width: 1460px; */
     max-width: 1442px;

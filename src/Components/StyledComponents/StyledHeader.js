@@ -20,8 +20,10 @@ export const StyledFrame=styled.div`
     /* filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3)); */
     &.header-scrolled{
         background: #fff;
+        /* filter: brightness(70%); */
         color: #000;
     }
+    
 `
 export const Container=styled.div`
     width: 100%;
@@ -36,6 +38,8 @@ export const WrapBox=styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-basis: 60%;
+    /* width: 100%; */
     height: 100%;
 `
 export const HeaderLogo=styled.h1`
@@ -48,7 +52,7 @@ export const HeaderMenu=styled.div`
     height: 100%;
     display: flex;
     align-items: center;
-    margin-left: 180px;
+    /* margin-left: 100px; */
     .sub-menu{
         position: absolute;
         top: 101%;
@@ -92,7 +96,7 @@ export const MenuItem=styled.li`
             transition: .2s ease-in-out;
         }
         &:hover::after{
-            width: 70%;
+            width: 90%;
         }
         a{
             display: block;
@@ -105,6 +109,38 @@ export const MenuItem=styled.li`
             width: 100%;
             height: 100%; 
             line-height: 80px;
+            text-align: center;
+        }
+`
+export const MenuSubItem=styled.li`
+        width: 100px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        &::after{
+            content: "";
+            position: absolute;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            /* background: #3fa9f5; */
+            background: #ffb600;
+            transition: .2s ease-in-out;
+        }
+        &:hover::after{
+            width: 70%;
+        }
+        a{
+            display: block;
+            width: 80%;
+            height: 100%;
+            line-height: 80px;
+            font-size: 15px;
             text-align: center;
         }
 `
@@ -124,10 +160,12 @@ export const HeaderBtn=styled.button`
 `
 export const RightHeaderMenu=styled.div`
     display: flex;
+    justify-content: right;
+    flex-basis: 30%;
 `
 export const RightHeaderMenuWrap=styled.div`
     display: flex;
-    margin-left: 50px;
+    /* margin-left: 50px; */
 `
 export const RightHeaderMenuList=styled.ul`
     display: flex;

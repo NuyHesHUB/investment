@@ -505,14 +505,14 @@ const CardTrack = styled.div`
 export const PremiumAdCardSwiper = () => {
 
     const PremiumAdList = [
-        { id: 1, title: "타이틀1", company: "ㅇㅇ컴퍼니", content: "플랫폼 개발비용 투자 가능", region: "화성", tel: "010-1234-1234" },
-        { id: 2, title: "타이틀2", company: "ㅇㅇ산업", content: "ㅇㅇ 상품을 같이 만드실 분", region: "서울", tel: "010-1234-1234" },
-        { id: 3, title: "타이틀3", company: "ㅇㅇ식당", content: "키오스크 투자 가능", region: "서울", tel: "010-1234-1234" },
-        { id: 4, title: "타이틀4", company: "ㅇㅇㅇ공업", content: "수출 제품 동업자 구합니다.", region: "서울", tel: "010-1234-1234" },
-        { id: 5, title: "타이틀5", company: "ㅇㅇㅇㅇ", content: "원재료 구매를 같이 하실분", region: "서울", tel: "010-1234-1234" },
-        { id: 6, title: "타이틀6", company: "ㅇㅇㅇ주식회사", content: "기업 투자 가능합니다. 전화주세요", region: "서울", tel: "010-1234-1234" },
-        { id: 7, title: "타이틀7", company: "ㅇㅇ월드", content: "실내 인테리어가 필요하신분?", region: "서울", tel: "010-1234-1234" },
-        { id: 8, title: "타이틀8", company: "ㅇㅇ나라", content: "회사 입주 청소 전문 회사입니다.", region: "서울", tel: "010-1234-1234" },
+        { id: 1, title: "타이틀1", company: "ㅇㅇ컴퍼니1", content: "프리미엄 광고 콘텐츠1", region: "화성", tel: "010-1234-1234" },
+        { id: 2, title: "타이틀2", company: "ㅇㅇ컴퍼니2", content: "프리미엄 광고 콘텐츠2", region: "서울", tel: "010-1234-1234" },
+        { id: 3, title: "타이틀3", company: "ㅇㅇ컴퍼니3", content: "프리미엄 광고 콘텐츠3", region: "서울", tel: "010-1234-1234" },
+        { id: 4, title: "타이틀4", company: "ㅇㅇ컴퍼니4", content: "프리미엄 광고 콘텐츠4", region: "서울", tel: "010-1234-1234" },
+        { id: 5, title: "타이틀5", company: "ㅇㅇ컴퍼니5", content: "프리미엄 광고 콘텐츠5", region: "서울", tel: "010-1234-1234" },
+        { id: 6, title: "타이틀6", company: "ㅇㅇ컴퍼니6", content: "프리미엄 광고 콘텐츠6", region: "서울", tel: "010-1234-1234" },
+        { id: 7, title: "타이틀7", company: "ㅇㅇ컴퍼니7", content: "프리미엄 광고 콘텐츠7", region: "서울", tel: "010-1234-1234" },
+        { id: 8, title: "타이틀8", company: "ㅇㅇ컴퍼니8", content: "프리미엄 광고 콘텐츠8", region: "서울", tel: "010-1234-1234" },
     ];
 
     return (
@@ -523,13 +523,13 @@ export const PremiumAdCardSwiper = () => {
                         delay: 1000,
                         disableOnInteraction: false
                     }} */
-                    autoplay={{
+                    /* autoplay={{
                         enabled: true,
                         delay: 3000,          
                         pauseOnMouseEnter: true,
                         disableOnInteraction: false,
-                    }}
-                    /* autoplay={false} */
+                    }} */
+                    autoplay={false}
                     /* cssMode={true} */
                     speed={500}
                     loop={true}
@@ -598,14 +598,14 @@ const SpCardTrack = styled.div`
 export const SpecialAdCardSwiper = () => {
 
     const SpecialAdList = [
-        { id: 1, title: "타이틀1", company: "ㅇㅇ컴퍼니", content: "플랫폼 개발비용 투자 가능", region: "화성", tel: "010-1234-1234" },
-        { id: 2, title: "타이틀2", company: "ㅇㅇ산업", content: "ㅇㅇ 상품을 같이 만드실 분", region: "서울", tel: "010-1234-1234" },
-        { id: 3, title: "타이틀3", company: "ㅇㅇ식당", content: "키오스크 투자 가능", region: "서울", tel: "010-1234-1234" },
-        { id: 4, title: "타이틀4", company: "ㅇㅇㅇ공업", content: "수출 제품 동업자 구합니다.", region: "서울", tel: "010-1234-1234" },
-        { id: 5, title: "타이틀5", company: "ㅇㅇㅇㅇ", content: "원재료 구매를 같이 하실분", region: "서울", tel: "010-1234-1234" },
-        { id: 6, title: "타이틀6", company: "ㅇㅇㅇ주식회사", content: "기업 투자 가능합니다. 전화주세요", region: "서울", tel: "010-1234-1234" },
-        { id: 7, title: "타이틀7", company: "ㅇㅇ월드", content: "실내 인테리어가 필요하신분?", region: "서울", tel: "010-1234-1234" },
-        { id: 8, title: "타이틀8", company: "ㅇㅇ나라", content: "회사 입주 청소 전문 회사입니다.", region: "서울", tel: "010-1234-1234" },
+        { id: 1, title: "타이틀1", company: "ㅇㅇ컴퍼니1", content: "스페셜 광고 콘텐츠1", region: "화성", tel: "010-1234-1234" },
+        { id: 2, title: "타이틀2", company: "ㅇㅇ컴퍼니2", content: "스페셜 광고 콘텐츠2", region: "서울", tel: "010-1234-1234" },
+        { id: 3, title: "타이틀3", company: "ㅇㅇ컴퍼니3", content: "스페셜 광고 콘텐츠3", region: "서울", tel: "010-1234-1234" },
+        { id: 4, title: "타이틀4", company: "ㅇㅇ컴퍼니4", content: "스페셜 광고 콘텐츠4", region: "서울", tel: "010-1234-1234" },
+        { id: 5, title: "타이틀5", company: "ㅇㅇ컴퍼니5", content: "스페셜 광고 콘텐츠5", region: "서울", tel: "010-1234-1234" },
+        { id: 6, title: "타이틀6", company: "ㅇㅇ컴퍼니6", content: "스페셜 광고 콘텐츠6", region: "서울", tel: "010-1234-1234" },
+        { id: 7, title: "타이틀7", company: "ㅇㅇ컴퍼니7", content: "스페셜 광고 콘텐츠7", region: "서울", tel: "010-1234-1234" },
+        { id: 8, title: "타이틀8", company: "ㅇㅇ컴퍼니8", content: "스페셜 광고 콘텐츠8", region: "서울", tel: "010-1234-1234" },
     ];
 
     return (
@@ -613,10 +613,10 @@ export const SpecialAdCardSwiper = () => {
             <SpAdCardFrame>
                 <Swiper
                     direction="vertical"
-                    autoplay={{
+                    /* autoplay={{
                         delay: 5000,
-                    }}
-                    /* autoplay={false} */
+                    }} */
+                    autoplay={false}
                     /* cssMode={true} */
                     speed={800}
                     loop={true}
@@ -681,10 +681,10 @@ const BnCardTrack = styled.div`
 export const BannerAdCardSwiper = () => {
 
     const BannerAdList = [
-        { id: 1, title: "타이틀1", company: "ㅇㅇ컴퍼니", content: "플랫폼 개발비용 투자 가능", region: "화성", tel: "010-1234-1234", backgound: "orange" },
-        { id: 2, title: "타이틀2", company: "ㅇㅇ산업", content: "ㅇㅇ 상품을 같이 만드실 분", region: "서울", tel: "010-1234-1234", backgound: "blue" },
-        { id: 3, title: "타이틀3", company: "ㅇㅇ식당", content: "키오스크 투자 가능", region: "서울", tel: "010-1234-1234", backgound: "purple" },
-        { id: 4, title: "타이틀4", company: "ㅇㅇㅇ공업", content: "수출 제품 동업자 구합니다.", region: "서울", tel: "010-1234-1234", backgound: "pink" },
+        { id: 1, title: "타이틀1", company: "ㅇㅇ컴퍼니1", content: "배너 광고 콘텐츠1", region: "화성", tel: "010-1234-1234", backgound: "orange" },
+        { id: 2, title: "타이틀2", company: "ㅇㅇ컴퍼니2", content: "배너 광고 콘텐츠2", region: "서울", tel: "010-1234-1234", backgound: "blue" },
+        { id: 3, title: "타이틀3", company: "ㅇㅇ컴퍼니3", content: "배너 광고 콘텐츠3", region: "서울", tel: "010-1234-1234", backgound: "purple" },
+        { id: 4, title: "타이틀4", company: "ㅇㅇ컴퍼니4", content: "배너 광고 콘텐츠4", region: "서울", tel: "010-1234-1234", backgound: "pink" },
     ];
 
     return (
