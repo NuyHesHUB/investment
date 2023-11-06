@@ -43,10 +43,12 @@ export const Container = styled.div`
   }
   .comment-container {
     position: relative;
-    margin-top: 20px;
+    margin: 20px 0 50px;
   }
   .comment-textarea {
     width: 1000px;
+    box-sizing: border-box;
+    padding: 10px;
     resize: none !important;
     border-radius: 10px;
     box-shadow: 0px 0px 5px #ccc;
@@ -74,5 +76,43 @@ export const Container = styled.div`
   }
   button.delete-btn {
     background: #ff5269;
+  }
+`
+
+export const Comments = styled.li`
+  border-bottom: 1px solid #ccc;
+  /* background: pink; */
+  padding: 25px 5px;
+  .comment-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .nickname {
+    font-size: 20px;
+  }
+  .comment-date{
+    color: #aaa;
+    font-weight: 300;
+  }
+  .comment-content {
+    font-weight: 300;
+  }
+  .comment-bottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+  }
+  .comment-btnBox {
+    display: flex;
+    align-items: center;
+  }
+  .comment-btnBox button{
+    background: #eee;
+    color: #aaa;
+    font-size: 12px;
+    padding: 6px 8px;
+    margin-top: 0;
   }
 `
